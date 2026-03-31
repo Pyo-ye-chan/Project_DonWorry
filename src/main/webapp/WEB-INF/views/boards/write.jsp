@@ -327,7 +327,7 @@
     	initialEditType: 'wysiwyg', // markdown / wysiwyg
     	previewStyle: 'vertical',
     	hideModeSwitch: true,
-    	language: 'ko-KR'
+    	language: 'ko-KR',
     	
     		hooks: {
     	        addImageBlobHook: async (blob, callback) => {
