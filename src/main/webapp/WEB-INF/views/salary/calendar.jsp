@@ -14,6 +14,24 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+.modal {
+    display: none; /* JS에서 block으로 바뀔 때 적용됨 */
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.4); /* 배경을 조금 더 어둡게 하면 모달이 잘 보여! */
+    
+    /* [핵심] 중앙 정렬 코드 */
+    display: none; /* 기본은 none */
+    align-items: center;   /* 세로 중앙 */
+    justify-content: center; /* 가로 중앙 */
+}
+
+/* JS에서 모달을 띄울 때 display: block 대신 flex를 써야 정렬이 먹혀! */
+.modal.show { 
+    display: flex !important; 
+}
+
 /* 기본 초기화 및 폰트 설정 */
 * {
 	margin: 0;
@@ -443,7 +461,7 @@ body {
 
 .form-grid {
 	display: grid;
-	gap: 16px;
+	gap: 13px;
 }
 
 .form-grid.two-col {
@@ -451,12 +469,12 @@ body {
 }
 
 .form-row {
-	margin-bottom: 2px;
+	margin-bottom: 5px;
 }
 
 .form-row label {
 	display: block;
-	margin-bottom: 8px;
+	margin-bottom: 4px;
 	font-size: 13px;
 	font-weight: 700;
 	color: #374151;
@@ -467,7 +485,7 @@ body {
 	background: #fff;
 	border: 1px solid #dbe3ec;
 	border-radius: 12px;
-	padding: 12px 14px;
+	padding: 4px 12px;
 	font-size: 14px;
 	color: #111827;
 	font-family: inherit;
@@ -580,6 +598,39 @@ body {
 		width: 100%;
 	}
 }
+/* 라디오 버튼과 텍스트 수직 정렬 & 크기 조절 */
+.tax-option-group {
+	display: flex;
+	align-items: center; /* 아이콘과 텍스트 높이 맞추기 */
+	gap: 15px;
+	margin-top: 10px;
+}
+
+.tax-option-item {
+	display: flex;
+	align-items: center; /* 내부 라디오와 글자 정렬 */
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+/* 라디오 버튼 크기 줄이기 (기본 브라우저 스타일이 너무 큼) */
+.tax-option-item input[type="radio"] {
+	width: 16px;
+	height: 16px;
+	margin-right: 6px;
+	cursor: pointer;
+}
+
+/* 세부 세금 종류 박스 위치 조정 */
+#taxDetailArea {
+	display: none;
+	background: #f8fafc;
+	border-radius: 12px;
+	padding: 16px;
+	margin-top: 5px; /* 위쪽이랑 너무 붙지 않게 */
+	height: fit-content; /* 내용물에 맞게 높이 조절 */
+}
 </style>
 </head>
 <body>
@@ -599,31 +650,27 @@ body {
 			<div class="now-personal" style="display: none;">개인</div>
 		</div>
 
-    <nav class="navbar">
-        <div style="display: flex; align-items: center; gap: 40px;">
-            <a href="#" class="logo">돈워리</a>
-            <div class="nav-menu">
-                <a href="/">
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
-                    홈
-                </a>
-                <a href="#" class="active">
-                    <i class="fa-regular fa-calendar fa-lg" style="color: rgb(36, 99, 235); margin-right:5px;"></i>
-                    급여 캘린더
-                </a>
-                <a href="/boards/jobpost">
-                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    구인구직
-                </a>
-                <a href="#">
-                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    커뮤니티
-                </a>
-            </div>
-        </div>
-        <a class="my-page" href="#"><i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-        마이페이지</a>
-    </nav>
+		<nav class="navbar">
+			<div style="display: flex; align-items: center; gap: 40px;">
+				<a href="#" class="logo">돈워리</a>
+				<div class="nav-menu">
+					<a href="/"> <i class="fa-solid fa-house fa-lg"
+						style="color: rgb(203, 203, 203);"></i> 홈
+					</a> <a href="#" class="active"> <i
+						class="fa-regular fa-calendar fa-lg"
+						style="color: rgb(36, 99, 235); margin-right: 5px;"></i> 급여 캘린더
+					</a> <a href="/jobposts/jobpost"> <i
+						class="fa-solid fa-briefcase fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 구인구직
+					</a> <a href="#"> <i class="fa-regular fa-message fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
+					</a>
+				</div>
+			</div>
+			<a class="my-page" href="#"><i
+				class="fa-solid fa-user-gear fa-lg"
+				style="color: rgb(197, 197, 197);"></i> 마이페이지</a>
+		</nav>
 
 		<h2 class="section-header">급여 캘린더</h2>
 
@@ -657,7 +704,7 @@ body {
 					</div>
 				</div>
 
-				<div class="card add-card">
+				<div class="card add-card" id="addWorkBtn">
 					<span>+ 근무 등록</span>
 				</div>
 			</div>
@@ -806,178 +853,313 @@ body {
 			</form>
 		</div>
 	</div>
+	<!-- 워크스페이스 모달 -->
+	<div id="workplaceModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2>새 근무지 등록</h2>
+				<button type="button" id="closeWorkplaceModal" class="close-btn">×</button>
+			</div>
+			<form id="workplaceForm" action="/workplace/insert" method="post">
+				<div class="modal-body">
+					<div class="form-row">
+						<label for="name">근무지 이름</label> <input type="text" id="name"
+							name="name" placeholder="예: 강남 편의점" required>
+					</div>
 
-<script>
+					<div class="form-grid two-col">
+						<div class="form-row">
+							<label for="pay_per_hour">시급</label> <input type="number"
+								id="pay_per_hour" name="pay_per_hour" value="10320" required>
+						</div>
+						<div class="form-row">
+							<label for="pay_cycle">월급 주기</label> <select id="pay_cycle"
+								name="pay_cycle">
+								<option value="매월">매월</option>
+								<option value="주급">주급</option>
+							</select>
+						</div>
+					</div>
 
-document.addEventListener('DOMContentLoaded', function() {
-    const calendarEl = document.getElementById('calendar');
-    const dailyWorklogEl = document.getElementById('dailyWorklog');
+					<div class="form-grid two-col">
+						<div class="form-row">
+							<label>세금 적용 여부</label>
+							<div class="tax-option-group">
+								<label class="tax-option-item"> <input type="radio"
+									name="tax_applied" value="N" checked> 미적용
+								</label> <label class="tax-option-item"> <input type="radio"
+									name="tax_applied" value="Y" id="taxYes"> 적용
+								</label>
+							</div>
+						</div>
 
-    const modal = document.getElementById("workModal");
-    const closeModal = document.getElementById("closeModal");
-    const cancelBtn = document.getElementById("cancelBtn");
+						<div id="taxDetailArea"
+							style="display: none; margin-top: 10px; padding: 10px; background: #f8fafc; border-radius: 12px;">
+							<label
+								style="font-size: 13px; font-weight: 700; color: #374151; display: block; margin-bottom: 10px;">세부
+								세금 종류</label>
+							<div style="display: flex; gap: 10px; font-size: 13px;">
+								<label style="font-weight: normal;"> <input type="radio"
+									name="tax_type" value="3.3"> 3.3% (프리랜서)
+								</label> <label style="font-weight: normal;"> <input
+									type="radio" name="tax_type" value="4"> 4대보험
+								</label> <label style="font-weight: normal;"> <input
+									type="radio" name="tax_type" value="1"> 고용보험만
+								</label>
+							</div>
+						</div>
+					</div>
 
-    const keyEl = document.getElementById("key");
-    const worklogDateEl = document.getElementById("worklog_date");
+					<div class="section-title">기본 근무 시간 (선택)</div>
+					<div class="form-grid two-col">
+						<div class="form-row">
+							<label for="work_start_time">기본 시작시간</label> <input type="time"
+								id="work_start_time" name="work_start_time">
+						</div>
+						<div class="form-row">
+							<label for="work_end_time">기본 종료시간</label> <input type="time"
+								id="work_end_time" name="work_end_time">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-cancel"
+						id="cancelWorkplaceBtn">취소</button>
+					<button type="submit" class="btn btn-save">근무지 저장</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
-    const workDateEl = document.getElementById("work_date");
-    const startTimeEl = document.getElementById("start_time");
-    const endTimeEl = document.getElementById("end_time");
-    const breakStartEl = document.getElementById("break_starttime");
-    const breakEndEl = document.getElementById("break_endtime");
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const calendarEl = document.getElementById('calendar');
+			const dailyWorklogEl = document.getElementById('dailyWorklog');
 
-    const workResultEl = document.getElementById("workResult");
-    const breakResultEl = document.getElementById("breakResult");
+			const modal = document.getElementById("workModal");
+			const closeModal = document.getElementById("closeModal");
+			const cancelBtn = document.getElementById("cancelBtn");
 
-    function getCurrentDateTimeLocal() {
-        const now = new Date();
-        const yyyy = now.getFullYear();
-        const mm = String(now.getMonth() + 1).padStart(2, "0");
-        const dd = String(now.getDate()).padStart(2, "0");
-        const hh = String(now.getHours()).padStart(2, "0");
-        const mi = String(now.getMinutes()).padStart(2, "0");
-        return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
-    }
+			const keyEl = document.getElementById("key");
+			const worklogDateEl = document.getElementById("worklog_date");
 
-    function toMinutes(datetimeLocalValue) {
-        if (!datetimeLocalValue) return null;
-        const date = new Date(datetimeLocalValue);
-        if (isNaN(date.getTime())) return null;
-        return Math.floor(date.getTime() / 60000);
-    }
+			const workDateEl = document.getElementById("work_date");
+			const startTimeEl = document.getElementById("start_time");
+			const endTimeEl = document.getElementById("end_time");
+			const breakStartEl = document.getElementById("break_starttime");
+			const breakEndEl = document.getElementById("break_endtime");
 
-    function formatMinutes(totalMinutes) {
-        if (!totalMinutes || totalMinutes < 0) return "0시간 0분";
-        const hour = Math.floor(totalMinutes / 60);
-        const minute = totalMinutes % 60;
-        return `${hour}시간 ${minute}분`;
-    }
+			const workResultEl = document.getElementById("workResult");
+			const breakResultEl = document.getElementById("breakResult");
 
-    function calculateTimes() {
-        const workStart = toMinutes(startTimeEl.value);
-        const workEnd = toMinutes(endTimeEl.value);
-        const breakStart = toMinutes(breakStartEl.value);
-        const breakEnd = toMinutes(breakEndEl.value);
+			function getCurrentDateTimeLocal() {
+				const now = new Date();
+				const yyyy = now.getFullYear();
+				const mm = String(now.getMonth() + 1).padStart(2, "0");
+				const dd = String(now.getDate()).padStart(2, "0");
+				const hh = String(now.getHours()).padStart(2, "0");
+				const mi = String(now.getMinutes()).padStart(2, "0");
+				return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
+			}
 
-        let totalWork = 0;
-        let totalBreak = 0;
+			function toMinutes(datetimeLocalValue) {
+				if (!datetimeLocalValue)
+					return null;
+				const date = new Date(datetimeLocalValue);
+				if (isNaN(date.getTime()))
+					return null;
+				return Math.floor(date.getTime() / 60000);
+			}
 
-        if (workStart !== null && workEnd !== null && workEnd > workStart) {
-            totalWork = workEnd - workStart;
-        }
+			function formatMinutes(totalMinutes) {
+				if (!totalMinutes || totalMinutes < 0)
+					return "0시간 0분";
+				const hour = Math.floor(totalMinutes / 60);
+				const minute = totalMinutes % 60;
+				return `${hour}시간 ${minute}분`;
+			}
 
-        if (breakStart !== null && breakEnd !== null && breakEnd > breakStart) {
-            totalBreak = breakEnd - breakStart;
-        }
+			function calculateTimes() {
+				const workStart = toMinutes(startTimeEl.value);
+				const workEnd = toMinutes(endTimeEl.value);
+				const breakStart = toMinutes(breakStartEl.value);
+				const breakEnd = toMinutes(breakEndEl.value);
 
-        workResultEl.innerText = formatMinutes(totalWork);
-        breakResultEl.innerText = formatMinutes(totalBreak);
-    }
+				let totalWork = 0;
+				let totalBreak = 0;
 
-    function openWorkModal(dateStr) {
-        keyEl.value = 0;
-        workDateEl.value = dateStr || "";
-        worklogDateEl.value = getCurrentDateTimeLocal();
+				if (workStart !== null && workEnd !== null
+						&& workEnd > workStart) {
+					totalWork = workEnd - workStart;
+				}
 
-        startTimeEl.value = "";
-        endTimeEl.value = "";
-        breakStartEl.value = "";
-        breakEndEl.value = "";
+				if (breakStart !== null && breakEnd !== null
+						&& breakEnd > breakStart) {
+					totalBreak = breakEnd - breakStart;
+				}
 
-        document.getElementById("parent_seq").value = "";
-        document.getElementById("night_pay").value = 0;
-        document.getElementById("overtime_pay").value = 0;
-        document.getElementById("holiday_pay").value = 0;
-        document.getElementById("total_pay").value = 0;
-        document.getElementById("memo").value = "";
+				workResultEl.innerText = formatMinutes(totalWork);
+				breakResultEl.innerText = formatMinutes(totalBreak);
+			}
 
-        workResultEl.innerText = "0시간 0분";
-        breakResultEl.innerText = "0시간 0분";
+			function openWorkModal(dateStr) {
+				keyEl.value = 0;
+				workDateEl.value = dateStr || "";
+				worklogDateEl.value = getCurrentDateTimeLocal();
 
-        modal.style.display = "block";
-    }
+				startTimeEl.value = "";
+				endTimeEl.value = "";
+				breakStartEl.value = "";
+				breakEndEl.value = "";
 
-    function closeWorkModal() {
-        modal.style.display = "none";
-    }
+				document.getElementById("parent_seq").value = "";
+				document.getElementById("night_pay").value = 0;
+				document.getElementById("overtime_pay").value = 0;
+				document.getElementById("holiday_pay").value = 0;
+				document.getElementById("total_pay").value = 0;
+				document.getElementById("memo").value = "";
 
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        locale: 'ko',
-        initialView: 'dayGridMonth',
-        height: 'auto',
-        headerToolbar: {
-            left: 'today',
-            center: 'title',
-            right: 'prev,next'
-        },
-        buttonText: {
-            today: '오늘'
-        },
-        events: [
-            { title: '편의점', start: '2026-03-08' },
-            { title: '카페', start: '2026-03-16' },
-            { title: '야간', start: '2026-03-27' }
-        ],
-        dateClick: function(info) {
-            openWorkModal(info.dateStr);
-        },
-        eventClick: function(info) {
-            dailyWorklogEl.innerHTML =
-                "근무 상세 내역<br>" +
-                "근무: " + info.event.title + "<br>" +
-                "날짜: " + info.event.startStr;
-        }
-    });
+				workResultEl.innerText = "0시간 0분";
+				breakResultEl.innerText = "0시간 0분";
 
-    calendar.render();
+				modal.style.display = "block";
+			}
 
-    closeModal.addEventListener("click", closeWorkModal);
-    cancelBtn.addEventListener("click", closeWorkModal);
+			function closeWorkModal() {
+				modal.style.display = "none";
+			}
 
-    window.addEventListener("click", function(e) {
-        if (e.target === modal) {
-            closeWorkModal();
-        }
-    });
+			const calendar = new FullCalendar.Calendar(calendarEl, {
+				locale : 'ko',
+				initialView : 'dayGridMonth',
+				height : 'auto',
+				headerToolbar : {
+					left : 'today',
+					center : 'title',
+					right : 'prev,next'
+				},
+				buttonText : {
+					today : '오늘'
+				},
+				events : [ {
+					title : '편의점',
+					start : '2026-03-08'
+				}, {
+					title : '카페',
+					start : '2026-03-16'
+				}, {
+					title : '야간',
+					start : '2026-03-27'
+				} ],
+				dateClick : function(info) {
+					openWorkModal(info.dateStr);
+				},
+				eventClick : function(info) {
+					dailyWorklogEl.innerHTML = "근무 상세 내역<br>" + "근무: "
+							+ info.event.title + "<br>" + "날짜: "
+							+ info.event.startStr;
+				}
+			});
 
-    startTimeEl.addEventListener("change", calculateTimes);
-    endTimeEl.addEventListener("change", calculateTimes);
-    breakStartEl.addEventListener("change", calculateTimes);
-    breakEndEl.addEventListener("change", calculateTimes);
+			calendar.render();
 
-    document.getElementById("worklogForm").addEventListener("submit", function(e) {
-        if (!document.getElementById("parent_seq").value) {
-            alert("근무지를 선택해주세요.");
-            e.preventDefault();
-            return;
-        }
+			closeModal.addEventListener("click", closeWorkModal);
+			cancelBtn.addEventListener("click", closeWorkModal);
 
-        if (!workDateEl.value) {
-            alert("근무 날짜를 선택해주세요.");
-            e.preventDefault();
-            return;
-        }
+			window.addEventListener("click", function(e) {
+				if (e.target === modal) {
+					closeWorkModal();
+				}
+			});
 
-        if (!startTimeEl.value || !endTimeEl.value) {
-            alert("근무 시작시간과 종료시간을 입력해주세요.");
-            e.preventDefault();
-            return;
-        }
+			startTimeEl.addEventListener("change", calculateTimes);
+			endTimeEl.addEventListener("change", calculateTimes);
+			breakStartEl.addEventListener("change", calculateTimes);
+			breakEndEl.addEventListener("change", calculateTimes);
 
-        if (breakStartEl.value && !breakEndEl.value) {
-            alert("휴게 종료시간을 입력해주세요.");
-            e.preventDefault();
-            return;
-        }
+			document.getElementById("worklogForm").addEventListener(
+					"submit",
+					function(e) {
+						if (!document.getElementById("parent_seq").value) {
+							alert("근무지를 선택해주세요.");
+							e.preventDefault();
+							return;
+						}
 
-        if (!breakStartEl.value && breakEndEl.value) {
-            alert("휴게 시작시간을 입력해주세요.");
-            e.preventDefault();
-            return;
-        }
-    });
-});
-</script>
+						if (!workDateEl.value) {
+							alert("근무 날짜를 선택해주세요.");
+							e.preventDefault();
+							return;
+						}
+
+						if (!startTimeEl.value || !endTimeEl.value) {
+							alert("근무 시작시간과 종료시간을 입력해주세요.");
+							e.preventDefault();
+							return;
+						}
+
+						if (breakStartEl.value && !breakEndEl.value) {
+							alert("휴게 종료시간을 입력해주세요.");
+							e.preventDefault();
+							return;
+						}
+
+						if (!breakStartEl.value && breakEndEl.value) {
+							alert("휴게 시작시간을 입력해주세요.");
+							e.preventDefault();
+							return;
+						}
+
+					});
+		});
+		
+		document.addEventListener('DOMContentLoaded', function() {
+		    const workplaceModal = document.getElementById("workplaceModal");
+		    const addWorkBtn = document.getElementById("addWorkBtn"); // "+ 근무 등록" 버튼
+		    
+		    // 모달 닫기 버튼들
+		    const closeWP = document.getElementById("closeWorkplaceModal");
+		    const cancelWP = document.getElementById("cancelWorkplaceBtn");
+
+		    // [중요] 버튼 클릭 시 근무지 등록 모달 띄우기
+		    if (addWorkBtn) {
+		        addWorkBtn.addEventListener("click", function() {
+		            workplaceModal.style.display = "flex";
+		        });
+		    }
+
+		    // 닫기 기능들
+		    const closeAll = () => { workplaceModal.style.display = "none"; };
+		    closeWP.addEventListener("click", closeAll);
+		    cancelWP.addEventListener("click", closeAll);
+		    
+		    window.addEventListener("click", (e) => {
+		        if (e.target === workplaceModal) closeAll();
+		    });
+		});
+		
+		document.addEventListener('DOMContentLoaded', function() {
+		    // 세금 적용 여부 라디오 버튼들 가져오기
+		    const taxRadios = document.querySelectorAll('input[name="tax_applied"]');
+		    const taxDetailArea = document.getElementById("taxDetailArea");
+
+		    taxRadios.forEach(radio => {
+		        radio.addEventListener('change', function() {
+		            if (this.value === 'Y') {
+		                // '적용'을 선택하면 세부 영역 보이기 (부드럽게 보이고 싶으면 fadeIn 효과 추가 가능)
+		                taxDetailArea.style.display = "block";
+		            } else {
+		                // '미적용'을 선택하면 세부 영역 숨기기
+		                taxDetailArea.style.display = "none";
+		                
+		                // 숨기면서 체크되어 있던 세부 옵션들을 초기화하고 싶다면 아래 코드 추가
+		                const subRadios = taxDetailArea.querySelectorAll('input[type="radio"]');
+		                subRadios.forEach(sub => sub.checked = false);
+		            }
+		        });
+		    });
+		});
+	</script>
 
 </body>
 </html>
