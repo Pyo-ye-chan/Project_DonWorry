@@ -35,6 +35,11 @@ public class MembersController {
 		return "redirect:/";	
 	}
 	
+	@RequestMapping("/toSignUp")
+	public String toSignUp() {
+		return "/members/joinform";
+	}
+	
 	@RequestMapping("/signup")
 	public String signup(MembersDTO dto) {
 		String pw = eu.getSha512(dto.getPw());
