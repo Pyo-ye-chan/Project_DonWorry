@@ -215,8 +215,9 @@
 	            font-weight: bold;
 	            font-size: 12px;
 	            margin-right: 12px;
+	            display: none;
 	        }
-	        .profile-img.blue { background-color: #4a90e2; }
+	        .profile-img.blue { background-color: #4a90e2;}
 	        .profile-img.green { background-color: #50e3c2; }
 	
 	        .meta .nickname { font-weight: bold; font-size: 14px; }
