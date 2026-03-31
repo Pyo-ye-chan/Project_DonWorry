@@ -201,7 +201,7 @@
 
         <div class="login-title">로그인</div>
 
-        <form action ="members/login" method ="post">
+        <form action ="/members/login" method ="post">
             <div class="input-group">
                 <input type="text" placeholder="아이디" name="id">
             </div>
