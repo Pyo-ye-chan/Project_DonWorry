@@ -20,11 +20,11 @@ public class WorklogDTO {
 	
 	public WorklogDTO() {}
 
-	public WorklogDTO(int key, int parent_seq, Timestamp work_date, Timestamp start_time, Timestamp end_time,
+	public WorklogDTO(int seq, int parent_seq, Timestamp work_date, Timestamp start_time, Timestamp end_time,
 			Timestamp break_starttime, Timestamp break_endtime, int night_pay, int overtime_pay, int holiday_pay,
 			int total_pay, String memo, Timestamp worklog_date) {
 		super();
-		this.key = key;
+		this.seq = seq;
 		this.parent_seq = parent_seq;
 		this.work_date = work_date;
 		this.start_time = start_time;
@@ -39,12 +39,12 @@ public class WorklogDTO {
 		this.worklog_date = worklog_date;
 	}
 
-	public int getKey() {
-		return key;
+	public int getSeq() {
+		return seq;
 	}
 
-	public void setKey(int key) {
-		this.key = key;
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
 	public int getParent_seq() {
@@ -142,10 +142,6 @@ public class WorklogDTO {
 	public void setWorklog_date(Timestamp worklog_date) {
 		this.worklog_date = worklog_date;
 	};
-	
-	
-	
-	
 	
 	
 
