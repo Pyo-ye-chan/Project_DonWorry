@@ -154,3 +154,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java,windows,git,maven
+
+# email sensitive info
+src/main/resources/email.properties

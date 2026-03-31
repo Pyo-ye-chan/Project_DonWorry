@@ -366,7 +366,7 @@
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="#" class="logo">돈워리</a>
             <div class="nav-menu">
-                <a href="#">
+                <a href="/">
                     <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
                     홈
                 </a>
