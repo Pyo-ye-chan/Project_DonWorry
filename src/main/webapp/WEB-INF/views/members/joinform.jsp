@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>돈워리 - 회원가입</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 /* 1. 전체적인 분위기 (메인 페이지 스타일 계승) */
 :root { -
@@ -30,7 +31,7 @@ body {
 /* 2. 가입 폼 컨테이너 */
 .register-container {
 	background-color: #fff;
-	padding: 50px 40px;
+	padding: 10px 40px;
 	border-radius: 20px;
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* 은은한 그림자 */
 	width: 100%;
@@ -48,20 +49,20 @@ body {
 
 .register-container p {
 	color: #666;
-	margin-bottom: 40px;
+	margin-bottom: 25px;
 	font-size: 16px;
 }
 
 /* 4. 입력 필드 스타일 (시원시원하게) */
 .form-group {
 	text-align: left;
-	margin-bottom: 25px;
+	margin-bottom: 15px;
 }
 
 .form-group label {
 	display: block;
 	font-weight: 500;
-	margin-bottom: 8px;
+	margin-bottom: 5px;
 	font-size: 15px;
 }
 
@@ -271,11 +272,11 @@ body {
 
 			<div class="form-group">
 				<div class="input-row">
-					<div style="flex: 1;">
+					<div style="flex: 1; display: flex; flex-direction: column;" id="rrnGroup">
 						<label for="rrn">생년월일</label> <input type="text" id="rrn"
 							name="rrn" placeholder="6자리 입력" required>
 					</div>
-					<div style="flex: 1;">
+					<div style="flex: 1; display: flex; flex-direction: column;">
 						<label for="email">이메일</label> <input type="text" id="email"
 							name="email" placeholder="이메일 입력" required>
 					</div>
@@ -336,21 +337,27 @@ body {
 	</div>
 
 	<script>
-$(document).ready(function() {
-    // 라디오 버튼(memberType)이 바뀔 때 실행
-    $('input[name="memberType"]').change(function() {
-        if ($(this).val() === 'BUSINESS') {
-            // 기업 회원 선택 시: 사업자 번호 보이기
-            $('#businessNumberGroup').show();
-            $('#business_number').attr('required', true); // 필수 입력으로 변경
-        } else {
-            // 개인 회원 선택 시: 사업자 번호 숨기기 + 값 초기화
-            $('#businessNumberGroup').hide();
-            $('#business_number').val(''); // 써놨던 값 지우기
-            $('#business_number').attr('required', false); // 필수 입력 해제
-        }
-    });
-});
+	$(document).ready(function() {
+	    $('input[name="memberType"]').change(function() {
+	        if ($(this).val() === 'BUSINESS') {
+	            // --- 기업 회원 선택 시 ---
+	            $('#businessNumberGroup').show(); // 사업자번호 보이기
+	            $('#business_number').attr('required', true);
+	            
+	            $('#rrnGroup').hide();           // 생년월일 숨기기
+	            $('#rrn').val('');               // 값 비우기
+	            $('#rrn').attr('required', false); // 필수 해제
+	        } else {
+	            // --- 개인 회원 선택 시 ---
+	            $('#businessNumberGroup').hide(); // 사업자번호 숨기기
+	            $('#business_number').val('');
+	            $('#business_number').attr('required', false);
+	            
+	            $('#rrnGroup').show();           // 생년월일 보이기
+	            $('#rrn').attr('required', true);  // 필수 설정
+	        }
+	    });
+	});
 </script>
 
 </body>

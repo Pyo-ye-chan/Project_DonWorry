@@ -54,5 +54,22 @@ public class MembersDAO {
 	        dto.getBusiness_number()
 	    );
 	}
+	
+	public int checkMemberForPw(String id, String email) {
+		String sql = "select count(*) from members where id=? and email=?";
+		
+		return jdbc.queryForObject(sql,Integer.class,id,email);
+	}
+	
+	public int updatePw(String id, String pw) {
+	    String sql = "update members set pw = ? where id = ?";
+	    
+	    try {
+	        return jdbc.update(sql, pw, id);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
 
 }
