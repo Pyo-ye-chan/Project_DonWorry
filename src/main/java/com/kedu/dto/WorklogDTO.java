@@ -4,17 +4,17 @@ import java.sql.Timestamp;
 
 public class WorklogDTO {
 	
-	private int key;
-	private int parent_seq;
-	private Timestamp work_date;
-	private Timestamp start_time;
+	private int key; // 근무 기록 번호
+	private int parent_seq; // 근무지 번호
+	private Timestamp work_date; //근무 날짜
+	private Timestamp start_time; //
 	private Timestamp end_time;
 	private Timestamp break_starttime;
 	private Timestamp break_endtime;
 	private int night_pay;
 	private int overtime_pay;
 	private int holiday_pay;
-	private int total_pay;
+	private int total_pay; // 총 급여
 	private String memo;
 	private Timestamp worklog_date;
 	
