@@ -11,4 +11,5 @@ public class SalaryController {
 	public String toCalendar() {
 		return "salary/calendar";
 	}
+	
 }
