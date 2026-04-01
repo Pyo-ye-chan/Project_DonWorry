@@ -112,7 +112,6 @@ body {
 /* 관리자 메인 */
 .admin-page {
     padding: 36px 0 0;
-    background: linear-gradient(to bottom, #f7faff 0%, #ffffff 42%);
     min-height: 800px;
 }
 
@@ -120,7 +119,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
     gap: 20px;
 }
 
@@ -129,21 +128,58 @@ body {
     font-weight: 800;
     color: #1e293b;
     margin-bottom: 6px;
+    margin-left: 10px;
 }
 
 .admin-title-wrap p {
     font-size: 14px;
     color: #64748b;
+    margin-left: 10px;
 }
 
 .admin-date-box {
     background: #fff;
-    border: 1px solid #e4edf8;
-    border-radius: 14px;
     padding: 12px 16px;
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.05);
-    font-size: 13px;
-    color: #64748b;
+    font-size: 15px;
+    color: #475569;
+}
+
+/* 상단 툴바 */
+.admin-toolbar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+    padding: 0;
+}
+
+.admin-tool-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 72px;
+    padding: 0 18px;
+    border: 1px solid #e7eef8;
+    border-radius: 18px;
+    background: #fff;
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 800;
+    box-shadow: 0 0 0px 1px rgba(37, 99, 235, 0.5);
+    transition: all 0.2s ease;
+}
+
+.admin-tool-btn:hover {
+    background: #f8fbff;
+    transform: translateY(-2px);
+}
+
+.admin-tool-btn.active {
+    background: #2563eb;
+    color: #fff;
+    border-color: #2563eb;
 }
 
 /* 카드 */
@@ -159,7 +195,6 @@ body {
     border: 1px solid #e7eef8;
     border-radius: 18px;
     padding: 22px 22px 18px;
-    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.06);
     position: relative;
     overflow: hidden;
 }
@@ -171,7 +206,6 @@ body {
     top: -20px;
     width: 90px;
     height: 90px;
-    background: rgba(37, 99, 235, 0.05);
     border-radius: 50%;
 }
 
@@ -191,15 +225,15 @@ body {
 }
 
 .stat-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
     background: #eff6ff;
     color: #2563eb;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 .stat-value {
@@ -231,7 +265,6 @@ body {
     border: 1px solid #e7eef8;
     border-radius: 18px;
     padding: 22px;
-    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.06);
 }
 
 .card-head {
@@ -284,7 +317,9 @@ body {
     color: #64748b;
     font-weight: 700;
     background-color: #fafcff;
+    
 }
+
 
 .admin-table tbody tr:hover {
     background-color: #f8fbff;
@@ -315,35 +350,67 @@ body {
     color: #dc2626;
 }
 
-.quick-menu {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-}
-
-.quick-btn {
-    min-height: 72px;
-    border: 1px solid #dbeafe;
-    border-radius: 16px;
-    background: #f8fbff;
+/* 회원 비율 카드 */
+.member-ratio-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    color: #2563eb;
+}
+
+.ratio-chart-box {
+    width: 240px;
+    height: 240px;
+    margin: 10px auto 20px;
+}
+
+.ratio-legend {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ratio-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #edf2f7;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #fbfdff;
+}
+
+.ratio-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ratio-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.ratio-dot.personal {
+    background: #1677ff;
+}
+
+.ratio-dot.business {
+    background: #93c5fd;
+}
+
+.ratio-name {
+    font-size: 14px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.ratio-value {
+    font-size: 14px;
+    color: #0f172a;
     font-weight: 700;
-    transition: all 0.2s ease;
-    gap: 6px;
-}
-
-.quick-btn:hover {
-    background: #eef6ff;
-    transform: translateY(-2px);
-}
-
-.quick-btn i {
-    font-size: 20px;
 }
 
 /* footer */
@@ -359,37 +426,9 @@ body {
     margin-left: calc(-50vw + 50%);
 }
 
-/* 반응형 */
-@media (max-width: 1024px) {
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
 
-    .dashboard-grid,
-    .bottom-grid {
-        grid-template-columns: 1fr;
-    }
-}
 
-@media (max-width: 768px) {
-    .nav-menu {
-        gap: 16px;
-        flex-wrap: wrap;
-    }
 
-    .admin-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .quick-menu {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 </head>
 <body>
@@ -417,28 +456,27 @@ body {
                     <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
                     홈
                 </a>
-                <a href="salary/calendar">
+                <a href="/salary/calendar">
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
                 </a>
-                <a href="#">
+                <a href="/jobpost/jobpost">
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
-                <a href="#">
+                <a href="boards/mainboard/mainboard_list">
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     커뮤니티
                 </a>
             </div>
         </div>
 
-        <a class="my-page" href="#">
+        <a class="my-page" href="/mypage/mypage">
             <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
             마이페이지
         </a>
     </nav>
 
-    <!-- 관리자 메인 시작 -->
     <main class="admin-page">
 
         <div class="admin-header">
@@ -453,10 +491,26 @@ body {
             </div>
         </div>
 
+        <!-- 이동 툴바 -->
+        <div class="admin-toolbar">
+            <a href="/admin/admin_members" class="admin-tool-btn">
+                <i class="fa-solid fa-users"></i>
+                회원 관리
+            </a>
+            <a href="/admin/admin_boards" class="admin-tool-btn">
+                <i class="fa-regular fa-clipboard"></i>
+                게시글 관리
+            </a>
+            <a href="/admin/admin_inquiry" class="admin-tool-btn">
+                <i class="fa-regular fa-envelope-open"></i>
+                고객 문의 관리
+            </a>
+        </div>
+
         <section class="stats-grid">
             <div class="stat-card">
                 <div class="stat-top">
-                    <div class="stat-label">전체 회원 수</div>
+                    <div class="stat-label">전체 사용자</div>
                     <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
                 </div>
                 <div class="stat-value">3,300</div>
@@ -465,20 +519,11 @@ body {
 
             <div class="stat-card">
                 <div class="stat-top">
-                    <div class="stat-label">전체 게시글 수</div>
+                    <div class="stat-label">전체 게시글</div>
                     <div class="stat-icon"><i class="fa-regular fa-pen-to-square"></i></div>
                 </div>
                 <div class="stat-value">1,200</div>
                 <div class="stat-desc">오늘 신규 게시글 27건</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-top">
-                    <div class="stat-label">신고 접수</div>
-                    <div class="stat-icon"><i class="fa-regular fa-bell"></i></div>
-                </div>
-                <div class="stat-value">13</div>
-                <div class="stat-desc">즉시 확인 필요 4건</div>
             </div>
 
             <div class="stat-card">
@@ -507,13 +552,21 @@ body {
                 <div class="stat-value">132</div>
                 <div class="stat-desc">현재 모집중 98건</div>
             </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-label">신고 접수</div>
+                    <div class="stat-icon"><i class="fa-regular fa-bell"></i></div>
+                </div>
+                <div class="stat-value">13</div>
+                <div class="stat-desc">즉시 확인 필요 4건</div>
+            </div>
         </section>
 
         <section class="dashboard-grid">
             <div class="dashboard-card">
                 <div class="card-head">
                     <h3>방문자 추이</h3>
-                    <a href="#">상세보기</a>
                 </div>
                 <div class="chart-box">
                     <canvas id="visitorChart"></canvas>
@@ -523,7 +576,6 @@ body {
             <div class="dashboard-card">
                 <div class="card-head">
                     <h3>게시글 / 문의 현황</h3>
-                    <a href="#">상세보기</a>
                 </div>
                 <div class="chart-box">
                     <canvas id="postChart"></canvas>
@@ -535,7 +587,6 @@ body {
             <div class="dashboard-card">
                 <div class="card-head">
                     <h3>최근 가입 회원</h3>
-                    <a href="#">전체보기</a>
                 </div>
 
                 <table class="admin-table">
@@ -545,7 +596,6 @@ body {
                             <th>이메일</th>
                             <th>유형</th>
                             <th>가입일</th>
-                            <th>상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -554,61 +604,62 @@ body {
                             <td>vision@email.com</td>
                             <td>개인</td>
                             <td>2026-04-01</td>
-                            <td><span class="status-badge status-normal">정상</span></td>
                         </tr>
                         <tr>
                             <td>UX_Design_Pro</td>
                             <td>design@email.com</td>
                             <td>기업</td>
                             <td>2026-04-01</td>
-                            <td><span class="status-badge status-wait">승인대기</span></td>
                         </tr>
                         <tr>
                             <td>Tech_Specialist</td>
                             <td>tech@email.com</td>
                             <td>개인</td>
                             <td>2026-03-31</td>
-                            <td><span class="status-badge status-normal">정상</span></td>
                         </tr>
                         <tr>
                             <td>Risk_Assessment</td>
                             <td>risk@email.com</td>
                             <td>기업</td>
-                            <td>2026-03-31</td>
-                            <td><span class="status-badge status-stop">정지</span></td>
+                            <td>2026-03-31</td>                
                         </tr>
                     </tbody>
                 </table>
             </div>
 
+            <!-- 빠른 관리 메뉴 대신 회원 비율 원형 그래프 -->
             <div class="dashboard-card">
                 <div class="card-head">
-                    <h3>빠른 관리 메뉴</h3>
+                    <h3>회원 유형 비율</h3>
                 </div>
 
-                <div class="quick-menu">
-                    <a href="#" class="quick-btn">
-                        <i class="fa-solid fa-users"></i>
-                        <span>회원 관리</span>
-                    </a>
-                    <a href="#" class="quick-btn">
-                        <i class="fa-regular fa-clipboard"></i>
-                        <span>게시글 관리</span>
-                    </a>
-                    <a href="#" class="quick-btn">
-                        <i class="fa-regular fa-envelope-open"></i>
-                        <span>문의 관리</span>
-                    </a>
-                    <a href="#" class="quick-btn">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        <span>신고 관리</span>
-                    </a>
+                <div class="member-ratio-wrap">
+                    <div class="ratio-chart-box">
+                        <canvas id="memberRatioChart"></canvas>
+                    </div>
+
+                    <div class="ratio-legend">
+                        <div class="ratio-item">
+                            <div class="ratio-left">
+                                <span class="ratio-dot personal"></span>
+                                <span class="ratio-name">개인 회원</span>
+                            </div>
+                            <span class="ratio-value">2,977명 (90.2%)</span>
+                        </div>
+
+                        <div class="ratio-item">
+                            <div class="ratio-left">
+                                <span class="ratio-dot business"></span>
+                                <span class="ratio-name">기업 회원</span>
+                            </div>
+                            <span class="ratio-value">323명 (9.8%)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
     </main>
-    <!-- 관리자 메인 끝 -->
 
     <div class="container-footer">
         <p>© 2026 돈워리. All rights reserved.</p>
@@ -711,6 +762,31 @@ new Chart(postCtx, {
                 grid: {
                     display: false
                 }
+            }
+        }
+    }
+});
+
+const memberRatioCtx = document.getElementById('memberRatioChart');
+
+new Chart(memberRatioCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['개인 회원', '기업 회원'],
+        datasets: [{
+            data: [2977, 323],
+            backgroundColor: ['#1677ff', '#93c5fd'],
+            borderWidth: 0,
+            hoverOffset: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '68%',
+        plugins: {
+            legend: {
+                display: false
             }
         }
     }

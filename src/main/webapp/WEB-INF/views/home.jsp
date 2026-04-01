@@ -393,7 +393,7 @@
             </a>
         </span>
         <!-- 일단 관리자 빼고 다 숨겨둠 -->
-            <div class="now-admin" >관리자</div>
+            <a href="/admin/admin_main"><div class="now-admin" >관리자</div></a>
             <div class="now-business" style="display: none;">기업</div>
             <div class="now-personal" style="display: none;">개인</div>
     </div>
