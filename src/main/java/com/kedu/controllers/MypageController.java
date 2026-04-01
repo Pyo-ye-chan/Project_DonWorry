@@ -12,6 +12,11 @@ public class MypageController {
 		return "mypage/mypage";
 	}
 	
+	@RequestMapping("/toProfile")
+	public String toProfile() {
+		return "mypage/profile";
+	}
+	
 	@RequestMapping("/toAccount")
 	public String toAccount() {
 		return "mypage/account";
@@ -21,4 +26,5 @@ public class MypageController {
 	public String toWithdraw() {
 		return "mypage/withdraw";
 	}
+	
 }
