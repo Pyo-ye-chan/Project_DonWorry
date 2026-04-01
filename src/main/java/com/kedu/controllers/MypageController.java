@@ -35,6 +35,11 @@ public class MypageController {
 		return "mypage/profile";
 	}
 	
+	@RequestMapping("/job_activity")
+	public String to_Job_activity() {
+		return "mypage/job_activity";
+	}
+	
 	@RequestMapping("/toAccount")
 	public String toAccount() {
 		return "mypage/account";

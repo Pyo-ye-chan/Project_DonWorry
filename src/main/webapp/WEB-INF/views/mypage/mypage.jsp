@@ -384,7 +384,7 @@
          <div class="my-activity">
         <div class="my-activity-title">내 활동</div>
         <div class="my-activity-item">
-            <a href="#" class="my-apply-list">
+            <a href="/mypage/job_activity" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-regular fa-file-lines" style="color: rgb(110, 110, 110); margin-right:5px;"></i>
                     구직 활동 관리
