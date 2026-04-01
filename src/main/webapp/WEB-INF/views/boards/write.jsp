@@ -228,12 +228,80 @@
 .writer{
 	width : 40%
 }
+/* 파일 첨부 */
+            .file-upload-wrap {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 14px 16px;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+                background: #f7f9fc;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            }
+
+            /* .file-upload-wrap:hover {
+                border-color: #bfd3ff;
+                background: #f4f8ff;
+            } */
+
+            .file-upload-wrap input[type="file"] {
+                display: none;
+            }
+
+            .file-upload-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 16px;
+                background: linear-gradient(135deg, #2563eb, #3b82f6);
+                color: #fff;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                white-space: nowrap;
+                box-shadow: 0 6px 14px rgba(37, 99, 235, 0.18);
+                transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+            }
+
+            .file-upload-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 10px 18px rgba(37, 99, 235, 0.22);
+            }
+
+            .file-upload-btn:active {
+                transform: translateY(0);
+            }
+
+            .file-upload-text {
+                font-size: 13px;
+                color: #6b7280;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 500px;
+            }
+
+            /* 반응형 */
+            @media (max-width: 768px) {
+                .file-upload-wrap {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .file-upload-text {
+                    max-width: 100%;
+                    white-space: normal;
+                    word-break: break-all;
+                }
+            }
 </style>
 <body>
 <div class="container">
     <div class="top-auth">
         <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="members/login"style="text-decoration: none; color:black">
+            <a href="/members/toLogin"style="text-decoration: none; color:black">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
         </span>
@@ -258,13 +326,13 @@
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
-                <a href="/boards//mainboard_list"> 
+                <a href="/boards/mainboard_list?page=1"> 
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
                     커뮤니티
                 </a>               
             </div>           
         </div>   
-        <a class="my-page" href="#"> 
+        <a class="my-page" href="/mypage/toMypage"> 
             <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
             마이페이지
         </a>    
@@ -292,15 +360,24 @@
 
             <!-- 제목 -->
             <div class="input-group">
-                <input type="text" name="title" placeholder="제목을 입력하세요">
+                <input type="text" name="title" placeholder="제목을 입력하세요" id="title">
             </div>
 
             <!-- 작성자 -->
             <div class="input-group writer">
-                <input type="text" name="writer" readonly value=${nickName }>
+                <input type="text" name="memeber_id" readonly value=${nickName }>
                  
             </div>
-            <input type="file" multiple>
+            <div class="input-group">
+                            <div class="file-upload-wrap">
+                                <input type="file" id="boardFiles" name="files" multiple>
+                                <label for="boardFiles" class="file-upload-btn">
+                                    <i class="fa-solid fa-paperclip"></i>
+                                    파일첨부
+                                </label>
+                                <span class="file-upload-text" id="fileNameText">선택된 파일 없음</span>
+                            </div>
+                        </div>
 
             <!-- 에디터 영역 -->
             <div id="editor"></div>
@@ -326,6 +403,9 @@
     </div>
 </div>
 <script>
+	
+	
+	
 	const editor = new toastui.Editor({
     	el: document.querySelector('#editor'),
     	height: '400px',
@@ -354,7 +434,31 @@
 	});
 	$("#frm").on("submit",function(){
 		$("#content").val(editor.getHTML());
+		console.log($("#content").val());
+		if($(".category-select").val() == ""){
+			alert("카테고리를 선택해주세요.");
+			return false;
+		}
+		if($("#title").val() == ""){
+			alert("제목을 입력해주세요.");
+			return false;
+		}
+		if($("#content").val()=="<p><br></p>"){
+			alert("내용을 입력해주세요.");
+			return false;
+		}
 	})
+	$("#boardFiles").on("change", function () {
+                const files = this.files;
+
+                if (!files || files.length === 0) {
+                    $("#fileNameText").text("선택된 파일 없음");
+                } else if (files.length === 1) {
+                    $("#fileNameText").text(files[0].name);
+                } else {
+                    $("#fileNameText").text(files[0].name + " 외 " + (files.length - 1) + "개");
+                }
+            });
 </script>
 </body>
 </html>
