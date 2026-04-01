@@ -9,6 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<button>계정설정</button>
+<a href="/mypage/toAccount"><button>계정설정</button></a>
 </body>
 </html>
