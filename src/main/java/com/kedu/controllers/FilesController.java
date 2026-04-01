@@ -15,11 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/files")
 public class FilesController {
+	// 게시판 이미지 
 
 	@PostMapping("/upload")
 	@ResponseBody
 	public Map<String, String> upload(@RequestParam("image") MultipartFile file) throws Exception {
-		System.out.println("도착");
+		
 	    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
 	    String path = "C:/upload/";
