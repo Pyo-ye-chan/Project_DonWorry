@@ -259,46 +259,26 @@
         }
 
         /* 신고 버튼 */
+        .comment-actions .report-btn {
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+        }
+
+       .comment-actions .report-btn:hover {
+            color: #ef4444;
+            /* hover 시 빨강 */
+        }
+        
         .report-btn {
             font-size: 12px;
             color: #999;
             cursor: pointer;
         }
 
-        .report-btn:hover {
+       .report-btn:hover {
             color: #ef4444;
             /* hover 시 빨강 */
-        }
-
-        /* 댓글 전체 */
-        .comment-section {
-            margin-top: 60px;
-        }
-
-        /* 작성 영역 */
-        .comment-write {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .comment-write textarea {
-            width: 100%;
-            min-height: 80px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            resize: none;
-        }
-
-        .comment-write button {
-            align-self: flex-end;
-            padding: 8px 16px;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
         }
 
         /* 댓글 영역 */
@@ -415,6 +395,34 @@
             font-size: 14px;
             color: #9ca3af;
         }
+
+        /* 대댓글 입력창 */
+        .reply-write {
+            margin-top: 10px;
+            margin-left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .reply-write textarea {
+            flex: 1;
+            height: 60px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            resize: none;
+            font-size: 13px;
+        }
+
+        .reply-write button {
+            width: 70px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
     </style>
 
 <body>
@@ -477,7 +485,7 @@
                 </div>
                 <div class="info-right">
                     👁 ${dto.view_count }
-                    <span><i class="fa-solid fa-triangle-exclamation fa-lg" style="color: rgb(206, 12, 0);"></i></span>
+                    <span class= "report-btn">신고</span>
                 </div>
             </div>
 
@@ -501,11 +509,13 @@
             <h3 class="comment-title">댓글 3</h3>
 
             <!-- 댓글 작성 -->
-            <div class="comment-write">
-                <textarea placeholder="댓글을 입력하세요"></textarea>
-                <button>등록</button>
-            </div>
-
+            
+            	<div class="comment-write">
+            		
+                	<textarea placeholder="댓글을 입력하세요" name ="content" class="content"></textarea>
+                	<button class = "reply-insert-btn">등록</button>
+            	</div>
+			
             <!-- 댓글 리스트 -->
             <div class="comment-list">
 
@@ -520,8 +530,7 @@
                         <div class="comment-actions">
                             <span>수정</span>
                             <span>삭제</span>
-                            <span><i class="fa-solid fa-triangle-exclamation fa-lg report"
-                                    style="color: rgb(206, 12, 0);"></i></span>
+                            <span>신고</span>
                         </div>
                     </div>
 
@@ -539,46 +548,77 @@
                             <span class="comment-date">2026-04-01</span>
                         </div>
                         <div class="comment-actions">
+                            <span onclick="toggleReply(this)">답글</span>
                             <span>수정</span>
                             <span>삭제</span>
-                            <span><span><i class="fa-solid fa-triangle-exclamation fa-lg report"
-                                        style="color: rgb(206, 12, 0);"></i></span></span>
+                            <span class="report-btn">신고</span>
                         </div>
+
+
                     </div>
 
                     <div class="comment-content">
                         투자도 조금씩 같이 해보는 거 추천드립니다!
                     </div>
 
+                    <!-- 🔥 여기로 이동해야 정상 -->
+                    <div class="reply-write" style="display: none;">
+                        <textarea placeholder="답글을 입력하세요"></textarea>
+                        <button>등록</button>
+                    </div>
+
                     <!-- 🔥 대댓글 리스트 -->
                     <div class="reply-list">
 
                         <!-- 대댓글 1 -->
-                        <div class="reply-item">
-                            <div class="comment-header">
-                                <div class="comment-left">
-                                    <span class="comment-writer">사회초년생</span>
-                                    <span class="divider">|</span>
-                                    <span class="comment-date">2026-04-01</span>
+                        <div class="reply-list">
+
+                            <div class="reply-item"> <!-- ✅ 이걸로 고정 -->
+                                <div class="comment-header">
+                                    <div class="comment-left">
+                                        <span class="comment-writer">직장인A</span>
+                                        <span class="divider">|</span>
+                                        <span class="comment-date">2026-04-01</span>
+                                    </div>
+                                    <div class="comment-actions">
+                                        <span>삭제</span>
+                                        <span class="report-btn">신고</span>
+                                    </div>
                                 </div>
-                                <div class="comment-actions">
-                                    <span>삭제</span>
-                                    <span><span><i class="fa-solid fa-triangle-exclamation fa-lg report"
-                                                style="color: rgb(206, 12, 0);"></i></span></span>
+
+                                <div class="comment-content">
+                                    대댓글 내용입니다.
                                 </div>
                             </div>
 
-                            <div class="comment-content">
-                                맞아요 저도 ETF부터 시작했어요!
+                        </div>
+
+                        <!-- 대댓글 1 -->
+                        <div class="reply-list">
+
+                            <div class="reply-item"> <!-- ✅ 이걸로 고정 -->
+                                <div class="comment-header">
+                                    <div class="comment-left">
+                                        <span class="comment-writer">직장인A</span>
+                                        <span class="divider">|</span>
+                                        <span class="comment-date">2026-04-01</span>
+                                    </div>
+                                    <div class="comment-actions">
+                                        <span>삭제</span>
+                                        <span class="report-btn">신고</span>
+                                    </div>
+                                </div>
+
+                                <div class="comment-content">
+                                    대댓글 내용입니다.
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
+
                 </div>
-
-            </div>
-
-        </div>
 
 
         <div class="container-footer">
@@ -586,6 +626,31 @@
             <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
         </div>
     </div>
+    
+     <script>
+         function toggleReply(el) {
+           // 모든 입력창 닫기
+          	 document.querySelectorAll('.reply-write').forEach(box => {
+         	box.style.display = 'none';
+          	});
+
+                    const replyBox = el.closest('.comment-item').querySelector('.reply-write');
+                    replyBox.style.display = "flex";
+         }
+         $(".reply-insert-btn").on("click",function(){
+        	 $.ajax({
+        		 url : "/reply/insert",
+        		 data :{parent_seq : "${dto.seq}",
+        			 	member_id : "${nickName}",
+        			 	content : $(".content").html()},
+        		 dataType:"json"	 	
+        	 }).done(function(list){
+        		 
+        	 })
+         })
+         
+         
+     </script>
 </body>
 
 </html>
