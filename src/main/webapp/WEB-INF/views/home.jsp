@@ -419,7 +419,7 @@
                 </a>               
             </div>           
         </div>   
-        <a class="my-page" href="#"> 
+        <a class="my-page" href="/mypage/toMypage"> 
             <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
             마이페이지
         </a>    

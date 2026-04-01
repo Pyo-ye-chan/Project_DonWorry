@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -194,6 +195,7 @@
 	            padding: 20px;
 	            margin-bottom: 20px;
 	            transition: transform 0.2s;
+	            cursor: pointer;
 	        }
 	        .post-card:hover {
 	            border-color: #007bff;
@@ -393,7 +395,7 @@
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
-                <a href="/boards//mainboard_list"> 
+                <a href="/boards/mainboard_list?page=1"> 
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
                     커뮤니티
                 </a>               
@@ -417,7 +419,7 @@
     </div>
 
     <nav class="tab-menu">
-        <button class="tab-item active"><a href="#"  style="text-decoration: none; ">메인 게시판</a></button>
+        <button class="tab-item active"><a href="/boards/mainboard_list?page=1"  style="text-decoration: none; ">메인 게시판</a></button>
         <button class="tab-item"> 자유 게시판</button>
         <button class="tab-item"> 질문 게시판</button>
         <button class="tab-item"> 리뷰 게시판</button>
@@ -465,29 +467,39 @@
                 </span>
             </div>
         </article>
-
-        <article class="post-card">
+		
+		<c:forEach var = "i" items = "${mainList }">
+        <article class="post-card" onclick="location.href='/boards/detail?seq=${i.seq}'">
             <div class="user-info">
                 <div class="profile-img green">편의</div>
                 <div class="meta">
-                    <span class="nickname">알바야</span>
-                    <span class="tag free">리뷰게시판</span>
-                    <p class="time">2026.03.03</p>
+                    <span class="nickname">${i.nickname }</span>
+                    <span class="tag free">
+                    	<c:choose>
+    						<c:when test="${i.category == 'main'}">메인게시판</c:when>
+    						<c:when test="${i.category == 'free'}">자유게시판</c:when>
+   	 						<c:when test="${i.category == 'qna'}">질문게시판</c:when>
+    						<c:when test="${i.category == 'review'}">리뷰게시판</c:when>
+						</c:choose>
+                    </span> 
+                    <p class="time"> <fmt:formatDate value="${i.write_date }" pattern="yyyy-MM-dd"/> </p>
                 </div>
             </div>
-            <h2 class="post-title">올리브영 강남점 후기</h2>
+            <h2 class="post-title">${i.title }</h2>
             <div class="post-footer">
                 <span>
-                    <span class="material-symbols-outlined">조회수</span> 24
+                    <span class="material-symbols-outlined">조회수</span>${i.view_count }
                 </span>
                 <span>
                     <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
                 </span>
             </div>
         </article>
+        
+        </c:forEach>
     </div> 
     <div class="page-nav">
-            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_left</span></a>    
+       <!--       <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_left</span></a>    
             <a href="#" class="page-num active">1</a>
             <a href="#" class="page-num">2</a>
             <a href="#" class="page-num">3</a>
@@ -498,7 +510,7 @@
             <a href="#" class="page-num">8</a>
             <a href="#" class="page-num">9</a>
             <a href="#" class="page-num">10</a> 
-            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span></a>
+            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span></a> -->
         </div>
     <div class="container-footer">
         <p>© 2026 돈워리. All rights reserved.</p>
@@ -514,6 +526,62 @@
 $(".floating-write-btn").on("click",function(){
 	location.href  = "/boards/toWrite";
 })
+		let recordTotalCount = ${recordTotalCount}; // 총 개수
+		let recordCountPerPage = ${recordCountPerPage}; // 한페이지에 몇개 (10)
+		let naviCountPerPage  = ${naviCountPerPage }; // navi 몇개 (10)
+		let currentPage = ${currentPage}; // 현재 페이지
+		let pageTotalCount = Math.ceil(recordTotalCount/recordCountPerPage); 
+		
+		let startNavi = Math.floor((currentPage - 1) / naviCountPerPage) * naviCountPerPage +1;
+		let endNavi = startNavi + naviCountPerPage - 1;
+		
+		if(endNavi > pageTotalCount){
+			endNavi = pageTotalCount;
+		}
+		
+		let needPrev = true;
+		let needNext = true;
+		
+		if(startNavi == 1){
+			needPrev = false;
+		}
+		if(endNavi == pageTotalCount){
+			needNext = false;
+		}
+		if(needPrev){
+			
+			let span = $("<span>");
+			span.addClass("material-symbols-outlined");
+			span.css("font-size","16px");
+			span.html("chevron_left");
+			let a = $("<a>");
+			a.addClass("page-num");
+			a.attr("href","/boards/mainboard_list?page="+ (startNavi-1));
+			a.append(span);
+			$(".page-nav").append(a);
+		}
+		
+		for(let i = startNavi; i <= endNavi; i++){
+			let a = $("<a>")
+			a.attr("href" , "/boards/mainboard_list?page="+i);
+			a.addClass("page-num");
+			a.html(i);
+			$(".page-nav").append(a);
+		}
+		
+		if(needNext){
+			 
+			 let span = $("<span>");
+				span.addClass("material-symbols-outlined");
+				span.css("font-size","16px");
+				span.html("chevron_right");
+				let a = $("<a>");
+				a.addClass("page-num");
+				a.attr("href","/boards/mainboard_list?page="+(endNavi+1));
+				a.append(span);
+				$(".page-nav").append(a);
+		}
+		
 
 </script>
 </body>
