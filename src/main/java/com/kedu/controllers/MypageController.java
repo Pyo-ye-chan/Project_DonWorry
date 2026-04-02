@@ -27,7 +27,7 @@ public class MypageController {
 	@RequestMapping("/toProfile")
 	public String toProfile(HttpSession session, Model model) {
 		System.out.println("select profile");
-		String id = (String) session.getAttribute("targetId");
+		String id =(String)session.getAttribute("loginId");	
 		List<MembersDTO> list = dao.selectAll(id);		
 		System.out.println("list size:"+list.size());
 		model.addAttribute("list",list);

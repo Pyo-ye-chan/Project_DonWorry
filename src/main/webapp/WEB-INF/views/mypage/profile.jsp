@@ -399,8 +399,8 @@
                     <i class="fa-regular fa-user"></i>
                 </div>
                 <div style="flex:1;">
-                <div class="card-title">알바생 닉네임</div>
-                <div class="card-email">user@naver.com</div>
+                <div class="card-title">${nickName}</div>
+                <div class="card-email">${loginId}</div>
             </div>
             </div>          
                 <div class="info-item">
