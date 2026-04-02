@@ -910,16 +910,12 @@ body {
 											<label>세금 적용 여부</label>
 											<div class="tax-option-group">
 												<label class="tax-option-item"> <input type="radio"
-													name="tax_type" value="0" checked> 미적용
+													name="tax_applied" value="0" checked> 미적용
 												</label> <label class="tax-option-item"> <input type="radio"
-													name="tax_type" value="3.3"> 3.3% (프리랜서)
+													name="tax_applied" value="3.3"> 3.3% (프리랜서 등)
 												</label> <label class="tax-option-item"> <input type="radio"
-													name="tax_type" value="4"> 4대보험
-												</label> <label class="tax-option-item"> <input type="radio"
-													name="tax_type" value="1"> 고용보험만
-												</label> <label class="tax-option-item"> <input type="radio"
-													name="tax_type" value="custom" id="taxCustom"> 직접
-													입력
+													name="tax_applied" value="custom" id="taxCustom">
+													직접 입력
 												</label>
 												<div class="custom-tax-input"
 													style="display: flex; align-items: center; gap: 4px;">
@@ -931,18 +927,30 @@ body {
 														style="font-size: 13px; color: #374151;">%</span>
 												</div>
 											</div>
-											<div class="form-row" style="margin-top: 15px;">
-												<label for="payday">급여일</label>
-												<div style="display: flex; align-items: center; gap: 8px;">
-													<select id="payday" name="payday" required
-														style="width: 100px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-														<option value="">선택</option>
-														<c:forEach var="i" begin="1" end="31">
-															<option value="${i}">${i}일</option>
-														</c:forEach>
-													</select> <span style="font-size: 14px; color: #666;">매월 정해진
-														날짜에 급여가 계산됩니다.</span>
-												</div>
+										</div>
+										<div class="form-row full-width" style="margin-top: 5px;">
+											<label>보험 적용 여부</label>
+											<div class="tax-option-group">
+												<label class="tax-option-item"> <input type="radio"
+													name="insurance_applied" value="N" checked> 미적용
+												</label> <label class="tax-option-item"> <input type="radio"
+													name="insurance_applied" value="4"> 4대보험 적용
+												</label> <label class="tax-option-item"> <input type="radio"
+													name="insurance_applied" value="1"> 고용보험만 가입
+												</label>
+											</div>
+										</div>
+										<div class="form-row" style="margin-top: 5px;">
+											<label for="payday">급여일</label>
+											<div style="display: flex; align-items: center; gap: 8px;">
+												<select id="payday" name="payday" required
+													style="width: 100px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+													<option value="">선택</option>
+													<c:forEach var="i" begin="1" end="31">
+														<option value="${i}">${i}일</option>
+													</c:forEach>
+												</select> <span style="font-size: 14px; color: #666;">매월 정해진
+													날짜에 급여가 계산됩니다.</span>
 											</div>
 										</div>
 									</div>
@@ -1181,46 +1189,55 @@ body {
 		    });
 		});
 		
-		document.addEventListener('DOMContentLoaded', function() {
-		    // 세금 적용 여부 라디오 버튼들 가져오기
-		    const taxRadios = document.querySelectorAll('input[name="tax_applied"]');
-		    const taxDetailArea = document.getElementById("taxDetailArea");
+// 		document.addEventListener('DOMContentLoaded', function() {
+// 		    // 세금 적용 여부 라디오 버튼들 가져오기
+// 		    const taxRadios = document.querySelectorAll('input[name="tax_applied"]');
+// 		    const taxDetailArea = document.getElementById("taxDetailArea");
 
-		    taxRadios.forEach(radio => {
-		        radio.addEventListener('change', function() {
-		            if (this.value === 'Y') {
-		                // '적용'을 선택하면 세부 영역 보이기 (부드럽게 보이고 싶으면 fadeIn 효과 추가 가능)
-		                taxDetailArea.style.display = "block";
-		            } else {
-		                // '미적용'을 선택하면 세부 영역 숨기기
-		                taxDetailArea.style.display = "none";
+// 		    taxRadios.forEach(radio => {
+// 		        radio.addEventListener('change', function() {
+// 		            if (this.value === 'Y') {
+// 		                // '적용'을 선택하면 세부 영역 보이기 (부드럽게 보이고 싶으면 fadeIn 효과 추가 가능)
+// 		                taxDetailArea.style.display = "block";
+// 		            } else {
+// 		                // '미적용'을 선택하면 세부 영역 숨기기
+// 		                taxDetailArea.style.display = "none";
 		                
-		                // 숨기면서 체크되어 있던 세부 옵션들을 초기화하고 싶다면 아래 코드 추가
-		                const subRadios = taxDetailArea.querySelectorAll('input[type="radio"]');
-		                subRadios.forEach(sub => sub.checked = false);
-		            }
-		        });
-		    });
-		});
+// 		                // 숨기면서 체크되어 있던 세부 옵션들을 초기화하고 싶다면 아래 코드 추가
+// 		                const subRadios = taxDetailArea.querySelectorAll('input[type="radio"]');
+// 		                subRadios.forEach(sub => sub.checked = false);
+// 		            }
+// 		        });
+// 		    });
+// 		});
 		
 		document.addEventListener('DOMContentLoaded', function() {
-		    const taxTypeRadios = document.querySelectorAll('input[name="tax_type"]');
-		    const customTaxInput = document.getElementById("custom_tax_value");
+    const taxTypeRadios = document.querySelectorAll('input[name="tax_applied"]');
+    const customTaxInput = document.getElementById("custom_tax_value");
+    const taxCustomRadio = document.getElementById('taxCustom');
 
-		    taxTypeRadios.forEach(radio => {
-		        radio.addEventListener('change', function() {
-		            if (this.id === 'taxCustom') {
-		                // '직접 입력' 선택 시 활성화
-		                customTaxInput.disabled = false;
-		                customTaxInput.focus();
-		            } else {
-		                // 다른 옵션 선택 시 비활성화 및 값 초기화
-		                customTaxInput.disabled = true;
-		                customTaxInput.value = "";
-		            }
-		        });
-		    });
-		});
+    taxTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.id === 'taxCustom') {
+                customTaxInput.disabled = false;
+                customTaxInput.focus();
+                
+                this.value = customTaxInput.value;
+            } else {
+                customTaxInput.disabled = true;
+                customTaxInput.value = "";
+            }
+        });
+    });
+
+    customTaxInput.addEventListener('input', function() {
+        if (taxCustomRadio.checked) {
+            taxCustomRadio.value = this.value;
+        }
+    });
+});
+		
+		
 	</script>
 
 </body>
