@@ -34,7 +34,7 @@ public class FilesController {
 	    file.transferTo(dest);
 
 	    Map<String, String> map = new HashMap<>();
-	    map.put("url", "/upload/" + fileName); // ⭐ 이 URL이 핵심
+	    map.put("url", "http://10.10.55.87:8080/upload/" + fileName); // ⭐ 이 URL이 핵심
 
 	    return map;
 	}

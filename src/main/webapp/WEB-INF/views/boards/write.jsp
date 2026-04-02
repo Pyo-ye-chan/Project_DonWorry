@@ -351,7 +351,7 @@
 			<div class="input-group">
     			<select name="category" class="category-select">
         			<option value="">카테고리 선택</option>
-        			<option value="main">메인게시판</option>
+        			<!--  <option value="main">메인게시판</option>-->
         			<option value="free">자유게시판</option>		
         			<option value="qna">질문게시판</option>
         			<option value="review">리뷰게시판</option>
