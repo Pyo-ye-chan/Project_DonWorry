@@ -374,7 +374,7 @@ body {
             <div class="ui-form-box">
                 <div class="ui-form-row">
                     <div class="ui-form-label">아이디</div>
-                    <div class="ui-form-value">jch0407</div>
+                    <div class="ui-form-value">${loginId }</div>
                 </div>
 
                 <div class="ui-form-row">
@@ -415,11 +415,12 @@ $("#passwordBtn").on("click", function() {
     }
 
     $.ajax({
-        url: "/members/passwordCheck",
+        url: "/mypage/passwordCheck",
         type: "post",
         data: {
             memberPw: memberPw
-        }
+        },
+        dataType: "json"
     }).done(function(resp) {
         if (resp == true) {
             $("#pwCheckMsg").text("비밀번호가 확인되었습니다.").css("color", "#2563eb");
@@ -450,7 +451,7 @@ $("#withdrawBtn").on("click", function() {
     }
 
     $.ajax({
-        url: "/members/withdraw",
+        url: "/mypage/withdraw",
         type: "post",
         data: {
             memberPw: $("#memberPw").val()
