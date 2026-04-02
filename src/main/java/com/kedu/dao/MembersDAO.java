@@ -30,6 +30,11 @@ public class MembersDAO {
 		String sql = "select nickname from members where id = ?";
 		return jdbc.queryForObject(sql,String.class,id);
 	}
+	/*회원 식별용 type 세션처리*/
+	public String getType(String id) {
+		String sql = "select type from members where id = ?";
+		return jdbc.queryForObject(sql,String.class,id);
+	}
 	public String idSearch(String name,String email) {
 		String test = "select count(*) from members where name = ? and email = ?";
 		int result = jdbc.queryForObject(test,Integer.class,name,email);
