@@ -273,12 +273,24 @@ body {
 			</div>
 
 			<div class="form-group">
-				<div class="input-row">
-					<div style="flex: 1; display: flex; flex-direction: column;" id="rrnGroup">
-						<label for="rrn">생년월일</label> <input type="text" id="rrn"
-							name="rrn" placeholder="6자리 입력" required>
+				<div class="input-row"
+					style="display: flex; align-items: flex-end; gap: 8px;">
+					<div style="flex: 2; display: flex; flex-direction: column;">
+						<label for="rrn_front">생년월일</label> <input type="text"
+							id="rrn_front" name="rrn_front" placeholder="6자리 입력"
+							maxlength="6" required>
 					</div>
+
+					<span
+						style="padding-bottom: 12px; font-weight: 800; color: #9ca3af;">-</span>
+
 					<div style="flex: 1; display: flex; flex-direction: column;">
+						<input type="text" id="rrn_back" name="rrn_back" placeholder="1"
+							maxlength="1" required style="text-align: center;">
+					</div>
+
+					<div
+						style="flex: 3; display: flex; flex-direction: column; margin-left: 10px;">
 						<label for="email">이메일</label> <input type="text" id="email"
 							name="email" placeholder="이메일 입력" required>
 					</div>
