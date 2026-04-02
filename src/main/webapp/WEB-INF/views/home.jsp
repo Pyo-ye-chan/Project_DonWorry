@@ -384,12 +384,193 @@
     </style>
 </head>
 <body>
-
+<c:choose>
+<c:when test="${nickName==null}">
 <div class="container">
     <div class="top-auth">
         <span style="font-size: 13px; color: #666; cursor: pointer;">
             <a href="members/toLogin" style="text-decoration: none; color:black">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
+            </a>
+        </span>
+        <!-- 일단 관리자 빼고 다 숨겨둠 -->
+            <a href="/admin/admin_main"><div class="now-admin" >관리자</div></a>
+            <div class="now-business" style="display: none;">기업</div>
+            <div class="now-personal" style="display: none;">개인</div>
+    </div>
+    <nav class="navbar">
+        <div style="display: flex; align-items: center; gap: 40px;">
+            <a href="/" class="logo"> 돈워리</a>
+            <div class="nav-menu">
+                <a href="/" class="active"> 
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
+                    홈
+                </a>
+                <a href="/salary/calendar">
+                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
+                    급여 캘린더
+                    </a>
+                <a href="/jobposts/jobpost"> 
+                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    구인구직
+                </a>
+                <a href="/boards/mainboard_list"> 
+                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
+                    커뮤니티
+                </a>               
+            </div>           
+        </div>   
+        <a class="my-page" href="/mypage/toMypage"> 
+            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+            마이페이지
+        </a>    
+    </nav>
+
+    <header class="hero">
+        <div class="hero-badge">
+            <i class="fa-solid fa-circle-dollar-to-slot fa-xl" style="color: rgb(36, 99, 235); margin-right:5px;"></i> 
+             알바생을 위한 급여 관리 플랫폼
+        </div>
+        <h1>알바 급여 관리를<br>쉽고 정확하게</h1>
+        <p>시급 계산부터 일정 관리까지, 하나의 플랫폼에서 만나보세요</p>
+    </header>
+
+    <h2 class="section-header">
+        <i class="fa-solid fa-pen-to-square fa-lg" style="color: rgb(74, 82, 99);"></i>
+        이번 달 근무 요약
+    </h2>
+    <div class="summary-grid">
+        <div class="card add-card">
+            <a href="#" style="text-decoration: none; ">   
+            <span>+ 알바 추가하기</span>
+            </a>
+        </div>
+    </div>
+
+    <h2 class="section-header">
+        <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(103, 77, 67); "></i>
+         구인구직</h2>
+    <div class="job-board">
+        <div class="job-board-item">
+            <a href="#" class="job-item-info">
+                <div class="item-name">올리브영 강남점</div>
+                <div class="item-role">판매</div>
+                <div class="item-loc">신촌</div>
+                <div class="item-days">평일</div>
+                <div class="job-pay">
+                    <span class="job-pay-label">시급</span>0원
+                </div>
+            </a>
+        </div> 
+        <div class="job-board-item">
+            <a href="#" class="job-item-info">
+                <div class="item-name">공차 신림점</div>
+                <div class="item-role">카페</div>
+                <div class="item-loc">신림</div>
+                <div class="item-days">평일</div>
+                <div class="job-pay">
+                    <span class="job-pay-label">시급</span>90,000원
+                </div>
+            </a>
+        </div>
+         <div class="job-board-item">
+            <a href="#" class="job-item-info">
+                <div class="item-name">할리스 신림점</div>
+                <div class="item-role">카페</div>
+                <div class="item-loc">신림</div>
+                <div class="item-days">평일</div>
+                <div class="job-pay">
+                    <span class="job-pay-label">시급</span>10,000원
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <h2 class="section-header">
+        <i class="fa-solid fa-fire fa-lg" style="color: rgb(255, 94, 71);"></i>
+        인기 게시판</h2>
+    <div class="hot-board">
+        <div class="hot-board-item">
+            <a href="#" class="hot-item-info" >
+                <div class="hot-item-title-row">
+                    <span class="contents-title">스타벅스 강남점</span>
+                    <span class="status-tag status-working">퇴사</span>
+                </div>
+                <div class="writer">작가명</div>
+                <div class="hot-board-item-footer">
+                    <div class="board-category" style="font-size: 12px; color: #aaa; margin-top: 10px;">리뷰게시판</div>
+                    <div class="hot-post-footer">
+                        <span>
+                            <span class="material-symbols-outlined">
+                                <i class="fa-regular fa-eye" style="color: rgb(203, 203, 203);"></i>
+                            </span> 24
+                        </span>
+                        <span>
+                            <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div> 
+        <div class="hot-board-item">
+            <a href="#" class="hot-item-info" >
+                <div class="item-title-row">
+                    <span class="contents-title">올리브영 강남점</span>
+                    <span class="status-tag status-working">재직</span>
+                </div>
+                <div class="writer">김작가</div>
+                <div class="hot-board-item-footer">
+                    <div class="hot-board-category" style="font-size: 12px; color: #aaa; margin-top: 10px;">리뷰게시판</div>
+                    <div class="hot-post-footer">
+                        <span>
+                            <span class="material-symbols-outlined">
+                                <i class="fa-regular fa-eye" style="color: rgb(203, 203, 203);"></i>
+                            </span> 15
+                        </span>
+                        <span>
+                            <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="hot-board-item">
+            <a href="#" class="hot-item-info" >
+                <div class="item-title-row">
+                    <span class="contents-title">올리브영 강남점</span>
+                    <span class="status-tag status-working">재직</span>
+                </div>
+                <div class="writer">김작가</div>
+                <div class="hot-board-item-footer">
+                    <div class="hot-board-category" style="font-size: 12px; color: #aaa; margin-top: 10px;">리뷰게시판</div>
+                    <div class="hot-post-footer">
+                        <span>
+                            <span class="material-symbols-outlined">
+                                <i class="fa-regular fa-eye" style="color: rgb(203, 203, 203);"></i>
+                            </span> 15
+                        </span>
+                        <span>
+                            <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div> 
+    </div>
+    <div class="container-footer">
+        <p>© 2026 돈워리. All rights reserved.</p>
+        <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
+    </div>
+</div>
+</c:when>
+
+	<c:when test="${nickName!=null }">
+	<div class="container">
+    <div class="top-auth">
+        <span style="font-size: 13px; color: #666; cursor: pointer;">
+            <a href="members/logout" style="text-decoration: none; color:black">
+            <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그아웃
+                ${nickName}님 환영합니다.
             </a>
         </span>
         <!-- 일단 관리자 빼고 다 숨겨둠 -->
@@ -577,5 +758,7 @@
         <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
     </div>
 </div>
+	</c:when>
+</c:choose>
 </body>
 </html>
