@@ -413,7 +413,7 @@
 
 <body>
 
-<div class="container">[${type}]
+<div class="container">
 <c:choose>
 <c:when test="${nickName==null}">
     <div class="top-auth">

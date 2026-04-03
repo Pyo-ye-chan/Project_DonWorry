@@ -191,7 +191,8 @@ body {
 .summary-sub {
     margin-top: 6px;
     font-size: 13px;
-    color: #2563eb;
+    /* color: #2563eb; */
+    color: #0f172a;
 }
 
 /* ===== Panel ===== */
@@ -402,8 +403,8 @@ body {
     <main class="admin-page">
         <div class="page-header">
             <div class="page-title">
-                <h2>게시글 관리</h2>
-                <p>커뮤니티 게시글 조회, 숨김 처리, 삭제가 가능합니다.</p>
+                <h2>게시물 관리</h2>
+                <p>커뮤니티 게시글 조회, 삭제가 가능합니다.</p>
             </div>
             <div class="page-badge">
                 <i class="fa-regular fa-clipboard" style="margin-right:6px;"></i>
@@ -418,9 +419,9 @@ body {
                 <div class="summary-sub">오늘 신규 27건</div>
             </div>
             <div class="summary-card">
-                <div class="summary-label">숨김 처리</div>
-                <div class="summary-value">32</div>
-                <div class="summary-sub">신고 누적 게시글 포함</div>
+                <div class="summary-label">공지 게시글</div>
+                <div class="summary-value">6</div>
+                <a href="#" style="color: #2563eb; "><div class="summary-sub" style="color: #2563eb; ">작성하러 가기</div></a>
             </div>
             <div class="summary-card">
                 <div class="summary-label">삭제 대기</div>
@@ -431,7 +432,7 @@ body {
 
         <section class="panel">
             <div class="panel-head">
-                <h3>게시글 목록</h3>
+                <h3>회원 게시글 목록</h3>
             </div>
 
             <div class="filter-row">
@@ -472,7 +473,6 @@ body {
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
                             <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-light-blue" type="button">숨김</button>
                             <button class="btn-red" type="button">삭제</button>
                         </td>
                     </tr>
@@ -485,7 +485,6 @@ body {
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
                             <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-light-blue" type="button">숨김</button>
                             <button class="btn-red" type="button">삭제</button>
                         </td>
                     </tr>
@@ -498,7 +497,6 @@ body {
                         <td><span class="state-pill state-hide">숨김</span></td>
                         <td>
                             <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-light-blue" type="button">복구</button>
                             <button class="btn-red" type="button">삭제</button>
                         </td>
                     </tr>
@@ -511,7 +509,6 @@ body {
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
                             <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-light-blue" type="button">숨김</button>
                             <button class="btn-red" type="button">삭제</button>
                         </td>
                     </tr>

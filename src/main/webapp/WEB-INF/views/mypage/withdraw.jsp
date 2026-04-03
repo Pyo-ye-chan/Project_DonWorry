@@ -177,6 +177,9 @@ body {
     margin-top: 6px;
     font-size: 14px;
     color: #666;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
+   
 }
 
 .ui-guide {
@@ -185,6 +188,7 @@ body {
     background: #f8fafc;
     border: 1px solid #e5e7eb;
     border-radius: 10px;
+
 }
 
 .ui-guide p {

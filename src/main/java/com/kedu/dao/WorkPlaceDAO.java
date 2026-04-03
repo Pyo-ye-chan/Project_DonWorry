@@ -1,6 +1,9 @@
 package com.kedu.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -33,6 +36,12 @@ public class WorkPlaceDAO {
 	            dto.getWork_end_time()
 	    );
 	}
+	
+    public List<WorkPlaceDTO> selectByMemberId(String memberId) {
+        String sql = "select * from workplace where id = ?";
+        return jdbc.query(sql, new BeanPropertyRowMapper<WorkPlaceDTO>(WorkPlaceDTO.class), memberId);
+        
+    }
 	
 	
 }

@@ -1,11 +1,18 @@
 package com.kedu.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.kedu.dao.WorkPlaceDAO;
 import com.kedu.dto.WorkPlaceDTO;
 
@@ -14,7 +21,10 @@ import com.kedu.dto.WorkPlaceDTO;
 public class WorkPlaceController {
 	
 	@Autowired
-	WorkPlaceDAO dao;
+	private WorkPlaceDAO dao;
+	
+	@Autowired
+	private Gson gson;
 	
 	@RequestMapping("/insert")
 	public String insert(WorkPlaceDTO dto, HttpSession session) {
@@ -53,5 +63,26 @@ public class WorkPlaceController {
 		
 		return "redirect:/salary/calendar";
 	}
+	
+	@ResponseBody
+	@RequestMapping("/list")
+	public String getList(HttpSession session) {
+	    String memberId = (String) session.getAttribute("loginId");
+	    List<WorkPlaceDTO> list = dao.selectByMemberId(memberId);
+	    
+	    List<Map<String, Object>> result = new ArrayList<>();
+
+	    for (WorkPlaceDTO dto : list) {
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("seq", dto.getSeq());
+	        map.put("name", dto.getName());
+	        result.add(map);
+	    }
+
+	    Gson gson = new Gson();
+	    return gson.toJson(result);
+	}
+	
+	
 
 }

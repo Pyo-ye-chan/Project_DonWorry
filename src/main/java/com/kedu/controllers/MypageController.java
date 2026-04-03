@@ -35,6 +35,7 @@ public class MypageController {
 	public String toMypage(HttpSession session, Model model) {
 		String id =(String)session.getAttribute("loginId");	
 		List<MembersDTO> list = mdao.selectAll(id);
+		String type = (String)session.getAttribute("type");
 		model.addAttribute("list",list);
 		
 		return "mypage/mypage";
@@ -58,7 +59,11 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/job_activity")
-	public String to_Job_activity() {
+	public String to_Job_activity(HttpSession session) {
+		String id =(String)session.getAttribute("loginId");	
+		String type = (String)session.getAttribute("type");
+		
+		List<MembersDTO> list = mdao.selectAll(id);	
 		return "mypage/job_activity";
 	}
 	
@@ -86,6 +91,9 @@ public class MypageController {
 		String pw = eu.getSha512(memberPw);
 		String id = (String)session.getAttribute("loginId");
 		int result = dao.withdraw(id, pw);
+		if(result > 0) {
+			session.invalidate();
+		}
 		return result > 0;
 		
 	}
