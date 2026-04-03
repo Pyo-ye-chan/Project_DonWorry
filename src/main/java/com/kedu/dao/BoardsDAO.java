@@ -64,6 +64,10 @@ public class BoardsDAO {
 		String sql = "update boards set title = ? , content = ? where seq = ?";
 		jdbc.update(sql,dto.getTitle(),dto.getContent(),dto.getSeq());
 	}
+	public void delete(int seq) {
+		String sql = "delete from boards where seq = ?";
+		jdbc.update(sql,seq);
+	}
 	
 
 }

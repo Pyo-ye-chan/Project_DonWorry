@@ -170,10 +170,13 @@ public class BoardsController {
 	            }   
 	        }
 	    }
-		
-		
-		
+
 		return "redirect:/boards/detail?seq="+dto.getSeq();
+	}
+	@RequestMapping("/delete")
+	public String delete(int seq) {
+		dao.delete(seq);
+		return "redirect:/boards/mainboard_list?page=1";
 	}
 	
 }

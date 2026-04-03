@@ -568,7 +568,7 @@
                 <button onclick="location.href='/boards/mainboard_list?page=1'">목록</button>
                 <c:if test="${loginId == board_writer }">
                 <button onclick="location.href='/boards/toUpdate?seq=${dto.seq}'">수정</button>
-                <button>삭제</button>
+                <button type ="button" class = "boards-delete-btn">삭제</button>
                 </c:if>
             </div>
 
@@ -718,7 +718,12 @@
         		 getReplyList();
         	 })
          })
-         
+         $(".boards-delete-btn").on("click",function(){
+        	 if (!confirm("정말 삭제하시겠습니까?")) {
+ 				return false;
+ 			}
+        	 location.href = "/boards/delete?seq="+${dto.seq}
+         })
          
      </script>
 </body>
