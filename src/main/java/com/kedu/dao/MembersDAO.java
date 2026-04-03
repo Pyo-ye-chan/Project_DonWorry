@@ -72,7 +72,7 @@ public class MembersDAO {
 		        dto.getPhone(), 
 		        dto.getEmail(), 
 		        dto.getType(),
-		        dto.getRrn(),
+		        0,
 		        dto.getBusiness_number()
 		    );
 		}
