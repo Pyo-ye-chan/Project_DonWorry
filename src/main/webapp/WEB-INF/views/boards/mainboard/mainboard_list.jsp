@@ -493,8 +493,7 @@
                     <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> ${i.reply_count }
                 </span>
             </div>
-        </article>
-        
+        </article>        
         </c:forEach>
     </div> 
     <div class="page-nav">
