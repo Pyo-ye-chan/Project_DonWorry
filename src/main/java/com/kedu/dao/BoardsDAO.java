@@ -40,9 +40,14 @@ public class BoardsDAO {
 				+ "        b.content, \r\n"
 				+ "        b.view_count, \r\n"
 				+ "        b.write_date,\r\n"
+				+ "        COUNT(r.seq) AS reply_count, \r\n"
 				+ "        ROW_NUMBER() OVER(ORDER BY b.seq DESC) AS rn \r\n"
 				+ "    FROM boards b \r\n"
 				+ "    LEFT JOIN members m ON b.member_id = m.id \r\n"
+				+ "    LEFT JOIN reply r ON b.seq = r.parent_seq \r\n"
+				+ "    GROUP BY \r\n"
+				+ "        b.seq, m.nickname, b.category, b.title, \r\n"
+				+ "        b.content, b.view_count, b.write_date \r\n"
 				+ ") WHERE rn BETWEEN ? AND ?";
 		return jdbc.query(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class),start,end);
 		
@@ -67,6 +72,10 @@ public class BoardsDAO {
 	public void delete(int seq) {
 		String sql = "delete from boards where seq = ?";
 		jdbc.update(sql,seq);
+	}
+	public void view_count(int seq,int view_count) {
+		String sql = "update boards set view_count = ? where seq = ?";
+		jdbc.update(sql,view_count+1,seq);
 	}
 	
 

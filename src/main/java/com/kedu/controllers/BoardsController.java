@@ -178,5 +178,10 @@ public class BoardsController {
 		dao.delete(seq);
 		return "redirect:/boards/mainboard_list?page=1";
 	}
+	@RequestMapping("/view")
+	public String view_count(int seq,int view_count) {
+		dao.view_count(seq,view_count);
+		return "redirect:/boards/detail?seq="+seq;
+	}
 	
 }
