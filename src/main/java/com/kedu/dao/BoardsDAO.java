@@ -56,22 +56,17 @@ public class BoardsDAO {
 				+ " from boards b join members m on b.member_id = m.id where seq = ?";
 		return jdbc.queryForObject(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class),seq);
 	}
-	@RequestMapping("/download")
-	public void download(HttpServletResponse response,String sysName, String oriName) throws Exception{
-		File target = new File("c:/files/" + sysName);
-		
-		oriName =  new String(oriName.getBytes("utf8"),"ISO-8859-1"); // 한글 깨짐 방지
-		response.setHeader("content-disposition","attachment;filename="+oriName);
-		
-		
-		try(DataInputStream dis = new DataInputStream(new FileInputStream(target));
-				DataOutputStream dos = new DataOutputStream(response.getOutputStream());){
-
-			byte[] fileContents = dis.readAllBytes(); 
-			
-			dos.write(fileContents);
-			dos.flush();
-		}
+	public String writer(int seq) {
+		String sql = "select member_id from boards where seq=?";
+		return jdbc.queryForObject(sql, String.class,seq);
+	}
+	public void update(BoardsDTO dto) {
+		String sql = "update boards set title = ? , content = ? where seq = ?";
+		jdbc.update(sql,dto.getTitle(),dto.getContent(),dto.getSeq());
+	}
+	public void delete(int seq) {
+		String sql = "delete from boards where seq = ?";
+		jdbc.update(sql,seq);
 	}
 	
 

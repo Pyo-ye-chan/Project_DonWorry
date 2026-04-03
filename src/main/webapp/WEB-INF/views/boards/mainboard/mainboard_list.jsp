@@ -237,7 +237,7 @@
 	        /* 게시글 묶은 div */
 	        .post-container {
 	            max-height: 600px;
-	            overflow-y:auto;
+	            /*overflow-y:auto;*/
 	            background-color: #ffffff;
 	            padding: 10px;
 	            border-radius: 15px;
@@ -498,18 +498,7 @@
         </c:forEach>
     </div> 
     <div class="page-nav">
-       <!--       <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_left</span></a>    
-            <a href="#" class="page-num active">1</a>
-            <a href="#" class="page-num">2</a>
-            <a href="#" class="page-num">3</a>
-            <a href="#" class="page-num">4</a>
-            <a href="#" class="page-num">5</a>
-            <a href="#" class="page-num">6</a>
-            <a href="#" class="page-num">7</a>
-            <a href="#" class="page-num">8</a>
-            <a href="#" class="page-num">9</a>
-            <a href="#" class="page-num">10</a> 
-            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span></a> -->
+       
         </div>
     <div class="container-footer">
         <p>© 2026 돈워리. All rights reserved.</p>

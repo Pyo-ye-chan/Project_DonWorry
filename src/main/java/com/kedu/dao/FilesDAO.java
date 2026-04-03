@@ -24,5 +24,10 @@ public class FilesDAO {
 		return jdbc.query(sql,new BeanPropertyRowMapper<FilesDTO>(FilesDTO.class),seq);
 		
 	}
+	public void deleteByParent_seq(int seq) {
+		String sql = "delete from files where parent_seq = ?";
+		jdbc.update(sql,seq);
+	}
+	
 	
 }
