@@ -20,16 +20,21 @@
     }
     body {
         font-family: 'Pretendard', sans-serif;
-        background-color: #ffffff;
-        color: #333;
-        line-height: 1.6;
+	    background-color: #ffffff;
+	    line-height: 1.6;
+        min-height: 105vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
     }
 
     /* 레이아웃 컨테이너 */
     .container {
         max-width: 1100px;
+        width: 100%; 
         margin: 0 auto;
         padding: 0 20px;
+        flex: 1; /* 컨텐츠가 적을 때 푸터를 아래로 밀어주는 최소한의 장치 */
     }
     /* 로그인 및 관리자 */
     .top-auth {
@@ -143,15 +148,19 @@
         font-size: 13px;
         cursor: pointer;
     }
-
+	.content-box{
+		 width:760px;
+		 margin:auto;
+	 }
+		
 /* [1] 사용자 정보 바 */
     .summary-grid {
         display: flex;
         gap: 20px;
         margin-bottom: 60px;     
         /* width:100%;       */
-        margin-left:150px;
         width:760px;
+        margin-left:0px;
     }
     .card {
         border:1px solid #ececec;
@@ -431,12 +440,12 @@
                 </a>               
             </div>           
         </div>   
-        <a class="my-page" href="/mypage/mypage"> 
+        <a class="my-page" href="/mypage/toMypage"> 
             <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
             마이페이지
         </a>    
     </nav>
-
+<div class="content-box">
     <div class="summary-grid">
         <div class="card">
             <div class="card-top">
@@ -456,8 +465,7 @@
                 </div>  
             </div>          
         </div>
-    </div>
-    
+       
 <!-- 내활동 -->
 <form action="profile_update" class="update-form">
 <div class="bottom-grid">
@@ -546,11 +554,12 @@
         <button type="submit" class="save-btn">수정 완료</button>
     </div>
 </div>
-    <div class="container-footer">
+</div>
+</div>
+ <div class="container-footer">
         <p>© 2026 돈워리. All rights reserved.</p>
         <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
     </div>
-</div>
 <script>
 	//수정완료 취소 버튼 안보임
 	$(".cancel-btn,.save-btn").css("display","none");

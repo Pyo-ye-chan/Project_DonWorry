@@ -32,6 +32,27 @@
         padding: 0 20px;
         flex: 1; /* 컨텐츠가 적을 때 푸터를 아래로 밀어주는 최소한의 장치 */
     }
+        .logout-btn { 
+         	width:60px;
+            height:30px;
+		    background-color: #ffffff; 
+		    color: #868e96;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
+		.logout-btn:hover { 
+         	width:60px;
+            height:30px;
+		   	background-color: #f8f9fa;
+		    color: #495057;
+		    border-color: #ced4da;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
     
     /* [3] 상단바 스타일 (보내주신 원본과 100% 일치) */
     .top-auth { display: flex; justify-content: flex-end; align-items: center; gap: 15px; padding: 8px 0; }
@@ -41,7 +62,21 @@
     .nav-menu a { text-decoration: none; color: #666; font-size: 14px; font-weight: 500; }
     .my-page { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #666; font-size: 14px; font-weight: 500; padding: 5px 10px; cursor: pointer; }
     .nav-menu a.active { color: #2563eb; }
-    .now-admin { width:60px; height:30px; background-color: #2563eb; color: white; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 13px; cursor: pointer; }
+    
+    /*사용사 식별 표시*/
+    .now-business ,.now-personal ,.now-admin {
+        width:60px;
+        height:30px;
+        background-color: #2563eb;
+        color: white;
+        display: flex;
+        align-items: center; /*세로 중앙 정렬*/
+        justify-content: center; /* 가로 중앙 정렬 */
+        border-radius: 6px;
+        border: none;
+        font-size: 13px;
+        cursor: pointer;
+    }
 
     /* [4] 컨텐츠 영역 */
     .page {
@@ -96,28 +131,28 @@
 
     .post-footer { border-top: 1px solid #f1f3f5; padding-top: 20px; display: flex; justify-content: flex-end; gap: 12px; }
 
-.apply-cancel-btn { 
-    background-color: #ffffff; color: #868e96; border: 1px solid #dee2e6; 
-    padding: 10px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px;
-    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-}
-
-.apply-detail-btn { 
-    background-color: #2563eb; color: #ffffff; border: none; 
-    padding: 10px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px;
-    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-}
-
-.apply-cancel-btn:hover {
-    background-color: #f8f9fa;
-    color: #495057;
-    border-color: #ced4da;
-}
-
-.apply-detail-btn:hover {
-    background-color: #1d4ed8; /* 원본 #2563eb보다 약간 진한 파랑 */
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); /* 미세한 그림자 효과 */
-}
+	.apply-cancel-btn { 
+	    background-color: #ffffff; color: #868e96; border: 1px solid #dee2e6; 
+	    padding: 10px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px;
+	    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+	}
+	
+	.apply-detail-btn { 
+	    background-color: #2563eb; color: #ffffff; border: none; 
+	    padding: 10px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px;
+	    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+	}
+	
+	.apply-cancel-btn:hover {
+	    background-color: #f8f9fa;
+	    color: #495057;
+	    border-color: #ced4da;
+	}
+	
+	.apply-detail-btn:hover {
+	    background-color: #1d4ed8; /* 원본 #2563eb보다 약간 진한 파랑 */
+	    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); /* 미세한 그림자 효과 */
+	}
 
     .page-nav { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 40px; }
     .page-num { display: flex; justify-content: center; align-items: center; width: 40px; height: 40px; border: 1px solid #dee2e6; background-color: white; color: #495057; text-decoration: none; border-radius: 10px; font-size: 14px; }
@@ -140,14 +175,26 @@
 <body>
 
 <div class="community-container">
-    <div class="top-auth">
+    <c:if test="${nickName!=null}">
+    <div class="top-auth">  
         <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="members/login" style="text-decoration: none; color:black">
-                <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
+        	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+            	${nickName}님 환영합니다.
+            <a href="/members/logout" style="text-decoration: none; color:black">
+            <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
             </a>
         </span>
-        <div class="now-admin">관리자</div>
+		<c:if test="${type=='관리자'}">
+            <div class="now-admin">관리자</div>
+		</c:if>
+		<c:if test="${type=='사업자'}">
+            <div class="now-business">사업자</div>
+        </c:if>
+		<c:if test="${type=='개인'}">        
+            <div class="now-personal">개인</div>
+		</c:if>
     </div>
+</c:if>
     <nav class="navbar">
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo"> 돈워리</a>
@@ -156,7 +203,7 @@
                     <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
                     홈
                 </a>
-                <a href="salary/calendar">
+                <a href="/salary/calendar">
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
                 </a>

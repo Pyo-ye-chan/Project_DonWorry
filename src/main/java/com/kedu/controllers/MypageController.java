@@ -59,7 +59,11 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/job_activity")
-	public String to_Job_activity() {
+	public String to_Job_activity(HttpSession session) {
+		String id =(String)session.getAttribute("loginId");	
+		String type = (String)session.getAttribute("type");
+		
+		List<MembersDTO> list = mdao.selectAll(id);	
 		return "mypage/job_activity";
 	}
 	
