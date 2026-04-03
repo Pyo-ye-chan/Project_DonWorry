@@ -74,6 +74,9 @@ public class MypageController {
 		String pw = eu.getSha512(memberPw);
 		String id = (String)session.getAttribute("loginId");
 		int result = dao.withdraw(id, pw);
+		if(result > 0) {
+			session.invalidate();
+		}
 		return result > 0;
 		
 	}

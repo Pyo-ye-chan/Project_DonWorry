@@ -1,36 +1,42 @@
 package com.kedu.dto;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 public class WorklogDTO {
 	
 	private int seq; // 근무 기록 번호
 	private int parent_seq; // 근무지 번호
-	private Timestamp work_date; //근무 날짜
-	private Timestamp start_time; //
-	private Timestamp end_time;
-	private Timestamp break_starttime;
-	private Timestamp break_endtime;
-	private int night_pay;
-	private int overtime_pay;
-	private int holiday_pay;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate work_date; // 근무 날짜
+	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime start_time; // 시작 시간
+	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime end_time; // 종료 시간
+	private int breaktime; // 휴게 시간
+	private int night_pay; // 야간수당
+	private int overtime_pay; // 연장수당
+	private int holiday_pay; // 휴일수당
 	private int total_pay; // 총 급여
 	private String memo;
-	private Timestamp worklog_date;
+	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime worklog_date;
 	
 	public WorklogDTO() {}
 
-	public WorklogDTO(int seq, int parent_seq, Timestamp work_date, Timestamp start_time, Timestamp end_time,
-			Timestamp break_starttime, Timestamp break_endtime, int night_pay, int overtime_pay, int holiday_pay,
-			int total_pay, String memo, Timestamp worklog_date) {
+	public WorklogDTO(int seq, int parent_seq, LocalDate work_date, LocalDateTime start_time, LocalDateTime end_time,
+			int breaktime, int night_pay, int overtime_pay, int holiday_pay, int total_pay, String memo,
+			LocalDateTime worklog_date) {
 		super();
 		this.seq = seq;
 		this.parent_seq = parent_seq;
 		this.work_date = work_date;
 		this.start_time = start_time;
 		this.end_time = end_time;
-		this.break_starttime = break_starttime;
-		this.break_endtime = break_endtime;
+		this.breaktime = breaktime;
 		this.night_pay = night_pay;
 		this.overtime_pay = overtime_pay;
 		this.holiday_pay = holiday_pay;
@@ -55,44 +61,36 @@ public class WorklogDTO {
 		this.parent_seq = parent_seq;
 	}
 
-	public Timestamp getWork_date() {
+	public LocalDate getWork_date() {
 		return work_date;
 	}
 
-	public void setWork_date(Timestamp work_date) {
+	public void setWork_date(LocalDate work_date) {
 		this.work_date = work_date;
 	}
 
-	public Timestamp getStart_time() {
+	public LocalDateTime getStart_time() {
 		return start_time;
 	}
 
-	public void setStart_time(Timestamp start_time) {
+	public void setStart_time(LocalDateTime start_time) {
 		this.start_time = start_time;
 	}
 
-	public Timestamp getEnd_time() {
+	public LocalDateTime getEnd_time() {
 		return end_time;
 	}
 
-	public void setEnd_time(Timestamp end_time) {
+	public void setEnd_time(LocalDateTime end_time) {
 		this.end_time = end_time;
 	}
 
-	public Timestamp getBreak_starttime() {
-		return break_starttime;
+	public int getBreaktime() {
+		return breaktime;
 	}
 
-	public void setBreak_starttime(Timestamp break_starttime) {
-		this.break_starttime = break_starttime;
-	}
-
-	public Timestamp getBreak_endtime() {
-		return break_endtime;
-	}
-
-	public void setBreak_endtime(Timestamp break_endtime) {
-		this.break_endtime = break_endtime;
+	public void setBreaktime(int breaktime) {
+		this.breaktime = breaktime;
 	}
 
 	public int getNight_pay() {
@@ -135,14 +133,13 @@ public class WorklogDTO {
 		this.memo = memo;
 	}
 
-	public Timestamp getWorklog_date() {
+	public LocalDateTime getWorklog_date() {
 		return worklog_date;
 	}
 
-	public void setWorklog_date(Timestamp worklog_date) {
+	public void setWorklog_date(LocalDateTime worklog_date) {
 		this.worklog_date = worklog_date;
-	};
-	
-	
+	}
 
+	
 }
