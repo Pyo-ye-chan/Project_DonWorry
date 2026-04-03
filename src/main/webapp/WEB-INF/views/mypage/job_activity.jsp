@@ -203,7 +203,7 @@
                     <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
                     홈
                 </a>
-                <a href="salary/calendar">
+                <a href="/salary/calendar">
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
                 </a>
