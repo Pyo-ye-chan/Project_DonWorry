@@ -625,8 +625,9 @@
          
          function appendReplyList(list){
         	 let html = "";
+        	 let loginId = "${loginId}"
         	 list.forEach(function(comment){
-        		 console.log(${comment.seq});
+        		 
         		 html += `<div class="comment-item" data-seq=`+comment.seq+`>
         		        <div class="comment-header">
         	            <div class="comment-left">
@@ -635,9 +636,14 @@
         	                <span class="comment-date">`+ comment.write_date_str +`</span>
         	            </div>
         	            <div class="comment-actions">
-        	                <span onclick="toggleReply(this)">답글</span>
-        	                <span>수정</span>
-        	                <span>삭제</span>
+        	                <span onclick="toggleReply(this)">답글</span>`;
+        	                if(loginId == comment.writer){
+        	                	console.log(comment.writer)
+        	                	html+=`
+        	                		<span class="reply-edit-btn" onclick="toggleEdit(this)" style="cursor:pointer;">수정</span>
+        	                        <span class="reply-delete-btn" style="cursor:pointer;">삭제</span>`;
+        	                }
+        	                html+=`
         	                <span class="report-btn">신고</span>
         	            </div>
 
@@ -656,17 +662,22 @@
         	        
         	        if(comment.replies && comment.replies.length > 0){
         	        	comment.replies.forEach(function(reply){
-        	        		console.log(comment.replies);
+        	        		
         	        		html += `
-            	        		<div class="reply-item"> 
+            	        		<div class="reply-item" data-seq=`+reply.seq+`> 
                                 <div class="comment-header">
                                     <div class="comment-left">
                                         <span class="comment-writer">`+reply.member_id+`</span>
                                         <span class="divider">|</span>
                                         <span class="comment-date">`+reply.write_date_str+`</span>
                                     </div>
-                                    <div class="comment-actions">
-                                        <span>삭제</span>
+                                    <div class="comment-actions">`;
+                                    if(loginId == reply.writer){
+                                    	html +=`
+                                    		<span class="reply-edit-btn" onclick="toggleEdit(this)" style="cursor:pointer;">수정</span>
+                                            <span class="reply-delete-btn" style="cursor:pointer;">삭제</span>`;
+                                    }
+                                    html +=`	
                                         <span class="report-btn">신고</span>
                                     </div>
                                 </div>
@@ -699,6 +710,7 @@
         		 
         		 type: "post"
         	 }).done(function(){
+        		 $(".content").val("")
         		 getReplyList();
         	 })
          })
@@ -724,8 +736,61 @@
  			}
         	 location.href = "/boards/delete?seq="+${dto.seq}
          })
+         $(document).on("click",".reply-delete-btn",function(){
+        	 if (!confirm("정말 삭제하시겠습니까?")) {
+  				return false;
+  			}
+        	 let seq = $(this).closest("[data-seq]").data("seq");
+  			$.ajax({
+  				url : "/reply/delete",
+  				data : {seq : seq},
+  				type : "post"
+  			}).done(function(){
+  				getReplyList();
+  			})	
+        	 
+         })
          
+         $(document).on("click", ".update-submit-btn", function() {
+    		let item = $(this).closest("[data-seq]");
+    		let seq = item.data("seq");
+    		let content = item.find(".update-content").val();
+
+   		 $.ajax({
+        		url: "/reply/update",
+       		 type: "post",
+        		data: { seq: seq, content: content }
+    		}).done(function() {
+        		getReplyList(); // 수정 후 목록 갱신
+    		});
+		});
+         function toggleEdit(el) {
+        	    // 1. 다른 수정창이 열려있다면 초기화 (중복 방지)
+        	    //getReplyList(); 
+
+        	    // 2. 클릭한 버튼의 부모(댓글 아이템) 찾기
+        	    const item = $(el).closest("[data-seq]");
+        	    
+        	    // 3. 기존 내용 가져오기 (.comment-content 안의 텍스트)
+        	    // .html() 대신 .text()를 써야 <br> 태그 등이 텍스트로 꼬이지 않습니다.
+        	    const contentBox = item.find(".comment-content").first();
+        	    const originalContent = contentBox.text().trim();;
+
+        	    // 4. 기존 내용을 지우고 '수정용 UI' 주입
+        	    // 기존 .comment-write 클래스를 활용해 디자인을 통일합니다.
+        	    item.find(".comment-content").first().html(`
+        	        <div class="comment-write" style="margin-top:10px; display:flex; gap:10px;">
+        	            <textarea class="update-content" style="flex:1; height:80px;">`+originalContent+`</textarea>
+        	            <div class="edit-btn-group" style="display:flex; flex-direction:column; gap:5px;">
+        	                <button class="update-submit-btn" style="width:80px; height:40px; background-color:#2563eb; color:white; border:none; border-radius:8px; cursor:pointer;">저장</button>
+        	                <button type="button" onclick="getReplyList()" style="width:80px; height:40px; background-color:#6b7280; color:white; border:none; border-radius:8px; cursor:pointer;">취소</button>
+        	            </div>
+        	        </div>
+        	    `);
+        	    
+        	    // 5. 버튼들(답글/수정/삭제)은 수정 중에는 안 보이게 숨김
+        	    item.find(".comment-actions").hide();
+        	}
      </script>
 </body>
-
 </html>

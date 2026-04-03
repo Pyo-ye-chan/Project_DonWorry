@@ -23,9 +23,18 @@ public class ReplyDTO {
 	    this.write_date_str = write_date_str;
 	}
 		
+	private String writer;
 	
 	
 	
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
 	public ReplyDTO() {}
 	
 	public ReplyDTO(int seq, int parent_seq, String member_id, String content, Timestamp write_date,

@@ -21,9 +21,17 @@ public class ReplyDAO {
 	}
 	public List<ReplyDTO> selectByParent_seq(int parent_seq){
 		String sql = "select r.seq,r.parent_seq,m.nickname AS member_id,r.content,"
-				+ "r.write_date,r.re_reply_seq from reply r join members m "
+				+ "r.write_date,r.re_reply_seq,r.member_id AS writer from reply r join members m "
 				+ "on r.member_id = m.id where parent_seq = ? order by 1 desc";
 		return jdbc.query(sql,new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class),parent_seq);
+	}
+	public void delete(int seq) {
+		String sql = "delete from reply where seq = ? or (re_reply_seq = ? and re_reply_seq is not null)";
+		jdbc.update(sql,seq,seq);
+	}
+	public void update(int seq,String content) {
+		String sql = "update reply set content = ? where seq = ?";
+		jdbc.update(sql,content,seq);
 	}
 
 }
