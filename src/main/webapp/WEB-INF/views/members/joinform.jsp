@@ -134,7 +134,7 @@ body {
 }
 
 .type-selector input[type="radio"] {
-	 display: none; /* 실제 체크박스는 숨김  */
+	display: none; /* 실제 체크박스는 숨김  */
 }
 
 .type-selector label {
@@ -274,23 +274,26 @@ body {
 
 			<div class="form-group">
 				<div class="input-row"
-					style="display: flex; align-items: flex-end; gap: 8px;">
-					<div style="flex: 2; display: flex; flex-direction: column;">
+					style="display: flex; align-items: flex-end; gap: 8px; width: 100%;">
+
+					<div class="rrn-item"
+						style="flex: 2; display: flex; flex-direction: column;">
 						<label for="rrn_front">생년월일</label> <input type="text"
 							id="rrn_front" name="rrn_front" placeholder="6자리 입력"
 							maxlength="6" required>
 					</div>
 
-					<span
-						style="padding-bottom: 12px; font-weight: 800; color: #9ca3af;">-</span>
+					<span class="rrn-item"
+						style="margin-bottom: 12px; font-weight: 800; color: #9ca3af;">-</span>
 
-					<div style="flex: 1; display: flex; flex-direction: column;">
+					<div class="rrn-item"
+						style="flex: 1; display: flex; flex-direction: column;">
 						<input type="text" id="rrn_back" name="rrn_back" placeholder="1"
 							maxlength="1" required style="text-align: center;">
 					</div>
 
 					<div
-						style="flex: 3; display: flex; flex-direction: column; margin-left: 10px;">
+						style="flex: 3; display: flex; flex-direction: column; margin-left: 5px;">
 						<label for="email">이메일</label> <input type="text" id="email"
 							name="email" placeholder="이메일 입력" required>
 					</div>
@@ -352,21 +355,24 @@ body {
 
 	<script>
 	$(document).ready(function() {
-	    $('.type-selector label').click(function() {
-	        // 라벨을 클릭하면 연결된 라디오 버튼을 강제로 체크함
-	        const targetId = $(this).attr('for');
-	        $('#' + targetId).prop('checked', true).change(); 
-	    });
+	    // ... 기존 라디오 버튼 클릭 로직 유지 ...
 
 	    $('input[name="type"]').change(function() {
-	        console.log("현재 선택된 값: " + $(this).val()); // 로그로 확인!
 	        if ($(this).val() === '사업자') {
 	            $('#businessNumberGroup').show();
 	            $('#business_number').prop('required', true);
+	            
+	            // 생년월일 관련 클래스(.rrn-item) 한꺼번에 숨기기
+	            $('.rrn-item').hide();
+	            $('#rrn_front, #rrn_back').prop('required', false).val("");
 	        } else {
 	            $('#businessNumberGroup').hide();
-	            $('#business_number').val("");
-	            $('#business_number').prop('required', false);
+	            $('#business_number').prop('required', false).val("");
+	            
+	            // 생년월일 관련 클래스(.rrn-item) 다시 보이기
+	            // ※ .show() 대신 .css('display', 'flex')를 쓰면 레이아웃이 더 잘 유지돼!
+	            $('.rrn-item').show();
+	            $('#rrn_front, #rrn_back').prop('required', true);
 	        }
 	    });
 	});
