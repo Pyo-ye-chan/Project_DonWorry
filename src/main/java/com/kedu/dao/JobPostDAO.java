@@ -22,6 +22,32 @@ public class JobPostDAO {
 		return jdbc.query(sql, new BeanPropertyRowMapper<JobPostDTO>(JobPostDTO.class));
 	}
 	
+	public List<JobPostDTO> searchKeyword(String keyword) {
+	    // 주소 컬럼들에서 키워드가 포함된 행을 찾음
+	    String sql = "SELECT * FROM job_post WHERE "
+	               + "sido LIKE ? OR gugun LIKE ? OR dong LIKE ? "
+	               + "ORDER BY write_date DESC";
+	    
+	    String searchTag = "%" + keyword + "%";
+	    
+	    return jdbc.query(sql, (rs, rowNum) -> {
+	        JobPostDTO dto = new JobPostDTO();
+	        dto.setSeq(rs.getInt("seq"));
+	        dto.setCompany_name(rs.getString("company_name"));
+	        dto.setTitle(rs.getString("title"));
+	        dto.setPay(rs.getString("pay"));
+	        dto.setWork_days(rs.getString("work_days"));
+	        dto.setWork_starttime(rs.getString("work_starttime"));
+	        dto.setWork_endtime(rs.getString("work_endtime"));
+	        dto.setSido(rs.getString("sido"));
+	        dto.setGugun(rs.getString("gugun"));
+	        dto.setDong(rs.getString("dong"));
+	        dto.setContent(rs.getString("content"));
+	        dto.setCategory(rs.getString("category"));
+	        return dto;
+	    }, searchTag, searchTag, searchTag);
+	}
+	
 	public int insert(JobPostDTO dto) {
 	    // 1. 컬럼 리스트 (총 18개)
 	    String sql = "INSERT INTO job_post ("
@@ -45,8 +71,8 @@ public class JobPostDAO {
 	        dto.getTitle(),           // 9
 	        dto.getPay(),             // 10
 	        dto.getWork_days(),       // 11
-	        dto.getStart_time(),      // 12
-	        dto.getEnd_time(),        // 13
+	        dto.getWork_starttime(),      // 12
+	        dto.getWork_endtime(),        // 13
 	        dto.getCategory(),        // 14
 	        dto.getContent(),         // 15
 	        dto.getBenefit()          // 16

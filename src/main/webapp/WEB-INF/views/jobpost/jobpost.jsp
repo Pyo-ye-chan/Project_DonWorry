@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -261,21 +262,22 @@ body {
 }
 
 .loc-list {
-    flex: 1;
-    border-right: 1px solid #eee;
-    height: 100%; /* 부모 높이에 맞춤 */
-    overflow-y: auto; /* 항목 많으면 스크롤 생성 */
-    text-align: left;
-    list-style: none;
+	flex: 1;
+	border-right: 1px solid #eee;
+	height: 100%; /* 부모 높이에 맞춤 */
+	overflow-y: auto; /* 항목 많으면 스크롤 생성 */
+	text-align: left;
+	list-style: none;
 }
 
 /* 스크롤바 디자인 (파란색 포인트와 어울리게 연하게) */
 .loc-list::-webkit-scrollbar {
-    width: 5px;
+	width: 5px;
 }
+
 .loc-list::-webkit-scrollbar-thumb {
-    background-color: #dee2e6;
-    border-radius: 10px;
+	background-color: #dee2e6;
+	border-radius: 10px;
 }
 
 .loc-list:last-child {
@@ -542,7 +544,7 @@ body {
 			<div class="search-filter-wrap">
 				<div class="search-wrapper">
 					<i class="fa-solid fa-magnifying-glass"></i> <input type="text"
-						placeholder="어떤 알바를 찾으시나요?">
+						placeholder="어떤 지역의 알바를 찾으시나요?">
 					<button class="search-btn">검색</button>
 				</div>
 
@@ -609,38 +611,51 @@ body {
 			</div>
 
 			<div class="job-list">
-				<div class="job-card">
-					<div class="job-icon">
-						<i class="fa-solid fa-briefcase"></i>
+				<c:forEach var="post" items="${list}">
+					<div class="job-card">
+						<div class="job-icon">
+							<i class="fa-solid fa-briefcase"></i>
+						</div>
+						<div class="job-info">
+							<div class="job-title-row">
+								<h3>${post.title}</h3>
+								<span class="job-badge">${post.work_days}</span>
+							</div>
+							<div class="company-name">${post.company_name}</div>
+							<div class="job-desc">${post.content}</div>
+
+							<div class="job-meta-row">
+								<div class="meta-item">
+									<i class="fa-solid fa-location-dot"></i> ${post.sido}
+									${post.gugun} ${post.dong}
+								</div>
+								<div class="meta-item">
+									<i class="fa-solid fa-won-sign"></i> <span class="pay-text">시급
+										<fmt:formatNumber value="${post.pay}" pattern="#,###" />원
+									</span>
+								</div>
+								<div class="meta-item">
+									<i class="fa-regular fa-clock"></i> ${post.work_starttime} ~
+									${post.work_endtime}
+								</div>
+								<div class="meta-item">
+									<i class="fa-solid fa-suitcase"></i> ${post.category}
+								</div>
+							</div>
+
+							<div class="job-btn-group">
+								<button class="btn-apply">지원하기</button>
+								<button class="btn-detail"
+									onclick="location.href='/jobposts/detail?seq=${post.seq}'">자세히
+									보기</button>
+							</div>
+						</div>
 					</div>
-					<div class="job-info">
-						<div class="job-title-row">
-							<h3>바리스타</h3>
-							<span class="job-badge">주말</span>
-						</div>
-						<div class="company-name">스타벅스 강남점</div>
-						<div class="job-desc">커피 제조 및 고객 응대 업무를 담당하실 바리스타를 모집합니다.</div>
-						<div class="job-meta-row">
-							<div class="meta-item">
-								<i class="fa-solid fa-location-dot"></i> 강남역
-							</div>
-							<div class="meta-item">
-								<i class="fa-solid fa-won-sign"></i> <span class="pay-text">시급
-									12,000원</span>
-							</div>
-							<div class="meta-item">
-								<i class="fa-regular fa-clock"></i> 09:00 ~ 18:00
-							</div>
-							<div class="meta-item">
-								<i class="fa-solid fa-suitcase"></i> 토, 일
-							</div>
-						</div>
-						<div class="job-btn-group">
-							<button class="btn-apply">지원하기</button>
-							<button class="btn-detail">자세히 보기</button>
-						</div>
-					</div>
-				</div>
+				</c:forEach>
+
+				<c:if test="${empty list}">
+					<div style="padding: 100px 0; color: #999;">등록된 구인공고가 없습니다.</div>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -739,6 +754,25 @@ body {
 		$(document).on('click', '#dongList li:not(.list-header)', function() {
 			$(this).addClass('active').siblings().removeClass('active');
 		});
+	});
+	
+	$(function() {
+	    // 검색 버튼 클릭 이벤트
+	    $('.search-btn').on('click', function() {
+	        const keyword = $('.search-wrapper input').val().trim();
+	        if(keyword === "") {
+	        	location.href = "/jobposts/jobpost";
+	        }
+	        // 주소창에 검색어를 담아서 이동
+	        location.href = "/jobposts/jobpost?searchKeyword=" + encodeURIComponent(keyword);
+	    });
+
+	    // 엔터키 입력 시에도 검색되게 추가
+	    $('.search-wrapper input').on('keypress', function(e) {
+	        if(e.keyCode === 13) {
+	            $('.search-btn').click();
+	        }
+	    });
 	});
 	</script>
 </body>
