@@ -495,11 +495,11 @@
         <i class="fa-solid fa-pen-to-square fa-lg" style="color: rgb(74, 82, 99);"></i>
         이번 달 근무 요약
     </h2>
-
-<c:if test="${nickName==null }">
+<c:choose>
+<c:when test="${nickName==null }">
 <div class="summary-grid">
         <div class="card">
-            <a href="#" style="text-decoration: none; ">
+            <a href="members/toLogin" style="text-decoration: none; ">
             <div class="card-title">🏪 편의점 알바</div>
             <div class="info-item"><span class="info-label">예상 급여</span><span class="info-val blue">1,245,000원</span></div>
             <div class="info-item"><span class="info-label">근무 일수</span><span class="info-val">16일</span></div>
@@ -507,7 +507,7 @@
             </a>
         </div>
         <div class="card">     
-            <a href="#" style="text-decoration: none; ">      
+            <a href="members/toLogin" style="text-decoration: none; ">      
             <div class="card-title">☕ 카페 알바</div>
             <div class="info-item"><span class="info-label">예상 급여</span><span class="info-val blue">850,000원</span></div>
             <div class="info-item"><span class="info-label">근무 일수</span><span class="info-val">12일</span></div>
@@ -515,13 +515,14 @@
             </a>       
         </div>
         <div class="card add-card">
-            <a href="#" style="text-decoration: none; ">   
+            <a href="members/toLogin" style="text-decoration: none; ">   
             <span>+ 알바 추가하기</span>
             </a>
         </div>
     </div>
-</c:if>    
- <c:if test="${nickName!=null}">   
+</c:when> 
+ <c:otherwise>
+ 	<c:if test="${placeList[0].name == null }">  
     <div class="summary-grid">
         <div class="card add-card">
             <a href="/salary/calendar" style="text-decoration: none; ">   
@@ -529,7 +530,34 @@
             </a>
         </div>
     </div>
-</c:if>
+   	</c:if>
+   	<div class="summary-grid"> 
+   	<c:if test="${placeList[0].name!=null }">
+	   	<c:forEach var="i" items="${placeList}"> 
+	   		<div class="card">     
+            <a href="/salary/calendar" style="text-decoration: none; ">      
+            <div class="card-title">${i.name }</div>
+            <div class="info-item">
+            	<span class="info-label">예상 급여</span><span class="info-val blue">${i.totalPay}원</span>
+            </div>
+            <div class="info-item">
+            	<span class="info-label">근무 일수</span><span class="info-val">${i.workDays}일</span>
+            </div>
+            <div class="info-item">
+            	<span class="info-label">총</span><span class="info-val">${i.totalHours}시간</span>
+            </div>     
+            </a>               	
+        </div>
+	   	</c:forEach>
+	   	<div class="card add-card">
+            <a href="/salary/calendar" style="text-decoration: none; ">   
+            <span>+ 알바 추가하기</span>
+            </a>
+        </div>
+   	</c:if>
+   	</div>
+</c:otherwise>
+</c:choose>
     <h2 class="section-header">
         <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(103, 77, 67); "></i>
          구인구직</h2>
