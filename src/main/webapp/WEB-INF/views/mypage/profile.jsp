@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,7 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>돈워리 - 프로필 수정</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
@@ -77,6 +77,27 @@
         cursor: pointer;
 
     }
+    .logout-btn { 
+         	width:60px;
+            height:30px;
+		    background-color: #ffffff; 
+		    color: #868e96;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
+		.logout-btn:hover { 
+         	width:60px;
+            height:30px;
+		   	background-color: #f8f9fa;
+		    color: #495057;
+		    border-color: #ced4da;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
     .nav-menu a.active { color: #2563eb; }
 
 /*사용사 식별 표시*/
@@ -304,6 +325,7 @@
         font-weight: 600;
         cursor: pointer;
         font-size: 15px;
+        text-decoration:none;
     }
     .update-btn{
         background-color: #2563eb;
@@ -335,6 +357,7 @@
         font-weight: 600;
         cursor: pointer;
         font-size: 15px;
+        text-decoration:none;
     }
     /*하단 푸터*/
     .container-footer{
@@ -353,17 +376,39 @@
 <body>
 
 <div class="container">
+    <c:choose>
+<c:when test="${nickName==null}">
     <div class="top-auth">
         <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="members/toLogin"style="text-decoration: none; color:black">
+            <a href="members/toLogin" style="text-decoration: none; color:black">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
         </span>
         <!-- 일단 관리자 빼고 다 숨겨둠 -->
-            <div class="now-admin" >관리자</div>
-            <div class="now-business" style="display: none;">기업</div>
-            <div class="now-personal" style="display: none;">개인</div>
+            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>
     </div>
+</c:when>
+<c:otherwise>
+    <div class="top-auth">  
+        <span style="font-size: 13px; color: #666; cursor: pointer;">
+        	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+            	${nickName}님 환영합니다.
+            <a href="members/logout" style="text-decoration: none; color:black">
+            <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
+            </a>
+        </span>
+		<c:if test="${type=='관리자'}">
+            <div class="now-admin">관리자</div>
+		</c:if>
+		<c:if test="${type=='사업자'}">
+            <div class="now-business">사업자</div>
+        </c:if>
+		<c:if test="${type=='개인'}">        
+            <div class="now-personal">개인</div>
+		</c:if>
+    </div>
+</c:otherwise>
+</c:choose>
     <nav class="navbar">
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo"> 돈워리</a>
@@ -405,22 +450,24 @@
             </div>          
                 <div class="info-item">
                     <span class="info-label">가입일</span>
-                    <span class="info-val">2026.03.03</span>
+                    <span class="info-val">
+					    <fmt:formatDate value="${list[0].join_date}" pattern="yyyy-MM-dd" />
+					</span>
                 </div>  
             </div>          
         </div>
     </div>
     
 <!-- 내활동 -->
-<form action="/" class="update-form">
+<form action="profile_update" class="update-form">
 <div class="bottom-grid">
     <div class="edit-section">
         <div class="edit-section-title">기본 정보 수정</div>
-        
+ <c:if test="${type=='개인'}">  
         <div class="form-group">
             <label class="form-label">아이디</label>
             <input type="text" class="form-input" readonly 
-             name="id" value="${list[0].id}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
+              value="${list[0].id.trim()}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
         </div>
 
         <div class="form-group">
@@ -452,10 +499,54 @@
             <input type="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
 			name="email" value="${list[0].email}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
         </div>
-    </div>
+    </c:if>	
     
+    <c:if test="${type=='사업자'}"> 
+    <div class="form-group">
+            <label class="form-label">아이디</label>
+            <input type="text" class="form-input" readonly 
+              value="${list[0].id.trim()}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">닉네임</label>
+            <input type="text" class="form-input update-input" placeholder="닉네임을 입력하세요" readonly 
+            name="nickname" value="${list[0].nickname}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+        </div>
+
+		<div class="form-group">
+            <label class="form-label">이름</label>
+            <input type="text" class="form-input" readonly 
+			name="name" value="${list[0].name}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
+        </div>
+
+		<div class="form-group">
+            <label class="form-label">생년월일</label>
+            <input type="text" class="form-input" readonly 
+			name="rrn" value="${list[0].rrn}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
+        </div>
+
+		<div class="form-group">
+            <label class="form-label">전화번호</label>
+            <input type="text" class="form-input update-input" placeholder="전화번호를 입력하세요" readonly 
+            name="phone" value="${list[0].phone}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">이메일 주소</label>
+            <input type="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
+			name="email" value="${list[0].email}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+        </div>
+    	<div class="form-group">
+            <label class="form-label">사업자 번호</label>
+            <input type="email" class="form-input" readonly 
+			name="business_number" value="${list[0].business_number}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+        </div>
+     </c:if>
+    </div>
+    	
     <div class="submit-btn-box">
-		<a href="/mypage/toMypage"><button type="button" class="back-btn">뒤로가기</button><a>
+		<a href="/mypage/toMypage" style="text-decoration:none;"><button type="button" class="back-btn">뒤로가기</button></a>
 		<button type="button" class="update-btn">수정</button>
         <button type="button" class="cancel-btn">취소</button>
         <button type="submit" class="save-btn">수정 완료</button>
@@ -472,14 +563,13 @@
 
 	//수정 버튼 누르면
 	$(".update-btn").on("click",function(){
-		$(".cancel-btn").css("display","block");
-		$(".save-btn").css("display","block");
+		$(".cancel-btn").css("display","inline");
+		$(".save-btn").css("display","inline");
 
 		$(".update-btn,.back-btn").css("display","none");
 		//수정 가능한것들 활성화
 		$(".update-input").prop("readonly",false);
-		$(".update-input").val("");
-		$(".update-input").css("background-color","#ffffff").css("cursor", "allowed");
+		$(".update-input").css("background-color","#ffffff").css("cursor", "default");
 
         //취소 후 다시 수정 누를때 스타일
          $(".update-input").css({
@@ -494,10 +584,8 @@
 	//취소 버튼 누르면
 	$(".cancel-btn").on("click",function(){
         //수정과 뒤로가기 나타냄
-		$(".update-btn,.back-btn").css("display","block");
+		$(".update-btn,.back-btn").css("display","inline");
 		$(".cancel-btn,.save-btn").css("display","none");
-
-        $(".update-input").val("");
 
         //취소 시 스타일 수정
         $(".update-input").prop("readonly",true);
@@ -508,11 +596,22 @@
             "cursor":"not-allowed"
         });
 	})
+	
+	$(".update-form").on("submit", function(e) {
+        let nickname = $("input[name='nickname']").val();
+        let phone = $("input[name='phone']").val();
 
-	//수정 완료 누르고 전송될때
-	$(".update-form").on("submit",function(){
-		
-	})
+        if(nickname == "" || phone == "" || email == "") {
+            alert("빈칸을 모두 입력해주세요.");
+            e.preventDefault(); // 전송 중단
+            return false;
+        }
+        
+        if(!confirm("정말로 수정하시겠습니까?")) {
+            e.preventDefault();
+        }
+    });
+
 </script>
 </body>
 </html>

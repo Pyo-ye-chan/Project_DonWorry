@@ -344,29 +344,42 @@ body {
 </head>
 <body>
 <div class="container">
-
-    <div class="top-auth">
-        <span style="font-size:13px;color:#666;">
-            <a href="members/login" style="text-decoration:none;color:black">
-                <i class="fa-regular fa-user fa-lg" style="color:rgb(203,203,203); margin-right:5px;"></i>로그인
+<div class="top-auth">
+        <span style="font-size: 13px; color: #666; cursor: pointer;">
+            <a href="members/login" style="text-decoration: none; color:black">
+                <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
         </span>
+
         <div class="now-admin">관리자</div>
+        <div class="now-business" style="display:none;">기업</div>
+        <div class="now-personal" style="display:none;">개인</div>
     </div>
 
-    <nav class="navbar">
-        <div style="display:flex; align-items:center; gap:40px;">
+   <nav class="navbar">
+        <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo">돈워리</a>
+
             <div class="nav-menu">
-                <a href="/" class="active"><i class="fa-solid fa-house fa-lg" style="color:rgb(36,99,235);"></i> 홈</a>
-                <a href="salary/calendar"><i class="fa-regular fa-calendar fa-lg" style="color:rgb(203,203,203); margin-right:5px;"></i>급여 캘린더</a>
-                <a href="#"><i class="fa-solid fa-briefcase fa-lg" style="color:rgb(203,203,203); margin-right:5px;"></i>구인구직</a>
-                <a href="#"><i class="fa-regular fa-message fa-lg" style="color:rgb(203,203,203); margin-right:5px;"></i>커뮤니티</a>
+                <a href="/admin/admin_main" >
+                   <i class="fa-solid fa-wrench fa-lg" style="color: rgb(197, 197, 197); margin-right:6px;"></i>
+                    관리자 대시보드
+                </a> 
+                <a href="/admin/admin_boards"  class="active">
+                   <i class="fa-solid fa-file-pen fa-lg" style="color: rgb(36, 99, 235); margin-right:6px;"></i>
+                    게시물 관리
+                </a>  
+                <a href="/admin/admin_members">
+                   <i class="fa-solid fa-user-shield fa-lg" style="color: rgb(197, 197, 197);  margin-right:6px;"></i>
+                    회원 관리
+                </a> 
+                <a href="/admin/admin_inquiry">
+                   <i class="fa-regular fa-circle-question fa-lg" style="color: rgb(197, 197, 197); margin-right:6px;"></i>
+                    Q&A 관리
+                </a>               
             </div>
         </div>
-        <a class="my-page" href="#"><i class="fa-solid fa-user-gear fa-lg" style="color:rgb(197,197,197);"></i>마이페이지</a>
     </nav>
-
     <main class="admin-page">
         <div class="page-header">
             <div class="page-title">

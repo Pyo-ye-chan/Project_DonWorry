@@ -452,29 +452,24 @@ body {
             <a href="/" class="logo">돈워리</a>
 
             <div class="nav-menu">
-                <a href="/" class="active">
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
-                    홈
-                </a>
-                <a href="/salary/calendar">
-                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
-                    급여 캘린더
-                </a>
-                <a href="/jobpost/jobpost">
-                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    구인구직
-                </a>
-                <a href="boards/mainboard/mainboard_list">
-                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    커뮤니티
-                </a>
+                <a href="/admin/admin_main"  class="active">
+                   <i class="fa-solid fa-wrench fa-lg" style="color: rgb(36, 99, 235); margin-right:6px;"></i>
+                    관리자 대시보드
+                </a> 
+                <a href="/admin/admin_boards">
+                   <i class="fa-solid fa-file-pen fa-lg" style="color: rgb(197, 197, 197); margin-right:6px;"></i>
+                    게시물 관리
+                </a>  
+                <a href="/admin/admin_members">
+                   <i class="fa-solid fa-user-shield fa-lg" style="color: rgb(197, 197, 197);  margin-right:6px;"></i>
+                    회원 관리
+                </a> 
+                <a href="/admin/admin_inquiry">
+                   <i class="fa-regular fa-circle-question fa-lg" style="color: rgb(197, 197, 197); margin-right:6px;"></i>
+                    Q&A 관리
+                </a>               
             </div>
         </div>
-
-        <a class="my-page" href="/mypage/mypage">
-            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-            마이페이지
-        </a>
     </nav>
 
     <main class="admin-page">

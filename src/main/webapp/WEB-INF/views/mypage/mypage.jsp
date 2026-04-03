@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>     
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>돈워리 - 마이페이지</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
@@ -78,6 +78,27 @@
         }
         .nav-menu a.active { color: #2563eb; }
 
+.logout-btn { 
+         	width:60px;
+            height:30px;
+		    background-color: #ffffff; 
+		    color: #868e96;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
+		.logout-btn:hover { 
+         	width:60px;
+            height:30px;
+		   	background-color: #f8f9fa;
+		    color: #495057;
+		    border-color: #ced4da;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
 /*사용사 식별 표시*/
         /*관리자 버튼*/
         .now-admin {
@@ -320,17 +341,39 @@
 <body>
 
 <div class="container">
+<c:choose>
+<c:when test="${nickName==null}">
     <div class="top-auth">
         <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="members/toLogin"style="text-decoration: none; color:black">
+            <a href="members/toLogin" style="text-decoration: none; color:black">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
         </span>
         <!-- 일단 관리자 빼고 다 숨겨둠 -->
-            <div class="now-admin" >관리자</div>
-            <div class="now-business" style="display: none;">기업</div>
-            <div class="now-personal" style="display: none;">개인</div>
+            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>
     </div>
+</c:when>
+<c:otherwise>
+    <div class="top-auth">  
+        <span style="font-size: 13px; color: #666; cursor: pointer;">
+        	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+            	${nickName}님 환영합니다.
+            <a href="/members/logout" style="text-decoration: none; color:black">
+            <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
+            </a>
+        </span>
+		<c:if test="${type=='관리자'}">
+            <div class="now-admin">관리자</div>
+		</c:if>
+		<c:if test="${type=='사업자'}">
+            <div class="now-business">사업자</div>
+        </c:if>
+		<c:if test="${type=='개인'}">        
+            <div class="now-personal">개인</div>
+		</c:if>
+    </div>
+</c:otherwise>
+</c:choose>
     <nav class="navbar">
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo"> 돈워리</a>
@@ -366,13 +409,15 @@
                     <i class="fa-regular fa-user"></i>
                 </div>
                 <div style="flex:1;">
-                <div class="card-title">알바생 닉네임</div>
-                <div class="card-email">user@naver.com</div>
+                <div class="card-title">${nickName}</div>
+                <div class="card-email">${list[0].email}</div>
             </div>
             </div>          
                 <div class="info-item">
                     <span class="info-label">가입일</span>
-                    <span class="info-val">2026.03.03</span>
+                    <span class="info-val">
+                    	<fmt:formatDate value="${list[0].join_date}" pattern="yyyy-MM-dd" />
+                    </span>
                 </div> 
                 <a href="/mypage/toProfile"><button class="profile-edit-btn">프로필 수정</button></a>       
             </div>          

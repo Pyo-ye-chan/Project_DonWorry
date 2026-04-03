@@ -32,7 +32,11 @@ public class MypageController {
 	private EncryptionUtils eu = new EncryptionUtils();
 	
 	@RequestMapping("/toMypage")
-	public String toMypage() {
+	public String toMypage(HttpSession session, Model model) {
+		String id =(String)session.getAttribute("loginId");	
+		List<MembersDTO> list = mdao.selectAll(id);
+		model.addAttribute("list",list);
+		
 		return "mypage/mypage";
 	}
 	
@@ -43,6 +47,14 @@ public class MypageController {
 		model.addAttribute("list",list);
 		
 		return "mypage/profile";
+	}
+	
+	@RequestMapping("/profile_update")
+	public String updateProfile(HttpSession session, MembersDTO dto) {
+		String id =(String)session.getAttribute("loginId");	
+		String type = (String)session.getAttribute("type");
+		int up = mdao.updateMember(id.trim(),dto);
+		return "redirect:/mypage/toProfile";
 	}
 	
 	@RequestMapping("/job_activity")
