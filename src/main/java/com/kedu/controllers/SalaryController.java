@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kedu.dao.WorkPlaceDAO;
 import com.kedu.dao.WorkPlaceListDAO;
-import com.kedu.dto.WorkPlaceDTO;
+import com.kedu.dao.WorklogDAO;
 import com.kedu.dto.WorkPlaceListDTO;
+import com.kedu.dto.WorklogDTO;
 
 @Controller
 @RequestMapping("/salary")
 public class SalaryController {
+	
+	@Autowired
+	public WorklogDAO wldao;
 	
 	@Autowired
 	public WorkPlaceDAO wpdao;
@@ -31,8 +35,14 @@ public class SalaryController {
 	    if(memberId == null) {
 	        return "redirect:/members/toLogin";
 	    }
-	    List<WorkPlaceListDTO> placeList = wpldao.selectAllById(memberId);
+	    List<WorkPlaceListDTO> placeList = wpldao.selectAllByIdCard(memberId);
+	    List<WorkPlaceListDTO> detailList = wpldao.selectAllByIdDetail(memberId);
+	    List<WorklogDTO> logList = wldao.selectAllById(memberId);
+	    
+	    
 	    model.addAttribute("placeList", placeList);
+	    model.addAttribute("detailList", detailList);
+	    model.addAttribute("logList", logList);
 		return "salary/calendar";
 	}
 	
