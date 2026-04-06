@@ -38,7 +38,7 @@ public class AdminController {
 	public String adminBoards(int page, Model model) {
 		List<BoardsDTO> board_mainList =  bdao.mainList(page*5-4,page*5);
 		
-		int recordTotalCount = bdao.recordTotalCount();
+		int recordTotalCount = bdao.mainRecordTotalCount();
 		
 		model.addAttribute("currentPage",page);
 		model.addAttribute("recordCountPerPage",10);

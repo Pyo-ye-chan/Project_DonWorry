@@ -244,7 +244,7 @@ body {
     font-weight: 700;
 }
 
-.btn-light-blue {
+.board-detail-btn {
     height: 34px;
     border: 1px solid #cfe0ff;
     border-radius: 8px;
@@ -255,7 +255,7 @@ body {
     font-weight: 700;
 }
 
-.btn-red {
+.board-del-btn {
     height: 34px;
     border: none;
     border-radius: 8px;
@@ -466,8 +466,8 @@ body {
                         </td>
                         <td><span class="state-pill state-show">일반</span></td>
                         <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
+                            <button class="board-detail-btn" type="button">보기</button>
+                            <button class="board-del-btn" type="button">삭제</button>
                         </td>
                     </tr>
                 </c:forEach>                  
@@ -515,8 +515,8 @@ body {
                         <td>2026-04-01</td>
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
+                            <button class="board-detail-btn" type="button">보기</button>
+                            <button class="board-del-btn" type="button">삭제</button>
                         </td>
                     </tr>
                     <tr>
@@ -527,8 +527,8 @@ body {
                         <td>2026-03-31</td>
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
+                            <button class="board-detail-btn" type="button">보기</button>
+                            <button class="board-del-btn" type="button">삭제</button>
                         </td>
                     </tr>
 
@@ -609,7 +609,7 @@ body {
 	}
 	
  
-
+//====================공지글=======================//
 /*  
  
  //공지글 관리 id = admin_notice_navi
