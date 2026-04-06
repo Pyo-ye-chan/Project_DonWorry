@@ -663,7 +663,7 @@ body {
 			<div class="search-filter-wrap">
 				<div class="search-wrapper">
 					<i class="fa-solid fa-magnifying-glass"></i> <input type="text"
-						placeholder="어떤 지역의 알바를 찾으시나요?">
+						placeholder="어떤 알바를 찾으시나요?">
 					<button class="search-btn">검색</button>
 				</div>
 
