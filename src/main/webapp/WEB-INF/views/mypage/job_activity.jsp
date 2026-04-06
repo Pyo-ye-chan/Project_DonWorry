@@ -213,7 +213,12 @@
                 </a>
                 <a href="/boards/mainboard_list">
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    커뮤니티</a>              
+                    커뮤니티
+                </a>
+                 <a href="/qna/qna"> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    고객지원
+                </a>              
             </div>          
         </div>   
         <a class="my-page" href="/mypage/toMypage">
@@ -223,8 +228,6 @@
     </nav>
 
     <div class="page">
-        <div class="page-title">구직 활동 관리</div>
-        <hr class="title-line">
 
         <div class="comm-header">
             <i class="fa-solid fa-briefcase fa-4x" style="color: #e9ecef;"></i>
