@@ -465,6 +465,83 @@
             font-size: 13px;
             color: #999;
         }
+        
+        /* 모달 배경 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* 모달창 */
+        .modal-content {
+            background: #fff;
+            width: 400px;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .report-options label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #etcReason {
+            width: 100%;
+            margin-top: 10px;
+            height: 80px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            resize: none;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            padding: 8px 15px;
+            border: none;
+            background: #eee;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-report-submit {
+            padding: 8px 15px;
+            border: none;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
     </style>
 
@@ -589,6 +666,35 @@
 			
             <!-- 댓글 리스트 -->
             <div class="comment-list"></div>
+        </div>
+        
+        <!-- 신고 -->    
+        <div id="reportModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>신고하기</h3>
+                    <span class="close-modal" onclick="closeReportModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>신고 사유를 선택해주세요.</p> <br>
+                    <input type="hidden" id="reportTargetSeq"> <input type="hidden" id="reportTargetType">
+                    <div class="report-options">
+                        <label><input type="radio" name="reportReason" value="부적절한 홍보 게시글"> 부적절한 홍보 게시글</label><br>
+                        <label><input type="radio" name="reportReason" value="음란물 또는 청소년에게 부적합한 내용"> 음란물/부적합한
+                            내용</label><br>
+                        <label><input type="radio" name="reportReason" value="명예훼손/사생활 침해"> 명예훼손/사생활 침해</label><br>
+                        <label><input type="radio" name="reportReason" value="욕설/비하 발언"> 욕설/비하 발언</label><br>
+                        <label><input type="radio" name="reportReason" value="etc"> 기타 (직접 입력)</label>
+                    </div>
+                    <textarea id="etcReason" placeholder="기타 사유를 입력하세요 (최대 100자)" style="display:none;"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" onclick="closeReportModal()">취소</button>
+                    <button class="btn-report-submit" onclick="submitReport()">신고하기</button>
+                </div>
+            </div>
+        </div>    
+        
 
 
         <div class="container-footer">
@@ -596,6 +702,8 @@
             <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
         </div>
     </div>
+    
+    
     
      <script>
          function toggleReply(el) {
@@ -613,9 +721,9 @@
         		 url : "/reply/list",
         		 data : {parent_seq : "${dto.seq}"},
         		 dataType:"json"
-        	 }).done(function(list){
-        		 
-        		 appendReplyList(list);
+        	 }).done(function(data){
+        		 $(".comment-title").html("댓글 "+data.totalCount);
+        		 appendReplyList(data.list);
         	 })
          }
          $(document).ready(function(){
@@ -638,7 +746,7 @@
         	            <div class="comment-actions">
         	                <span onclick="toggleReply(this)">답글</span>`;
         	                if(loginId == comment.writer){
-        	                	console.log(comment.writer)
+        	                	
         	                	html+=`
         	                		<span class="reply-edit-btn" onclick="toggleEdit(this)" style="cursor:pointer;">수정</span>
         	                        <span class="reply-delete-btn" style="cursor:pointer;">삭제</span>`;
@@ -699,7 +807,12 @@
          
          
          $(".reply-insert-btn").on("click",function(){
-        	 console.log($(".content").val())
+        	 let loginId = "${loginId}"
+        	 if(loginId == ""){
+        		 alert("로그인 후 입력가능합니다.")
+        		 return false;
+        	 }
+        	 
         	 
         	 $.ajax({
         		 url : "/reply/insert",
@@ -715,6 +828,11 @@
         	 })
          })
          $(document).on("click",".reply-btn",function(){
+        	 let loginId = "${loginId}"
+            	 if(loginId == ""){
+            		 alert("로그인 후 입력가능합니다.")
+            		 return false;
+            	 }
         	 let commentItem = $(this).closest(".comment-item");
 			 let parentCommentSeq = commentItem.data("seq"); 
         	 let content = commentItem.find("textarea").val();
@@ -791,6 +909,81 @@
         	    // 5. 버튼들(답글/수정/삭제)은 수정 중에는 안 보이게 숨김
         	    item.find(".comment-actions").hide();
         	}
+         
+      // 1. 모달 열기 (게시글용)
+         $(document).on("click", ".post-detail .report-btn", function () {
+             openReportModal("${dto.seq}", "board");
+         });
+
+         // 2. 모달 열기 (댓글/대댓글용)
+         $(document).on("click", ".comment-item .report-btn", function () {
+             let seq = $(this).closest("[data-seq]").data("seq");
+             openReportModal(seq, "reply");
+         });
+
+         function openReportModal(seq, type) {
+             $("#reportTargetSeq").val(seq);
+             $("#reportTargetType").val(type);
+             $("#reportModal").show();
+         }
+
+         function closeReportModal() {
+             $("#reportModal").hide();
+             $("input[name='reportReason']").prop("checked", false);
+             $("#etcReason").hide().val("");
+         }
+
+         // "기타" 선택 시 텍스트 영역 보이기
+         $(document).on("change", "input[name='reportReason']", function () {
+             if ($(this).val() === "etc") {
+                 $("#etcReason").show().focus();
+             } else {
+                 $("#etcReason").hide();
+             }
+         });
+
+         // 3. 서버로 데이터 전송
+         function submitReport() {
+             let targetSeq = $("#reportTargetSeq").val();
+             let targetType = $("#reportTargetType").val();
+             let reason = $("input[name='reportReason']:checked").val();
+             let loginId = "${loginId}";
+
+             if (!reason) {
+                 alert("신고 사유를 선택해주세요.");
+                 return;
+             }
+
+             if (reason === "etc") {
+                 reason = $("#etcReason").val().trim();
+                 if (reason === "") {
+                     alert("상세 사유를 입력해주세요.");
+                     return;
+                 }
+             }
+             let sendData = {reason : reason,
+            		 member_id : loginId}
+             if (targetType === "board") {
+                 sendData.boards_seq = targetSeq;
+             } else {
+                 sendData.reply_seq = targetSeq;
+             }
+
+             $.ajax({
+                 url: "/report/report", // 서버 컨트롤러 경로
+                 type: "POST",
+                 data: sendData
+                     
+                 
+             }).done(function (resp) {
+            	 if(resp === "success") {
+            	        alert("신고가 정상적으로 접수되었습니다.");
+            	        closeReportModal(); // 모달 닫기
+            	    } else {
+            	        alert("신고 접수에 실패했습니다. 다시 시도해주세요.");
+            	    }
+             })
+         }
      </script>
 </body>
 </html>

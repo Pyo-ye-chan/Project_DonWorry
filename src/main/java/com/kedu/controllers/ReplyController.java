@@ -2,7 +2,9 @@ package com.kedu.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,8 @@ public class ReplyController {
 	public String list(int parent_seq) {
 		List<ReplyDTO> list = dao.selectByParent_seq(parent_seq);
 		
+		int totalCount = list.size();
+		
 		List<ReplyDTO> comments = new ArrayList<>();
 		List<ReplyDTO> replies = new ArrayList<>();
 
@@ -62,7 +66,12 @@ public class ReplyController {
 
 		    comment.setReplies(child); // 🔥 핵심
 		}
-		return gson.toJson(comments);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("list", comments);
+		result.put("totalCount", totalCount);
+		
+		return gson.toJson(result);
 	}
 	
 	@ResponseBody
