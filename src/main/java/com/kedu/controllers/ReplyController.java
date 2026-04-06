@@ -64,5 +64,16 @@ public class ReplyController {
 		}
 		return gson.toJson(comments);
 	}
+	
+	@ResponseBody
+	@RequestMapping("/delete")
+	public void delete(int seq) {
+		dao.delete(seq);
+	}
+	@ResponseBody
+	@RequestMapping("/update")
+	public void update(int seq,String content) {
+		dao.update(seq,content);
+	}
 
 }
