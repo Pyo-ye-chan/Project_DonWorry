@@ -153,5 +153,30 @@ public class BoardsDAO {
 		
 	}
 	
+	//메인화면 인기 게시글
+	public List<BoardsDTO> mainHotList(){
+		String sql = "SELECT * FROM ("
+	            + "    SELECT "
+	            + "        b.seq, "
+	            + "        m.nickname AS member_id, "
+	            + "        b.category, "
+	            + "        b.title, "
+	            + "        b.content, "
+	            + "        b.view_count, "
+	            + "        b.write_date,"
+	            + "        COUNT(r.seq) AS reply_count, "
+	            // 핵심: 조회수(view_count) 내림차순 정렬 후 번호 매기기
+	            + "        ROW_NUMBER() OVER(ORDER BY b.view_count DESC, b.seq DESC) AS rn " 
+	            + "    FROM boards b "
+	            + "    LEFT JOIN members m ON b.member_id = m.id "
+	            + "    LEFT JOIN reply r ON b.seq = r.parent_seq "
+	            + "    GROUP BY "
+	            + "        b.seq, m.nickname, b.category, b.title, "
+	            + "        b.content, b.view_count, b.write_date "
+	            + ") WHERE rn BETWEEN 1 AND 3"; // 상위 3개 고정
+		
+		return jdbc.query(sql, new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class));
+	}
+	
 
 }

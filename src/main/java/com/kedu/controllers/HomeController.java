@@ -9,8 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kedu.dao.BoardsDAO;
+import com.kedu.dao.JobPostDAO;
 import com.kedu.dao.WorkPlaceDAO;
 import com.kedu.dao.WorkPlaceListDAO;
+import com.kedu.dto.BoardsDTO;
+import com.kedu.dto.JobPostDTO;
 import com.kedu.dto.WorkPlaceListDTO;
 
 @Controller
@@ -20,6 +24,12 @@ public class HomeController {
 	
 	@Autowired
 	public WorkPlaceListDAO wpldao;
+	
+	@Autowired
+	public BoardsDAO bdao;
+	
+	@Autowired
+	public JobPostDAO jdao;
 	
 	@RequestMapping("/")
 	public String home(HttpSession session, Model model) {
@@ -31,12 +41,20 @@ public class HomeController {
 			return "admin/admin_main";
 		}
 		if("개인".equals(type)||"사업자".equals(type)){
-			if(type!=null) {
+			if(id!=null) {
 				List<WorkPlaceListDTO> placeList = wpldao.selectAllByIdCard(id);
 			    model.addAttribute("placeList", placeList);	   
 			}		
 		}
-			return "home";	
+		//메인에 최신 구직글 3위 추려 보이게 함
+		List<JobPostDTO> jobList = jdao.mainJobList();
+		model.addAttribute("jobList",jobList);
+		
+		//메인에 인기게시글 3위 추려서 보이게 함
+		List<BoardsDTO> hotList = bdao.mainHotList();
+		model.addAttribute("hotList",hotList);
+		
+		return "home";	
 	}
 }
 	
