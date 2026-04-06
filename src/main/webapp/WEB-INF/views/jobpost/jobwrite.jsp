@@ -10,6 +10,10 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<script
+	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <style>
 /* [1] 원본 초기화 및 레이아웃 유지 */
 * {
@@ -295,6 +299,22 @@ textarea {
 	transform: translateY(1px); /* 눌리는 효과 */
 	box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
+
+/* 에디터 가로 너비를 아래 입력창들과 맞춤 */
+#editor {
+    max-width: 680px; /* 아래 textarea 너비에 맞춰서 조정해봐 */
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+/* 라벨이랑 에디터가 가로로 나란히 있게 하려면 부모 class에 적용 */
+.form-row-editor {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 20px;
+}
 </style>
 </head>
 <body>
@@ -496,10 +516,14 @@ textarea {
 						근무 조건<span>*</span>
 					</div>
 					<div class="form-input-group">
-						<textarea name="content" placeholder="근무 조건을 입력해주세요"></textarea>
-						<div class="char-count">0 / 500</div>
+						<!-- 에디터 영역 -->
+						<div id="editor"></div>
+
+						<!-- hidden (에디터 값 담기) -->
+						<input type="hidden" name="content" id="content">
 					</div>
 				</div>
+
 
 				<div class="form-row" style="align-items: flex-start;">
 					<div class="form-label" style="padding-top: 10px;">
@@ -561,6 +585,46 @@ textarea {
     }
     
     $(function() {
+    	
+    	// 1. 에디터 초기화
+        const editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            height: '400px',
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical',
+            hideModeSwitch: true,
+            language: 'ko-KR',
+            placeholder: '근무 조건(업무 내용, 자격 요건 등)을 상세히 입력해주세요.',
+            hooks: {
+                addImageBlobHook: async (blob, callback) => {
+                    const formData = new FormData();
+                    formData.append("image", blob);
+
+                    const resp = await fetch("/files/upload", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const data = await resp.json();
+                    callback(data.url, "image");
+                }
+            }
+        });
+
+        // 2. 폼 전송 시 에디터 내용 가로채기
+        $('form').on('submit', function() {
+            // 에디터에 적힌 HTML 내용을 가져와서 hidden input(#content)에 넣음
+            const contentHtml = editor.getHTML();
+            
+            if(contentHtml === "<p><br></p>" || contentHtml === "") {
+                alert("근무 조건을 입력해주세요.");
+                return false;
+            }
+            
+            $('#content').val(contentHtml);
+            return true; 
+        });
+    	
         // 대분류 선택 박스가 변경될 때 실행
         $('#mainCategory').on('change', function() {
             let parentId = $(this).val(); // 선택된 대분류의 cat_id

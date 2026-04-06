@@ -48,27 +48,28 @@ body {
 	padding: 8px 0;
 }
 
-.logout-btn {
-	width: 75px;
-	height: 30px;
-	background-color: #ffffff;
-	color: #868e96;
-	border: 1px solid #dee2e6;
-	border-radius: 6px;
-	font-size: 13px;
-	transition: all 0.2s ease;
-	cursor: pointer;
-	white-space: nowrap;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-}
+ .logout-btn { 
+         	width:60px;
+            height:30px;
+		    background-color: #ffffff; 
+		    color: #868e96;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
+		.logout-btn:hover { 
+         	width:60px;
+            height:30px;
+		   	background-color: #f8f9fa;
+		    color: #495057;
+		    border-color: #ced4da;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
 
-.logout-btn:hover {
-	background-color: #f8f9fa;
-	color: #495057;
-	border-color: #ced4da;
-}
 
 .now-admin, .now-business, .now-personal {
 	width: 60px;
@@ -148,7 +149,7 @@ body {
 
 /* 검색창 및 필터 */
 .search-filter-wrap {
-	max-width: 1000px;
+	max-width: 1040px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -327,6 +328,10 @@ body {
 	flex-direction: column;
 	gap: 20px;
 	margin-top: 40px;
+	max-width: 1040px; /* 상단 검색창 너비와 맞춤 */
+    margin-left: auto;  /* 가로 가운데 정렬 */
+    margin-right: auto; /* 가로 가운데 정렬 */
+    width: 100%;
 }
 
 .job-card {
@@ -338,6 +343,8 @@ body {
 	text-align: left;
 	background: #fff;
 	transition: 0.2s;
+	width: 100%;      /* 부모 너비에 꽉 차게 */
+    box-sizing: border-box; /* 패딩이 너비에 포함되게 */
 }
 
 .job-card:hover {
@@ -532,65 +539,120 @@ body {
 	top: 0;
 	z-index: 10;
 }
+
+/* 페이지 네비게이터 스타일 추가 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 50px 0;
+}
+
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e1e7f0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.page-link:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+    background-color: #f8faff;
+}
+
+.page-link.active {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+    font-weight: 700;
+}
 </style>
 </head>
 <body>
 	<div class="community-container">
-		<div class="top-auth">
-			<c:choose>
-				<c:when test="${nickName==null}">
-					<span style="font-size: 13px; color: #666; cursor: pointer;">
-						<a href="/members/toLogin"
-						style="text-decoration: none; color: black"> <i
-							class="fa-regular fa-user fa-lg"
-							style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
-					</a>
-					</span>
-					<a href="/admin/admin_main" style="text-decoration: none;"><div
-							class="now-admin">관리자</div></a>
-				</c:when>
-				<c:otherwise>
-					<span style="font-size: 13px; color: #666; cursor: pointer;">
-						<i class="fa-regular fa-user fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
-						${nickName}님 환영합니다. <a href="/members/logout"
-						style="text-decoration: none;">
-							<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
-					</a>
-					</span>
-					<c:if test="${type=='관리자'}">
-						<div class="now-admin">관리자</div>
-					</c:if>
-					<c:if test="${type=='사업자'}">
-						<div class="now-business">사업자</div>
-					</c:if>
-					<c:if test="${type=='개인'}">
-						<div class="now-personal">개인</div>
-					</c:if>
-				</c:otherwise>
-			</c:choose>
-		</div>
+    <c:choose>
+        <c:when test="${nickName==null}">
+            <div class="top-auth">
+                <span style="font-size: 13px; color: #666; cursor: pointer;">
+                    <a href="/members/toLogin" style="text-decoration: none; color:black">
+                        <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
+                    </a>
+                </span>
+                <!-- 일단 관리자 빼고 다 숨겨둠 -->
+                    <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="top-auth">  
+                <span style="font-size: 13px; color: #666; cursor: pointer;">
+                    <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                        ${nickName}님 환영합니다.
+                    <a href="/members/logout" style="text-decoration: none; color:black">
+                    <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
+                    </a>
+                </span>
+                <c:if test="${type=='관리자'}">
+                    <div class="now-admin">관리자</div>
+                </c:if>
+                <c:if test="${type=='사업자'}">
+                    <div class="now-business">사업자</div>
+                </c:if>
+                <c:if test="${type=='개인'}">        
+                    <div class="now-personal">개인</div>
+                </c:if>
+            </div>
+        </c:otherwise>
+    </c:choose>
 
-		<nav class="navbar">
-			<div style="display: flex; align-items: center; gap: 40px;">
-				<a href="/" class="logo">돈워리</a>
-				<div class="nav-menu">
-					<a href="/"> <i class="fa-solid fa-house fa-lg"></i> 홈
-					</a> <a href="/salary/calendar"> <i
-						class="fa-regular fa-calendar fa-lg"></i> 급여 캘린더
-					</a> <a href="/jobposts/jobpost" class="active"> <i
-						class="fa-solid fa-briefcase fa-lg"></i> 구인구직
-					</a> <a href="/boards/mainboard_list"> <i
-						class="fa-regular fa-message fa-lg"></i> 커뮤니티
-					</a>
-				</div>
-			</div>
-			<a class="my-page"
-				href="${nickName==null ? 'members/toLogin' : '/mypage/toMypage'}">
-				<i class="fa-solid fa-user-gear fa-lg"
-				style="color: rgb(197, 197, 197);"></i> 마이페이지
-			</a>
-		</nav>
+    <nav class="navbar">
+        <div style="display: flex; align-items: center; gap: 40px;">
+            <a href="/" class="logo"> 돈워리</a>
+            <div class="nav-menu">
+                <a href="/" class="active">
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
+                    홈
+                </a>
+                <a href="salary/calendar">
+                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
+                    급여 캘린더
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    구인구직
+                </a>
+                <a href="/boards/mainboard_list?page=1">
+                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    커뮤니티</a>   
+                <a href=""> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    고객지원
+                </a>             
+            </div>          
+        </div>   
+        <c:if test="${nickName==null }">   
+	        <a class="my-page" href="members/toLogin"> 
+	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+	            마이페이지
+	        </a>  
+        </c:if> 
+        <c:if test="${nickName!=null }">   
+	        <a class="my-page" href="/mypage/toMypage"> 
+	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+	            마이페이지
+	        </a>  
+        </c:if>         
+    </nav>
+</div>
 
 		<div class="job-section">
 			<h2>
@@ -601,7 +663,7 @@ body {
 			<div class="search-filter-wrap">
 				<div class="search-wrapper">
 					<i class="fa-solid fa-magnifying-glass"></i> <input type="text"
-						placeholder="어떤 지역의 알바를 찾으시나요?">
+						placeholder="어떤 알바를 찾으시나요?">
 					<button class="search-btn">검색</button>
 				</div>
 
@@ -674,7 +736,7 @@ body {
 			</div>
 
 			<div class="job-list">
-				<c:forEach var="post" items="${list}">
+				<c:forEach var="post" items="${jobList}">
 					<div class="job-card">
 						<div class="job-icon">
 							<i class="fa-solid fa-briefcase"></i>
@@ -709,17 +771,40 @@ body {
 							<div class="job-btn-group">
 								<button class="btn-apply">지원하기</button>
 								<button class="btn-detail"
-									onclick="location.href='/jobposts/detail?seq=${post.seq}'">자세히
+									onclick="location.href='/jobposts/jobdetail?seq=${post.seq}'">자세히
 									보기</button>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
 
-				<c:if test="${empty list}">
+				<c:if test="${empty jobList}">
 					<div style="padding: 100px 0; color: #999;">등록된 구인공고가 없습니다.</div>
 				</c:if>
 			</div>
+			
+			<div class="pagination">
+                <c:if test="${recordTotalCount > 0}">
+                    <fmt:parseNumber var="pageCount" value="${(recordTotalCount - 1) / recordCountPerPage + 1}" integerOnly="true" />
+                    <fmt:parseNumber var="startNavi" value="${((currentPage - 1) / naviCountPerPage) * naviCountPerPage + 1}" integerOnly="true" />
+                    <c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
+                    <c:if test="${endNavi > pageCount}"><c:set var="endNavi" value="${pageCount}" /></c:if>
+
+                    <c:if test="${startNavi > 1}">
+                        <a href="/jobposts/jobpost?page=${startNavi - 1}&searchKeyword=${searchKeyword}" class="page-link">&lt;</a>
+                    </c:if>
+
+                    <c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+                        <a href="/jobposts/jobpost?page=${i}&searchKeyword=${searchKeyword}" 
+                           class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
+                    </c:forEach>
+
+                    <c:if test="${endNavi < pageCount}">
+                        <a href="/jobposts/jobpost?page=${endNavi + 1}&searchKeyword=${searchKeyword}" class="page-link">&gt;</a>
+                    </c:if>
+                </c:if>
+            </div>
+			
 		</div>
 	</div>
 
@@ -730,11 +815,10 @@ body {
 		</button>
 	</c:if>
 
-	<footer class="container-footer">
-		<p>© 2026 돈워리. All rights reserved.</p>
-		<p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 |
-			고객센터</p>
-	</footer>
+	<div class="container-footer">
+    <p>© 2026 돈워리. All rights reserved.</p>
+    <p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침 | 이용약관 | 고객센터</p>
+</div>
 
 	<script>
 	$(function() {

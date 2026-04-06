@@ -27,18 +27,35 @@ public class JobPostController {
     private CateGoryDAO catdao;
 
 	@RequestMapping("/jobpost")
-	public String jobpost(Model model, String searchKeyword) {
-		List<JobPostDTO> list;
+	public String jobpost(Model model, 
+	                     String searchKeyword, 
+	                     @RequestParam(value="page", defaultValue="1") int page) {
 	    
+	    List<JobPostDTO> jobList;
+	    int recordTotalCount;
+	    
+	    // 시작 번호와 끝 번호 계산 (10개씩 보기 기준)
+	    int start = page * 7 - 6;
+	    int end = page * 7;
+
 	    if (searchKeyword != null && !searchKeyword.isEmpty()) {
-	        // 검색어가 있을 때
-	        list = dao.searchKeyword(searchKeyword);
-	        model.addAttribute("searchKeyword", searchKeyword); // 검색창에 남겨두기용
+	        // [검색어가 있을 때] 검색 결과 리스트 + 검색 결과 총 개수
+	        jobList = dao.searchKeywordPaged(searchKeyword, start, end);
+	        recordTotalCount = dao.getSearchTotalCount(searchKeyword);
+	        model.addAttribute("searchKeyword", searchKeyword);
 	    } else {
-	        list = dao.getList();
+	        // [기본 리스트] 전체 리스트 + 전체 총 개수
+	        jobList = dao.jobList(start, end);
+	        recordTotalCount = dao.jobRecordTotalCount();
 	    }
 	    
-	    model.addAttribute("list", list);
+	    // 페이징 네비게이터를 위한 속성들 (게시판 로직과 동일)
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("recordCountPerPage", 10);
+	    model.addAttribute("naviCountPerPage", 10);
+	    model.addAttribute("recordTotalCount", recordTotalCount);
+	    model.addAttribute("jobList", jobList); // 기존 "list"에서 "jobList"로 명칭 통일 권장
+	    
 	    return "jobpost/jobpost";
 	}
 	
@@ -87,6 +104,14 @@ public class JobPostController {
 	@ResponseBody
 	public List<CateGoryDTO> getSubCategory(@RequestParam("parentId") int parentId) {
 	    return catdao.getSubCategories(parentId); // parent_id = ? 인 것들
+	}
+	
+	@RequestMapping("/jobdetail")
+	public String jobdetail(int seq, Model model) {
+		JobPostDTO post = dao.getPostDetail(seq);
+		
+		model.addAttribute("post", post);
+		return "jobpost/jobdetail";
 	}
 	
 	

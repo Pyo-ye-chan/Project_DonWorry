@@ -16,17 +16,24 @@ public class JobPostDAO {
 	@Autowired
 	private JdbcTemplate jdbc;
 	
-	public List<JobPostDTO> getList(){
-		String sql = "SELECT p.*, " +
-                "c1.cat_name AS main_category_name, " +
-                "c2.cat_name AS sub_category_name " +
-                "FROM job_post p " +
-                "LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id " +
-                "LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id " +
-                "ORDER BY p.seq DESC";
+	public List<JobPostDTO> jobList(int start, int end){
+		String sql = "SELECT * FROM ( "
+	               + "    SELECT p.*, "
+	               + "           c1.cat_name AS main_category_name, "
+	               + "           c2.cat_name AS sub_category_name, "
+	               + "           ROW_NUMBER() OVER(ORDER BY p.write_date DESC) AS rn "
+	               + "    FROM job_post p "
+	               + "    LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id "
+	               + "    LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id "
+	               + ") WHERE rn BETWEEN ? AND ?";
 
-   return jdbc.query(sql, new BeanPropertyRowMapper<JobPostDTO>(JobPostDTO.class));
+   return jdbc.query(sql, new BeanPropertyRowMapper<JobPostDTO>(JobPostDTO.class),start, end);
 }
+	
+	public int jobRecordTotalCount() {
+	    String sql = "SELECT COUNT(*) FROM job_post";
+	    return jdbc.queryForObject(sql, Integer.class);
+	}
 	
 	public List<JobPostDTO> searchKeyword(String keyword) {
 	    String sql = "SELECT p.*, "
@@ -125,5 +132,95 @@ public class JobPostDAO {
 	        dto.getBenefit()          // 17
 	    );
 	}
+	
+	public JobPostDTO getPostDetail(int seq) {
+	    String sql = "SELECT * FROM job_post WHERE seq = ?";
+	    
+	    return jdbc.queryForObject(sql, (rs, rowNum) -> {
+	        JobPostDTO dto = new JobPostDTO();
+	        
+	        dto.setSeq(rs.getInt("seq"));
+	        dto.setMember_id(rs.getString("member_id"));
+	        
+	        /* 2. 기본 정보 섹션 */
+	        dto.setCompany_name(rs.getString("company_name"));
+	        dto.setPhone(rs.getString("phone"));
+	        dto.setSido(rs.getString("sido"));
+	        dto.setGugun(rs.getString("gugun"));
+	        dto.setDong(rs.getString("dong"));
+	        dto.setAddress_detail(rs.getString("address_detail"));
+	        dto.setCount(rs.getInt("count"));
+	        
+	        /* 3. 상세 정보 섹션 */
+	        dto.setTitle(rs.getString("title"));
+	        dto.setPay(rs.getString("pay")); 
+	        dto.setWork_days(rs.getString("work_days"));
+	        dto.setWork_starttime(rs.getString("work_starttime"));
+	        dto.setWork_endtime(rs.getString("work_endtime"));
+	        
+	        /* 4. 카테고리 및 내용 */
+	        dto.setMain_category(rs.getString("main_category"));
+	        dto.setSub_category(rs.getString("sub_category"));
+	        dto.setContent(rs.getString("content")); 
+	        dto.setBenefit(rs.getString("benefit")); 
+	        
+	        return dto;
+	    }, seq);
+	}
+	
+	public List<JobPostDTO> searchKeywordPaged(String keyword, int start, int end) {
+	    // 1. 기존 SQL에 ROW_NUMBER() 추가
+	    String sql = "SELECT * FROM ( "
+	               + "    SELECT p.*, "
+	               + "           c1.cat_name AS main_category_name, "
+	               + "           c2.cat_name AS sub_category_name, "
+	               + "           ROW_NUMBER() OVER(ORDER BY p.write_date DESC) AS rn " // 최신순 정렬 및 번호 매기기
+	               + "    FROM job_post p "
+	               + "    LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id "
+	               + "    LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id "
+	               + "    WHERE p.sido LIKE ? OR p.gugun LIKE ? OR p.dong LIKE ? OR p.title LIKE ? OR p.company_name LIKE ? "
+	               + ") WHERE rn BETWEEN ? AND ?"; // 페이징 범위 지정
+	    
+	    String searchTag = "%" + keyword + "%";
+	    
+	    // 물음표(?) 순서대로 파라미터 넣어주기
+	    return jdbc.query(sql, (rs, rowNum) -> {
+	        JobPostDTO dto = new JobPostDTO();
+	        dto.setSeq(rs.getInt("seq"));
+	        dto.setCompany_name(rs.getString("company_name"));
+	        dto.setTitle(rs.getString("title"));
+	        dto.setPay(rs.getString("pay"));
+	        dto.setWork_days(rs.getString("work_days"));
+	        dto.setWork_starttime(rs.getString("work_starttime"));
+	        dto.setWork_endtime(rs.getString("work_endtime"));
+	        dto.setSido(rs.getString("sido"));
+	        dto.setGugun(rs.getString("gugun"));
+	        dto.setDong(rs.getString("dong"));
+	        dto.setContent(rs.getString("content"));
+	        
+	        dto.setMain_category(rs.getString("main_category"));
+	        dto.setSub_category(rs.getString("sub_category"));
+	        
+	        // JOIN 결과값 세팅
+	        dto.setMain_category_name(rs.getString("main_category_name"));
+	        dto.setSub_category_name(rs.getString("sub_category_name"));
+	        
+	        return dto;
+	    }, searchTag, searchTag, searchTag, searchTag, searchTag, start, end);
+	}
+	
+	// 검색된 결과가 총 몇 건인지 숫자만 가져오는 메서드
+	public int getSearchTotalCount(String keyword) {
+	    // p.* 대신 COUNT(*)를 사용!
+	    String sql = "SELECT COUNT(*) FROM job_post "
+	               + "WHERE sido LIKE ? OR gugun LIKE ? OR dong LIKE ? OR title LIKE ? OR company_name LIKE ?";
+	    
+	    String searchTag = "%" + keyword + "%";
+	    
+	    // queryForObject를 써서 Integer(숫자) 하나만 리턴받음
+	    return jdbc.queryForObject(sql, Integer.class, searchTag, searchTag, searchTag, searchTag, searchTag);
+	}
+	
+	
 	
 }
