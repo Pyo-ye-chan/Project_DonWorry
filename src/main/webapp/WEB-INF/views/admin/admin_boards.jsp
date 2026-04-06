@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>     
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -243,7 +244,7 @@ body {
     font-weight: 700;
 }
 
-.btn-light-blue {
+.board-detail-btn {
     height: 34px;
     border: 1px solid #cfe0ff;
     border-radius: 8px;
@@ -254,7 +255,7 @@ body {
     font-weight: 700;
 }
 
-.btn-red {
+.board-del-btn {
     height: 34px;
     border: none;
     border-radius: 8px;
@@ -404,8 +405,8 @@ body {
         <section class="summary-grid">
             <div class="summary-card">
                 <div class="summary-label">전체 게시글</div>
-                <div class="summary-value">1,200</div>
-                <div class="summary-sub">오늘 신규 27건</div>
+                <div class="summary-value">${recordTotalCount}</div>
+                <div class="summary-sub">오늘 신규 ${recordTotalCount}건</div>
             </div>
             <div class="summary-card notice">
                 <div class="summary-label">공지 게시글</div>
@@ -430,8 +431,8 @@ body {
                 </select>
                 <select>
                     <option>전체 상태</option>
-                    <option>게시중</option>
-                    <option>숨김</option>
+                    <option>신고</option>
+                    <option>일반</option>
                 </select>
                 <input type="text" placeholder="제목, 작성자 검색">
                 <button class="btn-blue" type="button">검색</button>
@@ -450,39 +451,30 @@ body {
                     </tr>
                 </thead>
                 <tbody>
+                <c:forEach var="i" items="${board_mainList}">
                     <tr>
-                        <td>2001</td>
-                        <td>자유</td>
-                        <td>급여 계산 관련 질문 있어요</td>
-                        <td>Project_Vision</td>
-                        <td>2026-04-01</td>
-                        <td><span class="state-pill state-show">게시중</span></td>
+                        <td>${i.seq}</td>                       
+                        <c:choose>
+	                        <c:when test="${i.category =='free'}"><td>자유</td></c:when>
+	                        <c:when test="${i.category =='qna'}"><td>질문</td></c:when>
+	                        <c:when test="${i.category =='review'}"><td>리뷰</td></c:when>
+                        </c:choose>                       
+                        <td>${i.title}</td>
+                        <td>${i.member_id}</td>
+                        <td id="write_date">
+                        	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
+                        </td>
+                        <td><span class="state-pill state-show">일반</span></td>
                         <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
+                            <button class="board-detail-btn" type="button" data-seq="${i.seq}">보기</button>
+                            <button class="board-del-btn" type="button" data-seq="${i.seq}">삭제</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2002</td>
-                        <td>자유</td>
-                        <td>급여 계산 관련 질문 있어요</td>
-                        <td>Project_Vision</td>
-                        <td>2026-04-01</td>
-                        <td><span class="state-pill state-show">게시중</span></td>
-                        <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
-                        </td>
-                    </tr>                    
+                </c:forEach>                  
                 </tbody>
             </table>
 
-            <div class="pagination-wrap">
-                <button class="page-btn">&lt;</button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">&gt;</button>
+            <div class="pagination-wrap" id="admin_board_navi">
             </div>
         </section>
 
@@ -523,8 +515,8 @@ body {
                         <td>2026-04-01</td>
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
+                            <button class="board-detail-btn" type="button">보기</button>
+                            <button class="board-del-btn" type="button">삭제</button>
                         </td>
                     </tr>
                     <tr>
@@ -535,20 +527,20 @@ body {
                         <td>2026-03-31</td>
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
+                            <button class="board-detail-btn" type="button">보기</button>
+                            <button class="board-del-btn" type="button">삭제</button>
                         </td>
                     </tr>
 
                 </tbody>
             </table>
 
-            <div class="pagination-wrap">
-                <button class="page-btn">&lt;</button>
+            <div class="pagination-wrap" id="admin_notice_navi">
+    <!--             <button class="page-btn">&lt;</button>
                 <button class="page-btn active">1</button>
                 <button class="page-btn">2</button>
                 <button class="page-btn">3</button>
-                <button class="page-btn">&gt;</button>
+                <button class="page-btn">&gt;</button> -->
             </div>
         </section>
     </main>
@@ -558,5 +550,116 @@ body {
         <p style="margin-top:10px; font-size:11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
     </div>
 </div>
+<script>
+
+	let recordTotalCount = ${recordTotalCount}; // 총 개수
+	let recordCountPerPage = ${recordCountPerPage}; // 한페이지에 몇개 (5)
+	let naviCountPerPage  = ${naviCountPerPage }; // navi 몇개 (10)
+	let currentPage = ${currentPage}; // 현재 페이지
+	let pageTotalCount = Math.ceil(recordTotalCount/recordCountPerPage); 
+	
+	let startNavi = Math.floor((currentPage - 1) / naviCountPerPage) * naviCountPerPage +1;
+	let endNavi = startNavi + naviCountPerPage - 1;
+	
+	if(endNavi > pageTotalCount){
+		endNavi = pageTotalCount;
+	}
+	
+	let needPrev = true;
+	let needNext = true;
+	
+	if(startNavi == 1){
+		needPrev = false;
+	}
+	if(endNavi == pageTotalCount){
+		needNext = false;
+	}
+	
+	/*게시물 관리 id = admin_board_navi*/
+	let board_navi = $("#admin_board_navi");
+	
+	//이전 버튼 <
+	if(needPrev){	
+		let btn = $("<button>");
+		btn.addClass("page-btn");
+		btn.html("&lt;");
+		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (startNavi-1)+"'");
+		board_navi.append(btn);
+	}
+	
+	for(let i = startNavi; i <= endNavi; i++){
+		let btn = $("<button>");
+		btn.addClass("page-btn");
+		btn.html(i);
+		btn.attr("onclick","location.href='/admin/admin_boards?page="+ i +"'");
+		
+		if(i== currentPage){
+			btn.addClass("active");//현재 페이지 파란색 처리
+		}
+		board_navi.append(btn);
+	}
+	
+	//다음 버튼 >
+	if(needNext){		 
+		let btn = $("<button>");
+		btn.addClass("page-btn");
+		btn.html("&gt;");//구글 라이브러리 > 모양
+		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (endNavi+1) +"'");
+		board_navi.append(btn);
+	}
+	
+	//보기 버튼 클릭
+	$(".board-detail-btn").on("click",function(){
+		let seq = $(this).data("seq");
+		let page = "${currentPage}" || "1";//page 비었을 경우 대비
+		location.href='/admin/admin_board_detail?seq='+seq+'&page='+page;
+	});
+	
+	//삭제 버튼 클릭
+	$(".board-del-btn").on("click",function(){
+		let seq = $(this).data("seq");
+		let page = "${currentPage}";
+		location.href='/admin/admin_board_delete?seq='+seq+'&page='+page;
+	});
+	
+ 
+//====================공지글=======================//
+/*  
+ 
+ //공지글 관리 id = admin_notice_navi
+	let notice_navi = $("#admin_notice_navi");
+	
+	//이전 버튼 <
+	if(needPrev){	
+		let btn = $("<button>");
+		btn.addClass("page-btn");
+		btn.html("&lt;");
+		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (startNavi-1)+"'");
+		notice_navi.append(btn);
+	}
+	
+	for(let i = startNavi; i <= endNavi; i++){
+		let btn = $("<button>");
+		btn.addClass("page-btn");
+		btn.html(i);
+		btn.attr("onclick","location.href='/admin/admin_boards?page="+ i +"'");
+		
+		if(i== currentPage){
+			btn.addClass("active");//현재 페이지 파란색 처리
+		}
+		notice_navi.append(btn);
+	}
+	
+	//다음 버튼 >
+	if(needNext){		 
+		let btn = $("<button>");
+		btn.addClass("page-btn");
+		btn.html("&gt;");//구글 라이브러리 > 모양
+		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (endNavi+1) +"'");
+		notice_navi.append(btn);
+	} 
+	
+	*/
+</script>
 </body>
 </html>

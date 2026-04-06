@@ -465,7 +465,11 @@
                 <a href="/boards/mainboard_list?page=1"> 
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
                     커뮤니티
-                </a>               
+                </a> 
+                <a href=""> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    고객지원
+                </a>              
             </div>           
         </div>
         <c:if test="${nickName==null }">   
