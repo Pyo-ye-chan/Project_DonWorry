@@ -20,13 +20,21 @@ public class JobPostController {
 	private JobPostDAO dao;
 
 	@RequestMapping("/jobpost")
-	public String jobpost(Model model) {
-		
-		List<JobPostDTO> list = dao.getList();
-		
-		model.addAttribute("list",list);
-	return "jobpost/jobpost";	
+	public String jobpost(Model model, String searchKeyword) {
+		List<JobPostDTO> list;
+	    
+	    if (searchKeyword != null && !searchKeyword.isEmpty()) {
+	        // 검색어가 있을 때
+	        list = dao.searchKeyword(searchKeyword);
+	        model.addAttribute("searchKeyword", searchKeyword); // 검색창에 남겨두기용
+	    } else {
+	        list = dao.getList();
+	    }
+	    
+	    model.addAttribute("list", list);
+	    return "jobpost/jobpost";
 	}
+
 
 	@RequestMapping("/jobwrite")
 	public String jobwrite(){

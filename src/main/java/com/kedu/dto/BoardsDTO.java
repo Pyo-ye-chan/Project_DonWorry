@@ -12,9 +12,19 @@ public class BoardsDTO {
 	private int view_count;
 	private Timestamp write_date;
 	
+	private int reply_count;
 	
 	
 	
+	
+	public int getReply_count() {
+		return reply_count;
+	}
+
+	public void setReply_count(int reply_count) {
+		this.reply_count = reply_count;
+	}
+
 	public BoardsDTO() {}
 	
 	public BoardsDTO(int seq, String member_id, String category, String title, String content, int view_count,

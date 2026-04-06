@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Insert title here</title>
+<title>관리자 - 회원 게시물 관리</title>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -162,7 +162,7 @@ body {
 /* ===== Summary Cards ===== */
 .summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 18px;
     margin-bottom: 22px;
 }
@@ -408,7 +408,7 @@ body {
             </div>
             <div class="page-badge">
                 <i class="fa-regular fa-clipboard" style="margin-right:6px;"></i>
-                전체 게시글 1,200건
+                회원 전체 게시글 120건
             </div>
         </div>
 
@@ -418,29 +418,26 @@ body {
                 <div class="summary-value">1,200</div>
                 <div class="summary-sub">오늘 신규 27건</div>
             </div>
-            <div class="summary-card">
+            <div class="summary-card notice">
                 <div class="summary-label">공지 게시글</div>
                 <div class="summary-value">6</div>
-                <a href="#" style="color: #2563eb; "><div class="summary-sub" style="color: #2563eb; ">작성하러 가기</div></a>
-            </div>
-            <div class="summary-card">
-                <div class="summary-label">삭제 대기</div>
-                <div class="summary-value">8</div>
-                <div class="summary-sub">관리자 검토 필요</div>
+                <a href="/admin/notice_write" style="color: #2563eb; ">
+                	<div class="summary-sub" style="color: #2563eb; ">작성하러 가기</div>
+                </a>
             </div>
         </section>
 
-        <section class="panel">
+         <section class="panel">
             <div class="panel-head">
-                <h3>회원 게시글 목록</h3>
+                <h3>게시글 목록</h3>
             </div>
 
             <div class="filter-row">
                 <select>
-                    <option>전체 게시판</option>
-                    <option>자유 게시판</option>
-                    <option>후기 게시판</option>
-                    <option>질문 게시판</option>
+                    <option value="main">전체 게시판</option>
+                    <option value="free">자유 게시판</option>
+                    <option value="review">후기 게시판</option>
+                    <option value="QA">질문 게시판</option>
                 </select>
                 <select>
                     <option>전체 상태</option>
@@ -478,40 +475,82 @@ body {
                     </tr>
                     <tr>
                         <td>2002</td>
-                        <td>후기</td>
-                        <td>주휴수당 정리 공유합니다</td>
-                        <td>UX_Design_Pro</td>
-                        <td>2026-03-31</td>
-                        <td><span class="state-pill state-show">게시중</span></td>
-                        <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2003</td>
-                        <td>질문</td>
-                        <td>사업자 회원 인증 기간 문의</td>
-                        <td>Tech_Specialist</td>
-                        <td>2026-03-31</td>
-                        <td><span class="state-pill state-hide">숨김</span></td>
-                        <td>
-                            <button class="btn-light-blue" type="button">보기</button>
-                            <button class="btn-red" type="button">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2004</td>
                         <td>자유</td>
-                        <td>야간수당 계산기 추천</td>
-                        <td>Risk_Assessment</td>
-                        <td>2026-03-30</td>
+                        <td>급여 계산 관련 질문 있어요</td>
+                        <td>Project_Vision</td>
+                        <td>2026-04-01</td>
+                        <td><span class="state-pill state-show">게시중</span></td>
+                        <td>
+                            <button class="btn-light-blue" type="button">보기</button>
+                            <button class="btn-red" type="button">삭제</button>
+                        </td>
+                    </tr>                    
+                </tbody>
+            </table>
+
+            <div class="pagination-wrap">
+                <button class="page-btn">&lt;</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">&gt;</button>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h3>공지글 목록</h3>
+            </div>
+
+            <div class="filter-row">
+                <select>
+                    <option>전체 게시판</option>
+                    <option>자유 게시판</option>
+                    <option>후기 게시판</option>
+                    <option>질문 게시판</option>
+                </select>
+                <input type="text" placeholder="제목 검색">
+                <button class="btn-blue" type="button">검색</button>
+            </div>
+
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>게시판</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>상태</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>01</td>
+                        <td>자유</td>
+                        <td>사용자 안내문</td>
+                        <td>admin</td>
+                        <td>2026-04-01</td>
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
                             <button class="btn-light-blue" type="button">보기</button>
                             <button class="btn-red" type="button">삭제</button>
                         </td>
                     </tr>
+                    <tr>
+                        <td>00</td>
+                        <td>후기</td>
+                        <td>알바 리뷰게시판 도배 관련 안내문</td>
+                        <td>admin</td>
+                        <td>2026-03-31</td>
+                        <td><span class="state-pill state-show">게시중</span></td>
+                        <td>
+                            <button class="btn-light-blue" type="button">보기</button>
+                            <button class="btn-red" type="button">삭제</button>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
 

@@ -267,21 +267,35 @@ textarea {
 
 /* 등록 버튼 */
 .submit-btn {
-	width: 100%;
-	padding: 18px;
-	background: #333; /* 사진처럼 어두운 톤 */
-	color: white;
-	border: none;
-	border-radius: 12px;
-	font-size: 18px;
-	font-weight: 700;
-	cursor: pointer;
-	margin-top: 40px;
-	transition: background 0.2s;
+    width: 100%;
+    padding: 18px;
+    background-color: #2563eb; /* 돈워리 메인 블루 컬러 */
+    color: white;
+    border: none;
+    border-radius: 12px; /* 둥근 모서리 유지 */
+    font-size: 18px;
+    font-weight: 700; /* 굵은 글씨로 강조 */
+    cursor: pointer;
+    margin-top: 40px;
+    
+    /* 부드러운 효과 */
+    transition: all 0.2s ease-in-out;
+    
+    /* 그림자 효과로 입체감 부여 */
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
 }
 
+/* 마우스 호버 시 효과 */
 .submit-btn:hover {
-	background: #000;
+    background-color: #1d4ed8; /* 약간 더 짙은 파란색으로 변함 */
+    transform: translateY(-2px); /* 살짝 위로 떠오르는 효과 */
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); /* 그림자 더 짙어짐 */
+}
+
+/* 클릭 시 효과 */
+.submit-btn:active {
+    transform: translateY(1px); /* 눌리는 효과 */
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 </style>
 </head>
@@ -474,10 +488,10 @@ textarea {
 							<option value="평일">평일</option>
 							<option value="주말">주말</option>
 							<option value="요일협의">요일협의</option>
-						</select> <select name="start_time">
+						</select> <select name="work_starttime">
 							<option>오전 09:00</option>
 						</select> <span style="align-self: center;">~</span> <select
-							name="end_time">
+							name="work_endtime">
 							<option>오후 18:00</option>
 						</select>
 					</div>

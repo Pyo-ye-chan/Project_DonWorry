@@ -468,7 +468,7 @@
         </article>-->
 		
 		<c:forEach var = "i" items = "${mainList }">
-        <article class="post-card" onclick="location.href='/boards/detail?seq=${i.seq}'">
+        <article class="post-card" onclick="location.href='/boards/view?seq=${i.seq}&view_count=${i.view_count }'">
             <div class="user-info">
                 <div class="profile-img green">편의</div>
                 <div class="meta">
@@ -490,14 +490,14 @@
                     <span class="material-symbols-outlined">조회수</span>${i.view_count }
                 </span>
                 <span>
-                    <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
+                    <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> ${i.reply_count }
                 </span>
             </div>
-        </article>
-        
+        </article>        
         </c:forEach>
     </div> 
     <div class="page-nav">
+    
        
         </div>
     <div class="container-footer">

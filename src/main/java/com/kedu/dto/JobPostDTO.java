@@ -16,12 +16,11 @@ public class JobPostDTO {
     private String title;
     private String pay;        // JSP: name="pay"
     private String work_days;  // JSP: name="work_days"
-    private String start_time; // JSP: name="start_time"
-    private String end_time;   // JSP: name="end_time"
+    private String work_starttime; // JSP: name="start_time"
+    private String work_endtime;   // JSP: name="end_time"
     private String content;
     private String benefit;
     private Timestamp write_date;
-    
     
     
     
@@ -32,7 +31,7 @@ public class JobPostDTO {
 	}
 	public JobPostDTO(int seq, String member_id, String company_name, String phone, String category, String sido,
 			String gugun, String dong, String address_detail, int count, String title, String pay, String work_days,
-			String start_time, String end_time, String content, String benefit, Timestamp write_date) {
+			String work_starttime, String work_endtime, String content, String benefit, Timestamp write_date) {
 		super();
 		this.seq = seq;
 		this.member_id = member_id;
@@ -47,8 +46,8 @@ public class JobPostDTO {
 		this.title = title;
 		this.pay = pay;
 		this.work_days = work_days;
-		this.start_time = start_time;
-		this.end_time = end_time;
+		this.work_starttime = work_starttime;
+		this.work_endtime = work_endtime;
 		this.content = content;
 		this.benefit = benefit;
 		this.write_date = write_date;
@@ -131,17 +130,17 @@ public class JobPostDTO {
 	public void setWork_days(String work_days) {
 		this.work_days = work_days;
 	}
-	public String getStart_time() {
-		return start_time;
+	public String getWork_starttime() {
+		return work_starttime;
 	}
-	public void setStart_time(String start_time) {
-		this.start_time = start_time;
+	public void setWork_starttime(String work_starttime) {
+		this.work_starttime = work_starttime;
 	}
-	public String getEnd_time() {
-		return end_time;
+	public String getWork_endtime() {
+		return work_endtime;
 	}
-	public void setEnd_time(String end_time) {
-		this.end_time = end_time;
+	public void setWork_endtime(String work_endtime) {
+		this.work_endtime = work_endtime;
 	}
 	public String getContent() {
 		return content;
@@ -161,6 +160,12 @@ public class JobPostDTO {
 	public void setWrite_date(Timestamp write_date) {
 		this.write_date = write_date;
 	}
+    
+    
+    
+    
+    
+	
 
     
     
