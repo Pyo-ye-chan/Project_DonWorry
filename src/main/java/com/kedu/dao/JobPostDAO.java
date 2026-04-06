@@ -17,16 +17,26 @@ public class JobPostDAO {
 	private JdbcTemplate jdbc;
 	
 	public List<JobPostDTO> getList(){
-		String sql = "select * from job_post order by seq desc";
+		String sql = "SELECT p.*, " +
+                "c1.cat_name AS main_category_name, " +
+                "c2.cat_name AS sub_category_name " +
+                "FROM job_post p " +
+                "LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id " +
+                "LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id " +
+                "ORDER BY p.seq DESC";
 
-		return jdbc.query(sql, new BeanPropertyRowMapper<JobPostDTO>(JobPostDTO.class));
-	}
+   return jdbc.query(sql, new BeanPropertyRowMapper<JobPostDTO>(JobPostDTO.class));
+}
 	
 	public List<JobPostDTO> searchKeyword(String keyword) {
-	    // 주소 컬럼들에서 키워드가 포함된 행을 찾음
-	    String sql = "SELECT * FROM job_post WHERE "
-	               + "sido LIKE ? OR gugun LIKE ? OR dong LIKE ? "
-	               + "ORDER BY write_date DESC";
+	    String sql = "SELECT p.*, "
+	               + "       c1.cat_name AS main_category_name, "
+	               + "       c2.cat_name AS sub_category_name "
+	               + "FROM job_post p "
+	               + "LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id "
+	               + "LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id "
+	               + "WHERE p.sido LIKE ? OR p.gugun LIKE ? OR p.dong LIKE ? "
+	               + "ORDER BY p.write_date DESC";
 	    
 	    String searchTag = "%" + keyword + "%";
 	    
@@ -43,7 +53,15 @@ public class JobPostDAO {
 	        dto.setGugun(rs.getString("gugun"));
 	        dto.setDong(rs.getString("dong"));
 	        dto.setContent(rs.getString("content"));
-	        dto.setCategory(rs.getString("category"));
+	        
+	        // 원본 ID값(숫자) 세팅
+	        dto.setMain_category(rs.getString("main_category"));
+	        dto.setSub_category(rs.getString("sub_category"));
+	        
+	        // [추가] JOIN으로 가져온 실제 이름(문자열) 세팅
+	        dto.setMain_category_name(rs.getString("main_category_name"));
+	        dto.setSub_category_name(rs.getString("sub_category_name"));
+	        
 	        return dto;
 	    }, searchTag, searchTag, searchTag);
 	}
@@ -54,9 +72,9 @@ public class JobPostDAO {
 	               + "seq, member_id, company_name, phone, "
 	               + "sido, gugun, dong, address_detail, count, "
 	               + "title, pay, work_days, work_starttime, work_endtime, "
-	               + "category, content, benefit, write_date) "
+	               + "main_category, sub_category, content, benefit, write_date) "
 	               // 2. VALUES (seq + ? 16개 + sysdate = 총 18개)
-	               + "VALUES (job_post_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
+	               + "VALUES (job_post_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
 
 	    // 3. 인자 전달 (총 16개)
 	    return jdbc.update(sql,
@@ -73,9 +91,10 @@ public class JobPostDAO {
 	        dto.getWork_days(),       // 11
 	        dto.getWork_starttime(),      // 12
 	        dto.getWork_endtime(),        // 13
-	        dto.getCategory(),        // 14
-	        dto.getContent(),         // 15
-	        dto.getBenefit()          // 16
+	        dto.getMain_category(),        // 14
+	        dto.getSub_category(),    // 15
+	        dto.getContent(),         // 16
+	        dto.getBenefit()          // 17
 	    );
 	}
 	
