@@ -193,7 +193,14 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 60px;
+            padding:0;
         }
+        .summary-grid a {
+		    display: block;    /* inline을 block으로 변경 (영역 확보의 핵심) */
+		    width: 100%;       /* 부모 너비 꽉 채우기 */
+		    height: 100%;      /* 부모 높이 꽉 채우기 */
+		    text-decoration: none;
+		}
         .card {
             border: 1px solid #e5e7eb;
             border-radius: 15px;
@@ -223,7 +230,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            height: 100%;
             color: #ccc;
+            padding:0;
         }
         .add-card span {
             color: #ccc;
@@ -518,22 +527,24 @@
             <div class="info-item"><span class="info-label">총 시간</span><span class="info-val">96시간</span></div>     
             </a>       
         </div>
-        <div class="card add-card">
-            <a href="members/toLogin" style="text-decoration: none; ">   
-            <span>+ 알바 추가하기</span>
-            </a>
-        </div>
+        
+	    	<a href="/salary/calendar" > 
+		        <div class="card add-card" >              
+		           + 알바 추가하기         
+		        </div>
+	        </a>
+    	
     </div>
 </c:when> 
  <c:otherwise>
- 	<c:if test="${placeList[0].name == null }">  
-    <div class="summary-grid">
-        <div class="card add-card">
-            <a href="/salary/calendar" style="text-decoration: none; ">   
-            <span>+ 알바 추가하기</span>
-            </a>
-        </div>
-    </div>
+ 	<c:if test="${placeList[0].name == null }"> 
+	     <div class="summary-grid">
+	    	<a href="/salary/calendar" > 
+		        <div class="card add-card" >              
+		           + 알바 추가하기         
+		        </div>
+	        </a>
+	    </div>   
    	</c:if>
    	<div class="summary-grid"> 
    	<c:if test="${placeList[0].name!=null }">
@@ -553,11 +564,11 @@
             </a>               	
         </div>
 	   	</c:forEach>
-	   	<div class="card add-card">
-            <a href="/salary/calendar" style="text-decoration: none; ">   
-            <span>+ 알바 추가하기</span>
-            </a>
-        </div>
+	   	 	<a href="/salary/calendar" > 
+		        <div class="card add-card" >              
+		           + 알바 추가하기         
+		        </div>
+	        </a>
    	</c:if>
    	</div>
 </c:otherwise>
