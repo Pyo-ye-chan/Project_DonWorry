@@ -509,15 +509,15 @@ body {
         <!-- 이동 툴바 -->
         <div class="admin-toolbar">
             <a href="/admin/admin_members" class="admin-tool-btn">
-                <i class="fa-solid fa-users"></i>
+                <i class="fa-solid fa-user-shield "></i>
                 회원 관리
             </a>
             <a href="/admin/admin_boards" class="admin-tool-btn">
-                <i class="fa-regular fa-clipboard"></i>
-                게시글 관리
+                <i class="fa-solid fa-file-pen"></i>
+                게시물 관리
             </a>
             <a href="/admin/admin_inquiry" class="admin-tool-btn">
-                <i class="fa-regular fa-envelope-open"></i>
+                <i class="fa-regular fa-circle-question"></i>
                 고객 문의 관리
             </a>
         </div>

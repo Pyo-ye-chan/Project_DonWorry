@@ -31,6 +31,11 @@ public class AdminController {
 		return "admin/admin_boards";
 	}
 	
+	@RequestMapping("/notice_write")
+	public String adminWrite() {
+		return "admin/notice_write";
+	}
+	
 	@RequestMapping("/admin_inquiry")
 	public String toInquiry() {
 		return "admin/admin_inquiry";

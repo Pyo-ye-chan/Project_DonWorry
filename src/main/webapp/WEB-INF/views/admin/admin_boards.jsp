@@ -152,13 +152,6 @@ body {
     padding-left: 10px;
 }
 
-.page-badge {
-    background: #fff;
-    padding: 12px 16px;
-    font-size: 15px;
-    color: #475569;
-}
-
 /* ===== Summary Cards ===== */
 .summary-grid {
     display: grid;
@@ -405,10 +398,6 @@ body {
             <div class="page-title">
                 <h2>게시물 관리</h2>
                 <p>커뮤니티 게시글 조회, 삭제가 가능합니다.</p>
-            </div>
-            <div class="page-badge">
-                <i class="fa-regular fa-clipboard" style="margin-right:6px;"></i>
-                회원 전체 게시글 120건
             </div>
         </div>
 
