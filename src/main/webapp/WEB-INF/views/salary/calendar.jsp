@@ -711,41 +711,41 @@ body {
 	<div class="container">
 
 
-			<c:choose>
-		<c:when test="${nickName==null}">
-			<div class="top-auth">
-				<span style="font-size: 13px; color: #666; cursor: pointer;">
-					<a href="members/toLogin"
-					style="text-decoration: none; color: black; margin-right: 10px;">
+		<c:choose>
+			<c:when test="${nickName==null}">
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
+						<a href="members/toLogin"
+						style="text-decoration: none; color: black; margin-right: 10px;">
+							<i class="fa-regular fa-user fa-lg"
+							style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
+					</a>
+					</span>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
 						<i class="fa-regular fa-user fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
-				</a>
-				</span>
-			</div>
-		</c:when>
-		<c:otherwise>
-			<div class="top-auth">
-				<span style="font-size: 13px; color: #666; cursor: pointer;">
-					<i class="fa-regular fa-user fa-lg"
-					style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
-					${nickName}님 환영합니다. <a href="members/logout"
-					style="text-decoration: none; color: black">
-						<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
-				</a>
-				</span>
-				<c:if test="${type=='관리자'}">
-					<a href="/admin/admin_main" style="text-decoration: none;"><div
-							class="now-admin">관리자</div></a>
-				</c:if>
-				<c:if test="${type=='사업자'}">
-					<div class="now-business">사업자</div>
-				</c:if>
-				<c:if test="${type=='개인'}">
-					<div class="now-personal">개인</div>
-				</c:if>
-			</div>
-		</c:otherwise>
-	</c:choose>
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
+						${nickName}님 환영합니다. <a href="members/logout"
+						style="text-decoration: none; color: black">
+							<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
+					</a>
+					</span>
+					<c:if test="${type=='관리자'}">
+						<a href="/admin/admin_main" style="text-decoration: none;"><div
+								class="now-admin">관리자</div></a>
+					</c:if>
+					<c:if test="${type=='사업자'}">
+						<div class="now-business">사업자</div>
+					</c:if>
+					<c:if test="${type=='개인'}">
+						<div class="now-personal">개인</div>
+					</c:if>
+				</div>
+			</c:otherwise>
+		</c:choose>
 		<nav class="navbar">
 			<div style="display: flex; align-items: center; gap: 40px;">
 				<a href="/" class="logo">돈워리</a>
@@ -775,28 +775,25 @@ body {
 
 			<!-- 왼쪽 -->
 			<div class="calendar-left">
-			
-					<c:forEach var="i" items="${placeList}">
-					    <div class="card">
-					        <div class="card-title">${i.name}</div>		
-					        			
-					        <div class="info-item">
-					            <span class="info-label">예상 급여</span>
-					            <span class="info-val blue">${i.totalPay}원</span>
-					        </div>
-					
-					        <div class="info-item">
-					            <span class="info-label">근무 일수</span>
-					            <span class="info-val">${i.workDays}일</span>
-					        </div>
-					
-					        <div class="info-item">
-					            <span class="info-label">근무 시간</span>
-					            <span class="info-val">${i.totalHours}시간</span>
-					        </div>
-					    </div>
-					</c:forEach>
-				
+
+				<c:forEach var="i" items="${placeList}">
+					<div class="card">
+						<div class="card-title">${i.name}</div>
+
+						<div class="info-item">
+							<span class="info-label">예상 급여</span> <span class="info-val blue">${i.totalPay}원</span>
+						</div>
+
+						<div class="info-item">
+							<span class="info-label">근무 일수</span> <span class="info-val">${i.workDays}일</span>
+						</div>
+
+						<div class="info-item">
+							<span class="info-label">근무 시간</span> <span class="info-val">${i.totalHours}시간</span>
+						</div>
+					</div>
+				</c:forEach>
+
 
 				<div class="card add-card" id="addWorkBtn">
 					<span>+ 근무지 등록</span>
@@ -807,10 +804,6 @@ body {
 			<div class="calendar-right">
 				<div class="calendar-box">
 					<div id="calendar"></div>
-				</div>
-
-				<div class="selected-date" id="dailyWorklog">
-					근무 상세 내역<br>
 				</div>
 
 				<div class="salary-box">
@@ -851,8 +844,7 @@ body {
 
 			<form id="worklogForm" action="/worklog/insert" method="post">
 				<!-- hidden -->
-				<input type="hidden" id="seq" name="seq" value="0"> <input
-					type="hidden" id="worklog_date" name="worklog_date">
+				<input type="hidden" id="seq" name="seq" value="0">
 
 				<div class="modal-body">
 
@@ -1050,307 +1042,587 @@ body {
 		</div>
 	</div>
 
+	<!-- 근무 기록 수정/삭제 -->
+	<!-- 근무 상세보기 / 수정 모달 -->
+	<div id="detailModal" class="modal">
+		<div class="modal-content modal-lg">
+			<div class="modal-header">
+				<h2>근무 상세보기</h2>
+				<button type="button" id="closeDetailModal" class="close-btn">×</button>
+			</div>
 
+			<form id="detailForm" action="/worklog/update" method="post">
+				<input type="hidden" id="detail_seq" name="seq" value="0">
 
+				<div class="modal-body">
+					<div class="form-grid two-col">
+						<div class="form-row">
+							<label for="detail_parent_seq">근무지</label> <select
+								id="detail_parent_seq" name="parent_seq" required disabled></select>
+						</div>
+
+						<div class="form-row">
+							<label for="detail_work_date">근무 날짜</label> <input type="date"
+								id="detail_work_date" name="work_date" required readonly>
+						</div>
+					</div>
+
+					<div class="section-title">근무 시간</div>
+					<div class="form-grid two-col">
+						<div class="form-row">
+							<label for="detail_start_time">근무 시작시간</label> <input
+								type="datetime-local" id="detail_start_time" name="start_time"
+								required readonly>
+						</div>
+
+						<div class="form-row">
+							<label for="detail_end_time">근무 종료시간</label> <input
+								type="datetime-local" id="detail_end_time" name="end_time"
+								required readonly>
+						</div>
+					</div>
+
+					<div class="section-title">휴게 시간</div>
+					<div class="form-grid two-col">
+						<div class="form-row">
+							<label for="detail_breaktime">휴게 시간(분)</label> <input
+								type="number" id="detail_breaktime" name="breaktime" min="0"
+								value="0" readonly>
+						</div>
+					</div>
+
+					<div class="section-title">수당 / 급여</div>
+					<div class="form-grid two-col">
+						<div class="form-row">
+							<label for="detail_night_pay">야간수당</label> <input type="number"
+								id="detail_night_pay" name="night_pay" min="0" value="0"
+								readonly>
+						</div>
+
+						<div class="form-row">
+							<label for="detail_overtime_pay">연장수당</label> <input
+								type="number" id="detail_overtime_pay" name="overtime_pay"
+								min="0" value="0" readonly>
+						</div>
+
+						<div class="form-row">
+							<label for="detail_holiday_pay">휴일수당</label> <input type="number"
+								id="detail_holiday_pay" name="holiday_pay" min="0" value="0"
+								readonly>
+						</div>
+
+						<div class="form-row">
+							<label for="detail_total_pay">총 급여</label> <input type="number"
+								id="detail_total_pay" name="total_pay" min="0" value="0"
+								required readonly>
+						</div>
+					</div>
+
+					<div class="result-box">
+						<div class="result-row">
+							<span>총 근무시간</span> <strong id="detailWorkResult">0시간 0분</strong>
+						</div>
+						<div class="result-row">
+							<span>총 휴게시간</span> <strong id="detailBreakResult">0시간
+								0분</strong>
+						</div>
+						<div class="result-row">
+							<span>실근무시간</span> <strong id="detailRealWorkResult">0시간
+								0분</strong>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<label for="detail_memo">메모</label>
+						<textarea id="detail_memo" name="memo" rows="5" readonly
+							placeholder="근무 특이사항, 지각/조퇴, 메모 등을 입력하세요."></textarea>
+					</div>
+				</div>
+
+				<div class="modal-footer" id="detailViewButtons">
+					<button type="button" class="btn btn-cancel" id="detailCloseBtn">확인</button>
+					<button type="button" class="btn btn-save" id="detailEditBtn">수정</button>
+				</div>
+
+				<div class="modal-footer" id="detailEditButtons"
+					style="display: none;">
+					<button type="button" class="btn btn-cancel"
+						id="detailEditCancelBtn">수정 취소</button>
+					<button type="submit" class="btn btn-save" id="detailSaveBtn">저장</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
 	<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const calendarEl = document.getElementById("calendar");
 
+    const workModal = document.getElementById("workModal");
+    const closeModal = document.getElementById("closeModal");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const worklogForm = document.getElementById("worklogForm");
 
-	document.addEventListener('DOMContentLoaded', function() {
-	    const calendarEl = document.getElementById('calendar');
-	    const dailyWorklogEl = document.getElementById('dailyWorklog');
+    const seqEl = document.getElementById("seq");
+    const parentSeqEl = document.getElementById("parent_seq");
+    const workDateEl = document.getElementById("work_date");
+    const startTimeEl = document.getElementById("start_time");
+    const endTimeEl = document.getElementById("end_time");
+    const breaktimeEl = document.getElementById("breaktime");
+    const nightPayEl = document.getElementById("night_pay");
+    const overtimePayEl = document.getElementById("overtime_pay");
+    const holidayPayEl = document.getElementById("holiday_pay");
+    const totalPayEl = document.getElementById("total_pay");
+    const memoEl = document.getElementById("memo");
 
-	    // 근무 등록 모달
-	    const workModal = document.getElementById("workModal");
-	    const closeModal = document.getElementById("closeModal");
-	    const cancelBtn = document.getElementById("cancelBtn");
+    const workResultEl = document.getElementById("workResult");
+    const breakResultEl = document.getElementById("breakResult");
+    const realWorkResultEl = document.getElementById("realWorkResult");
 
-	    const seqEl = document.getElementById("seq");
-	    const worklogDateEl = document.getElementById("worklog_date");
+    const workplaceModal = document.getElementById("workplaceModal");
+    const addWorkBtn = document.getElementById("addWorkBtn");
+    const closeWP = document.getElementById("closeWorkplaceModal");
+    const cancelWP = document.getElementById("cancelWorkplaceBtn");
+    
+    
+    const detailModal = document.getElementById("detailModal");
+    const closeDetailModal = document.getElementById("closeDetailModal");
+    const detailCloseBtn = document.getElementById("detailCloseBtn");
+    const detailEditBtn = document.getElementById("detailEditBtn");
+    const detailEditCancelBtn = document.getElementById("detailEditCancelBtn");
+    const detailForm = document.getElementById("detailForm");
 
-	    const parentSeqEl = document.getElementById("parent_seq");
-	    const workDateEl = document.getElementById("work_date");
-	    const startTimeEl = document.getElementById("start_time");
-	    const endTimeEl = document.getElementById("end_time");
-	    const breaktimeEl = document.getElementById("breaktime");
+    const detailSeqEl = document.getElementById("detail_seq");
+    const detailParentSeqEl = document.getElementById("detail_parent_seq");
+    const detailWorkDateEl = document.getElementById("detail_work_date");
+    const detailStartTimeEl = document.getElementById("detail_start_time");
+    const detailEndTimeEl = document.getElementById("detail_end_time");
+    const detailBreaktimeEl = document.getElementById("detail_breaktime");
+    const detailNightPayEl = document.getElementById("detail_night_pay");
+    const detailOvertimePayEl = document.getElementById("detail_overtime_pay");
+    const detailHolidayPayEl = document.getElementById("detail_holiday_pay");
+    const detailTotalPayEl = document.getElementById("detail_total_pay");
+    const detailMemoEl = document.getElementById("detail_memo");
 
-	    const nightPayEl = document.getElementById("night_pay");
-	    const overtimePayEl = document.getElementById("overtime_pay");
-	    const holidayPayEl = document.getElementById("holiday_pay");
-	    const totalPayEl = document.getElementById("total_pay");
-	    const memoEl = document.getElementById("memo");
+    const detailWorkResultEl = document.getElementById("detailWorkResult");
+    const detailBreakResultEl = document.getElementById("detailBreakResult");
+    const detailRealWorkResultEl = document.getElementById("detailRealWorkResult");
 
-	    const workResultEl = document.getElementById("workResult");
-	    const breakResultEl = document.getElementById("breakResult");
-	    const realWorkResultEl = document.getElementById("realWorkResult");
+    const detailViewButtons = document.getElementById("detailViewButtons");
+    const detailEditButtons = document.getElementById("detailEditButtons");
 
-	    // 워크스페이스 모달
-	    const workplaceModal = document.getElementById("workplaceModal");
-	    const addWorkBtn = document.getElementById("addWorkBtn");
-	    const closeWP = document.getElementById("closeWorkplaceModal");
-	    const cancelWP = document.getElementById("cancelWorkplaceBtn");
+    let originalDetailData = null;
 
-	    function getCurrentDateTimeLocal() {
-	        const now = new Date();
-	        const yyyy = now.getFullYear();
-	        const mm = String(now.getMonth() + 1).padStart(2, "0");
-	        const dd = String(now.getDate()).padStart(2, "0");
-	        const hh = String(now.getHours()).padStart(2, "0");
-	        const mi = String(now.getMinutes()).padStart(2, "0");
-	        return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
-	    }
+    
+    //////////
 
-	    function toMinutes(datetimeLocalValue) {
-	        if (!datetimeLocalValue) return null;
+    function toMinutes(datetimeLocalValue) {
+        if (!datetimeLocalValue) return null;
 
-	        const date = new Date(datetimeLocalValue);
-	        if (isNaN(date.getTime())) return null;
+        const date = new Date(datetimeLocalValue);
+        if (isNaN(date.getTime())) return null;
 
-	        return Math.floor(date.getTime() / 60000);
-	    }
+        return Math.floor(date.getTime() / 60000);
+    }
 
-	    function formatMinutes(totalMinutes) {
-	        if (!totalMinutes || totalMinutes < 0) return "0시간 0분";
+    function formatMinutes(totalMinutes) {
+        if (!totalMinutes || totalMinutes < 0) return "0시간 0분";
 
-	        const hour = Math.floor(totalMinutes / 60);
-	        const minute = totalMinutes % 60;
-	        return `${hour}시간 ${minute}분`;
-	    }
+        const hour = Math.floor(totalMinutes / 60);
+        const minute = totalMinutes % 60;
+        return `${hour}시간 ${minute}분`;
+    }
 
-	    function calculateTimes() {
-	        const workStart = toMinutes(startTimeEl.value);
-	        const workEnd = toMinutes(endTimeEl.value);
-	        const breakMinutes = parseInt(breaktimeEl.value || "0", 10);
+    function calculateTimes() {
+        const workStart = toMinutes(startTimeEl.value);
+        const workEnd = toMinutes(endTimeEl.value);
+        const breakMinutes = parseInt(breaktimeEl.value || "0", 10);
 
-	        let totalWork = 0;
-	        let totalBreak = 0;
-	        let realWork = 0;
+        let totalWork = 0;
+        let totalBreak = 0;
+        let realWork = 0;
 
-	        if (workStart !== null && workEnd !== null && workEnd > workStart) {
-	            totalWork = workEnd - workStart;
-	        }
+        if (workStart !== null && workEnd !== null && workEnd > workStart) {
+            totalWork = workEnd - workStart;
+        }
 
-	        if (!isNaN(breakMinutes) && breakMinutes > 0) {
-	            totalBreak = breakMinutes;
-	        }
+        if (!isNaN(breakMinutes) && breakMinutes > 0) {
+            totalBreak = breakMinutes;
+        }
 
-	        realWork = totalWork - totalBreak;
-	        if (realWork < 0) {
-	            realWork = 0;
-	        }
+        realWork = totalWork - totalBreak;
+        if (realWork < 0) realWork = 0;
 
-	        workResultEl.innerText = formatMinutes(totalWork);
-	        breakResultEl.innerText = formatMinutes(totalBreak);
-	        realWorkResultEl.innerText = formatMinutes(realWork);
-	    }
+        workResultEl.innerText = formatMinutes(totalWork);
+        breakResultEl.innerText = formatMinutes(totalBreak);
+        realWorkResultEl.innerText = formatMinutes(realWork);
+    }
 
-	    function openWorkModal(dateStr) {
-	        seqEl.value = 0;
-	        workDateEl.value = dateStr || "";   
+    function renderWorkplaceList(list, selectedSeq) {
+        parentSeqEl.innerHTML = '<option value="">근무지 선택</option>';
 
-	        if (dateStr) {
-	            startTimeEl.value = dateStr + "T09:00";
-	            endTimeEl.value = dateStr + "T18:00";
-	        } else {
-	            startTimeEl.value = "";
-	            endTimeEl.value = "";
-	        }
-	        
-	        $.ajax({
-	            url: "/workplaces/list",
-	            type: "get",
-	            dataType: "json", 
-	            success: function(list) {
-	                renderWorkplaceList(list);   
-	            },
-	            error: function(xhr, status, error) {
-	                console.error("근무지 목록 불러오기 실패:", error);
-	                alert("근무지 목록을 불러오지 못했습니다.");
-	            }
-	        });
-	    
-	        breaktimeEl.value = 0;
-	        parentSeqEl.value = "";
-	        nightPayEl.value = 0;
-	        overtimePayEl.value = 0;
-	        holidayPayEl.value = 0;
-	        totalPayEl.value = 0;
-	        memoEl.value = "";
+        list.forEach(function (w) {
+            const option = document.createElement("option");
+            option.value = w.seq;
+            option.textContent = w.name;
 
-	        calculateTimes();
-	        workModal.style.display = "flex";
-	    }
-	    
-	    function renderWorkplaceList(list) {
+            if (selectedSeq && String(selectedSeq) === String(w.seq)) {
+                option.selected = true;
+            }
 
-	        const workplace = document.getElementById("parent_seq");
-	        workplace.innerHTML = '<option value="">근무지 선택</option>';
+            parentSeqEl.appendChild(option);
+        });
+    }
 
-	        list.forEach(function(w) {
-	            const option = document.createElement("option");
-	            option.value = w.seq;
-	            option.textContent = w.name;
+    function loadWorkplaceList(selectedSeq) {
+        $.ajax({
+            url: "/workplaces/list",
+            type: "get",
+            dataType: "json",
+            success: function (list) {
+                renderWorkplaceList(list, selectedSeq);
+            },
+            error: function () {
+                alert("근무지 목록을 불러오지 못했습니다.");
+            }
+        });
+    }
 
-	            workplace.appendChild(option);
-	        });
-	    }
+    function closeWorkModal() {
+        workModal.style.display = "none";
+    }
 
-	    function closeWorkModal() {
-	        workModal.style.display = "none";
-	    }
+    function resetWorkForm() {
+        seqEl.value = 0;
+        parentSeqEl.value = "";
+        workDateEl.value = "";
+        startTimeEl.value = "";
+        endTimeEl.value = "";
+        breaktimeEl.value = 0;
+        nightPayEl.value = 0;
+        overtimePayEl.value = 0;
+        holidayPayEl.value = 0;
+        totalPayEl.value = 0;
+        memoEl.value = "";
 
-	    const calendar = new FullCalendar.Calendar(calendarEl, {
-	        locale: 'ko',
-	        initialView: 'dayGridMonth',
-	        height: 'auto',
-	        headerToolbar: {
-	            left: 'today',
-	            center: 'title',
-	            right: 'prev,next'
-	        },
-	        buttonText: {
-	            today: '오늘'
-	        },
-	        events: [
-	            { title: '편의점', start: '2026-03-08' },
-	            { title: '카페', start: '2026-03-16' },
-	            { title: '야간', start: '2026-03-27' }
-	        ],
-	        dateClick: function(info) {
-	            openWorkModal(info.dateStr);
-	        },
-	        eventClick: function(info) {
-	            dailyWorklogEl.innerHTML =
-	                "근무 상세 내역<br>" +
-	                "근무: " + info.event.title + "<br>" +
-	                "날짜: " + info.event.startStr;
-	        }
-	    });
+        workResultEl.innerText = "0시간 0분";
+        breakResultEl.innerText = "0시간 0분";
+        realWorkResultEl.innerText = "0시간 0분";
+    }
 
-	    calendar.render();
+    function openInsertModal(dateStr) {
+        resetWorkForm();
 
-	    // 근무 등록 모달 닫기
-	    closeModal.addEventListener("click", closeWorkModal);
-	    cancelBtn.addEventListener("click", closeWorkModal);
+        seqEl.value = 0;
+        workDateEl.value = dateStr || "";
 
-	    // 근무시간 계산
-	    startTimeEl.addEventListener("change", calculateTimes);
-	    endTimeEl.addEventListener("change", calculateTimes);
-	    breaktimeEl.addEventListener("input", calculateTimes);
+        if (dateStr) {
+            startTimeEl.value = dateStr + "T09:00";
+            endTimeEl.value = dateStr + "T18:00";
+        }
 
-	    // 근무 등록 저장 검증
-	    document.getElementById("worklogForm").addEventListener("submit", function(e) {
-	        const workStart = toMinutes(startTimeEl.value);
-	        const workEnd = toMinutes(endTimeEl.value);
-	        const breakMinutes = parseInt(breaktimeEl.value || "0", 10);
+        loadWorkplaceList();
+        calculateTimes();
+        
+        workModal.style.display = "flex";
+    }
 
-	        if (!parentSeqEl.value) {
-	            alert("근무지를 선택해주세요.");
-	            e.preventDefault();
-	            return;
-	        }
+    function openDetailModal(event) {
+        const seq = event.id || event.extendedProps.seq;
 
-	        if (!workDateEl.value) {
-	            alert("근무 날짜를 선택해주세요.");
-	            e.preventDefault();
-	            return;
-	        }
+        if (!seq) {
+            alert("근무기록 번호를 찾을 수 없습니다.");
+            return;
+        }
 
-	        if (!startTimeEl.value || !endTimeEl.value) {
-	            alert("근무 시작시간과 종료시간을 입력해주세요.");
-	            e.preventDefault();
-	            return;
-	        }
+        $.ajax({
+            url: "/worklog/detail",
+            type: "get",
+            data: { seq: seq },
+            dataType: "json",
+            success: function(dto) {
+                if (!dto || !dto.seq) {
+                    alert("해당 근무기록이 없습니다.");
+                    return;
+                }
 
-	        if (workStart === null || workEnd === null || workEnd <= workStart) {
-	            alert("근무 종료시간은 시작시간보다 늦어야 합니다.");
-	            e.preventDefault();
-	            return;
-	        }
+                originalDetailData = dto;
+                fillDetailForm(dto);
+                setDetailReadonlyMode(true);
+                detailModal.style.display = "flex";
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                alert("근무 상세 정보를 불러오지 못했습니다.");
+            }
+        });
+    }
 
-	        if (isNaN(breakMinutes) || breakMinutes < 0) {
-	            alert("휴게시간은 0 이상으로 입력해주세요.");
-	            e.preventDefault();
-	            return;
-	        }
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: "ko",
+        initialView: "dayGridMonth",
+        height: "auto",
+        headerToolbar: {
+            left: "today",
+            center: "title",
+            right: "prev,next"
+        },
+        buttonText: {
+            today: "오늘"
+        },
+        events: [
+            <c:forEach var="i" items="${detailList}" varStatus="status">
+            {	
+            	id:"${i.logSeq}",
+                title: "${i.name}",
+                start: "${i.workDate}",
+                extendedProps: {
+                    seq: "${i.logSeq}"
+                }
+            }<c:if test="${!status.last}">,</c:if>
+            </c:forEach>
+        ],
+        dateClick: function (info) {
+            openInsertModal(info.dateStr);
+        },
+        eventClick: function (info) {
+        	console.log("클릭 이벤트 객체:", info.event);
+            openDetailModal(info.event);
+        }
+    });
 
-	        if (breakMinutes >= (workEnd - workStart)) {
-	            alert("휴게시간이 총 근무시간보다 길 수 없습니다.");
-	            e.preventDefault();
-	            return;
-	        }
-	    });
-	    
-	  
+    calendar.render();
+    
+    
+    function setDetailReadonlyMode(isReadonly) {
+        detailParentSeqEl.disabled = isReadonly;
+        detailWorkDateEl.readOnly = isReadonly;
+        detailStartTimeEl.readOnly = isReadonly;
+        detailEndTimeEl.readOnly = isReadonly;
+        detailBreaktimeEl.readOnly = isReadonly;
+        detailNightPayEl.readOnly = isReadonly;
+        detailOvertimePayEl.readOnly = isReadonly;
+        detailHolidayPayEl.readOnly = isReadonly;
+        detailTotalPayEl.readOnly = isReadonly;
+        detailMemoEl.readOnly = isReadonly;
 
-	    // 워크스페이스 모달
-	    if (addWorkBtn) {
-	        addWorkBtn.addEventListener("click", function() {
-	            workplaceModal.style.display = "flex";
-	        });
-	    }
+        detailViewButtons.style.display = isReadonly ? "flex" : "none";
+        detailEditButtons.style.display = isReadonly ? "none" : "flex";
+    }
 
-	    function closeWorkplaceModal() {
-	        workplaceModal.style.display = "none";
-	    }
+    function renderDetailWorkplaceList(list, selectedSeq) {
+        detailParentSeqEl.innerHTML = '<option value="">근무지 선택</option>';
 
-	    closeWP.addEventListener("click", closeWorkplaceModal);
-	    cancelWP.addEventListener("click", closeWorkplaceModal);
+        list.forEach(function(w) {
+            const option = document.createElement("option");
+            option.value = w.seq;
+            option.textContent = w.name;
 
-// 	    // 바깥 클릭 닫기
-// 	    window.addEventListener("click", function(e) {
-// 	        if (e.target === workModal) {
-// 	            closeWorkModal();
-// 	        }
-// 	        if (e.target === workplaceModal) {
-// 	            closeWorkplaceModal();
-// 	        }
-// 	    });
+            if (String(selectedSeq) === String(w.seq)) {
+                option.selected = true;
+            }
 
-	    // 세금 직접입력
-	    const taxTypeRadios = document.querySelectorAll('input[name="tax_applied"]');
-	    const customTaxInput = document.getElementById("custom_tax_value");
-	    const taxCustomRadio = document.getElementById('taxCustom');
+            detailParentSeqEl.appendChild(option);
+        });
+    }
 
-	    taxTypeRadios.forEach(radio => {
-	        radio.addEventListener('change', function() {
-	            if (this.id === 'taxCustom') {
-	                customTaxInput.disabled = false;
-	                customTaxInput.focus();
-	                this.value = customTaxInput.value;
-	            } else {
-	                customTaxInput.disabled = true;
-	                customTaxInput.value = "";
-	            }
-	        });
-	    });
+    function loadDetailWorkplaceList(selectedSeq) {
+        $.ajax({
+            url: "/workplaces/list",
+            type: "get",
+            dataType: "json",
+            success: function(list) {
+                renderDetailWorkplaceList(list, selectedSeq);
+            },
+            error: function() {
+                alert("근무지 목록을 불러오지 못했습니다.");
+            }
+        });
+    }
 
-	    customTaxInput.addEventListener('input', function() {
-	        if (taxCustomRadio.checked) {
-	            taxCustomRadio.value = this.value;
-	        }
-	    });
-	});
-	
+    function calculateDetailTimes() {
+        const workStart = toMinutes(detailStartTimeEl.value);
+        const workEnd = toMinutes(detailEndTimeEl.value);
+        const breakMinutes = parseInt(detailBreaktimeEl.value || "0", 10);
+
+        let totalWork = 0;
+        let totalBreak = 0;
+        let realWork = 0;
+
+        if (workStart !== null && workEnd !== null && workEnd > workStart) {
+            totalWork = workEnd - workStart;
+        }
+
+        if (!isNaN(breakMinutes) && breakMinutes > 0) {
+            totalBreak = breakMinutes;
+        }
+
+        realWork = totalWork - totalBreak;
+        if (realWork < 0) realWork = 0;
+
+        detailWorkResultEl.innerText = formatMinutes(totalWork);
+        detailBreakResultEl.innerText = formatMinutes(totalBreak);
+        detailRealWorkResultEl.innerText = formatMinutes(realWork);
+    }
+
+    function fillDetailForm(dto) {
+        detailSeqEl.value = dto.seq;
+        detailWorkDateEl.value = dto.work_date ? String(dto.work_date).substring(0, 10) : "";
+        detailStartTimeEl.value = dto.start_time ? String(dto.start_time).substring(0, 16) : "";
+        detailEndTimeEl.value = dto.end_time ? String(dto.end_time).substring(0, 16) : "";
+        detailBreaktimeEl.value = dto.breaktime || 0;
+        detailNightPayEl.value = dto.night_pay || 0;
+        detailOvertimePayEl.value = dto.overtime_pay || 0;
+        detailHolidayPayEl.value = dto.holiday_pay || 0;
+        detailTotalPayEl.value = dto.total_pay || 0;
+        detailMemoEl.value = dto.memo || "";
+
+        loadDetailWorkplaceList(dto.parent_seq);
+        calculateDetailTimes();
+    }
+
+    function closeDetailModalFunc() {
+        detailModal.style.display = "none";
+        setDetailReadonlyMode(true);
+    }
+
+    
+    closeDetailModal.addEventListener("click", closeDetailModalFunc);
+    detailCloseBtn.addEventListener("click", closeDetailModalFunc);
+
+    detailEditBtn.addEventListener("click", function() {
+        setDetailReadonlyMode(false);
+    });
+
+    detailEditCancelBtn.addEventListener("click", function() {
+        if (originalDetailData) {
+            fillDetailForm(originalDetailData);
+        }
+        setDetailReadonlyMode(true);
+    });
+
+    detailStartTimeEl.addEventListener("change", calculateDetailTimes);
+    detailEndTimeEl.addEventListener("change", calculateDetailTimes);
+    detailBreaktimeEl.addEventListener("input", calculateDetailTimes);
+
+    window.addEventListener("click", function(e) {
+        if (e.target === detailModal) {
+            closeDetailModalFunc();
+        }
+    });
+
+    closeModal.addEventListener("click", closeWorkModal);
+    cancelBtn.addEventListener("click", closeWorkModal);
+
+    function closeWorkplaceModal() {
+        workplaceModal.style.display = "none";
+    }
+
+    if (addWorkBtn) {
+        addWorkBtn.addEventListener("click", function () {
+            workplaceModal.style.display = "flex";
+        });
+    }
+
+    closeWP.addEventListener("click", closeWorkplaceModal);
+    cancelWP.addEventListener("click", closeWorkplaceModal);
+
+    window.addEventListener("click", function (e) {
+        if (e.target === workModal) {
+            closeWorkModal();
+        }
+        if (e.target === workplaceModal) {
+            closeWorkplaceModal();
+        }
+    });
+
+    startTimeEl.addEventListener("change", calculateTimes);
+    endTimeEl.addEventListener("change", calculateTimes);
+    breaktimeEl.addEventListener("input", calculateTimes);
+
+    worklogForm.addEventListener("submit", function (e) {
+        const workStart = toMinutes(startTimeEl.value);
+        const workEnd = toMinutes(endTimeEl.value);
+        const breakMinutes = parseInt(breaktimeEl.value || "0", 10);
+
+        if (!parentSeqEl.value) {
+            alert("근무지를 선택해주세요.");
+            e.preventDefault();
+            return;
+        }
+
+        if (!workDateEl.value) {
+            alert("근무 날짜를 선택해주세요.");
+            e.preventDefault();
+            return;
+        }
+
+        if (!startTimeEl.value || !endTimeEl.value) {
+            alert("근무 시작시간과 종료시간을 입력해주세요.");
+            e.preventDefault();
+            return;
+        }
+
+        if (workStart === null || workEnd === null || workEnd <= workStart) {
+            alert("근무 종료시간은 시작시간보다 늦어야 합니다.");
+            e.preventDefault();
+            return;
+        }
+
+        if (isNaN(breakMinutes) || breakMinutes < 0) {
+            alert("휴게시간은 0 이상으로 입력해주세요.");
+            e.preventDefault();
+            return;
+        }
+
+        if (breakMinutes >= (workEnd - workStart)) {
+            alert("휴게시간이 총 근무시간보다 길 수 없습니다.");
+            e.preventDefault();
+            return;
+        }
+    });
+
+    const taxTypeRadios = document.querySelectorAll('input[name="tax_applied"]');
+    const customTaxInput = document.getElementById("custom_tax_value");
+    const taxCustomRadio = document.getElementById("taxCustom");
+
+    taxTypeRadios.forEach(function (radio) {
+        radio.addEventListener("change", function () {
+            if (this.id === "taxCustom") {
+                customTaxInput.disabled = false;
+                customTaxInput.focus();
+                this.value = customTaxInput.value;
+            } else {
+                customTaxInput.disabled = true;
+                customTaxInput.value = "";
+            }
+        });
+    });
+
+    customTaxInput.addEventListener("input", function () {
+        if (taxCustomRadio.checked) {
+            taxCustomRadio.value = this.value;
+        }
+    });
+});
 </script>
-
 
 
 	<!-- 근무기록 등록 -->
 	<c:choose>
 		<c:when test="${param.insertSuccess == 'true'}">
 			<script>
-				    alert("근무가 등록되었습니다.");
-				
-				    document.addEventListener("DOMContentLoaded", function() {
-				        document.getElementById("worklogForm").reset();
-				        document.getElementById("seq").value = 0;
-				        document.getElementById("worklog_date").value = "";
-				        document.getElementById("workResult").innerText = "0시간 0분";
-				        document.getElementById("breakResult").innerText = "0시간 0분";
-				        document.getElementById("realWorkResult").innerText = "0시간 0분";
-				    });
-				</script>
+        alert("근무가 등록되었습니다.");
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("worklogForm").reset();
+            document.getElementById("seq").value = 0;
+            document.getElementById("work_date").value = "";
+            document.getElementById("workResult").innerText = "0시간 0분";
+            document.getElementById("breakResult").innerText = "0시간 0분";
+            document.getElementById("realWorkResult").innerText = "0시간 0분";
+        });
+    </script>
 		</c:when>
 		<c:when test="${param.insertSuccess == 'false'}">
 			<script>

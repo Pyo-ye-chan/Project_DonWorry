@@ -32,11 +32,11 @@ public class HomeController {
 		}
 		if("개인".equals(type)||"사업자".equals(type)){
 			if(type!=null) {
-				List<WorkPlaceListDTO> placeList = wpldao.selectAllById(id);
+				List<WorkPlaceListDTO> placeList = wpldao.selectAllByIdCard(id);
 			    model.addAttribute("placeList", placeList);	   
 			}		
 		}
-			return "home";		 
+			return "home";	
 	}
 }
 	

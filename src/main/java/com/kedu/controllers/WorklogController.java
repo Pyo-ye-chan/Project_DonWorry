@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kedu.dao.WorklogDAO;
 import com.kedu.dto.WorklogDTO;
@@ -26,6 +27,12 @@ public class WorklogController {
 		}else {
 			return "redirect:/salary/calendar?insertSuccess=false";
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/detail")
+	public WorklogDTO detail(int seq) {
+	    return dao.selectBySeq(seq);
 	}
 	
 	@ExceptionHandler(Exception.class)
