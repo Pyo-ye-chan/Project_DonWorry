@@ -27,5 +27,9 @@ public class QnaDAO {
 		String sql = "select * from qna";
 		return jdbc.query(sql,new BeanPropertyRowMapper<QnaDTO>(QnaDTO.class));
 	} 
+	public QnaDTO detail(int seq) {
+		String sql = "select * from qna where seq = ?";
+		return jdbc.queryForObject(sql,new BeanPropertyRowMapper<QnaDTO>(QnaDTO.class),seq);
+	}
 
 }

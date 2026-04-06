@@ -260,9 +260,12 @@
         }
 
         .qna-list .title-cell {
-            text-align: left;
-            padding-left: 30px;
+            /*text-align: left;*/
+            text-align:center;
+              
+           /* padding-left: 30px;*/
         }
+        
 
         .status-badge {
             padding: 4px 10px;
@@ -422,10 +425,10 @@
                             </tr>
                         </c:when>
                         <c:otherwise>
-                            <c:forEach var="dto" items="${list}">
-                                <tr onclick="location.href='/customer/detail?seq=${dto.seq}'">
-                                    <td>1</td>
-                                    <td class="title-cell">${dto.title }</td>
+                            <c:forEach var="dto" items="${list}" varStatus="status">
+                                <tr onclick="location.href='/qna/detail?seq=${dto.seq}'">
+                                    <td>${status.count }</td>
+                                    <td class="title-cell" >${dto.title }</td>
                                     <td>
                                         <fmt:formatDate value="${dto.write_date}" pattern="yyyy-MM-dd" />
                                     </td>

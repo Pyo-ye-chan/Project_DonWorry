@@ -43,5 +43,11 @@ public class QnaController {
 		dao.insert(dto);
 		return "redirect:/qna/qna";
 	}
+	@RequestMapping("/detail")
+	public String detail(int seq,Model model) {
+		QnaDTO dto = dao.detail(seq);
+		model.addAttribute("dto",dto);
+		return "/qna/detail";
+	}
 
 }
