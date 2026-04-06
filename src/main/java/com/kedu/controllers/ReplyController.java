@@ -27,7 +27,6 @@ public class ReplyController {
 	@RequestMapping("/insert")
 	public void insert(ReplyDTO dto) {
 		dao.insert(dto);
-		
 	}
 	
 	@ResponseBody
@@ -64,16 +63,6 @@ public class ReplyController {
 		    comment.setReplies(child); // 🔥 핵심
 		}
 		return gson.toJson(comments);
-	}
-	@ResponseBody
-	@RequestMapping("/delete")
-	public void delete(int seq) {
-		dao.delete(seq);
-	}
-	@ResponseBody
-	@RequestMapping("/update")
-	public void update(int seq,String content) {
-		dao.update(seq,content);
 	}
 
 }

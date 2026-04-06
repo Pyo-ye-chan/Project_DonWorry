@@ -42,7 +42,7 @@ public class MembersController {
 		if(result) {	
 			session.setAttribute("loginId",id);
 			session.setAttribute("nickName", dao.getNickname(id));	
-			session.setAttribute("type", dao.getType(id));	
+			session.setAttribute("type", dao.getType(id));
 		}
 		return "redirect:/";
 	}
@@ -159,5 +159,6 @@ public class MembersController {
 		session.invalidate();
 		return "redirect:/";
 	}
+	
 
 }
