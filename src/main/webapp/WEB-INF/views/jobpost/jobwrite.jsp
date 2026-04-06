@@ -267,35 +267,33 @@ textarea {
 
 /* 등록 버튼 */
 .submit-btn {
-    width: 100%;
-    padding: 18px;
-    background-color: #2563eb; /* 돈워리 메인 블루 컬러 */
-    color: white;
-    border: none;
-    border-radius: 12px; /* 둥근 모서리 유지 */
-    font-size: 18px;
-    font-weight: 700; /* 굵은 글씨로 강조 */
-    cursor: pointer;
-    margin-top: 40px;
-    
-    /* 부드러운 효과 */
-    transition: all 0.2s ease-in-out;
-    
-    /* 그림자 효과로 입체감 부여 */
-    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+	width: 100%;
+	padding: 18px;
+	background-color: #2563eb; /* 돈워리 메인 블루 컬러 */
+	color: white;
+	border: none;
+	border-radius: 12px; /* 둥근 모서리 유지 */
+	font-size: 18px;
+	font-weight: 700; /* 굵은 글씨로 강조 */
+	cursor: pointer;
+	margin-top: 40px;
+	/* 부드러운 효과 */
+	transition: all 0.2s ease-in-out;
+	/* 그림자 효과로 입체감 부여 */
+	box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
 }
 
 /* 마우스 호버 시 효과 */
 .submit-btn:hover {
-    background-color: #1d4ed8; /* 약간 더 짙은 파란색으로 변함 */
-    transform: translateY(-2px); /* 살짝 위로 떠오르는 효과 */
-    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); /* 그림자 더 짙어짐 */
+	background-color: #1d4ed8; /* 약간 더 짙은 파란색으로 변함 */
+	transform: translateY(-2px); /* 살짝 위로 떠오르는 효과 */
+	box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); /* 그림자 더 짙어짐 */
 }
 
 /* 클릭 시 효과 */
 .submit-btn:active {
-    transform: translateY(1px); /* 눌리는 효과 */
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+	transform: translateY(1px); /* 눌리는 효과 */
+	box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 </style>
 </head>
@@ -380,7 +378,7 @@ textarea {
 			<form action="/jobposts/insert" method="post">
 
 				<div class="section-title">기본 정보</div>
-				
+
 				<div class="form-row">
 					<div class="form-label">
 						공고제목<span>*</span>
@@ -411,21 +409,17 @@ textarea {
 					</div>
 				</div>
 
-				<div class="form-row">
-					<div class="form-label">
-						업종 카테고리<span>*</span>
-					</div>
-					<div class="form-input-group">
-						<select name="category" required style="width: 100%;">
-							<option value="">업종을 선택해주세요</option>
-							<option value="외식·음료">외식·음료 (카페, 음식점 등)</option>
-							<option value="매장관리·판매">매장관리·판매 (편의점, 마트 등)</option>
-							<option value="서비스·문화">서비스·문화 (영화관, PC방 등)</option>
-							<option value="사무·교육">사무·교육 (학원, 문서작성 등)</option>
-							<option value="생산·물류">생산·물류 (창고관리, 배송 등)</option>
-							<option value="IT·디자인">IT·디자인 (코딩, 디자인·편집 등)</option>
-						</select>
-					</div>
+				<div class="form-input-group" style="display: flex; gap: 10px;">
+					<select id="mainCategory" name="main_category" required
+						style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+						<option value="">대분류 선택</option>
+						<c:forEach var="cat" items="${upperList}">
+							<option value="${cat.cat_id}">${cat.cat_name}</option>
+						</c:forEach>
+					</select> <select id="subCategory" name="sub_category" required
+						style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+						<option value="">소분류 선택</option>
+					</select>
 				</div>
 
 				<div class="form-row">
@@ -502,7 +496,7 @@ textarea {
 						근무 조건<span>*</span>
 					</div>
 					<div class="form-input-group">
-						<textarea name="content" placeholder="관련 경력이나 경험을 입력해주세요 (선택사항)"></textarea>
+						<textarea name="content" placeholder="근무 조건을 입력해주세요"></textarea>
 						<div class="char-count">0 / 500</div>
 					</div>
 				</div>
@@ -565,6 +559,44 @@ textarea {
             }
         }).open();
     }
+    
+    $(function() {
+        // 대분류 선택 박스가 변경될 때 실행
+        $('#mainCategory').on('change', function() {
+            let parentId = $(this).val(); // 선택된 대분류의 cat_id
+            let $subSelect = $('#subCategory'); // 소분류 셀렉트 박스
+
+            // 대분류를 다시 '선택'으로 돌렸을 경우 소분류 초기화
+            if (parentId == "") {
+                $subSelect.html('<option value="">소분류 선택</option>');
+                return;
+            }
+
+            $.ajax({
+                url: "/jobposts/getSub",
+                type: "get",
+                data: { parentId: parentId },
+                dataType: "json",
+                success: function(data) {
+                    // 기존 옵션 제거하고 초기값 넣기
+                    $subSelect.empty();
+                    $subSelect.append('<option value="">소분류 선택</option>');
+
+                    // 받아온 데이터로 옵션 추가
+                    if (data.length > 0) {
+                        data.forEach(function(cat) {
+                            $subSelect.append('<option value="' + cat.cat_id + '">' + cat.cat_name + '</option>');
+                        });
+                    } else {
+                        $subSelect.append('<option value="">세부 카테고리 없음</option>');
+                    }
+                },
+                error: function() {
+                    alert("카테고리를 불러오는 데 실패했습니다.");
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

@@ -639,7 +639,7 @@ body {
 									${post.work_endtime}
 								</div>
 								<div class="meta-item">
-									<i class="fa-solid fa-suitcase"></i> ${post.category}
+									<i class="fa-solid fa-suitcase"></i> ${post.main_category_name}
 								</div>
 							</div>
 
@@ -759,7 +759,7 @@ body {
 	$(function() {
 	    // 검색 버튼 클릭 이벤트
 	    $('.search-btn').on('click', function() {
-	        const keyword = $('.search-wrapper input').val().trim();
+	        let keyword = $('.search-wrapper input').val().trim();
 	        if(keyword === "") {
 	        	location.href = "/jobposts/jobpost";
 	        }
