@@ -221,6 +221,20 @@ public class JobPostDAO {
 	    return jdbc.queryForObject(sql, Integer.class, searchTag, searchTag, searchTag, searchTag, searchTag);
 	}
 	
-	
+	//메인에 구인구직글 최신 3개만 띄우기
+	public List<JobPostDTO> mainJobList() {
+	    // 최신순으로 1번부터 3번까지만 
+		String sql = "SELECT * FROM ( "
+		           + "    SELECT p.*, " // FROM의 별칭과 동일하게 p로 통일
+		           + "           c1.cat_name AS main_category_name, "
+		           + "           c2.cat_name AS sub_category_name, "
+		           + "           ROW_NUMBER() OVER(ORDER BY p.write_date DESC) AS rn "
+		           + "    FROM job_post p " // j 대신 p로 설정 (위와 맞춤)
+		           + "    LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id " // 이미지 속 오타 반영
+		           + "    LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id "
+		           + ") WHERE rn BETWEEN 1 AND 3";
+		
+	    return jdbc.query(sql, new BeanPropertyRowMapper<JobPostDTO>(JobPostDTO.class));
+	}
 	
 }

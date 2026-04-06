@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -193,7 +194,14 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 60px;
+            padding:0;
         }
+        .summary-grid a {
+		    display: block;    /* inline을 block으로 변경 (영역 확보의 핵심) */
+		    width: 100%;       /* 부모 너비 꽉 채우기 */
+		    height: 100%;      /* 부모 높이 꽉 채우기 */
+		    text-decoration: none;
+		}
         .card {
             border: 1px solid #e5e7eb;
             border-radius: 15px;
@@ -223,7 +231,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            height: 100%;
             color: #ccc;
+            padding:0;
         }
         .add-card span {
             color: #ccc;
@@ -337,8 +347,9 @@
             border-radius: 4px;
             font-weight: bold;
         }
-        .status-working { background-color: #e6fffa; color: #38b2ac; } /* 초록색 */
-        .status-quit { background-color: #f7fafc; color: #a0aec0; }    /* 회색 */
+        .status-freeboard { background-color:#cff7ef; color: #179791; } /* 초록색 */
+        .status-reviewboard{ background-color: #cfe5ff; color: #185fb0; }
+		.status-qnaboard{ background-color: #ffb2b7; color: #a91620;}
 
         .contents-title {
             font-size: 17px;
@@ -518,22 +529,24 @@
             <div class="info-item"><span class="info-label">총 시간</span><span class="info-val">96시간</span></div>     
             </a>       
         </div>
-        <div class="card add-card">
-            <a href="members/toLogin" style="text-decoration: none; ">   
-            <span>+ 알바 추가하기</span>
-            </a>
-        </div>
+        
+	    	<a href="/salary/calendar" > 
+		        <div class="card add-card" >              
+		           + 알바 추가하기         
+		        </div>
+	        </a>
+    	
     </div>
 </c:when> 
  <c:otherwise>
- 	<c:if test="${placeList[0].name == null }">  
-    <div class="summary-grid">
-        <div class="card add-card">
-            <a href="/salary/calendar" style="text-decoration: none; ">   
-            <span>+ 알바 추가하기</span>
-            </a>
-        </div>
-    </div>
+ 	<c:if test="${placeList[0].name == null }"> 
+	     <div class="summary-grid">
+	    	<a href="/salary/calendar" > 
+		        <div class="card add-card" >              
+		           + 알바 추가하기         
+		        </div>
+	        </a>
+	    </div>   
    	</c:if>
    	<div class="summary-grid"> 
    	<c:if test="${placeList[0].name!=null }">
@@ -553,11 +566,11 @@
             </a>               	
         </div>
 	   	</c:forEach>
-	   	<div class="card add-card">
-            <a href="/salary/calendar" style="text-decoration: none; ">   
-            <span>+ 알바 추가하기</span>
-            </a>
-        </div>
+	   	 	<a href="/salary/calendar" > 
+		        <div class="card add-card" >              
+		           + 알바 추가하기         
+		        </div>
+	        </a>
    	</c:if>
    	</div>
 </c:otherwise>
@@ -566,111 +579,59 @@
         <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(103, 77, 67); "></i>
          구인구직</h2>
     <div class="job-board">
+    <c:forEach var="i" items="${jobList}">
         <div class="job-board-item">
-            <a href="#" class="job-item-info">
-                <div class="item-name">올리브영 강남점</div>
-                <div class="item-role">판매</div>
-                <div class="item-loc">신촌</div>
-                <div class="item-days">평일</div>
+            <a href="/jobposts/jobdetail?seq=${i.seq}" class="job-item-info">
+                <div class="item-name">${i.company_name}</div>
+                <div class="item-role">${i.main_category_name}</div>
+                <div class="item-loc">${i.sido}/${i.gugun}</div>
+                <div class="item-days">${i.work_days}</div>
                 <div class="job-pay">
-                    <span class="job-pay-label">시급</span>0원
-                </div>
-            </a>
-        </div> 
-        <div class="job-board-item">
-            <a href="#" class="job-item-info">
-                <div class="item-name">공차 신림점</div>
-                <div class="item-role">카페</div>
-                <div class="item-loc">신림</div>
-                <div class="item-days">평일</div>
-                <div class="job-pay">
-                    <span class="job-pay-label">시급</span>90,000원
+                    <span class="job-pay-label">시급</span>${i.pay}원
                 </div>
             </a>
         </div>
-         <div class="job-board-item">
-            <a href="#" class="job-item-info">
-                <div class="item-name">할리스 신림점</div>
-                <div class="item-role">카페</div>
-                <div class="item-loc">신림</div>
-                <div class="item-days">평일</div>
-                <div class="job-pay">
-                    <span class="job-pay-label">시급</span>10,000원
-                </div>
-            </a>
-        </div>
+    </c:forEach> 
     </div>
 
     <h2 class="section-header">
         <i class="fa-solid fa-fire fa-lg" style="color: rgb(255, 94, 71);"></i>
         인기 게시판</h2>
     <div class="hot-board">
+    <c:forEach var="i" items="${hotList}">
         <div class="hot-board-item">
-            <a href="#" class="hot-item-info" >
+            <a href="/boards/view?seq=${i.seq}&view_count=${i.view_count}" class="hot-item-info" >
                 <div class="hot-item-title-row">
-                    <span class="contents-title">스타벅스 강남점</span>
-                    <span class="status-tag status-working">퇴사</span>
+                    <span class="contents-title">${i.title}</span>
+                    <c:if test="${i.category=='free'}">
+                    	<span class="status-tag status-freeboard">자유게시판</span>
+                    </c:if>
+                    <c:if test="${i.category=='review'}">
+                    	<span class="status-tag status-reviewboard">리뷰게시판</span>
+                    </c:if>
+                    <c:if test="${i.category=='qna'}">
+                    	<span class="status-tag status-qnaboard">질문게시판</span>
+                    </c:if>
                 </div>
-                <div class="writer">작가명</div>
+                <div class="writer">${i.member_id}</div>
                 <div class="hot-board-item-footer">
-                    <div class="board-category" style="font-size: 12px; color: #aaa; margin-top: 10px;">리뷰게시판</div>
+                    <div class="board-category" style="font-size: 12px; color: #aaa; margin-top: 10px;">
+                    	<fmt:formatDate value="${i.write_date }" pattern="yyyy-MM-dd" />
+                    </div>
                     <div class="hot-post-footer">
                         <span>
                             <span class="material-symbols-outlined">
                                 <i class="fa-regular fa-eye" style="color: rgb(203, 203, 203);"></i>
-                            </span> 24
+                            </span> ${i.view_count}
                         </span>
                         <span>
-                            <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
+                            <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> ${i.reply_count}
                         </span>
                     </div>
                 </div>
             </a>
         </div> 
-        <div class="hot-board-item">
-            <a href="#" class="hot-item-info" >
-                <div class="hot-item-title-row">
-                    <span class="contents-title">올리브영 강남점</span>
-                    <span class="status-tag status-working">재직</span>
-                </div>
-                <div class="writer">김작가</div>
-                <div class="hot-board-item-footer">
-                    <div class="hot-board-category" style="font-size: 12px; color: #aaa; margin-top: 10px;">리뷰게시판</div>
-                    <div class="hot-post-footer">
-                        <span>
-                            <span class="material-symbols-outlined">
-                                <i class="fa-regular fa-eye" style="color: rgb(203, 203, 203);"></i>
-                            </span> 15
-                        </span>
-                        <span>
-                            <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
-                        </span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="hot-board-item">
-            <a href="#" class="hot-item-info" >
-                <div class="hot-item-title-row">
-                    <span class="contents-title">올리브영 강남점</span>
-                    <span class="status-tag status-working">재직</span>
-                </div>
-                <div class="writer">김작가</div>
-                <div class="hot-board-item-footer">
-                    <div class="hot-board-category" style="font-size: 12px; color: #aaa; margin-top: 10px;">리뷰게시판</div>
-                    <div class="hot-post-footer">
-                        <span>
-                            <span class="material-symbols-outlined">
-                                <i class="fa-regular fa-eye" style="color: rgb(203, 203, 203);"></i>
-                            </span> 15
-                        </span>
-                        <span>
-                            <i class="fa-regular fa-message" style="color: rgb(203, 203, 203);"></i> 15
-                        </span>
-                    </div>
-                </div>
-            </a>
-        </div> 
+    </c:forEach>
     </div>
 </div>
 <div class="container-footer">
