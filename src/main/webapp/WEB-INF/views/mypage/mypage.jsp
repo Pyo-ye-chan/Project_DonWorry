@@ -538,7 +538,7 @@
             <a href="/mypage/job_activity" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-solid fa-user-check" style="color: rgb(110, 110, 110); margin-right:5px;"></i></i>
-                    구인활동관리
+                    구인 활동 관리
                 </div>
                 <div class="item-result">
                     <span class="apply-list-count" style="margin-bottom:15px; font-size: 13px;">12</span>
