@@ -809,6 +809,8 @@
          function appendReplyList(list){
         	 let html = "";
         	 let loginId = "${loginId}"
+        	 let isNotice = "${dto.member_id}" == "admin";
+        	 
         	 list.forEach(function(comment){
         		 
         		 html += `<div class="comment-item" data-seq=`+comment.seq+`>
@@ -820,6 +822,7 @@
         	            </div>
         	            <div class="comment-actions">
         	                <span onclick="toggleReply(this)">답글</span>`;
+        	           
         	                if(loginId == comment.writer){
         	                	
         	                	html+=`

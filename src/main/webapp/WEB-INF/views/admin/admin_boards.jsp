@@ -313,6 +313,12 @@ body {
     background: #eaf4ff;
     color: #2563eb;
 }
+/* 신고 상태: 눈에 띄는 빨간색 */
+.state-report {
+    background-color: #ffe3e3;
+    color: #e03131;
+    border: 1px solid #ffc9c9;
+}
 
 .state-hide {
     background: #ffe9e9;
@@ -433,8 +439,8 @@ body {
                 </select>
                 <select>
                     <option>전체 상태</option>
-                    <option>신고</option>
-                    <option>일반</option>
+                    <option value="report">신고</option>
+                    <option value="normal">일반</option>
                 </select>
                 <input type="text" placeholder="제목, 작성자 검색">
                 <button class="btn-blue" type="button">검색</button>
@@ -468,7 +474,22 @@ body {
                         <td id="write_date">
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
                         </td>
-                        <td><span class="state-pill state-show">일반</span></td>
+                        <c:choose>
+                        <c:when test="${i.report_count>0}">
+	                        <td>
+	                        	<span class="state-pill state-report">
+	                        		신고
+	                        	</span>
+	                        </td>
+                        </c:when>
+                        <c:otherwise>
+	                        <td>
+	                        	<span class="state-pill state-show">
+	                        		일반
+	                        	</span>
+	                        </td>
+	                    </c:otherwise>
+                        </c:choose>
                         <td>
                             <button class="board-detail-btn" type="button" data-seq="${i.seq}">보기</button>
                             <button class="board-del-btn" type="button" data-seq="${i.seq}">삭제</button>
