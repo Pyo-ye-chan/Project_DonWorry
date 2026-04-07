@@ -178,5 +178,14 @@ public class BoardsDAO {
 		return jdbc.query(sql, new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class));
 	}
 	
+	public List<BoardsDTO> selectById(String memberId) {
+		String sql = "select b.seq, b.member_id, b.category, b.title, b.content, b.view_count, "
+				+ "b.write_date, count(r.seq) as reply_count from boards b "
+				+ "left join reply r on b.seq = r.parent_seq where b.member_id = ? "
+				+ "group by b.seq, b.member_id, b.category, b.title, b.content, b.view_count, "
+				+ "b.write_date order by b.seq desc";
+		return jdbc.query(sql, new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class), memberId);
+	}
+	
 
 }

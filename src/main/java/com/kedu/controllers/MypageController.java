@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.kedu.commons.EncryptionUtils;
-import com.kedu.dao.MypageDAO;
-
+import com.kedu.dao.BoardsDAO;
+import com.kedu.dao.FilesDAO;
 import com.kedu.dao.MembersDAO;
+import com.kedu.dao.MypageDAO;
+import com.kedu.dto.BoardsDTO;
+import com.kedu.dto.FilesDTO;
 import com.kedu.dto.MembersDTO;
 
 @Controller
@@ -25,6 +28,10 @@ public class MypageController {
 	private MembersDAO mdao;
 	@Autowired
 	private MypageDAO dao;
+	@Autowired
+	private BoardsDAO bdao;
+	@Autowired
+	private FilesDAO fdao;
 	
 	@Autowired
 	private Gson gson;
@@ -100,7 +107,35 @@ public class MypageController {
 	
 	@RequestMapping("/employ_activity")
 	public String toEmploy_activity() {
-		return "/mypage/employ_activity";
+		return "mypage/employ_activity";
+	}
+	
+	@RequestMapping("/mypost")
+	public String toMypost(HttpSession session, Model model) {
+		String memberId = (String)session.getAttribute("loginId");
+		List<BoardsDTO> allList = bdao.selectById(memberId);
+		model.addAttribute("allList", allList);
+		return "mypage/mypost";
+	}
+	
+	@RequestMapping("/view")
+	public String view_count(int seq,int view_count) {
+		bdao.view_count(seq,view_count);
+		return "redirect:/mypage/mypostdetail?seq="+seq;
+	}
+	
+	@RequestMapping("/mypostdetail")
+	public String detail(int seq,Model model,HttpSession session) {
+		BoardsDTO dto = bdao.detail(seq);
+		
+		model.addAttribute("dto",dto);
+		
+		List<FilesDTO> filesList = fdao.selectByParent_seq(seq);
+		model.addAttribute("filesList",filesList);
+		String writer = bdao.writer(seq);
+		model.addAttribute("board_writer",writer);
+		
+		return "mypage/mypostdetail";
 	}
 	
 }
