@@ -347,8 +347,9 @@ body {
         <div class="panel">
             <div class="write-box">
                 <div class="write-title">공지글 작성</div>
-                <form action="/boards/write" method="post" id = "frm" enctype="multipart/form-data">
-	                
+                <form action="/boards/notice_write" method="post" id = "frm" enctype="multipart/form-data">
+			        <!-- 카테고리 -->
+		    		<input type="hidden" name="category" value="main">
 	                <!-- 제목 -->
 	                <div class="input-group">
 	                    <input type="text" name="title" placeholder="제목을 입력하세요" id="title">
@@ -423,13 +424,13 @@ body {
 	});
 
     $("#frm").on("submit",function(){
-		$("#content").val(editor.getHTML());
+		$("#content").val(editor.getHTML());//editor 객체에서 글 가ㅏ져와 값 대입함
 		console.log($("#content").val());
 		if($("#title").val() == ""){
 			alert("제목을 입력해주세요.");
 			return false;
 		}
-		if($("#content").val()=="<p><br></p>"){
+		if($("#content").val()=="<p><br></p>"){//기본 태그값들
 			alert("내용을 입력해주세요.");
 			return false;
 		}

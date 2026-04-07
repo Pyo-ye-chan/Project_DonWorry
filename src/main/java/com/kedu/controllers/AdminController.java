@@ -96,8 +96,8 @@ public class AdminController {
 	
 	@RequestMapping("/admin_boards")
 	public String adminBoards(int page, Model model) {
-		List<BoardsDTO> board_mainList =  bdao.mainList(page*5-4,page*5);
-		
+		//회원 게시글 페이지네이션 적용
+		List<BoardsDTO> board_mainList =  bdao.mainList(page*5-4,page*5);		
 		int recordTotalCount = bdao.mainRecordTotalCount();
 		
 		model.addAttribute("currentPage",page);
@@ -105,6 +105,11 @@ public class AdminController {
 		model.addAttribute("naviCountPerPage",10);
 		model.addAttribute("recordTotalCount",recordTotalCount);
 		model.addAttribute("board_mainList", board_mainList);
+		
+		//공지글 페이지 ㄴ
+		List<BoardsDTO> notice_mainList =  bdao.adminNoticeList();
+		model.addAttribute("notice_mainList",notice_mainList);
+		
 		return "admin/admin_boards";
 	}
 	
@@ -123,22 +128,11 @@ public class AdminController {
 		return "redirect:/admin/admin_boards?page="+page;
 	}
 	
-//	@RequestMapping("/admin_boards")
-//	public String noticeBoards(int page, Model model) {
-//		
-//		int recordTotalCount = bdao.recordTotalCount();
-//		
-//		model.addAttribute("currentPage",page);
-//		model.addAttribute("recordCountPerPage",10);
-//		model.addAttribute("naviCountPerPage",10);
-//		model.addAttribute("recordTotalCount",recordTotalCount);
-//		return "admin/admin_boards";
-//	}
-	
 	@RequestMapping("/notice_write")
 	public String adminWrite() {
 		return "admin/notice_write";
 	}
+
 	
 	@RequestMapping("/admin_inquiry")
 	public String toInquiry(Model model) {
