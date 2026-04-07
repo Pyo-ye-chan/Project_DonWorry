@@ -38,7 +38,7 @@ public class Qna_replyController {
 		}
 		dto.setMember_id(loginId);
 		dao.insert(dto);
-		System.out.println(dto.getQna_num());
+		
 		qdao.statusUpdate(dto.getQna_num());
 		return "success";
 	}
@@ -52,6 +52,24 @@ public class Qna_replyController {
     		    );
         }
 		return gson.toJson(list);
+	}
+	@ResponseBody
+	@RequestMapping("/delete")
+	public String delete(int seq, int qna_num) {
+		int result = dao.delete(seq);
+		if(result > 0) {
+			qdao.statusReset(qna_num);
+			return "success"; 
+		}
+		return "fail";
+	}
+	@ResponseBody
+	@RequestMapping("/update")
+	public String update(int seq, String content) {
+		int result = dao.update(seq,content);
+		if(result > 0) {
+			return "success"; 
+		}return "fail";
 	}
 
 }
