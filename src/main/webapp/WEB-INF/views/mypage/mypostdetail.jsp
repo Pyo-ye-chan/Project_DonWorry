@@ -656,8 +656,8 @@
                 </a>
             </c:if>
             <c:if test="${nickName!=null }">
-                <a class="my-page" href="/mypage/toMypage">
-                    <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+                <a class="my-page active" href="/mypage/toMypage">
+                    <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(36, 99, 235);"></i>
                     마이페이지
                 </a>
             </c:if>
@@ -721,9 +721,9 @@
 
             <!-- 버튼 -->
             <div class="detail-actions">
-                <button onclick="location.href='/boards/mainboard_list?page=1'">목록</button>
+                <button onclick="location.href='/mypage/mypost'">목록</button>
                 <c:if test="${loginId == board_writer }">
-                    <button onclick="location.href='/boards/toUpdate?seq=${dto.seq}'">수정</button>
+                    <button onclick="location.href='/mypage/toUpdate?seq=${dto.seq}'">수정</button>
                     <button type="button" class="boards-delete-btn">삭제</button>
                 </c:if>
             </div>
@@ -930,7 +930,7 @@
         	 if (!confirm("정말 삭제하시겠습니까?")) {
  				return false;
  			}
-        	 location.href = "/boards/delete?seq="+${dto.seq}
+        	 location.href = "/mypage/mypost}
          })
          $(document).on("click",".reply-delete-btn",function(){
         	 if (!confirm("정말 삭제하시겠습니까?")) {
