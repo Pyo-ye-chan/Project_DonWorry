@@ -53,31 +53,8 @@ public class BoardsDAO {
 		
 	}
 	
-	//공지글만 가져옴
-	public List<BoardsDTO> adminNoticeList(){
-		String sql = "select \r\n"
-				+ "        b.seq, \r\n"
-				+ "        m.nickname as member_id, \r\n"
-				+ "        b.category, \r\n"
-				+ "        b.title, \r\n"
-				+ "        b.content, \r\n"
-				+ "        b.view_count, \r\n"
-				+ "        b.write_date,\r\n"
-				+ "        count(r.seq) as reply_count \r\n"
-				+ "from boards b \r\n"
-				+ "left join members m on b.member_id = m.id \r\n"
-				+ "left join reply r on b.seq = r.parent_seq \r\n"
-				+ "where b.member_id = 'admin' \r\n"
-				+ "group by \r\n"
-				+ "        b.seq, m.nickname, b.category, b.title, \r\n"
-				+ "        b.content, b.view_count, b.write_date \r\n"
-				+ "order by b.seq desc" ;
-		
-		return jdbc.query(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class));		
-	}
-	
 	public int mainRecordTotalCount() {
-		String sql = "select count(*) from boards";
+		String sql = "select count(*) from boards where member_id != '관리자'";
 		return jdbc.queryForObject(sql,Integer.class);
 	}
 	public BoardsDTO detail(int seq) {

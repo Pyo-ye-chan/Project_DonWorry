@@ -532,30 +532,30 @@
             <button class="tab-item " onclick = "location.href = '/boards/qnaboard_list?page=1'"> 질문 게시판</button>
             <button class="tab-item" onclick = "location.href = '/boards/reviewboard_list?page=1'"> 리뷰 게시판</button>
         </nav>
-		
+<div style="background:red; color:white; font-weight:bold; padding:20px; border:5px solid black;">
+    1. 로그인 세션 ID: [${type}] <br>
+    2. 공지 리스트 존재 여부: ${notice_mainList != null ? '있음' : '없음(null)'} <br>
+    3. 공지 데이터 개수: ${notice_mainList.size()} 개
+</div>
 			<div class="notice-board">
-			    <c:forEach var="i" items="${mainList}">
-			    <c:if test="${i.member_id=='관리자'}">
-			        <div class="notice-board-item">
-			        	<i class="fa-solid fa-circle-exclamation" style="color: rgb(64, 131, 231); margin-right:10px;"></i>
-			            	<a href="/notices/detail?seq=${i.seq}&view_count=${i.view_count}" class="notice-item-info"> 
-				            	<div class="notice-title" style="flex: 3;">${i.title}</div>                
-				                <div class="notice-writer">${i.member_id}</div>	                
-				                <div class="notice-date">
-				                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
-				                </div>
-			                </a>
-			            <c:if test="${i.member_id!='관리자'}">
-			            	<a href="/boards/view?seq=${i.seq}&view_count=${i.view_count}" class="notice-item-info"> 			                         
-				                <div class="notice-title" style="flex: 3;">${i.title}</div>                
-				                <div class="notice-writer">${i.member_id}</div>	                
-				                <div class="notice-date">
-				                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
-				                </div>
-			            	</a>
-			            </c:if>
-			        </div>
-			        </c:if>
+			    <c:forEach var="i" items="${notice_mainList}">
+				<div class="notice-board-item">
+		            <i class="fa-solid fa-circle-exclamation" style="color: rgb(64, 131, 231); margin-right:10px;"></i>
+			        <c:choose>
+		                <c:when test="${type == '관리자'}">
+		                    <a href="/admin/admin_board_detail?seq=${i.seq}" class="notice-item-info">
+		                </c:when>
+		                <c:otherwise>
+		                    <a href="/boards/view?seq=${i.seq}&view_count=${i.view_count }" class="notice-item-info">
+		                </c:otherwise>
+	            	</c:choose>
+		                <div class="notice-title" style="flex: 3;">${i.title}</div>
+		                <div class="notice-writer">${i.member_id}</div> <%-- 닉네임인 '관리자'가 출력됨 --%>
+		                <div class="notice-date">
+		                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
+		                </div>
+		            </a>
+	        	</div>
 			    </c:forEach>
 			</div>
 		

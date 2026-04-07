@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kedu.dao.AdminDAO;
 import com.kedu.dao.BoardsDAO;
 import com.kedu.dao.FilesDAO;
 import com.kedu.dao.MembersDAO;
 import com.kedu.dao.QnaDAO;
+import com.kedu.dao.ReplyDAO;
 import com.kedu.dto.BoardsDTO;
 import com.kedu.dto.FilesDTO;
 import com.kedu.dto.MembersDTO;
@@ -41,6 +43,12 @@ public class AdminController {
 	
 	@Autowired
 	private QnaDAO qdao;
+	
+	@Autowired
+	private AdminDAO adao;
+	
+	@Autowired
+	private ReplyDAO rdao;
 	
 	@RequestMapping("/admin/admin_main")
 	public String adminMain(Model model) {
@@ -110,7 +118,7 @@ public class AdminController {
 	@RequestMapping("/admin_boards")
 	public String adminBoards(int page, Model model) {
 		//회원 게시글 페이지네이션 적용
-		List<BoardsDTO> board_mainList =  bdao.mainList(page*5-4,page*5);		
+		List<BoardsDTO> board_mainList =  adao.admin_boardList(page*5-4,page*5);		
 		int recordTotalCount = bdao.mainRecordTotalCount();
 		
 		model.addAttribute("currentPage",page);
@@ -120,9 +128,12 @@ public class AdminController {
 		model.addAttribute("board_mainList", board_mainList);
 		
 		//공지글 페이지 ㄴ
-		List<BoardsDTO> notice_mainList =  bdao.adminNoticeList();
+		List<BoardsDTO> notice_mainList =  adao.adminNoticeList();
 		model.addAttribute("notice_mainList",notice_mainList);
 		
+		//댓글 목록
+		int replyCount = rdao.replyCount();
+		model.addAttribute("replyCount",replyCount);
 		return "admin/admin_boards";
 	}
 	
@@ -179,6 +190,11 @@ public class AdminController {
 		
 		
 		return "redirect:/admin/admin_boards?page=1";
+	}
+	
+	@RequestMapping("/admin_reply")
+	public String admin_Reply() {
+		return "admin/admin_reply";
 	}
 	
 	@RequestMapping("/admin_inquiry")

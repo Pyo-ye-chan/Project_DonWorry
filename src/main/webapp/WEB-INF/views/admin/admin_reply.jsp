@@ -159,15 +159,6 @@ body {
     padding-left: 10px;
 }
 
-/* ===== Summary Cards ===== */
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-bottom: 22px;
-}
-
-.summary-card,
 .panel {
     background: #fff;
     border: 1px solid #e7eef8;
@@ -176,25 +167,6 @@ body {
 
 }
 
-.summary-label {
-    font-size: 14px;
-    color: #64748b;
-    margin-bottom: 8px;
-    font-weight: 600;
-}
-
-.summary-value {
-    font-size: 28px;
-    font-weight: 800;
-    color: #0f172a;
-}
-
-.summary-sub {
-    margin-top: 6px;
-    font-size: 13px;
-    /* color: #2563eb; */
-    color: #0f172a;
-}
 
 /* ===== Panel ===== */
 .panel {
@@ -410,36 +382,14 @@ body {
     <main class="admin-page">
         <div class="page-header">
             <div class="page-title">
-                <h2>게시물 관리</h2>
+                <h2>댓글 관리</h2>
                 <p>커뮤니티 게시글 조회, 삭제가 가능합니다.</p>
             </div>
         </div>
 
-        <section class="summary-grid">
-            <div class="summary-card">
-                <div class="summary-label">전체 게시글</div>
-                <div class="summary-value">${recordTotalCount}</div>
-                <div class="summary-sub">오늘 신규 ${recordTotalCount}건</div>
-            </div>
-            <div class="summary-card notice">
-                <div class="summary-label">공지 게시글</div>
-                <div class="summary-value">6</div>
-                <a href="/admin/notice_Towrite" style="color: #2563eb; ">
-                	<div class="summary-sub" style="color: #2563eb; ">작성하러 가기</div>
-                </a>
-            </div>
-            <div class="summary-card notice">
-                <div class="summary-label">댓글 관리</div>
-                <div class="summary-value">${replyCount}</div>
-                <a href="/admin/admin_reply" style="color: #2563eb; ">
-                	<div class="summary-sub" style="color: #2563eb; ">관리페이지 이동</div>
-                </a>
-            </div>
-        </section>
-
          <section class="panel">
             <div class="panel-head">
-                <h3>게시글 목록</h3>
+                <h3>댓글 목록</h3>
             </div>
 
             <div class="filter-row">
@@ -451,10 +401,10 @@ body {
                 </select>
                 <select>
                     <option>전체 상태</option>
-                    <option value="report">신고</option>
-                    <option value="normal">일반</option>
+                    <option>신고</option>
+                    <option>일반</option>
                 </select>
-                <input type="text" placeholder="제목, 작성자 검색">
+                <input type="text" placeholder="작성자 검색">
                 <button class="btn-blue" type="button">검색</button>
             </div>
 
@@ -462,8 +412,7 @@ body {
                 <thead>
                     <tr>
                         <th>번호</th>
-                        <th>게시판</th>
-                        <th>제목</th>
+                        <th>게시판 번호</th>
                         <th>작성자</th>
                         <th>작성일</th>
                         <th>상태</th>
@@ -518,7 +467,7 @@ body {
 
         <section class="panel">
             <div class="panel-head">
-                <h3>공지글 목록</h3>
+                <h3>신고 댓글 목록</h3>
             </div>
 
             <div class="filter-row">
@@ -526,7 +475,7 @@ body {
                     <option>최신순</option>
                     <option>과거순</option>
                 </select>
-                <input type="text" placeholder="제목 검색">
+                <input type="text" placeholder="작성자 검색">
                 <button class="btn-blue" type="button">검색</button>
             </div>
 

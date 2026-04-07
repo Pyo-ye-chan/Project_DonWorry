@@ -14,9 +14,17 @@ public class BoardsDTO {
 	
 	private int reply_count;
 	
+	private int report_count;
+
+	public int getReport_count() {
+		return report_count;
+	}
+
+	public void setReport_count(int report_count) {
+		this.report_count = report_count;
+	}
 	
-	
-	
+
 	public int getReply_count() {
 		return reply_count;
 	}
