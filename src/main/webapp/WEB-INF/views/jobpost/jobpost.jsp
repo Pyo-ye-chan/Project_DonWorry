@@ -48,28 +48,28 @@ body {
 	padding: 8px 0;
 }
 
- .logout-btn { 
-         	width:60px;
-            height:30px;
-		    background-color: #ffffff; 
-		    color: #868e96;
-		    border: 1px solid #dee2e6; 
-		    border-radius: 6px; 
-		    font-size: 13px;
-		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-		}
-		.logout-btn:hover { 
-         	width:60px;
-            height:30px;
-		   	background-color: #f8f9fa;
-		    color: #495057;
-		    border-color: #ced4da;
-		    border: 1px solid #dee2e6; 
-		    border-radius: 6px; 
-		    font-size: 13px;
-		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-		}
+.logout-btn {
+	width: 60px;
+	height: 30px;
+	background-color: #ffffff;
+	color: #868e96;
+	border: 1px solid #dee2e6;
+	border-radius: 6px;
+	font-size: 13px;
+	transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+}
 
+.logout-btn:hover {
+	width: 60px;
+	height: 30px;
+	background-color: #f8f9fa;
+	color: #495057;
+	border-color: #ced4da;
+	border: 1px solid #dee2e6;
+	border-radius: 6px;
+	font-size: 13px;
+	transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+}
 
 .now-admin, .now-business, .now-personal {
 	width: 60px;
@@ -329,9 +329,9 @@ body {
 	gap: 20px;
 	margin-top: 40px;
 	max-width: 1040px; /* 상단 검색창 너비와 맞춤 */
-    margin-left: auto;  /* 가로 가운데 정렬 */
-    margin-right: auto; /* 가로 가운데 정렬 */
-    width: 100%;
+	margin-left: auto; /* 가로 가운데 정렬 */
+	margin-right: auto; /* 가로 가운데 정렬 */
+	width: 100%;
 }
 
 .job-card {
@@ -343,8 +343,8 @@ body {
 	text-align: left;
 	background: #fff;
 	transition: 0.2s;
-	width: 100%;      /* 부모 너비에 꽉 차게 */
-    box-sizing: border-box; /* 패딩이 너비에 포함되게 */
+	width: 100%; /* 부모 너비에 꽉 차게 */
+	box-sizing: border-box; /* 패딩이 너비에 포함되게 */
 }
 
 .job-card:hover {
@@ -542,270 +542,341 @@ body {
 
 /* 페이지 네비게이터 스타일 추가 */
 .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin: 50px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	margin: 50px 0;
 }
 
 .page-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    border: 1px solid #e1e7f0;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 0.2s;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border: 1px solid #e1e7f0;
+	border-radius: 8px;
+	text-decoration: none;
+	color: #666;
+	font-size: 14px;
+	font-weight: 500;
+	transition: 0.2s;
 }
 
 .page-link:hover {
-    border-color: #2563eb;
-    color: #2563eb;
-    background-color: #f8faff;
+	border-color: #2563eb;
+	color: #2563eb;
+	background-color: #f8faff;
 }
 
 .page-link.active {
-    background-color: #2563eb;
-    color: white;
-    border-color: #2563eb;
-    font-weight: 700;
+	background-color: #2563eb;
+	color: white;
+	border-color: #2563eb;
+	font-weight: 700;
 }
 </style>
 </head>
 <body>
 	<div class="community-container">
-    <c:choose>
-        <c:when test="${nickName==null}">
-            <div class="top-auth">
-                <span style="font-size: 13px; color: #666; cursor: pointer;">
-                    <a href="/members/toLogin" style="text-decoration: none; color:black">
-                        <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
-                    </a>
-                </span>
-                <!-- 일단 관리자 빼고 다 숨겨둠 -->
-                    <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="top-auth">  
-                <span style="font-size: 13px; color: #666; cursor: pointer;">
-                    <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                        ${nickName}님 환영합니다.
-                    <a href="/members/logout" style="text-decoration: none; color:black">
-                    <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
-                    </a>
-                </span>
-                <c:if test="${type=='관리자'}">
-                    <div class="now-admin">관리자</div>
-                </c:if>
-                <c:if test="${type=='사업자'}">
-                    <div class="now-business">사업자</div>
-                </c:if>
-                <c:if test="${type=='개인'}">        
-                    <div class="now-personal">개인</div>
-                </c:if>
-            </div>
-        </c:otherwise>
-    </c:choose>
-
-    <nav class="navbar">
-        <div style="display: flex; align-items: center; gap: 40px;">
-            <a href="/" class="logo"> 돈워리</a>
-            <div class="nav-menu">
-                <a href="/" class="active">
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
-                    홈
-                </a>
-                <a href="salary/calendar">
-                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
-                    급여 캘린더
-                </a>
-                <a href="#">
-                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    구인구직
-                </a>
-                <a href="/boards/mainboard_list?page=1">
-                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    커뮤니티</a>   
-                <a href=""> 
-                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    고객지원
-                </a>             
-            </div>          
-        </div>   
-        <c:if test="${nickName==null }">   
-	        <a class="my-page" href="members/toLogin"> 
-	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-	            마이페이지
-	        </a>  
-        </c:if> 
-        <c:if test="${nickName!=null }">   
-	        <a class="my-page" href="/mypage/toMypage"> 
-	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-	            마이페이지
-	        </a>  
-        </c:if>         
-    </nav>
-</div>
-
-		<div class="job-section">
-			<h2>
-				<i class="fa-solid fa-briefcase"></i> 구인구직
-			</h2>
-			<p>나에게 맞는 알바를 찾아 보세요</p>
-
-			<div class="search-filter-wrap">
-				<div class="search-wrapper">
-					<i class="fa-solid fa-magnifying-glass"></i> <input type="text"
-						placeholder="어떤 알바를 찾으시나요?">
-					<button class="search-btn">검색</button>
+		<c:choose>
+			<c:when test="${nickName==null}">
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
+						<a href="/members/toLogin"
+						style="text-decoration: none; color: black"> <i
+							class="fa-regular fa-user fa-lg"
+							style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
+					</a>
+					</span>
+					<!-- 일단 관리자 빼고 다 숨겨둠 -->
+					<a href="/admin/admin_main" style="text-decoration: none;"><div
+							class="now-admin">관리자</div></a>
 				</div>
-
-				<div class="filter-group">
-					<button class="filter-btn" id="btnLocation">
-						<i class="fa-solid fa-location-dot"></i> 위치별 <i
-							class="fa-solid fa-chevron-down"
-							style="font-size: 12px; color: #ccc;"></i>
-					</button>
-					<button class="filter-btn" id="btnCategory">
-						<i class="fa-solid fa-briefcase"></i> 직종별 <i
-							class="fa-solid fa-chevron-down"
-							style="font-size: 12px; color: #ccc;"></i>
-					</button>
-					<button class="filter-btn">
-						<i class="fa-regular fa-clock"></i> 근무 조건 <i
-							class="fa-solid fa-chevron-down"
-							style="font-size: 12px; color: #ccc;"></i>
-					</button>
+			</c:when>
+			<c:otherwise>
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
+						<i class="fa-regular fa-user fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
+						${nickName}님 환영합니다. <a href="/members/logout"
+						style="text-decoration: none; color: black">
+							<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
+					</a>
+					</span>
+					<c:if test="${type=='관리자'}">
+						<div class="now-admin">관리자</div>
+					</c:if>
+					<c:if test="${type=='사업자'}">
+						<div class="now-business">사업자</div>
+					</c:if>
+					<c:if test="${type=='개인'}">
+						<div class="now-personal">개인</div>
+					</c:if>
 				</div>
+			</c:otherwise>
+		</c:choose>
 
-				<div id="locationLayer">
-					<div class="layer-header">
-						<h4 style="font-size: 15px; font-weight: 600;">지역 선택</h4>
-						<button type="button" id="layerClose"
-							style="font-size: 20px; color: #999; cursor: pointer;">&times;</button>
-					</div>
-					<div class="layer-content">
-						<ul class="loc-list" id="sidoList">
-							<li class="list-header">시·도</li>
-						</ul>
-						<ul class="loc-list" id="gugunList">
-							<li class="list-header">시·구·군</li>
-						</ul>
-						<ul class="loc-list" id="dongList">
-							<li class="list-header">동·읍·면</li>
-						</ul>
-					</div>
-					<div
-						style="display: flex; justify-content: center; gap: 10px; padding: 15px; background: #fcfcfc; border-top: 1px solid #eee;">
-						<button class="filter-btn" style="padding: 8px 25px;">초기화</button>
-						<button id="btnLayerSearch" class="filter-btn"
-							style="padding: 8px 25px; background-color: #2563eb; color: white;">검색</button>
-					</div>
+		<nav class="navbar">
+			<div style="display: flex; align-items: center; gap: 40px;">
+				<a href="/" class="logo"> 돈워리</a>
+				<div class="nav-menu">
+					<a href="/" class="active"> <i class="fa-solid fa-house fa-lg"
+						style="color: rgb(36, 99, 235);"></i> 홈
+					</a> <a href="salary/calendar"> <i
+						class="fa-regular fa-calendar fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
+					</a> <a href="#"> <i class="fa-solid fa-briefcase fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 구인구직
+					</a> <a href="/boards/mainboard_list?page=1"> <i
+						class="fa-regular fa-message fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
+					</a> <a href=""> <i class="fa-solid fa-question fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
+					</a>
 				</div>
+			</div>
+			<c:if test="${nickName==null }">
+				<a class="my-page" href="members/toLogin"> <i
+					class="fa-solid fa-user-gear fa-lg"
+					style="color: rgb(197, 197, 197);"></i> 마이페이지
+				</a>
+			</c:if>
+			<c:if test="${nickName!=null }">
+				<a class="my-page" href="/mypage/toMypage"> <i
+					class="fa-solid fa-user-gear fa-lg"
+					style="color: rgb(197, 197, 197);"></i> 마이페이지
+				</a>
+			</c:if>
+		</nav>
+	</div>
 
-				<div id="categoryLayer"
-					style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); z-index: 101; margin-top: -15px; overflow: hidden;">
-					<div class="layer-header">
-						<h4 style="font-size: 15px; font-weight: 600;">직종 선택</h4>
-						<button type="button" class="categoryLayerClose"
-							style="font-size: 20px; color: #999; cursor: pointer; border: none; background: none;">&times;</button>
-					</div>
-					<div class="layer-content">
-						<ul class="loc-list" id="mainCatList">
-							<li class="list-header">대분류</li>
-						</ul>
-						<ul class="loc-list" id="subCatList" style="flex: 2;">
-							<li class="list-header">소분류</li>
-						</ul>
-					</div>
-					<div
-						style="display: flex; justify-content: center; gap: 10px; padding: 15px; background: #fcfcfc; border-top: 1px solid #eee;">
-						<button id="btnCatSearch" class="filter-btn"
-							style="padding: 8px 25px; background-color: #2563eb; color: white;">선택
-							완료</button>
-					</div>
-				</div>
+	<div class="job-section">
+		<h2>
+			<i class="fa-solid fa-briefcase"></i> 구인구직
+		</h2>
+		<p>나에게 맞는 알바를 찾아 보세요</p>
 
+		<div class="search-filter-wrap">
+			<div class="search-wrapper">
+				<i class="fa-solid fa-magnifying-glass"></i> <input type="text"
+					placeholder="어떤 알바를 찾으시나요?">
+				<button class="search-btn">검색</button>
 			</div>
 
-			<div class="job-list">
-				<c:forEach var="post" items="${jobList}">
-					<div class="job-card">
-						<div class="job-icon">
-							<i class="fa-solid fa-briefcase"></i>
+			<div class="filter-group">
+				<button class="filter-btn" id="btnLocation">
+					<i class="fa-solid fa-location-dot"></i> 위치별 <i
+						class="fa-solid fa-chevron-down"
+						style="font-size: 12px; color: #ccc;"></i>
+				</button>
+				<button class="filter-btn" id="btnCategory">
+					<i class="fa-solid fa-briefcase"></i> 직종별 <i
+						class="fa-solid fa-chevron-down"
+						style="font-size: 12px; color: #ccc;"></i>
+				</button>
+				<button class="filter-btn" id="btnCondition">
+					<i class="fa-regular fa-clock"></i> 근무 조건 <i
+						class="fa-solid fa-chevron-down"
+						style="font-size: 12px; color: #ccc;"></i>
+				</button>
+			</div>
+
+			<div id="locationLayer">
+				<div class="layer-header">
+					<h4 style="font-size: 15px; font-weight: 600;">지역 선택</h4>
+					<button type="button" id="layerClose"
+						style="font-size: 20px; color: #999; cursor: pointer;">&times;</button>
+				</div>
+				<div class="layer-content">
+					<ul class="loc-list" id="sidoList">
+						<li class="list-header">시·도</li>
+					</ul>
+					<ul class="loc-list" id="gugunList">
+						<li class="list-header">시·구·군</li>
+					</ul>
+					<ul class="loc-list" id="dongList">
+						<li class="list-header">동·읍·면</li>
+					</ul>
+				</div>
+				<div
+					style="display: flex; justify-content: center; gap: 10px; padding: 15px; background: #fcfcfc; border-top: 1px solid #eee;">
+					<button class="filter-btn" style="padding: 8px 25px;">초기화</button>
+					<button id="btnLayerSearch" class="filter-btn"
+						style="padding: 8px 25px; background-color: #2563eb; color: white;">검색</button>
+				</div>
+			</div>
+
+			<div id="categoryLayer"
+				style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); z-index: 101; margin-top: -15px; overflow: hidden;">
+				<div class="layer-header">
+					<h4 style="font-size: 15px; font-weight: 600;">직종 선택</h4>
+					<button type="button" class="categoryLayerClose"
+						style="font-size: 20px; color: #999; cursor: pointer; border: none; background: none;">&times;</button>
+				</div>
+				<div class="layer-content">
+					<ul class="loc-list" id="mainCatList">
+						<li class="list-header">대분류</li>
+					</ul>
+					<ul class="loc-list" id="subCatList" style="flex: 2;">
+						<li class="list-header">소분류</li>
+					</ul>
+				</div>
+				<div
+					style="display: flex; justify-content: center; gap: 10px; padding: 15px; background: #fcfcfc; border-top: 1px solid #eee;">
+					<button id="btnCatSearch" class="filter-btn"
+						style="padding: 8px 25px; background-color: #2563eb; color: white;">선택
+						완료</button>
+				</div>
+			</div>
+
+			<div id="timeLayer"
+				style="display: none; position: absolute; top: 100%; left: 200px; width: 300px; height: auto; background: #fff; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); z-index: 101; margin-top: 5px; overflow: hidden;">
+
+				<div class="layer-header"
+					style="display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid #eee; background: #fcfcfc;">
+					<h4
+						style="font-size: 12px; font-weight: 600; margin: 0; color: #333;">근무
+						시간 선택</h4>
+					<button type="button" class="timeLayerClose"
+						style="font-size: 16px; color: #999; cursor: pointer; border: none; background: none; padding: 0;">&times;</button>
+				</div>
+
+				<div class="layer-content"
+					style="display: flex !important; justify-content: center !important; align-items: center !important; padding: 15px 0 !important; gap: 8px !important;">
+
+					<div class="time-select-group"
+						style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+						<p style="font-size: 11px; color: #888; margin: 0;">시작</p>
+						<select id="searchStartTime"
+							style="padding: 4px; border-radius: 4px; border: 1px solid #dee2e6; width: 100px; font-size: 12px; background: #fff;">
+							<c:forEach var="h" begin="0" end="23">
+								<c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
+								<c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
+								<c:if test="${displayHour == 0}">
+									<c:set var="displayHour" value="12" />
+								</c:if>
+								<option value="${h * 60}">${ampm} ${displayHour}:00</option>
+								<option value="${h * 60 + 30}">${ampm}
+									${displayHour}:30</option>
+							</c:forEach>
+						</select>
+					</div>
+
+					<span style="font-size: 14px; color: #ccc; margin-top: 15px;">~</span>
+
+					<div class="time-select-group"
+						style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+						<p style="font-size: 11px; color: #888; margin: 0;">종료</p>
+						<select id="searchEndTime"
+							style="padding: 4px; border-radius: 4px; border: 1px solid #dee2e6; width: 100px; font-size: 12px; background: #fff;">
+							<c:forEach var="h" begin="0" end="23">
+								<c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
+								<c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
+								<c:if test="${displayHour == 0}">
+									<c:set var="displayHour" value="12" />
+								</c:if>
+								<option value="${h * 60}">${ampm} ${displayHour}:00</option>
+								<option value="${h * 60 + 30}"
+									selected="${h==23 ? 'selected' : ''}">${ampm}
+									${displayHour}:30</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+
+				<div
+					style="display: flex; justify-content: center; padding: 8px; background: #fcfcfc; border-top: 1px solid #eee;">
+					<button id="btnTimeSearch"
+						style="padding: 5px 30px; background-color: #2563eb; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 12px;">검색</button>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="job-list">
+			<c:forEach var="post" items="${jobList}">
+				<div class="job-card">
+					<div class="job-icon">
+						<i class="fa-solid fa-briefcase"></i>
+					</div>
+					<div class="job-info">
+						<div class="job-title-row">
+							<h3>${post.title}</h3>
+							<span class="job-badge">${post.work_days}</span>
 						</div>
-						<div class="job-info">
-							<div class="job-title-row">
-								<h3>${post.title}</h3>
-								<span class="job-badge">${post.work_days}</span>
-							</div>
-							<div class="company-name">${post.company_name}</div>
-							<div class="job-desc">${post.content}</div>
+						<div class="company-name">${post.company_name}</div>
+						<div class="job-desc">${post.content}</div>
 
-							<div class="job-meta-row">
-								<div class="meta-item">
-									<i class="fa-solid fa-location-dot"></i> ${post.sido}
-									${post.gugun} ${post.dong}
-								</div>
-								<div class="meta-item">
-									<i class="fa-solid fa-won-sign"></i> <span class="pay-text">시급
-										<fmt:formatNumber value="${post.pay}" pattern="#,###" />원
-									</span>
-								</div>
-								<div class="meta-item">
-									<i class="fa-regular fa-clock"></i> ${post.work_starttime} ~
-									${post.work_endtime}
-								</div>
-								<div class="meta-item">
-									<i class="fa-solid fa-suitcase"></i> ${post.main_category_name}
-								</div>
+						<div class="job-meta-row">
+							<div class="meta-item">
+								<i class="fa-solid fa-location-dot"></i> ${post.sido}
+								${post.gugun} ${post.dong}
 							</div>
+							<div class="meta-item">
+								<i class="fa-solid fa-won-sign"></i> <span class="pay-text">시급
+									<fmt:formatNumber value="${post.pay}" pattern="#,###" />원
+								</span>
+							</div>
+							<div class="meta-item">
+								<i class="fa-regular fa-clock"></i> ${post.work_starttime} ~
+								${post.work_endtime}
+							</div>
+							<div class="meta-item">
+								<i class="fa-solid fa-suitcase"></i> ${post.main_category_name}
+							</div>
+						</div>
 
-							<div class="job-btn-group">
-								<button class="btn-apply">지원하기</button>
-								<button class="btn-detail"
-									onclick="location.href='/jobposts/jobdetail?seq=${post.seq}'">자세히
-									보기</button>
-							</div>
+						<div class="job-btn-group">
+							<button class="btn-apply">지원하기</button>
+							<button class="btn-detail"
+								onclick="location.href='/jobposts/jobdetail?seq=${post.seq}'">자세히
+								보기</button>
 						</div>
 					</div>
+				</div>
+			</c:forEach>
+
+			<c:if test="${empty jobList}">
+				<div style="padding: 100px 0; color: #999;">등록된 구인공고가 없습니다.</div>
+			</c:if>
+		</div>
+
+		<div class="pagination">
+			<c:if test="${recordTotalCount > 0}">
+				<fmt:parseNumber var="pageCount"
+					value="${(recordTotalCount - 1) / recordCountPerPage + 1}"
+					integerOnly="true" />
+				<fmt:parseNumber var="startNavi"
+					value="${((currentPage - 1) / naviCountPerPage) * naviCountPerPage + 1}"
+					integerOnly="true" />
+				<c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
+				<c:if test="${endNavi > pageCount}">
+					<c:set var="endNavi" value="${pageCount}" />
+				</c:if>
+
+				<c:if test="${startNavi > 1}">
+					<a
+						href="/jobposts/jobpost?page=${startNavi - 1}&searchKeyword=${searchKeyword}"
+						class="page-link">&lt;</a>
+				</c:if>
+
+				<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+					<a
+						href="/jobposts/jobpost?page=${i}&searchKeyword=${searchKeyword}"
+						class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
 				</c:forEach>
 
-				<c:if test="${empty jobList}">
-					<div style="padding: 100px 0; color: #999;">등록된 구인공고가 없습니다.</div>
+				<c:if test="${endNavi < pageCount}">
+					<a
+						href="/jobposts/jobpost?page=${endNavi + 1}&searchKeyword=${searchKeyword}"
+						class="page-link">&gt;</a>
 				</c:if>
-			</div>
-			
-			<div class="pagination">
-                <c:if test="${recordTotalCount > 0}">
-                    <fmt:parseNumber var="pageCount" value="${(recordTotalCount - 1) / recordCountPerPage + 1}" integerOnly="true" />
-                    <fmt:parseNumber var="startNavi" value="${((currentPage - 1) / naviCountPerPage) * naviCountPerPage + 1}" integerOnly="true" />
-                    <c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
-                    <c:if test="${endNavi > pageCount}"><c:set var="endNavi" value="${pageCount}" /></c:if>
-
-                    <c:if test="${startNavi > 1}">
-                        <a href="/jobposts/jobpost?page=${startNavi - 1}&searchKeyword=${searchKeyword}" class="page-link">&lt;</a>
-                    </c:if>
-
-                    <c:forEach var="i" begin="${startNavi}" end="${endNavi}">
-                        <a href="/jobposts/jobpost?page=${i}&searchKeyword=${searchKeyword}" 
-                           class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
-                    </c:forEach>
-
-                    <c:if test="${endNavi < pageCount}">
-                        <a href="/jobposts/jobpost?page=${endNavi + 1}&searchKeyword=${searchKeyword}" class="page-link">&gt;</a>
-                    </c:if>
-                </c:if>
-            </div>
-			
+			</c:if>
 		</div>
+
+	</div>
 	</div>
 
 	<c:if test="${type=='사업자'}">
@@ -816,9 +887,10 @@ body {
 	</c:if>
 
 	<div class="container-footer">
-    <p>© 2026 돈워리. All rights reserved.</p>
-    <p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침 | 이용약관 | 고객센터</p>
-</div>
+		<p>© 2026 돈워리. All rights reserved.</p>
+		<p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침
+			| 이용약관 | 고객센터</p>
+	</div>
 
 	<script>
 	$(function() {
@@ -977,6 +1049,31 @@ body {
 	            $('#btnLocation').removeClass('active');
 	        }
 	    });
+	    
+	    $('#btnCondition').on('click', function(e) {
+	        e.stopPropagation();
+	        $('#locationLayer, #categoryLayer').hide(); 
+	        $('#timeLayer').stop().slideToggle(200);
+	    });
+	    
+	    $('.timeLayerClose').on('click', function() {
+	        $('#timeLayer').slideUp(200);
+	    });
+	    
+	    $('#btnTimeSearch').on('click', function() {
+	        const startTime = $('#searchStartTime').val();
+	        const endTime = $('#searchEndTime').val();
+	        
+	        if(parseInt(startTime) >= parseInt(endTime)) {
+	            alert("종료 시간은 시작 시간보다 이후여야 합니다.");
+	            return;
+	        }
+	        
+	        // 서버의 jobpost 컨트롤러로 시작시간과 종료시간(분 단위)을 전달
+	        location.href = "/jobposts/jobpost?startTime=" + startTime + "&endTime=" + endTime;
+	    });
+	    
+	    
 	});
 	</script>
 </body>

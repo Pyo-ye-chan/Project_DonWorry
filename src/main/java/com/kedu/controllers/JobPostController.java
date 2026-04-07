@@ -29,32 +29,45 @@ public class JobPostController {
 	@RequestMapping("/jobpost")
 	public String jobpost(Model model, 
 	                     String searchKeyword, 
-	                     @RequestParam(value="page", defaultValue="1") int page) {
+	                     @RequestParam(value="page", defaultValue="1") int page,
+	                     Integer starttime, Integer endtime) {
 	    
 	    List<JobPostDTO> jobList;
 	    int recordTotalCount;
 	    
-	    // 시작 번호와 끝 번호 계산 (10개씩 보기 기준)
+	    // 시작 번호와 끝 번호 계산 (페이지당 7개씩)
 	    int start = page * 7 - 6;
 	    int end = page * 7;
 
-	    if (searchKeyword != null && !searchKeyword.isEmpty()) {
-	        // [검색어가 있을 때] 검색 결과 리스트 + 검색 결과 총 개수
-	        jobList = dao.searchKeywordPaged(searchKeyword, start, end);
-	        recordTotalCount = dao.getSearchTotalCount(searchKeyword);
+	    // [중요] 아무것도 입력 안 했을 때(전체보기) null 처리를 확실하게!
+	    // 검색어가 공백으로 넘어오면 null로 취급해야 전체 리스트가 나옴
+	    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
+	        searchKeyword = null; 
+	    }
+
+	    if (searchKeyword != null) {
+	        // [검색어가 있을 때] DAO 파라미터 순서: (키워드, 시작row, 끝row, 시작시간, 종료시간)
+	        jobList = dao.searchKeywordPaged(searchKeyword, start, end, starttime, endtime);
+	        recordTotalCount = dao.getSearchTotalCount(searchKeyword, starttime, endtime);
+	        
 	        model.addAttribute("searchKeyword", searchKeyword);
 	    } else {
-	        // [기본 리스트] 전체 리스트 + 전체 총 개수
-	        jobList = dao.jobList(start, end);
-	        recordTotalCount = dao.jobRecordTotalCount();
+	        // [기본 리스트] DAO 파라미터 순서: (시작row, 끝row, 시작시간, 종료시간)
+	        // 기존에 start, end를 중복해서 넣던 부분을 starttime, endtime으로 수정함!
+	        jobList = dao.jobList(start, end, starttime, endtime);
+	        recordTotalCount = dao.jobRecordTotalCount(starttime, endtime);
 	    }
 	    
-	    // 페이징 네비게이터를 위한 속성들 (게시판 로직과 동일)
+	    // JSP에 검색 조건 유지를 위해 시간 값도 다시 보냄 (페이징 클릭 시 유지용)
+	    model.addAttribute("starttime", starttime);
+	    model.addAttribute("endtime", endtime);
+	    
+	    // 페이징 네비게이터를 위한 속성들
 	    model.addAttribute("currentPage", page);
-	    model.addAttribute("recordCountPerPage", 10);
-	    model.addAttribute("naviCountPerPage", 10);
+	    model.addAttribute("recordCountPerPage", 7);
+	    model.addAttribute("naviCountPerPage", 7);
 	    model.addAttribute("recordTotalCount", recordTotalCount);
-	    model.addAttribute("jobList", jobList); // 기존 "list"에서 "jobList"로 명칭 통일 권장
+	    model.addAttribute("jobList", jobList);
 	    
 	    return "jobpost/jobpost";
 	}

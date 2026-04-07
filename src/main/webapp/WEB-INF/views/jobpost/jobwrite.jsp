@@ -494,22 +494,43 @@ textarea {
 				</div>
 
 				<div class="form-row">
-					<div class="form-label">
-						근무일/시간<span>*</span>
-					</div>
-					<div class="form-input-group">
-						<select name="work_days">
-							<option value="평일">평일</option>
-							<option value="주말">주말</option>
-							<option value="요일협의">요일협의</option>
-						</select> <select name="work_starttime">
-							<option>오전 09:00</option>
-						</select> <span style="align-self: center;">~</span> <select
-							name="work_endtime">
-							<option>오후 18:00</option>
-						</select>
-					</div>
-				</div>
+    <div class="form-label">
+        근무일/시간<span>*</span>
+    </div>
+    <div class="form-input-group" style="display: flex; gap: 10px;">
+        <select name="work_days" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+            <option value="평일">평일</option>
+            <option value="주말">주말</option>
+            <option value="요일협의">요일협의</option>
+        </select>
+
+        <select name="work_starttime" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+            <c:forEach var="h" begin="0" end="23">
+                <c:set var="hourStr" value="${h < 10 ? '0' : ''}${h}" />
+                <c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
+                <c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
+                <c:if test="${displayHour == 0}"><c:set var="displayHour" value="12"/></c:if>
+                
+                <option value="${h * 60}">${ampm} ${displayHour}:00</option>
+                <option value="${h * 60 + 30}">${ampm} ${displayHour}:30</option>
+            </c:forEach>
+        </select>
+
+        <span style="align-self: center;">~</span>
+
+        <select name="work_endtime" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+            <c:forEach var="h" begin="0" end="23">
+                <c:set var="hourStr" value="${h < 10 ? '0' : ''}${h}" />
+                <c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
+                <c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
+                <c:if test="${displayHour == 0}"><c:set var="displayHour" value="12"/></c:if>
+                
+                <option value="${h * 60}">${ampm} ${displayHour}:00</option>
+                <option value="${h * 60 + 30}">${ampm} ${displayHour}:30</option>
+            </c:forEach>
+        </select>
+    </div>
+</div>
 
 				<div class="form-row" style="align-items: flex-start;">
 					<div class="form-label" style="padding-top: 10px;">

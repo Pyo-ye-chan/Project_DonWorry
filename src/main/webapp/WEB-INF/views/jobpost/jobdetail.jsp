@@ -212,25 +212,48 @@
 }
 
 /* 버튼 스타일 */
+/* [1] 지원하기 버튼 (btn-apply) 수정 */
 .btn-apply {
-    padding: 15px 40px;
+    width: 120px;         /* 가로 길이를 고정해서 두 버튼을 맞춤 */
+    height: 48px;        /* 세로 길이 고정 */
     background: #2563eb;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 16px;     /* 18px에서 조금 줄여서 목록 버튼과 통일 */
     font-weight: 700;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
 }
 
+.btn-apply:hover {
+    background: #1d4ed8; /* 호버 시 약간 어둡게 */
+}
+
+/* [2] 목록으로 버튼 (btn-list) 수정 */
 .btn-list {
-    padding: 15px 30px;
+    width: 120px;         /* apply 버튼과 동일하게 설정 */
+    height: 48px;        /* apply 버튼과 동일하게 설정 */
     background: white;
     color: #666;
     border: 1px solid #ccc;
     border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
     margin-left: 10px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-list:hover {
+    background: #f8f9fa;
+    border-color: #999;
 }
 
 </style>
