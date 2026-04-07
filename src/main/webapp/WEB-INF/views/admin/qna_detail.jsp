@@ -687,6 +687,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
+    font-weight: 600; /* 글자 두께 통일 */
 }
 
 .btn-red:hover {
@@ -694,6 +695,27 @@ body {
     color: #fff;
     border-color: #ef4444;
 }
+/* 수정 버튼 (노란색/엠버 계열) */
+.btn-yellow {
+    background-color: #fff;
+    color: #f59e0b; /* 따뜻한 노란색 */
+    border: 1px solid #fef3c7;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-right: 5px; /* 삭제 버튼과의 간격 */
+}
+
+.btn-yellow:hover {
+    background-color: #f59e0b;
+    color: #fff;
+    border-color: #f59e0b;
+}
+
+
 
 </style>
 </head>
@@ -756,8 +778,8 @@ body {
                     </span>
                 </div>
                 <div class="info-right">
-                    <span id = "status" class="status-badge ${dto.status == '답변완료' ? 'status-complete' : 'status-waiting'}">
-                                            ${dto.status == '답변완료' ? '답변완료' : '접수중'}
+                    <span id = "status" class="status-badge ${dto.status == 'status-complete' ? 'status-complete' : 'status-waiting'}">
+                                            ${dto.status == 'status-complete' ? '답변완료' : '접수중'}
                     </span>
                     
                 </div>
@@ -832,7 +854,7 @@ $(document).ready(function() {
 // 1. 답변 등록
 $(".reply-insert-btn").on("click", function() {
 	
-	console.log("213")
+	
     let content = $(".content").val().trim();
     if(content === "") { alert("내용을 입력해주세요."); return; }
 
@@ -869,6 +891,7 @@ function getReplyList() {
         if (!list || list.length === 0) {
             html = '<p style="padding:20px; color:#94a3b8; text-align:center;">등록된 답변이 없습니다.</p>';
         } else {
+        	$(".comment-write").hide();
             for (var i = 0; i < list.length; i++) {
                 var comment = list[i];
                 
@@ -886,7 +909,10 @@ function getReplyList() {
                 // 버튼 영역 (삭제 등)
                 html += '  <div class="comment-actions" style="text-align:right; margin-top:15px;">';
                 if (loginId === comment.member_id) {
-                    html += '    <button class="btn-red" onclick="deleteReply(' + comment.seq + ')" style="padding:4px 10px; font-size:12px;">삭제</button>';
+                	// 수정 버튼 (필요하다면 data-seq 추가)
+                    html += '    <button class="btn-yellow" data-seq="' + comment.seq + '" style="padding:4px 10px; font-size:12px;">수정</button>';
+                    // 삭제 버튼 (data-seq 추가)
+                    html += '    <button class="btn-red" data-seq="' + comment.seq + '" style="padding:4px 10px; font-size:12px;">삭제</button>';
                 }
                 html += '  </div>';
                 
@@ -896,6 +922,90 @@ function getReplyList() {
         $(".comment-list").html(html);
     });
 }
+$(document).on("click", ".btn-red", function() {
+    if (!confirm("정말 삭제하시겠습니까?")) {
+        return false;
+    }
+
+    // 클릭된 버튼의 data-seq 값을 가져옴
+    let seq = $(this).attr("data-seq");
+    let qna_num = "${dto.seq}"; // 현재 상세 페이지의 부모 글 번호
+
+    $.ajax({
+        url: "/qna_reply/delete", // Q&A 답변 전용 컨트롤러
+        type: "post",
+        data: { 
+            seq: seq,
+            qna_num: qna_num // 상태 변경(접수중으로 복구)을 위해 부모 번호도 함께 보냄
+        }
+    }).done(function(resp) {
+        if(resp === "success") {
+            alert("답변이 삭제되었습니다.");
+            getReplyList(); // 목록 새로고침
+            
+            // 답변이 삭제되었으므로 상태를 '접수중'으로 변경
+            $("#status").removeClass("status-complete").addClass("status-waiting").text("접수중");
+            // 관리자라면 다시 답변을 달 수 있게 입력창 표시
+            $(".comment-write").show();
+        } else {
+            alert("삭제에 실패했습니다.");
+        }
+    });
+});
+//1. 수정 버튼 클릭 시 (입력창으로 변환)
+$(document).on("click", ".btn-yellow", function() {
+    let parent = $(this).closest(".comment-item"); // 현재 댓글 컨테이너
+    let content = parent.find(".comment-content").text(); // 기존 내용 추출
+    let seq = $(this).attr("data-seq"); // 댓글 번호
+
+    // 기존 내용을 textarea와 저장/취소 버튼으로 교체
+    let editHtml = '<div class="edit-box">';
+    editHtml += '  <textarea class="form-control edit-content" style="width:100%; height:80px; margin-bottom:10px;">' + content + '</textarea>';
+    editHtml += '  <div style="text-align:right;">';
+    editHtml += '    <button class="btn-blue update-submit-btn" data-seq="' + seq + '" style="height:30px; padding:0 10px; font-size:12px;">저장</button>';
+    editHtml += '    <button class="btn-gray update-cancel-btn" style="height:30px; padding:0 10px; font-size:12px; background:#94a3b8; color:white; border:none; border-radius:6px; margin-left:5px;">취소</button>';
+    editHtml += '  </div>';
+    editHtml += '</div>';
+
+    parent.find(".comment-content").hide(); // 기존 텍스트 숨기기
+    parent.find(".comment-actions").hide(); // 기존 버튼 숨기기
+    parent.append(editHtml); // 수정 창 추가
+});
+
+// 2. 수정 취소 시
+$(document).on("click", ".update-cancel-btn", function() {
+    let parent = $(this).closest(".comment-item");
+    parent.find(".edit-box").remove(); // 수정창 제거
+    parent.find(".comment-content").show(); // 원본 텍스트 표시
+    parent.find(".comment-actions").show(); // 원본 버튼 표시
+});
+
+// 3. 수정 완료(저장) 버튼 클릭 시
+$(document).on("click", ".update-submit-btn", function() {
+    let seq = $(this).attr("data-seq");
+    let content = $(this).closest(".edit-box").find(".edit-content").val();
+
+    if(content.trim() === "") {
+        alert("내용을 입력해주세요.");
+        return;
+    }
+
+    $.ajax({
+        url: "/qna_reply/update",
+        type: "post",
+        data: {
+            seq: seq,
+            content: content
+        }
+    }).done(function(resp) {
+        if(resp === "success") {
+            alert("수정되었습니다.");
+            getReplyList(); // 목록 새로고침
+        } else {
+            alert("수정에 실패했습니다.");
+        }
+    });
+});
 </script>
 </body>
 </html>

@@ -120,5 +120,9 @@ public class QnaDAO {
 	    }
 	    return jdbc.queryForObject(sql.toString(), Integer.class, params.toArray());
 	}
+	public void statusReset(int seq) {
+	    String sql = "update qna set status = 'status-waiting' where seq = ?";
+	    jdbc.update(sql, seq);
+	}
 
 }
