@@ -347,7 +347,7 @@ body {
         <div class="panel">
             <div class="write-box">
                 <div class="write-title">공지글 작성</div>
-                <form action="/boards/notice_write" method="post" id = "frm" enctype="multipart/form-data">
+                <form action="/admin/notice_write" method="post" id = "frm" enctype="multipart/form-data">
 			        <!-- 카테고리 -->
 		    		<input type="hidden" name="category" value="main">
 	                <!-- 제목 -->

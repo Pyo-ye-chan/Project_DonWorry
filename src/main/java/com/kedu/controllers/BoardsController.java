@@ -92,39 +92,7 @@ public class BoardsController {
 		return "redirect:/boards/mainboard_list?page=1";
 	}
 	
-	//공지글 등록
-	@RequestMapping("/notice_write")
-	public String noticeWrite(BoardsDTO dto,MultipartFile[] files) {
-		
-		int nextVal = dao.seqNextval();
-		System.out.println(nextVal);
-		dao.insert(nextVal,dto);
-		
-		
-		String savePath = "c:/files";
-		File savePathFile = new File(savePath);
-
-		if(!savePathFile.exists()) {
-			savePathFile.mkdir();
-		}
-		for(MultipartFile file : files) {
-			if(!file.isEmpty()) { // 비어있는 더미 파일 객체라면 무시
-				String oriName = file.getOriginalFilename(); // 파일 원본 이름
-				String sysName = UUID.randomUUID() + "_" + oriName; // 중복되지 않게 가공된 파일 이름
-				try {
-					file.transferTo(new File(savePath+"/"+sysName));
-				}catch(Exception e) {
-					e.printStackTrace();
-					return "error";
-				}
-				
-				fdao.upload(new FilesDTO(0,oriName,sysName,nextVal));
-			}	
-		}
-		
-		
-		return "redirect:/admin/admin_boards?page=1";
-	}
+	
 	@RequestMapping("/detail")
 	public String detail(int seq,Model model,HttpSession session) {
 		BoardsDTO dto = dao.detail(seq);

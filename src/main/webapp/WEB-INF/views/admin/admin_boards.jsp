@@ -413,7 +413,7 @@ body {
             <div class="summary-card notice">
                 <div class="summary-label">공지 게시글</div>
                 <div class="summary-value">6</div>
-                <a href="/admin/notice_write" style="color: #2563eb; ">
+                <a href="/admin/notice_Towrite" style="color: #2563eb; ">
                 	<div class="summary-sub" style="color: #2563eb; ">작성하러 가기</div>
                 </a>
             </div>

@@ -1,10 +1,12 @@
 package com.kedu.controllers;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +14,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kedu.dao.BoardsDAO;
+import com.kedu.dao.FilesDAO;
 import com.kedu.dao.MembersDAO;
 import com.kedu.dao.QnaDAO;
 import com.kedu.dto.BoardsDTO;
+import com.kedu.dto.FilesDTO;
 import com.kedu.dto.MembersDTO;
 import com.kedu.dto.QnaDTO;
 
@@ -30,6 +35,9 @@ public class AdminController {
 	
 	@Autowired
 	private BoardsDAO bdao;
+	
+	@Autowired
+	private FilesDAO fdao;
 	
 	@Autowired
 	private QnaDAO qdao;
@@ -94,6 +102,7 @@ public class AdminController {
 		return "admin/admin_members";
 	}
 	
+/* 관리자 - 게시물 관리 */
 	@RequestMapping("/admin_boards")
 	public String adminBoards(int page, Model model) {
 		//회원 게시글 페이지네이션 적용
@@ -113,6 +122,7 @@ public class AdminController {
 		return "admin/admin_boards";
 	}
 	
+	//게시물 상세보기
 	@RequestMapping("/admin_board_detail")
 	public String admin_board_detail(int seq, int page, Model model){
 		BoardsDTO dto = bdao.detail(seq);
@@ -120,19 +130,52 @@ public class AdminController {
 		model.addAttribute("currentPage",page);
 		return "admin/admin_board_detail";
 	}
-	
+	//게시물 삭제
 	@RequestMapping("/admin_board_delete")
 	public String delete(int seq, int page) {
 		bdao.delete(seq);
 		
 		return "redirect:/admin/admin_boards?page="+page;
 	}
-	
-	@RequestMapping("/notice_write")
+	//공지 글 쓰기
+	@RequestMapping("/notice_Towrite")
 	public String adminWrite() {
 		return "admin/notice_write";
 	}
 
+	//공지글 등록
+	@RequestMapping("/notice_write")
+	public String noticeWrite(BoardsDTO dto,MultipartFile[] files) {
+		
+		int nextVal = bdao.seqNextval();
+		System.out.println(nextVal);
+		bdao.insert(nextVal,dto);
+		
+		
+		String savePath = "c:/files";
+		File savePathFile = new File(savePath);
+
+		if(!savePathFile.exists()) {
+			savePathFile.mkdir();
+		}
+		for(MultipartFile file : files) {
+			if(!file.isEmpty()) { // 비어있는 더미 파일 객체라면 무시
+				String oriName = file.getOriginalFilename(); // 파일 원본 이름
+				String sysName = UUID.randomUUID() + "_" + oriName; // 중복되지 않게 가공된 파일 이름
+				try {
+					file.transferTo(new File(savePath+"/"+sysName));
+				}catch(Exception e) {
+					e.printStackTrace();
+					return "error";
+				}
+				
+				fdao.upload(new FilesDTO(0,oriName,sysName,nextVal));
+			}	
+		}
+		
+		
+		return "redirect:/admin/admin_boards?page=1";
+	}
 	
 	@RequestMapping("/admin_inquiry")
 	public String toInquiry(Model model) {
