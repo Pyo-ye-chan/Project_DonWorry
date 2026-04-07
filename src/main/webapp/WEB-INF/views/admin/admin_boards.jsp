@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -167,6 +168,7 @@ body {
     border: 1px solid #e7eef8;
     border-radius: 18px;
     padding: 22px;
+
 }
 
 .summary-label {
@@ -452,12 +454,14 @@ body {
                 </thead>
                 <tbody>
                 <c:forEach var="i" items="${board_mainList}">
+                <c:if test="${i.member_id!='관리자'}">
                     <tr>
                         <td>${i.seq}</td>                       
                         <c:choose>
 	                        <c:when test="${i.category =='free'}"><td>자유</td></c:when>
 	                        <c:when test="${i.category =='qna'}"><td>질문</td></c:when>
 	                        <c:when test="${i.category =='review'}"><td>리뷰</td></c:when>
+	                        <c:when test="${i.category =='main'}"><td>메인</td></c:when>
                         </c:choose>                       
                         <td>${i.title}</td>
                         <td>${i.member_id}</td>
@@ -470,6 +474,7 @@ body {
                             <button class="board-del-btn" type="button" data-seq="${i.seq}">삭제</button>
                         </td>
                     </tr>
+                    </c:if>
                 </c:forEach>                  
                 </tbody>
             </table>
@@ -485,10 +490,8 @@ body {
 
             <div class="filter-row">
                 <select>
-                    <option>전체 게시판</option>
-                    <option>자유 게시판</option>
-                    <option>후기 게시판</option>
-                    <option>질문 게시판</option>
+                    <option>최신순</option>
+                    <option>과거순</option>
                 </select>
                 <input type="text" placeholder="제목 검색">
                 <button class="btn-blue" type="button">검색</button>
@@ -498,7 +501,6 @@ body {
                 <thead>
                     <tr>
                         <th>번호</th>
-                        <th>게시판</th>
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일</th>
@@ -507,41 +509,26 @@ body {
                     </tr>
                 </thead>
                 <tbody>
+                <c:forEach var="i" items="${notice_mainList}">
+                <c:if test="${fn:contains(i.member_id,'관리자')}">
                     <tr>
-                        <td>01</td>
-                        <td>자유</td>
-                        <td>사용자 안내문</td>
-                        <td>admin</td>
-                        <td>2026-04-01</td>
+                        <td>${i.seq}</td>
+                        <td>${i.title}</td>
+                        <td>${i.member_id}</td>
+                        <td id="write_date">
+                        	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
+                        </td>
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
-                            <button class="board-detail-btn" type="button">보기</button>
-                            <button class="board-del-btn" type="button">삭제</button>
+                            <button class="board-detail-btn notice-detail-btn" type="button"  data-seq="${i.seq}">보기</button>
+                            <button class="board-del-btn notice-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>00</td>
-                        <td>후기</td>
-                        <td>알바 리뷰게시판 도배 관련 안내문</td>
-                        <td>admin</td>
-                        <td>2026-03-31</td>
-                        <td><span class="state-pill state-show">게시중</span></td>
-                        <td>
-                            <button class="board-detail-btn" type="button">보기</button>
-                            <button class="board-del-btn" type="button">삭제</button>
-                        </td>
-                    </tr>
+                </c:if>
+                </c:forEach>
 
                 </tbody>
             </table>
-
-            <div class="pagination-wrap" id="admin_notice_navi">
-    <!--             <button class="page-btn">&lt;</button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">&gt;</button> -->
-            </div>
         </section>
     </main>
 
@@ -624,42 +611,18 @@ body {
 	
  
 //====================공지글=======================//
-/*  
- 
- //공지글 관리 id = admin_notice_navi
-	let notice_navi = $("#admin_notice_navi");
+
+	//보기 버튼 클릭
+	$(".notice-detail-btn").on("click",function(){
+		let seq = $(this).data("seq");
+		location.href='/admin/admin_board_detail?seq='+seq+'&page=1';
+	});
 	
-	//이전 버튼 <
-	if(needPrev){	
-		let btn = $("<button>");
-		btn.addClass("page-btn");
-		btn.html("&lt;");
-		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (startNavi-1)+"'");
-		notice_navi.append(btn);
-	}
-	
-	for(let i = startNavi; i <= endNavi; i++){
-		let btn = $("<button>");
-		btn.addClass("page-btn");
-		btn.html(i);
-		btn.attr("onclick","location.href='/admin/admin_boards?page="+ i +"'");
-		
-		if(i== currentPage){
-			btn.addClass("active");//현재 페이지 파란색 처리
-		}
-		notice_navi.append(btn);
-	}
-	
-	//다음 버튼 >
-	if(needNext){		 
-		let btn = $("<button>");
-		btn.addClass("page-btn");
-		btn.html("&gt;");//구글 라이브러리 > 모양
-		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (endNavi+1) +"'");
-		notice_navi.append(btn);
-	} 
-	
-	*/
+	//삭제 버튼 클릭
+	$(".notice-del-btn").on("click",function(){
+		let seq = $(this).data("seq");
+		location.href='/admin/admin_board_delete?seq='+seq+'&page=1';
+	});
 </script>
 </body>
 </html>

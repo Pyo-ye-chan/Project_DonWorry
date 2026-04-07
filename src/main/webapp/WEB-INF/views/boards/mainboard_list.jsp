@@ -194,7 +194,6 @@
 		.notice-board {
 			margin:auto;
 			width:100%;
-/* 		    border: 1px solid #DDDDDD; */
             border:none;
 		    padding: 0 10px;
 		    background-color: #ffffff;
@@ -227,17 +226,21 @@
 		/* 각 텍스트 항목 공통 스타일 */
 		.notice-item-info > div, 
 		.notice-item-info > span {
-		    flex: 1;
-		    font-weight:bold;
+			flex: 1.5;	    
+		    font-weight:bold; 
 		    font-size: 14px;
 		    color: #333;
 		    /* text-align: left; */
 		}
+		.notice-item-info >.notice-title{
+			flex: 8;
+		}
 		
 		/* 작성일자 오른쪽 정렬 */
 		.notice-date {
-		 	font-size: 11px;!important;
-            color: #888;
+		 	font-size: 12px !important;
+            color: #888 !important;
+            font-weight:normal !important;
             margin-top: 2px;
 		    flex: 1;
 		    text-align: right;
@@ -529,24 +532,38 @@
             <button class="tab-item " onclick = "location.href = '/boards/qnaboard_list?page=1'"> 질문 게시판</button>
             <button class="tab-item" onclick = "location.href = '/boards/reviewboard_list?page=1'"> 리뷰 게시판</button>
         </nav>
-		<div class="notice-board">
-		    <%-- <c:forEach var="i" items="${noticeList}"> --%>
-		        <div class="notice-board-item">
-		        	<i class="fa-solid fa-circle-exclamation" style="color: rgb(64, 131, 231); margin-right:10px;"></i>
-		            <a href="/notices/detail?seq=${i.seq}" class="notice-item-info">                
-		                <div class="notice-title" style="flex: 3;">${i.title}커뮤니티 이용 규칙 안내</div>                
-		                <div class="notice-writer">${i.writer}</div>	                
-		                <div class="notice-date">
-		                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
-		                </div>
-		            </a>
-		        </div>
-		    <%-- </c:forEach> --%>
-		</div>
+		
+			<div class="notice-board">
+			    <c:forEach var="i" items="${mainList}">
+			    <c:if test="${i.member_id=='관리자'}">
+			        <div class="notice-board-item">
+			        	<i class="fa-solid fa-circle-exclamation" style="color: rgb(64, 131, 231); margin-right:10px;"></i>
+			            	<a href="/notices/detail?seq=${i.seq}&view_count=${i.view_count}" class="notice-item-info"> 
+				            	<div class="notice-title" style="flex: 3;">${i.title}</div>                
+				                <div class="notice-writer">${i.member_id}</div>	                
+				                <div class="notice-date">
+				                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
+				                </div>
+			                </a>
+			            <c:if test="${i.member_id!='관리자'}">
+			            	<a href="/boards/view?seq=${i.seq}&view_count=${i.view_count}" class="notice-item-info"> 			                         
+				                <div class="notice-title" style="flex: 3;">${i.title}</div>                
+				                <div class="notice-writer">${i.member_id}</div>	                
+				                <div class="notice-date">
+				                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
+				                </div>
+			            	</a>
+			            </c:if>
+			        </div>
+			        </c:if>
+			    </c:forEach>
+			</div>
+		
         <section class="post-list">
             <div class="post-container">
-
+            
                 <c:forEach var="i" items="${mainList }">
+                <c:if test="${i.member_id!='관리자'}">
                     <article class="post-card"
                         onclick="location.href='/boards/view?seq=${i.seq}&view_count=${i.view_count }'">
                         <div class="user-info">
@@ -577,6 +594,7 @@
                             </span>
                         </div>
                     </article>
+                    </c:if>
                 </c:forEach>
             </div>
             <div class="page-nav">
