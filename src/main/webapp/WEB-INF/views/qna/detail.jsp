@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,6 +122,326 @@
         width: 100vw;                  /* 화면 끝까지 너비 확장 */
         margin-left: calc(-50vw + 50%); /* 컨테이너를 벗어나 화면 꽉 채우기 */
     }
+    .post-detail {
+            margin-top: 40px;
+        }
+
+        .post-detail {
+            margin: 60px auto;
+            max-width: 900px;
+            /* 핵심: 중앙 + 크게 */
+            padding: 40px 50px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background-color: #fff;
+        }
+
+        /* 제목 */
+        .detail-title {
+            font-size: 32px;
+            /* 기존 24 → 크게 */
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* 작성 정보 */
+        .detail-info {
+            display: flex;
+            justify-content: space-between;
+            /* 좌우 분리 */
+            font-size: 14px;
+            color: #888;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 본문 */
+        .detail-content {
+            margin-top: 30px;
+            font-size: 17px;
+            /* 기존 15 → 크게 */
+            line-height: 1.9;
+            /* 가독성 핵심 */
+            color: #333;
+            min-height: 300px;
+        }
+
+        /* 버튼 */
+        .detail-actions {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            /* 오른쪽 정렬 */
+            gap: 10px;
+        }
+
+        .detail-actions button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .detail-actions button:first-child {
+            background-color: #6b7280;
+        }
+
+        .detail-category {
+            display: inline-block;
+            background-color: #e0edff;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .info-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            /* 🔥 여기로 간격 조절 */
+        }
+
+        /* | 여백 따로 더 주고 싶으면 */
+        .divider {
+            color: #ccc;
+            margin: 0 5px;
+        }
+
+        .info-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* 신고 버튼 */
+        .comment-actions .report-btn {
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .comment-actions .report-btn:hover {
+            color: #ef4444;
+            /* hover 시 빨강 */
+        }
+
+        .report-btn {
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .report-btn:hover {
+            color: #ef4444;
+            /* hover 시 빨강 */
+        }
+
+        /* 댓글 영역 */
+        .comment-section {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        /* 제목 */
+        .comment-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* 작성 */
+        .comment-write {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .comment-write textarea {
+            flex: 1;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: none;
+            font-size: 14px;
+        }
+
+        .comment-write button {
+            width: 80px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* 리스트 */
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* 댓글 */
+        .comment-item {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        /* 헤더 */
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        /* 작성자 + 날짜 */
+        .comment-left {
+            display: flex;
+            gap: 10px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .comment-writer {
+            font-weight: 600;
+            color: #444;
+        }
+
+        /* 내용 */
+        .comment-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 수정/삭제 */
+        .comment-actions {
+            display: flex;
+            gap: 10px;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .comment-actions span:hover {
+            color: #2563eb;
+        }
+
+        /* 대댓글 영역 */
+        .reply-list {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        /* 대댓글 아이템 */
+        .reply-item {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        /* 꺾인 화살표 */
+        .reply-item::before {
+            content: "↳";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        /* 대댓글 입력창 */
+        .reply-write {
+            margin-top: 10px;
+            margin-left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .reply-write textarea {
+            flex: 1;
+            height: 60px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            resize: none;
+            font-size: 13px;
+        }
+
+        .reply-write button {
+            width: 70px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        .detail-files {
+            margin-top: 15px;
+            /* 🔥 작성정보랑 간격 */
+            padding: 15px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+        }
+
+        /* 리스트 */
+        .file-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 파일 */
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-item i {
+            color: #2563eb;
+        }
+
+        .file-item a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .file-item a:hover {
+            text-decoration: underline;
+        }
+
+        .no-file {
+            font-size: 13px;
+            color: #999;
+        }
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-waiting {
+            background-color: #e9ecef;
+            color: #868e96;
+        }
+
+        .status-complete {
+            background-color: #e7f5ff;
+            color: #228be6;
+        }
 </style>
 </head>
 <body>
@@ -198,6 +519,88 @@
 	        </a>  
         </c:if>         
     </nav>
+    
+    <div class="post-detail">
+
+            <!-- 카테고리 -->
+            <div class="detail-category">
+                1:1 문의하기
+            </div>
+
+            <!-- 제목 -->
+            <h1 class="detail-title">${dto.title }</h1> <br>
+
+            <!-- 작성 정보 -->
+            <div class="detail-info">
+                <div class="info-left">
+                    <span class="writer">${dto.member_id }</span>
+                    <span class="divider">|</span>
+                    <span class="date">
+                        <fmt:formatDate value="${dto.write_date}" pattern="yyyy-MM-dd" />
+                    </span>
+                </div>
+                <div class="info-right">
+                    <span class="status-badge ${dto.status == '답변완료' ? 'status-complete' : 'status-waiting'}">
+                                            ${dto.status == '답변완료' ? '답변완료' : '접수중'}
+                    </span>
+                    
+                </div>
+            </div>
+
+            <!-- 🔥 여기 추가 -->
+            <div class="detail-files">
+                <c:if test="${not empty filesList}">
+                    <ul class="file-list">
+                        <c:forEach var="file" items="${filesList}">
+                            <li class="file-item">
+                                <i class="fa-regular fa-file-lines"></i>
+                                <a href="/boards/download?sysName=${file.sysName}&oriName=${file.oriName}">
+                                    ${file.oriName}
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
+
+                <c:if test="${empty filesList}">
+                    <div class="no-file">첨부파일이 없습니다.</div>
+                </c:if>
+            </div>
+
+
+            <!-- 본문 -->
+            <div class="detail-content">
+                ${dto.content }
+            </div>
+
+            <!-- 버튼 -->
+            <div class="detail-actions">
+                <button onclick="location.href='/qna/qna'">목록</button>
+                <c:if test="${loginId == dto.member_id }">
+                    <button onclick="location.href='/qna/toUpdate?seq=${dto.seq}'">수정</button>
+                    <button type="button" class="qna-delete-btn">삭제</button>
+                </c:if>
+            </div>
+
+        </div>
+
+        <!-- 댓글 영역 -->
+        <div class="comment-section">
+
+            <h3 class="comment-title">답변</h3>
+
+            <!-- 댓글 작성 -->
+
+            <div class="comment-write">
+
+                <textarea placeholder="답변할 내용을 입력하세요" name="content" class="content"></textarea>
+                <button class="reply-insert-btn">등록</button>
+            </div>
+
+            <!-- 댓글 리스트 -->
+            <div class="comment-list"></div>
+        </div>
+    
 </div>
 <div class="container-footer">
     <p>© 2026 돈워리. All rights reserved.</p>
@@ -205,6 +608,77 @@
 </div>
 <script>
 
+$(".qna-delete-btn").on("click",function(){
+	 if (!confirm("정말 삭제하시겠습니까?")) {
+		return false;
+	}
+	 location.href = "/qna/delete?seq="+${dto.seq}
+})
+
+$(document).ready(function() {
+    getReplyList();
+});
+
+// 1. 답변 등록
+$(document).on("click", ".reply-insert-btn", function() {
+    let content = $(".reply-content").val().trim();
+    if(content === "") { alert("내용을 입력해주세요."); return; }
+
+    $.ajax({
+        url: "/qna_reply/insert",
+        type: "post",
+        data: {
+            qna_num: "${dto.seq}", // 원본 문의글 번호
+            content: content
+        }
+    }).done(function(resp) {
+        if(resp === "success") {
+            $(".reply-content").val("");
+            getReplyList(); // 목록 갱신
+            // 관리자 답변은 보통 1개이므로 입력창을 숨기기도 함
+            $(".reply-write-container").hide();
+        } else {
+            alert("권한이 없거나 등록에 실패했습니다.");
+        }
+    });
+});
+
+// 2. 답변 목록 불러오기
+function getReplyList() {
+    $.ajax({
+        url: "/qna_reply/list",
+        data: { qna_num: "${dto.seq}" },
+        dataType: "json"
+    }).done(function(list) {
+        let html = "";
+        let loginId = "${loginId}";
+        
+        if(list.length === 0) {
+            html = "<p>등록된 답변이 없습니다.</p>";
+        }
+
+        list.forEach(function(comment) {
+            html += `
+            <div class="comment-item" style="background:#f9f9f9; padding:15px; margin-bottom:10px; border-left:5px solid #007bff;">
+                <div class="comment-header" style="display:flex; justify-content:space-between;">
+                    <strong>[관리자 답변] \${comment.member_id}</strong>
+                    <span>\${comment.write_date_str}</span>
+                </div>
+                <div class="comment-content" style="margin-top:10px;">\${comment.content}</div>
+                <div class="comment-actions" style="text-align:right;">`;
+            
+            // 본인이 쓴 답변일 때만 수정/삭제 노출
+            if(loginId === comment.member_id) {
+                html += `
+                    <button onclick="deleteReply(\${comment.seq})">삭제</button>`;
+            }
+            
+            html += `</div>
+            </div>`;
+        });
+        $(".comment-list").html(html);
+    });
+}
 </script>
 </body>
 </html>

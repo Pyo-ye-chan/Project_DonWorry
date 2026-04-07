@@ -477,7 +477,7 @@
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
                     커뮤니티
                 </a> 
-                <a href=""> 
+                <a href="/qna/qna"> 
                     <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     고객지원
                 </a>              

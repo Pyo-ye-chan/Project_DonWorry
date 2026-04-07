@@ -31,5 +31,17 @@ public class QnaDAO {
 		String sql = "select * from qna where seq = ?";
 		return jdbc.queryForObject(sql,new BeanPropertyRowMapper<QnaDTO>(QnaDTO.class),seq);
 	}
+	public void statusUpdate(int seq) {
+		String sql = "update qna set status where seq = ?";
+		jdbc.update(sql,seq);
+	}
+	public void update(QnaDTO dto) {
+		String sql = "update qna set title = ? , content = ? where seq = ?";
+		jdbc.update(sql,dto.getTitle(),dto.getContent(),dto.getSeq());
+	}
+	public void delete(int seq) {
+		String sql = "delete from qna where seq = ?";
+		jdbc.update(sql,seq);
+	}
 
 }

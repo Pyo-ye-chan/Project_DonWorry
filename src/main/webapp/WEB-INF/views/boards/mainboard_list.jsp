@@ -189,6 +189,59 @@
             color: #333;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+        
+		/* [6] 공지사항 섹션 */
+		.notice-board {
+			margin:auto;
+			width:100%;
+/* 		    border: 1px solid #DDDDDD; */
+            border:none;
+		    padding: 0 10px;
+		    background-color: #ffffff;
+		    display: flex;
+		    flex-direction: column; /* 세로로 쌓이게 설정 */
+		    gap: 10px;              /* 게시글 사이의 간격 */
+		}
+		
+		/* 공지사항 게시물 한 칸 */
+		.notice-board-item {
+		    border: 1px solid #c3dfff;
+		    border-radius: 12px;
+		    padding: 15px 25px;
+		    background-color: #f1f7ff;
+		    display: flex;
+		    align-items: center;
+		}
+		
+		/* 내부 정보 컨테이너 */
+		.notice-item-info {
+		    text-decoration: none;
+		    width: 100%;
+		    display: flex;
+		    flex-direction: row;
+		    align-items: center;
+		    justify-content: space-between;
+		    gap: 10px;
+		}
+		
+		/* 각 텍스트 항목 공통 스타일 */
+		.notice-item-info > div, 
+		.notice-item-info > span {
+		    flex: 1;
+		    font-weight:bold;
+		    font-size: 14px;
+		    color: #333;
+		    /* text-align: left; */
+		}
+		
+		/* 작성일자 오른쪽 정렬 */
+		.notice-date {
+		 	font-size: 11px;!important;
+            color: #888;
+            margin-top: 2px;
+		    flex: 1;
+		    text-align: right;
+		}
 
         /* 게시글 카드 */
         .post-list {
@@ -227,14 +280,6 @@
             font-size: 12px;
             margin-right: 12px;
             display: none;
-        }
-
-        .profile-img.blue {
-            background-color: #4a90e2;
-        }
-
-        .profile-img.green {
-            background-color: #50e3c2;
         }
 
         .meta .nickname {
@@ -410,9 +455,7 @@
                     <a href="/members/toLogin" style="text-decoration: none; color:black">
                         <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
                     </a>
-                </span>
-                <!-- 일단 관리자 빼고 다 숨겨둠 -->
-                    <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>
+                </span>               
             </div>
         </c:when>
         <c:otherwise>
@@ -445,11 +488,11 @@
                     <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
                     홈
                 </a>
-                <a href="salary/calendar">
+                <a href="/salary/calendar">
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
                 </a>
-                <a href="#">
+                <a href="/jobposts/jobpost">
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
@@ -463,7 +506,7 @@
             </div>          
         </div>   
         <c:if test="${nickName==null }">   
-	        <a class="my-page" href="members/toLogin"> 
+	        <a class="my-page" href="/members/toLogin"> 
 	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
 	            마이페이지
 	        </a>  
@@ -486,7 +529,20 @@
             <button class="tab-item " onclick = "location.href = '/boards/qnaboard_list?page=1'"> 질문 게시판</button>
             <button class="tab-item" onclick = "location.href = '/boards/reviewboard_list?page=1'"> 리뷰 게시판</button>
         </nav>
-
+		<div class="notice-board">
+		    <%-- <c:forEach var="i" items="${noticeList}"> --%>
+		        <div class="notice-board-item">
+		        	<i class="fa-solid fa-circle-exclamation" style="color: rgb(64, 131, 231); margin-right:10px;"></i>
+		            <a href="/notices/detail?seq=${i.seq}" class="notice-item-info">                
+		                <div class="notice-title" style="flex: 3;">${i.title}커뮤니티 이용 규칙 안내</div>                
+		                <div class="notice-writer">${i.writer}</div>	                
+		                <div class="notice-date">
+		                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
+		                </div>
+		            </a>
+		        </div>
+		    <%-- </c:forEach> --%>
+		</div>
         <section class="post-list">
             <div class="post-container">
 
