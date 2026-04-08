@@ -59,6 +59,10 @@ public class FaqDAO {
 		String sql = "delete from faq where seq = ?";
 		return jdbc.update(sql,seq);
 	}
+	public List<FaqDTO> list(){
+		String sql = "select * from faq where is_show = 'Y' order by sort_order";
+		return jdbc.query(sql,new BeanPropertyRowMapper<FaqDTO>(FaqDTO.class));
+	}
 	
 
 }
