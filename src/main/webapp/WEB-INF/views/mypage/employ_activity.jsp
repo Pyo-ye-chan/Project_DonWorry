@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,7 +89,10 @@
     .nav-menu a.active {
         color: #4f67e8;
     }
-
+    .my-page.active {
+        color: #4f67e8;
+    }
+	
     .my-page {
         display: flex;
         align-items: center;
@@ -296,6 +300,7 @@
         padding: 24px 24px 18px;
         margin-bottom: 22px;
         width: 100%;
+        height:456px;
     }
 
     .job-top {
@@ -434,15 +439,32 @@
     }
 
     .applicant-list {
-        padding-top: 8px;
+	    margin-top: 16px;
+	    background: #f1f5ff;   /* 연한 푸른색 */
+	    border-radius: 14px;
+	    padding: 12px 0;
+		height: 250px;
+		max-height: 250px;
+	    overflow-y: auto;      /* 스크롤 */
     }
+    .empty-applicant {
+	    text-align: center;
+	    padding: 80px 0;
+	    color: #94a3b8;
+	    font-size: 14px;
+	   
+	   
+	    
+	}
 
     .applicant-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 14px 0;
-        border-bottom: 1px solid #eef2f7;
+        border-bottom: 1px solid #e5e7eb;
+        margin-left: 10px;
+        margin-right: 15px;
     }
 
     .applicant-row:last-child {
@@ -453,12 +475,13 @@
         display: flex;
         align-items: flex-start;
         gap: 10px;
+        margin-left: 20px;
     }
 
     .applicant-check {
         width: 17px;
         height: 17px;
-        margin-top: 3px;
+        margin-top: 13px;
         accent-color: #4f67e8;
     }
 
@@ -479,6 +502,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+
     }
 
     .step-badge {
@@ -638,19 +662,23 @@
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
                 </a>
-                <a href="/jobposts/jobpost" class="active">
-                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(79, 103, 232); margin-right:5px;"></i>
+                <a href="/jobposts/jobpost">
+                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
-                <a href="/boards/mainboard_list">
+                <a href="/boards/mainboard_list?page=1">
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     커뮤니티
+                </a> 
+                <a href="/qna/qna?page=1"> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    고객지원
                 </a>              
             </div>          
         </div>   
 
-        <a class="my-page" href="/mypage/toMypage">
-            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+        <a class="my-page active" href="/mypage/toMypage">
+            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(79, 103, 232);"></i>
             마이페이지
         </a>    
     </nav>
@@ -684,69 +712,68 @@
         </div>
 
         <section class="post-list">
-            <div class="list-count">전체 공고 내역 (2)</div>
-
+            <div class="list-count">전체 공고 내역 ${count }개</div>
+			<c:forEach var="a" items="${allList }">
             <div class="post-card">
                 <div class="job-top">
                     <div class="job-left">
-                        <div class="job-thumb"></div>
                         <div class="job-info">
-                            <div class="job-title">바리스타 주말</div>
-                            <div class="job-company">스타벅스 강남점</div>
-                            <div class="job-location">서울 강남구 · 아르바이트</div>
-                            <div class="job-date">등록일 2024-04-15</div>
+                            <div class="job-title">${a.title }</div>                  
+                            <div class="job-company">${a.company_name }</div>
+                            <div class="job-location">${a.sido } ${a.gugun } ${a.dong }</div>
+                            <div class="job-date">등록일 
+                            <fmt:formatDate value="${a.write_date}" pattern="yyyy-MM-dd" /></div>
                         </div>
                     </div>
 
                     <div class="job-right">
                         <div class="job-meta">
-                            <div>시급 12,000원</div>
-                            <div>시간 09:00 - 18:00</div>
-                            <div>근무요일 토,일</div>
+                            <div>시급 ${a.pay }</div>
+                            <div>시간 ${a.work_starttime } - ${a.work_endtime }</div>
+                            <div>근무요일 ${a.work_days }</div>
                         </div>
-                        <div class="job-status open">모집중</div>
                         <div class="job-btns">
-                            <button type="button" class="line-btn">공고 상세</button>
+                            <button type="button" class="line-btn" onclick="location.href='/mypage/myjobpost?seq='+${a.seq}">공고 상세</button>
                             <button type="button" class="blue-btn">지원자 관리</button>
                         </div>
                     </div>
                 </div>
+ 			<div class="applicant-list">
 
-                <div class="applicant-list">
-                    <div class="applicant-row">
-                        <div class="applicant-left">
-                            <input type="checkbox" class="applicant-check">
-                            <div>
-                                <div class="applicant-name">김민수</div>
-                                <div class="applicant-phone">010-1234-5678</div>
-                            </div>
-                        </div>
-                        <div class="applicant-right">
-                            <span class="step-badge blue">면접 예정</span>
-                            <button type="button" class="dark-btn">이력서 보기</button>
-                        </div>
-                    </div>
-
-                    <div class="applicant-row">
-                        <div class="applicant-left">
-                            <input type="checkbox" class="applicant-check">
-                            <div>
-                                <div class="applicant-name">신예리</div>
-                                <div class="applicant-phone">010-4876-5432</div>
-                            </div>
-                        </div>
-                        <div class="applicant-right">
-                            <span class="step-badge blue">면접 예정</span>
-                            <button type="button" class="dark-btn">이력서 보기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+			    <c:choose>
+			        <c:when test="${empty applicantList}">
+			            <div class="empty-applicant">
+			                지원자가 없습니다.
+			            </div>
+			        </c:when>
+			
+			        <c:otherwise>
+			            <c:forEach var="e" items="${applicantList}">
+			                <div class="applicant-row">
+			                    <div class="applicant-left">
+			                        <div>
+			                            <div class="applicant-name">${e.name}</div>
+			                            <div class="applicant-phone">${e.phone}</div>
+			                        </div>
+			                    </div>
+			                    <div class="applicant-right">
+			                        <span class="step-badge blue">${e.step}</span>
+			                        <button type="button" class="dark-btn">이력서 보기</button>
+			                    </div>
+			                </div>
+			            </c:forEach>
+			        </c:otherwise>
+			
+			    </c:choose>
+			
+			</div>   
+                
+			</div>
+			</c:forEach>
+			
             <div class="post-card">
                 <div class="job-top">
                     <div class="job-left">
-                        <div class="job-thumb"></div>
                         <div class="job-info">
                             <div class="job-title">매장 관리</div>
                             <div class="job-company">ABC 협력점</div>
@@ -761,7 +788,6 @@
                             <div>시간 18:00 - 23:00</div>
                             <div>근무요일 수,목</div>
                         </div>
-                        <div class="job-status">모집완료</div>
                         <div class="job-btns">
                             <button type="button" class="line-btn">공고 상세</button>
                             <button type="button" class="blue-btn">지원자 관리</button>
@@ -772,7 +798,6 @@
                 <div class="applicant-list">
                     <div class="applicant-row">
                         <div class="applicant-left">
-                            <input type="checkbox" class="applicant-check">
                             <div>
                                 <div class="applicant-name">박지출</div>
                                 <div class="applicant-phone">010-1122-5678</div>
@@ -786,7 +811,6 @@
 
                     <div class="applicant-row">
                         <div class="applicant-left">
-                            <input type="checkbox" class="applicant-check">
                             <div>
                                 <div class="applicant-name">김안경</div>
                                 <div class="applicant-phone">010-3333-5678</div>
@@ -800,7 +824,6 @@
 
                     <div class="applicant-row">
                         <div class="applicant-left">
-                            <input type="checkbox" class="applicant-check">
                             <div>
                                 <div class="applicant-name">이진출</div>
                                 <div class="applicant-phone">010-5555-6789</div>
@@ -816,9 +839,7 @@
         </section>
 
         <div class="page-nav">
-            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_left</span></a>
-            <a href="#" class="page-num active">1</a>
-            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span></a>
+           
         </div>
 
        
@@ -835,6 +856,66 @@
         $(".tab-item").removeClass("active");
         $(this).addClass("active");
     });
+    let recordTotalCount = ${recordTotalCount}; // 총 개수
+	let recordCountPerPage = ${recordCountPerPage}; // 한페이지에 몇개 (10)
+	let naviCountPerPage  = ${naviCountPerPage }; // navi 몇개 (10)
+	let currentPage = ${currentPage}; // 현재 페이지
+	let pageTotalCount = Math.ceil(recordTotalCount/recordCountPerPage); 
+	
+	let startNavi = Math.floor((currentPage - 1) / naviCountPerPage) * naviCountPerPage +1;
+	let endNavi = startNavi + naviCountPerPage - 1;
+	
+	if(endNavi > pageTotalCount){
+		endNavi = pageTotalCount;
+	}
+	
+	let needPrev = true;
+	let needNext = true;
+	
+	if(startNavi == 1){
+		needPrev = false;
+	}
+	if(endNavi == pageTotalCount){
+		needNext = false;
+	}
+	if(needPrev){
+		
+		let span = $("<span>");
+		span.addClass("material-symbols-outlined");
+		span.css("font-size","16px");
+		span.html("chevron_left");
+		let a = $("<a>");
+		a.addClass("page-num");
+		a.attr("href","/mypage/employ_activity?page="+ (startNavi-1));
+		a.append(span);
+		$(".page-nav").append(a);
+	}
+	
+	for(let i = startNavi; i <= endNavi; i++){
+		let a = $("<a>")
+		a.attr("href" , "/mypage/employ_activity?page="+i);
+		a.addClass("page-num");
+		
+		if (i == currentPage) {
+	        a.addClass("active");
+	    }
+		a.html(i);
+		$(".page-nav").append(a);
+	}
+	
+	if(needNext){
+		 
+		 let span = $("<span>");
+			span.addClass("material-symbols-outlined");
+			span.css("font-size","16px");
+			span.html("chevron_right");
+			let a = $("<a>");
+			a.addClass("page-num");
+			a.attr("href","/mypage/employ_activity?page="+(endNavi+1));
+			a.append(span);
+			$(".page-nav").append(a);
+	}		
+			
 </script>
 </body>
 </html>

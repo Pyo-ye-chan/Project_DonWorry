@@ -2,10 +2,13 @@ package com.kedu.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
 import com.kedu.dto.JobPostDTO;
 
 @Repository
@@ -40,6 +43,8 @@ public class JobPostDAO {
         dto.setSub_category(rs.getString("sub_category"));
         dto.setContent(rs.getString("content"));
         dto.setBenefit(rs.getString("benefit"));
+        
+        dto.setWrite_date(rs.getTimestamp("write_date"));
         
         try { dto.setMain_category_name(rs.getString("main_category_name")); } catch (Exception e) {}
         try { dto.setSub_category_name(rs.getString("sub_category_name")); } catch (Exception e) {}
@@ -191,9 +196,24 @@ public class JobPostDAO {
         return jdbc.query(sql, jobPostMapper);
     }
     
+
+	public int mypostRecordTotalCount(String memberId) {
+		String sql = "select count(*) from job_post where member_id = ?";
+		return jdbc.queryForObject(sql,Integer.class, memberId);
+	}
+    
+    public List<JobPostDTO> selectById(String memberId, int start, int end){
+    	String sql = "select * from (select row_number() over(order by seq desc) as rn, jp.* from job_post jp "
+    			+ "where member_id = ?) where rn between ? and ?";
+    	return jdbc.query(sql, jobPostMapper, memberId, start, end);
+    }
+    
+    
+
     public int getPostCount() {
     	String sql = "select count(*) from job_post";
     	
     	return jdbc.queryForObject(sql, Integer.class);
     }
+
 }

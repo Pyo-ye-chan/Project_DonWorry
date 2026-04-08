@@ -83,6 +83,7 @@
 
         }
         .nav-menu a.active { color: #2563eb; }
+        .my-page.active { color: #2563eb; }
 
 .logout-btn { 
          	width:60px;
@@ -388,8 +389,8 @@
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo"> 돈워리</a>
             <div class="nav-menu">
-                <a href="/" class="active"> 
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
+                <a href="/"> 
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
                     홈
                 </a>
                 <a href="/salary/calendar">
@@ -410,8 +411,8 @@
                 </a>               
             </div>           
         </div>   
-        <a class="my-page" href="/mypage/toMypage"> 
-            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+        <a class="my-page active" href="/mypage/toMypage"> 
+            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(36, 99, 235);"></i>
             마이페이지
         </a>    
     </nav>
@@ -527,19 +528,7 @@
          <div class="my-activity">
         <div class="my-activity-title">내 활동</div>
         <div class="my-activity-item">
-            <a href="/mypage/job_activity" class="my-apply-list">
-                <div class="item-name">
-                    <i class="fa-solid fa-user-check" style="color: rgb(110, 110, 110); margin-right:5px;"></i></i>
-                    지원자 정보 조회
-                </div>
-                <div class="item-result">
-                    <span class="apply-list-count" style="margin-bottom:15px; font-size: 13px;">12</span>
-                    <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
-                </div> 
-            </a>
-        </div> 
-        <div class="my-activity-item">
-            <a href="/mypage/employ_activity" class="my-apply-list">
+            <a href="/mypage/employ_activity?page=1" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-solid fa-user-check" style="color: rgb(110, 110, 110); margin-right:5px;"></i></i>
                     구인 활동 관리
@@ -551,7 +540,7 @@
             </a>
         </div> 
         <div class="my-activity-item">
-            <a href="/mypage/mypost" class="my-apply-list">
+            <a href="/mypage/mypost?page=1" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-regular fa-file-lines" style="color: rgb(110, 110, 110); margin-right:5px;"></i>
                     내가 작성한 글
