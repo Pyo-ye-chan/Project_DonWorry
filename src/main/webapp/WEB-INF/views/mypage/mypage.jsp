@@ -475,7 +475,7 @@
                     북마크 글 보기
                 </div>
                 <div class="item-result">
-                    <span class="apply-list-count" style="margin-bottom:15px; font-size: 13px;">12</span>
+                    <span class="apply-list-count" style="margin-bottom:15px; font-size: 13px;">${bookmarkCount }</span>
                     <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
                 </div> 
             </a>
@@ -558,7 +558,7 @@
                     북마크 글 보기
                 </div>
                 <div class="item-result">
-                    <span class="apply-list-count" style="margin-bottom:15px; font-size: 13px;">12</span>
+                    <span class="apply-list-count" style="margin-bottom:15px; font-size: 13px;">${bookmarkCount }</span>
                     <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
                 </div> 
             </a>

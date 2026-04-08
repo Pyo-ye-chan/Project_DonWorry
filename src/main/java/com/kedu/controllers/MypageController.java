@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.kedu.commons.EncryptionUtils;
 import com.kedu.dao.BoardsDAO;
+import com.kedu.dao.BookmarkDAO;
 import com.kedu.dao.FilesDAO;
 import com.kedu.dao.JobPostDAO;
 import com.kedu.dao.MembersDAO;
@@ -40,6 +41,9 @@ public class MypageController {
 	private FilesDAO fdao;
 	@Autowired
 	private JobPostDAO jpdao;
+	@Autowired
+	private BookmarkDAO bookdao;
+	
 	
 	@Autowired
 	private Gson gson;
@@ -52,6 +56,9 @@ public class MypageController {
 		List<MembersDTO> list = mdao.selectAll(id);
 		String type = (String)session.getAttribute("type");
 		model.addAttribute("list",list);
+		
+		int bookmarkCount =  bookdao.countBookmark(id);
+		model.addAttribute("bookmarkCount",bookmarkCount);
 		
 		return "mypage/mypage";
 	}
