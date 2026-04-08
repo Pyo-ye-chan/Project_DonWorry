@@ -619,37 +619,44 @@ body {
 		</c:choose>
 
 		<nav class="navbar">
-			<div style="display: flex; align-items: center; gap: 40px;">
-				<a href="/" class="logo"> 돈워리</a>
-				<div class="nav-menu">
-					<a href="/" class="active"> <i class="fa-solid fa-house fa-lg"
-						style="color: rgb(36, 99, 235);"></i> 홈
-					</a> <a href="salary/calendar"> <i
-						class="fa-regular fa-calendar fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
-					</a> <a href="#"> <i class="fa-solid fa-briefcase fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 구인구직
-					</a> <a href="/boards/mainboard_list?page=1"> <i
-						class="fa-regular fa-message fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
-					</a> <a href=""> <i class="fa-solid fa-question fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
-					</a>
-				</div>
-			</div>
-			<c:if test="${nickName==null }">
-				<a class="my-page" href="members/toLogin"> <i
-					class="fa-solid fa-user-gear fa-lg"
-					style="color: rgb(197, 197, 197);"></i> 마이페이지
-				</a>
-			</c:if>
-			<c:if test="${nickName!=null }">
-				<a class="my-page" href="/mypage/toMypage"> <i
-					class="fa-solid fa-user-gear fa-lg"
-					style="color: rgb(197, 197, 197);"></i> 마이페이지
-				</a>
-			</c:if>
-		</nav>
+        <div style="display: flex; align-items: center; gap: 40px;">
+            <a href="/" class="logo"> 돈워리</a>
+            <div class="nav-menu">
+                <a href="/"> 
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
+                    홈
+                </a>
+                <a href="/salary/calendar">
+                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
+                    급여 캘린더
+                    </a>
+                <a href="/jobposts/jobpost"  class="active"> 
+                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(36, 99, 235); margin-right:5px;"></i>
+                    구인구직
+                </a>
+                <a href="/boards/mainboard_list?page=1"> 
+                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
+                    커뮤니티
+                </a> 
+                <a href="/qna/qna?page=1"> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    고객지원
+                </a>              
+            </div>           
+        </div>
+        <c:if test="${nickName==null }">   
+	        <a class="my-page" href="members/toLogin"> 
+	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+	            마이페이지
+	        </a>  
+        </c:if> 
+        <c:if test="${nickName!=null }">   
+	        <a class="my-page" href="/mypage/toMypage"> 
+	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+	            마이페이지
+	        </a>  
+        </c:if>   
+    </nav>
 	</div>
 
 	<div class="job-section">

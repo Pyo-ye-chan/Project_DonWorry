@@ -6,11 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
-<title>Insert title here</title>
-
+<title>회원 관리 - 돈워리</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link
@@ -20,6 +17,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
+/* 기존 스타일 유지 (가로 스크롤 방지 포함) */
 * {
 	margin: 0;
 	padding: 0;
@@ -31,6 +29,7 @@ body {
 	background: #fff;
 	color: #333;
 	line-height: 1.6;
+	overflow-x: hidden;
 }
 
 .container {
@@ -78,17 +77,6 @@ body {
 	color: #2563eb;
 }
 
-.my-page {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	text-decoration: none;
-	color: #666;
-	font-size: 14px;
-	font-weight: 500;
-	padding: 5px 10px;
-}
-
 .logout-btn {
 	width: 60px;
 	height: 30px;
@@ -96,32 +84,6 @@ body {
 	color: #868e96;
 	border: 1px solid #dee2e6;
 	border-radius: 6px;
-	font-size: 13px;
-	transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-}
-
-.logout-btn:hover {
-	width: 60px;
-	height: 30px;
-	background-color: #f8f9fa;
-	color: #495057;
-	border-color: #ced4da;
-	border: 1px solid #dee2e6;
-	border-radius: 6px;
-	font-size: 13px;
-	transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-}
-
-.now-admin {
-	width: 60px;
-	height: 30px;
-	background-color: #2563eb;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 6px;
-	border: none;
 	font-size: 13px;
 	cursor: pointer;
 }
@@ -144,20 +106,6 @@ body {
 	font-weight: 800;
 	color: #1e293b;
 	margin-bottom: 6px;
-	padding-left: 10px;
-}
-
-.page-title p {
-	font-size: 14px;
-	color: #64748b;
-	padding-left: 10px;
-}
-
-.page-badge {
-	background: #fff;
-	padding: 12px 16px;
-	font-size: 15px;
-	color: #475569;
 }
 
 .summary-grid {
@@ -174,23 +122,10 @@ body {
 	padding: 22px;
 }
 
-.summary-label {
-	font-size: 14px;
-	color: #64748b;
-	margin-bottom: 8px;
-	font-weight: 600;
-}
-
 .summary-value {
 	font-size: 28px;
 	font-weight: 800;
 	color: #0f172a;
-}
-
-.summary-sub {
-	margin-top: 6px;
-	font-size: 13px;
-	color: #2563eb;
 }
 
 .panel {
@@ -199,20 +134,6 @@ body {
 	border-radius: 18px;
 	padding: 22px;
 	margin-bottom: 22px;
-}
-
-.panel-head {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 18px;
-}
-
-.panel-head h3 {
-	margin: 0;
-	font-size: 18px;
-	font-weight: 800;
-	color: #1e293b;
 }
 
 .filter-row {
@@ -246,29 +167,7 @@ body {
 	color: #fff;
 	font-size: 14px;
 	font-weight: 700;
-}
-
-.btn-light-blue {
-	width: 71.84px; height : 34px;
-	border: 1px solid #cfe0ff;
-	border-radius: 8px;
-	padding: 0 12px;
-	background: #f8fbff;
-	color: #2563eb;
-	font-size: 13px;
-	font-weight: 700;
-	height: 34px;
-}
-
-.btn-red {
-	height: 34px;
-	border: none;
-	border-radius: 8px;
-	padding: 0 12px;
-	background: #ef4444;
-	color: #fff;
-	font-size: 13px;
-	font-weight: 700;
+	cursor: pointer;
 }
 
 .admin-table {
@@ -280,22 +179,8 @@ body {
 	padding: 14px 10px;
 	border-bottom: 1px solid #eef2f7;
 	font-size: 14px;
+	text-align: center;
 	vertical-align: middle;
-}
-
-.admin-table th {
-	text-align: center;
-	background: #fafcff;
-	color: #64748b;
-	font-weight: 700;
-}
-
-.admin-table td {
-	text-align: center;
-}
-
-.admin-table tbody tr:hover {
-	background: #f8fbff;
 }
 
 .status-badge {
@@ -311,11 +196,6 @@ body {
 .status-normal {
 	background: #eaf4ff;
 	color: #2563eb;
-}
-
-.status-wait {
-	background: #fff4db;
-	color: #d97706;
 }
 
 .status-stop {
@@ -338,6 +218,7 @@ body {
 	background: #fff;
 	color: #475569;
 	font-size: 13px;
+	cursor: pointer;
 }
 
 .page-btn.active {
@@ -354,52 +235,81 @@ body {
 	text-align: center;
 	color: #999;
 	font-size: 13px;
-	width: 100vw;
-	margin-left: calc(-50vw + 50%);
 }
 
-@media ( max-width :1024px) {
-	.summary-grid {
-		grid-template-columns: 1fr;
-	}
+/* 정지 버튼 (연한 파랑) */
+.btn-red {
+	width: 72px;
+	height: 34px;
+	background-color: #f8fbff;
+	color: #2563eb;
+	border: 1px solid #cfe0ff; /* 아주 연한 테두리만 허용 */
+	border-radius: 8px;
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.btn-red:hover {
+	background-color: #eef4ff;
+	border-color: #2563eb;
+}
+
+/* 정지해제 버튼 (빨강) */
+.btn-light-blue {
+	width: 72px;
+	height: 34px;
+	background-color: #ef4444;
+	color: #fff;
+	border-radius: 8px;
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.btn-light-blue:hover {
+	background-color: #dc2626;
+	box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.page-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 38px;
+	height: 38px;
+	padding: 0 10px;
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
+	background-color: #fff;
+	color: #475569;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none !important;
+	transition: all 0.2s ease;
 }
 </style>
 </head>
 <body>
 	<div class="container">
 		<div class="top-auth">
-			<span style="font-size: 13px; color: #666; cursor: pointer;">
-				<i class="fa-regular fa-user fa-lg"
-				style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
-				${nickName}님 환영합니다. <a href="/members/logout"
-				style="text-decoration: none; color: black">
-					<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
-			</a>
+			<span style="font-size: 13px; color: #666;"> <i
+				class="fa-regular fa-user fa-lg"
+				style="color: #cbcbcb; margin-right: 5px;"></i> ${nickName}님 환영합니다.
+				<a href="/members/logout"><button class="logout-btn"
+						style="margin-left: 10px;">로그아웃</button></a>
 			</span>
-			<c:if test="${type=='관리자'}">
-				<a href="/admin/admin_main" style="text-decoration: none;"><div
-						class="now-admin">관리자</div></a>
-			</c:if>
 		</div>
+
 		<nav class="navbar">
 			<div style="display: flex; align-items: center; gap: 40px;">
 				<a href="/" class="logo">돈워리</a>
-
 				<div class="nav-menu">
-					<a href="/admin/admin_main"> <i
-						class="fa-solid fa-wrench fa-lg"
-						style="color: rgb(197, 197, 197); margin-right: 6px;"></i> 관리자
-						대시보드
-					</a> <a href="/admin/admin_boards"> <i
-						class="fa-solid fa-file-pen fa-lg"
-						style="color: rgb(197, 197, 197); margin-right: 6px;"></i> 게시물 관리
-					</a> <a href="/admin/admin_members" class="active"> <i
-						class="fa-solid fa-user-shield fa-lg"
-						style="color: rgb(36, 99, 235); margin-right: 6px;"></i> 회원 관리
-					</a> <a href="/admin/admin_inquiry"> <i
-						class="fa-regular fa-circle-question fa-lg"
-						style="color: rgb(197, 197, 197); margin-right: 6px;"></i> Q&A 관리
-					</a>
+					<a href="/admin/admin_main"><i class="fa-solid fa-wrench fa-lg"></i>
+						관리자 대시보드</a> <a href="/admin/admin_boards"><i
+						class="fa-solid fa-file-pen fa-lg"></i> 게시물 관리</a> <a
+						href="/admin/admin_members" class="active"><i
+						class="fa-solid fa-user-shield fa-lg"></i> 회원 관리</a> <a
+						href="/admin/admin_inquiry"><i
+						class="fa-regular fa-circle-question fa-lg"></i> Q&A 관리</a>
 				</div>
 			</div>
 		</nav>
@@ -411,21 +321,18 @@ body {
 					<p>전체 회원 조회, 상태 변경, 상세 정보 확인이 가능합니다.</p>
 				</div>
 				<div class="page-badge">
-					<i class="fa-solid fa-users" style="margin-right: 6px;"></i> 총 회원
-					${membersCount }명
+					<i class="fa-solid fa-users"></i> 총 결과 ${recordTotalCount}명
 				</div>
 			</div>
 
 			<section class="summary-grid">
 				<div class="summary-card">
 					<div class="summary-label">전체 회원</div>
-					<div class="summary-value">${membersCount }</div>
-					<div class="summary-sub">전월 대비 +8.4%</div>
+					<div class="summary-value">${membersCount}</div>
 				</div>
 				<div class="summary-card">
 					<div class="summary-label">정지 회원</div>
-					<div class="summary-value">${StateCount }</div>
-					<div class="summary-sub">신고 누적 계정 포함</div>
+					<div class="summary-value">${StateCount}</div>
 				</div>
 			</section>
 
@@ -435,16 +342,17 @@ body {
 				</div>
 
 				<div class="filter-row">
-					<select>
-						<option>전체</option>
-						<option>개인</option>
-						<option>기업</option>
-					</select> <select>
-						<option>전체 상태</option>
-						<option>정상</option>
-						<option>정지</option>
-					</select> <input type="text" placeholder="이름, 이메일, 아이디 검색">
-					<button class="btn-blue" type="button">검색</button>
+					<select id="filter-type">
+						<option value="">전체 유형</option>
+						<option value="개인" ${param.type == '개인' ? 'selected' : ''}>개인</option>
+						<option value="사업자" ${param.type == '사업자' ? 'selected' : ''}>사업자</option>
+					</select> <select id="filter-state">
+						<option value="">전체 상태</option>
+						<option value="N" ${param.state == 'N' ? 'selected' : ''}>정상</option>
+						<option value="Y" ${param.state == 'Y' ? 'selected' : ''}>정지</option>
+					</select> <input type="text" id="keyword" value="${param.keyword}"
+						placeholder="이름, 이메일, 아이디 검색">
+					<button class="btn-blue" id="search-btn" type="button">검색</button>
 				</div>
 
 				<table class="admin-table">
@@ -462,7 +370,7 @@ body {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="member" items="${membersList }">
+						<c:forEach var="member" items="${membersList}">
 							<tr>
 								<td>${member.gender}</td>
 								<td>${member.name}</td>
@@ -470,8 +378,7 @@ body {
 								<td>${member.phone}</td>
 								<td>${member.email}</td>
 								<td><span
-									class="badge ${member.type == '관리자' ? 'bg-danger' : 'bg-primary'}">
-										${member.type} </span></td>
+									class="badge ${member.type == '관리자' ? 'bg-danger' : 'bg-primary'}">${member.type}</span></td>
 								<td><fmt:formatDate value="${member.join_date}"
 										pattern="yyyy-MM-dd" /></td>
 								<td><c:choose>
@@ -483,91 +390,112 @@ body {
 										</c:otherwise>
 									</c:choose></td>
 								<td><c:choose>
-										<%-- 상태가 N(정상)일 때 --%>
 										<c:when test="${member.state == 'N'}">
-											<button class="btn-light-blue btn-suspend" type="button"
+											<button class="btn-light-blue btn-suspend"
 												data-nickname="${member.nickname}">정지</button>
 										</c:when>
-
-										<%-- 상태가 Y(정지)일 때 --%>
-										<c:when test="${member.state == 'Y'}">
-											<button class="btn-red btn-active" type="button"
+										<c:otherwise>
+											<button class="btn-red btn-active"
 												data-nickname="${member.nickname}">정지해제</button>
-										</c:when></c:choose></td>
+										</c:otherwise>
+									</c:choose></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 
 				<div class="pagination-wrap">
-    <c:if test="${recordTotalCount > 0}">
-        <%-- 전체 페이지 수 계산 --%>
-        <fmt:parseNumber var="pageCount" value="${(recordTotalCount - 1) / recordCountPerPage + 1}" integerOnly="true" />
-        <%-- 시작 네비게이터 번호 --%>
-        <fmt:parseNumber var="startNavi" value="${((currentPage - 1) / naviCountPerPage) * naviCountPerPage + 1}" integerOnly="true" />
-        <%-- 끝 네비게이터 번호 --%>
-        <c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
-        <c:if test="${endNavi > pageCount}"><c:set var="endNavi" value="${pageCount}" /></c:if>
+					<c:if test="${recordTotalCount > 0}">
+						<%-- 1. 전체 페이지 수 계산 --%>
+						<fmt:parseNumber var="pageCount"
+							value="${(recordTotalCount - 1) / recordCountPerPage + 1}"
+							integerOnly="true" />
 
-        <%-- [이전] 버튼 --%>
-        <c:if test="${startNavi > 1}">
-            <button class="page-btn" onclick="location.href='/admin/admin_members?page=${startNavi - 1}'">&lt;</button>
-        </c:if>
+						<%-- 2. 시작 네비게이터 번호 (10개 단위로 고정) --%>
+						<%-- (현재페이지-1) / 10 * 10 + 1 공식이야 --%>
+						<fmt:parseNumber var="startNavi"
+							value="${((currentPage - 1) / naviCountPerPage)}"
+							integerOnly="true"/>
+						<c:set var="startNavi" value="${startNavi * naviCountPerPage + 1}" />
 
-        <%-- [번호] 버튼 --%>
-        <c:forEach var="i" begin="${startNavi}" end="${endNavi}">
-            <button class="page-btn ${currentPage == i ? 'active' : ''}" 
-                    onclick="location.href='/admin/admin_members?page=${i}'">
-                ${i}
-            </button>
-        </c:forEach>
+						<%-- 3. 끝 네비게이터 번호 --%>
+						<c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
+						<c:if test="${endNavi > pageCount}">
+							<c:set var="endNavi" value="${pageCount}" />
+						</c:if>
 
-        <%-- [다음] 버튼 --%>
-        <c:if test="${endNavi < pageCount}">
-            <button class="page-btn" onclick="location.href='/admin/admin_members?page=${endNavi + 1}'">&gt;</button>
-        </c:if>
-    </c:if>
-</div>
+						<%-- [이전] 버튼 --%>
+						<c:if test="${currentPage > 1}">
+								<a href="/admin/admin_members?page=${currentPage - 1}"
+									class="page-btn"> <i class="fa-solid fa-angle-left"></i>
+								</a>
+							</c:if>
+
+						<%-- [번호] 버튼 --%>
+						<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+							<button class="page-btn ${currentPage == i ? 'active' : ''}"
+								onclick="goPage(${i})">${i}</button>
+						</c:forEach>
+
+						<%-- [다음] 버튼 --%>
+						<c:if test="${currentPage < pageCount}">
+								<a href="/admin/admin_members?page=${currentPage + 1}"
+									class="page-btn"> <i class="fa-solid fa-angle-right"></i>
+								</a>
+							</c:if>
+					</c:if>
+				</div>
+
 			</section>
 		</main>
-
-		<div class="container-footer">
-			<p>© 2026 돈워리. All rights reserved.</p>
-			<p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 |
-				고객센터</p>
-		</div>
 	</div>
-	
+
 	<script>
-	$(function() {
-	    // 정지(.btn-suspend)와 해제(.btn-active) 버튼 공통 이벤트
-	    $(document).on('click', '.btn-suspend, .btn-active', function() {
-	        const targetNickName = $(this).data('nickname');
-	        // 정지 버튼이면 'Y'를, 해제 버튼이면 'N'을 보내도록 세팅
-	        const newState = $(this).hasClass('btn-suspend') ? 'Y' : 'N';
-	        const actionText = (newState === 'Y') ? "정지" : "해제";
-	        
-	        if(confirm(targetNickName + " 회원을 " + actionText + "하시겠습니까?")) {
-	            $.ajax({
-	                url: "/admin/changeMemberState", // 하나의 URL로 통합
-	                type: "post",
-	                data: { 
-	                    nickname: targetNickName,
-	                    state: newState // 'Y' 또는 'N'이 날아감
-	                },
-	                success: function(res) {
-	                    if(res === "success") {
-	                        alert(actionText + " 처리가 완료되었습니다.");
-	                        location.reload();
-	                    } else {
-	                        alert("처리에 실패했습니다.");
-	                    }
-	                }
-	            });
-	        }
-	    });
-	});
-	</script>
-	
+        // 공통 페이지 이동 함수 (필터 정보 유지)
+        function goPage(page) {
+            const type = $("#filter-type").val();
+            const state = $("#filter-state").val();
+            const keyword = $("#keyword").val();
+            location.href = "/admin/admin_members?page=" + page + "&type=" + type + "&state=" + state + "&keyword=" + encodeURIComponent(keyword);
+        }
+
+        $(function() {
+            // 유형 또는 상태 변경 시 즉시 검색
+            $("#filter-type, #filter-state").on("change", function() {
+                goPage(1);
+            });
+
+            // 검색 버튼 클릭 시
+            $("#search-btn").on("click", function() {
+                goPage(1);
+            });
+
+            // 엔터키 검색 지원
+            $("#keyword").on("keyup", function(e) {
+                if(e.keyCode === 13) goPage(1);
+            });
+
+            // 정지/해제 AJAX (기존 코드 유지)
+            $(document).on('click', '.btn-suspend, .btn-active', function() {
+                const targetNickName = $(this).data('nickname');
+                const newState = $(this).hasClass('btn-suspend') ? 'Y' : 'N';
+                const actionText = (newState === 'Y') ? "정지" : "해제";
+
+                if (confirm(targetNickName + " 회원을 " + actionText + "하시겠습니까?")) {
+                    $.ajax({
+                        url : "/admin/changeMemberState",
+                        type : "post",
+                        data : { nickname : targetNickName, state : newState },
+                        success : function(res) {
+                            if (res === "success") {
+                                alert(actionText + " 처리가 완료되었습니다.");
+                                location.reload();
+                            } else { alert("처리에 실패했습니다."); }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

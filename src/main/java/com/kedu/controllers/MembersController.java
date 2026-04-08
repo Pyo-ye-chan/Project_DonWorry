@@ -1,6 +1,5 @@
 package com.kedu.controllers;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -10,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.kedu.commons.EncryptionUtils;
 import com.kedu.dao.MembersDAO;
 import com.kedu.dto.MembersDTO;
@@ -27,6 +26,8 @@ public class MembersController {
 	private MembersDAO dao;
 	@Autowired
     private JavaMailSender mailSender;
+	@Autowired
+	private Gson g;
 	
 	private EncryptionUtils eu = new EncryptionUtils();
 	
@@ -45,6 +46,13 @@ public class MembersController {
 			session.setAttribute("type", dao.getType(id));
 		}
 		return "redirect:/";
+	}
+	
+	@RequestMapping("/idCheck")
+	@ResponseBody
+	public String idCheck(String id) {
+		String idcheck = g.toJson(dao.selectById(id));
+		return idcheck;
 	}
 
 	@RequestMapping("/toIdSearch")

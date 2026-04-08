@@ -96,7 +96,7 @@ body {
 .submit-btn {
 	width: 100%;
 	padding: 18px;
-	background-color: var(- -primary-color);
+	background-color: #9ca3af;
 	color: #fff;
 	border: none;
 	border-radius: 50px; /* 아주 둥글게 */
@@ -203,6 +203,16 @@ body {
 	background-color: #0055FF; /* 마우스 올리면 반전 */
 	color: #fff;
 }
+
+#idCheck-box {
+	display: none;
+}
+
+#pwCheck-box{
+	color: #ff0000;
+	margin-top: 10px;
+	font-size: 14px;
+}
 </style>
 </head>
 <body>
@@ -231,9 +241,10 @@ body {
 			<div class="form-group">
 				<label>아이디</label>
 				<div class="id-check-group">
-					<input type="text" placeholder="아이디를 입력해주세요" name="id">
+					<input type="text" placeholder="아이디를 입력해주세요" name="id" id="input-id">
 					<button type="button" class="id-check-btn">중복확인</button>
 				</div>
+				<div id="idCheck-box"></div>
 			</div>
 
 			<div class="form-group">
@@ -245,11 +256,12 @@ body {
 				<label for="memberRePw">비밀번호 확인</label> <input type="password"
 					id="memberRePw" name="memberRePw" placeholder="영문, 숫자 포함 8자 이상"
 					required>
+				<div id="pwCheck-box">비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야 합니다.</div>
 			</div>
 
 			<div class="form-group">
 				<label for="phone">전화번호</label> <input type="text" id="phone"
-					name="phone" placeholder="영문, 숫자 포함 8자 이상" required>
+					name="phone" placeholder="전화번호를 입력해주세요" required>
 			</div>
 
 			<div class="form-group">
@@ -299,63 +311,16 @@ body {
 					</div>
 				</div>
 			</div>
-
-			<!--   <div class="form-group">
-				<label>희망 근무 지역</label>
-				<div class="address-group">
-					<select name="sido" id="sido">
-						<option value="">시/도 선택</option>
-						<option value="서울특별시">서울특별시</option>
-						<option value="부산광역시">부산광역시</option>
-						<option value="대구광역시">대구광역시</option>
-						<option value="인천광역시">인천광역시</option>
-						<option value="광주광역시">광주광역시</option>
-						<option value="대전광역시">대전광역시</option>
-						<option value="울산광역시">울산광역시</option>
-						<option value="세종특별자치시">세종특별자치시</option>
-						<option value="경기도">경기도</option>
-						<option value="강원특별자치도">강원특별자치도</option>
-						<option value="충청북도">충청북도</option>
-						<option value="충청남도">충청남도</option>
-						<option value="전라북도">전라북도</option>
-						<option value="전라남도">전라남도</option>
-						<option value="경상북도">경상북도</option>
-						<option value="경상남도">경상남도</option>
-						<option value="제주특별자치도">제주특별자치도</option>
-					</select> <select name="gugun" id="gugun">
-						<option value="">구/군 선택</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label>관심 알바 업종</label>
-				<div class="category-group">
-					<select name="mainCategory" id="mainCategory">
-						<option value="">대분류</option>
-						<option value="100">외식·음료</option>
-						<option value="200">매장관리·판매</option>
-						<option value="300">서비스·문화</option>
-						<option value="400">사무·교육</option>
-						<option value="500">생산·물류</option>
-						<option value="600">IT·디자인</option>
-					</select> <select name="subCategory" id="subCategory">
-						<option value="">소분류</option>
-					</select>
-				</div>
-			</div> -->
-
 			<button type="submit" class="submit-btn">가입하기</button>
 		</form>
 
 		<div class="footer-link">
-			이미 계정이 있으신가요? <a href="#">로그인</a>
+			이미 계정이 있으신가요? <a href="/members/toLogin">로그인</a>
 		</div>
 	</div>
 
 	<script>
 	$(document).ready(function() {
-	    // ... 기존 라디오 버튼 클릭 로직 유지 ...
 
 	    $('input[name="type"]').change(function() {
 	        if ($(this).val() === '사업자') {
@@ -375,7 +340,50 @@ body {
 	            $('#rrn_front, #rrn_back').prop('required', true);
 	        }
 	    });
+	    
 	});
+	
+	$(".id-check-btn").on("click", function() {
+        const userId = $("#input-id").val();
+
+        // 1. 빈값 체크
+        if (userId === "") {
+            alert("아이디를 입력하세요");
+            $("#input-id").focus();
+            return;
+        }
+        $.ajax({
+            url: "/members/idCheck?id=" + userId,
+            dataType: "json"
+        }).done(function(idcheck) {
+            if (idcheck == 0) {
+                $("#idCheck-box").html("사용 가능한 아이디입니다.")
+                                 .css({"color": "#2563eb", "display": "block", "margin-top": "10px", "font-size": "14px"});
+            } else {
+                $("#idCheck-box").html("중복된 아이디 입니다.")
+                                 .css({"color": "#ff0000", "display": "block", "margin-top": "10px", "font-size": "14px"});
+            }
+        }).fail(function() {
+            alert("서버 통신에 실패했습니다.");
+        });
+	});
+	
+	$("#memberPw, #memberRePw").on("keyup", function () {
+        let pw = $("#memberPw").val();
+        let rePw = $("#memberRePw").val();
+
+        if (pw == "" && rePw == "") {
+            $("#pwCheck-box").html("비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야 합니다.");
+        } else if (pw == rePw) {
+            $("#pwCheck-box").html("비밀번호 일치")
+            			.css({"color": "#2563eb", "display": "block", "margin-top": "10px", "font-size": "14px"});
+        } else {
+            $("#pwCheck-box").html("비밀번호 불일치")
+            			.css({"color": "#ff0000", "display": "block", "margin-top": "10px", "font-size": "14px"});
+        }
+    });
+	
+	
 </script>
 
 </body>
