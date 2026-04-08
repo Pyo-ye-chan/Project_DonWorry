@@ -491,7 +491,7 @@ body {
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
                         </td>
                         <td>
-                            <button class="board-del-btn reply-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
+                            <button class="reply-del-btn rp_reply-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
                         </td>
                         
                     </tr>
@@ -568,7 +568,9 @@ body {
 	$(".reply-detail-btn").on("click",function(){
 		let parentSeq = $(this).data("parent"); 
 	    let replySeq = $(this).data("seq");
-		location.href = '/boards/detail?seq=' + parentSeq + '#reply' + replySeq;
+	    let page = "${currentPage}";
+		location.href = '/admin/admin_reply_detail?seq=' + parentSeq + '&page=' + page + 
+				'&reply_seq=' +replySeq + '#reply' + replySeq;
 	});
 	
  	//삭제 버튼 클릭
@@ -579,18 +581,12 @@ body {
 	}); 
 	
  
-//====================공지글=======================//
-
-	//보기 버튼 클릭
-	$(".notice-detail-btn").on("click",function(){
-		let seq = $(this).data("seq");
-		location.href='/admin/admin_board_detail?seq='+seq+'&page=1';
-	});
+//====================신고댓글=======================//
 	
 	//삭제 버튼 클릭
-	$(".notice-del-btn").on("click",function(){
+	$(".rp_reply-del-btn").on("click",function(){
 		let seq = $(this).data("seq");
-		location.href='/admin/admin_board_delete?seq='+seq+'&page=1';
+		location.href='/admin/admin_reply_delete?seq='+seq+'&page=1';
 	});
 </script>
 </body>

@@ -2,6 +2,7 @@ package com.kedu.controllers;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -262,6 +263,49 @@ public class AdminController {
 		
 		return "admin/admin_reply";
 	}
+	
+	//댓글 상세보기
+		@RequestMapping("/admin_reply_detail")//int는 null이 안돼서 Integer로 ㄱ
+		public String admin_reply_detail(int seq, int page,Integer reply_seq, Model model){
+			BoardsDTO dto = bdao.detail(seq);
+			model.addAttribute("dto",dto);
+			//댓글 가져옴
+			List<ReplyDTO> admin_replyList = rdao.selectByParent_seq(seq);
+			
+			List<ReplyDTO> comments = new ArrayList<>();
+			List<ReplyDTO> replies = new ArrayList<>();
+
+			for(ReplyDTO rdto : admin_replyList){
+
+				rdto.setWrite_date_str(
+			        new SimpleDateFormat("yyyy-MM-dd").format(rdto.getWrite_date())
+			    );
+
+			    if(rdto.getRe_reply_seq() == null){
+			        comments.add(rdto);
+			    }else{
+			        replies.add(rdto);
+			    }
+			}
+			
+			for(ReplyDTO comment : comments){
+			    List<ReplyDTO> child = new ArrayList<>();
+
+			    for(ReplyDTO reply : replies){
+			        if(reply.getRe_reply_seq().equals(comment.getSeq())){
+			        
+			            child.add(reply);
+			        }
+			    }
+
+			    comment.setReplies(child); // 🔥 핵심
+			}
+			model.addAttribute("replyList", comments);
+			model.addAttribute("reply_seq", reply_seq);
+			model.addAttribute("currentPage",page);
+			
+			return "admin/admin_reply_detail";
+		}
 	
 	//댓글 삭제
 	@RequestMapping("/admin_reply_delete")
