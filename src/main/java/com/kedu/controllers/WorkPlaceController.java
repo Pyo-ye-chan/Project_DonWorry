@@ -26,44 +26,46 @@ public class WorkPlaceController {
 	@Autowired
 	private Gson gson;
 	
-	@RequestMapping("/insert")
-	public String insert(WorkPlaceDTO dto, HttpSession session) {
-		String memberId = (String) session.getAttribute("loginId");	
-		dto.setId(memberId);
-	    if(dto.getPay_type() == null) dto.setPay_type("시급");
-	    
-	    if (dto.getWork_start_time() != null && dto.getWork_start_time().isEmpty()) {
-	        dto.setWork_start_time(null);
-	    }
-	    if (dto.getWork_end_time() != null && dto.getWork_end_time().isEmpty()) {
-	        dto.setWork_end_time(null);
-	    }
-	    if (dto.getEmployment_insurance() == null) {
-	        dto.setEmployment_insurance("N");
-	    }
-	    String taxVal = dto.getTax_applied();
-	    if (taxVal == null || taxVal.equals("") || taxVal.equals("custom")) {
-	        dto.setTax_applied("0");
-	    }
-	    
-	    String insVal = dto.getInsurance_applied();
+    @RequestMapping("/insert")
+    public String insert(WorkPlaceDTO dto, HttpSession session) {
+        String memberId = (String) session.getAttribute("loginId");
+        dto.setId(memberId);
 
-	    if ("4".equals(insVal)) {
-	        dto.setInsurance_applied("Y");
-	        dto.setEmployment_insurance("Y");
-	    } else if ("1".equals(insVal)) {
-	        dto.setInsurance_applied("N");
-	        dto.setEmployment_insurance("Y");
-	    } else {
-	        dto.setInsurance_applied("N");
-	        dto.setEmployment_insurance("N");
-	    }
-	    
-		dao.insertToworkpalce(dto);
-		
-		return "redirect:/salary/calendar?insertSuccess=true";
-    
-	}
+        if (dto.getPay_type() == null || dto.getPay_type().trim().isEmpty()) {
+            dto.setPay_type("시급");
+        }
+
+        if (dto.getWork_start_time() != null && dto.getWork_start_time().trim().isEmpty()) {
+            dto.setWork_start_time(null);
+        }
+        if (dto.getWork_end_time() != null && dto.getWork_end_time().trim().isEmpty()) {
+            dto.setWork_end_time(null);
+        }
+
+        if (dto.getTax_applied() == null || dto.getTax_applied().trim().isEmpty() || "custom".equals(dto.getTax_applied())) {
+            dto.setTax_applied("0");
+        }
+
+        if (dto.getInsurance_applied() == null || dto.getInsurance_applied().trim().isEmpty()) {
+            dto.setInsurance_applied("N");
+        }
+
+        if (dto.getEmployment_insurance() == null || dto.getEmployment_insurance().trim().isEmpty()) {
+            dto.setEmployment_insurance("N");
+        }
+
+        int result = dao.insertToworkpalce(dto);
+
+        System.out.println("id : " + dto.getId());
+        System.out.println("insurance_applied : " + dto.getInsurance_applied());
+        System.out.println("employment_insurance : " + dto.getEmployment_insurance());
+
+        if (result > 0) {
+            return "redirect:/salary/calendar?insertSuccess=true";
+        } else {
+            return "redirect:/salary/calendar?insertSuccess=false";
+        }
+    }
 	
 	@ResponseBody
 	@RequestMapping("/countrow")
@@ -75,12 +77,9 @@ public class WorkPlaceController {
 	
 	@ResponseBody
 	@RequestMapping("/list")
-	public String getList(HttpSession session) {
+	public List<WorkPlaceDTO> list(HttpSession session) {
 	    String memberId = (String) session.getAttribute("loginId");
-	    List<WorkPlaceDTO> list = dao.selectByMemberId(memberId);
-
-	    Gson gson = new Gson();
-	    return gson.toJson(list);
+	    return dao.selectByMemberId(memberId);
 	}
 	
 	@ResponseBody
@@ -92,13 +91,8 @@ public class WorkPlaceController {
 	@ResponseBody
 	@RequestMapping("/update")
 	public String updateDetail(WorkPlaceDTO dto) {
-		int result = dao.update(dto);
-		
-		if(result > 0) {
-	        return "redirect:/salary/calendar?updateSuccess=true";
-	    } else {
-	        return "redirect:/salary/calendar?updateSuccess=false";
-	    }
+	    int result = dao.update(dto);
+	    return String.valueOf(result); // "1" or "0"
 	}
 	
 

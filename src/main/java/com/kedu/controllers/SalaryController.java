@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kedu.dao.WorkPlaceDAO;
 import com.kedu.dao.WorkPlaceListDAO;
 import com.kedu.dao.WorklogDAO;
+import com.kedu.dto.SalarySummaryDTO;
 import com.kedu.dto.WorkPlaceListDTO;
 import com.kedu.dto.WorklogDTO;
 
@@ -46,11 +48,15 @@ public class SalaryController {
 		return "salary/calendar";
 	}
 	
+	
+
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {	
 		e.printStackTrace();
 		return "error";
 	}
+	
+	
 	
 	
 	

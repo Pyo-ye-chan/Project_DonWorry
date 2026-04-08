@@ -456,7 +456,7 @@
             </a>
         </div>  
         <div class="my-activity-item">
-            <a href="#" class="my-apply-list">
+            <a href="/mypage/mypost?page=1" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-regular fa-file-lines" style="color: rgb(110, 110, 110); margin-right:5px;"></i>
                     내가 작성한 글
@@ -551,7 +551,7 @@
             </a>
         </div> 
         <div class="my-activity-item">
-            <a href="#" class="my-apply-list">
+            <a href="/mypage/mypost" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-regular fa-file-lines" style="color: rgb(110, 110, 110); margin-right:5px;"></i>
                     내가 작성한 글

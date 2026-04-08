@@ -184,5 +184,39 @@ public class BoardsDAO {
 		return jdbc.query(sql, new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class));
 	}
 	
+	public int mypostRecordTotalCount(String memberId) {
+		String sql = "select count(*) from boards where member_id = ?";
+		return jdbc.queryForObject(sql,Integer.class, memberId);
+	}
+	
+	public List<BoardsDTO> selectById(String memberId, int start, int end) {
+		String sql = "SELECT * FROM (\r\n"
+				+ "    SELECT \r\n"
+				+ "        b.seq, \r\n"
+				+ "        m.nickname AS member_id, \r\n"
+				+ "        b.category, \r\n"
+				+ "        b.title, \r\n"
+				+ "        b.content, \r\n"
+				+ "        b.view_count, \r\n"
+				+ "        b.write_date,\r\n"
+				+ "        COUNT(r.seq) AS reply_count, \r\n"
+				+ "        ROW_NUMBER() OVER(ORDER BY b.seq DESC) AS rn \r\n"
+				+ "    FROM boards b \r\n"
+				+ "    LEFT JOIN members m ON b.member_id = m.id \r\n"
+				+ "    LEFT JOIN reply r ON b.seq = r.parent_seq \r\n"
+				+ "	   where b.member_id = ?"
+				+ "    GROUP BY \r\n"
+				+ "        b.seq, m.nickname, b.category, b.title, \r\n"
+				+ "        b.content, b.view_count, b.write_date \r\n"
+				+ ") WHERE rn BETWEEN ? AND ?";
+		return jdbc.query(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class), memberId, start, end);
+		
+	}
+	
+	public int countMypost(String memberId) {
+		String sql = "select count(*) from boards where member_id = ?";
+		return jdbc.queryForObject(sql, int.class, memberId);
+	}
+	
 
 }

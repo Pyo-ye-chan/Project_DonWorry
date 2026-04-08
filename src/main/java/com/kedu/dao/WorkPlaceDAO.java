@@ -45,6 +45,8 @@ public class WorkPlaceDAO {
 	    );
 	}
 	
+	
+	
 	public List<WorkPlaceDTO> selectByMemberId(String memberId) {
 	    String sql = "select "
 	            + "seq, id, name, pay_per_hour, pay_type, pay_cycle, payday, "

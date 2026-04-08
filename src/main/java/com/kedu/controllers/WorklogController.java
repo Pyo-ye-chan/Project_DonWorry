@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kedu.dao.WorklogDAO;
+import com.kedu.dto.SalarySummaryDTO;
 import com.kedu.dto.WorklogDTO;
 
 @Controller
@@ -57,5 +58,12 @@ public class WorklogController {
 	        return "redirect:/salary/calendar?updateSuccess=false";
 	    }
 	}
+    @ResponseBody
+    @RequestMapping("/summary")
+    public SalarySummaryDTO getSalarySummary(int year, int month, HttpSession session) {
+        String id = (String) session.getAttribute("loginId");
+        return dao.getSalarySummary(id, year, month);
+    }
+	
 
 }

@@ -21,11 +21,11 @@ public class WorklogDTO {
 	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
 	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime end_time; // 종료 시간
-	private int breaktime; // 휴게 시간
-	private int night_pay; // 야간수당
-	private int overtime_pay; // 연장수당
-	private int holiday_pay; // 휴일수당
-	private int total_pay; // 총 급여
+	private Integer breaktime;
+	private Integer night_pay;
+	private Integer overtime_pay;
+	private Integer holiday_pay;
+	private Integer total_pay;
 	private String memo;
 	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime worklog_date;
@@ -33,8 +33,8 @@ public class WorklogDTO {
 	public WorklogDTO() {}
 
 	public WorklogDTO(int seq, int parent_seq, LocalDate work_date, LocalDateTime start_time, LocalDateTime end_time,
-			int breaktime, int night_pay, int overtime_pay, int holiday_pay, int total_pay, String memo,
-			LocalDateTime worklog_date) {
+			Integer breaktime, Integer night_pay, Integer overtime_pay, Integer holiday_pay, Integer total_pay,
+			String memo, LocalDateTime worklog_date) {
 		super();
 		this.seq = seq;
 		this.parent_seq = parent_seq;
@@ -90,43 +90,43 @@ public class WorklogDTO {
 		this.end_time = end_time;
 	}
 
-	public int getBreaktime() {
+	public Integer getBreaktime() {
 		return breaktime;
 	}
 
-	public void setBreaktime(int breaktime) {
+	public void setBreaktime(Integer breaktime) {
 		this.breaktime = breaktime;
 	}
 
-	public int getNight_pay() {
+	public Integer getNight_pay() {
 		return night_pay;
 	}
 
-	public void setNight_pay(int night_pay) {
+	public void setNight_pay(Integer night_pay) {
 		this.night_pay = night_pay;
 	}
 
-	public int getOvertime_pay() {
+	public Integer getOvertime_pay() {
 		return overtime_pay;
 	}
 
-	public void setOvertime_pay(int overtime_pay) {
+	public void setOvertime_pay(Integer overtime_pay) {
 		this.overtime_pay = overtime_pay;
 	}
 
-	public int getHoliday_pay() {
+	public Integer getHoliday_pay() {
 		return holiday_pay;
 	}
 
-	public void setHoliday_pay(int holiday_pay) {
+	public void setHoliday_pay(Integer holiday_pay) {
 		this.holiday_pay = holiday_pay;
 	}
 
-	public int getTotal_pay() {
+	public Integer getTotal_pay() {
 		return total_pay;
 	}
 
-	public void setTotal_pay(int total_pay) {
+	public void setTotal_pay(Integer total_pay) {
 		this.total_pay = total_pay;
 	}
 
@@ -145,6 +145,8 @@ public class WorklogDTO {
 	public void setWorklog_date(LocalDateTime worklog_date) {
 		this.worklog_date = worklog_date;
 	}
+
+	
 
 	
 }
