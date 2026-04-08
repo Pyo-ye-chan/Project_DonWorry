@@ -532,11 +532,6 @@
             <button class="tab-item " onclick = "location.href = '/boards/qnaboard_list?page=1'"> 질문 게시판</button>
             <button class="tab-item" onclick = "location.href = '/boards/reviewboard_list?page=1'"> 리뷰 게시판</button>
         </nav>
-<div style="background:red; color:white; font-weight:bold; padding:20px; border:5px solid black;">
-    1. 로그인 세션 ID: [${type}] <br>
-    2. 공지 리스트 존재 여부: ${notice_mainList != null ? '있음' : '없음(null)'} <br>
-    3. 공지 데이터 개수: ${notice_mainList.size()} 개
-</div>
 			<div class="notice-board">
 			    <c:forEach var="i" items="${notice_mainList}">
 				<div class="notice-board-item">

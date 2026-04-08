@@ -26,6 +26,7 @@ import com.kedu.dto.BoardsDTO;
 import com.kedu.dto.FilesDTO;
 import com.kedu.dto.MembersDTO;
 import com.kedu.dto.QnaDTO;
+import com.kedu.dto.ReplyDTO;
 
 @Controller
 @RequestMapping("/admin")
@@ -192,9 +193,28 @@ public class AdminController {
 		return "redirect:/admin/admin_boards?page=1";
 	}
 	
+	//댓글리스트
 	@RequestMapping("/admin_reply")
-	public String admin_Reply() {
+	public String admin_Reply(//page가 없을 때 자동으로 1
+			@RequestParam(value="page", defaultValue="1")int page, Model model) {
+		//회원 댓글 전체 불러옴
+		List<ReplyDTO> replyList =  adao.admin_replyList(page*5-4,page*5);
+		int recordTotalCount = rdao.replyCount();
+		
+		model.addAttribute("currentPage",page);
+		model.addAttribute("recordCountPerPage",5);
+		model.addAttribute("naviCountPerPage",10);
+		model.addAttribute("recordTotalCount",recordTotalCount);
+		model.addAttribute("replyList", replyList);
+		
 		return "admin/admin_reply";
+	}
+	
+	//댓글 삭제
+	@RequestMapping("/admin_reply_delete")
+	public String admin_reply_delete(int seq, int page) {
+		rdao.delete(seq);
+		return "redirect:/admin/admin_reply?page=" + page;
 	}
 	
 	@RequestMapping("/admin_inquiry")
@@ -207,8 +227,7 @@ public class AdminController {
 		model.addAttribute("weekNewCount",qdao.selectWeekNewCount());
 		model.addAttribute("overwaitCount",qdao.selectOverdueWaitCount());
 		model.addAttribute("replyTime",qdao.selectAvgReplyTime());
-		
-		
+				
 		return "admin/admin_inquiry";
 	}
 	@ResponseBody
