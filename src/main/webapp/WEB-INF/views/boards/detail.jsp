@@ -580,6 +580,30 @@
             border-radius: 6px;
             cursor: pointer;
         }
+        /* 제목을 감싸는 영역에 기준점 설정 */
+.detail-header {
+    position: relative; 
+    padding-right: 40px; /* 아이콘이 들어갈 공간 확보 */
+}
+
+/* 북마크 별 스타일 및 위치 조정 */
+.bookmark-btn {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    cursor: pointer;
+    font-size: 26px; /* 크기 살짝 키움 */
+    color: #ccc;
+    transition: all 0.2s ease;
+}
+
+.bookmark-btn.active {
+    color: #ffc107 !important;
+}
+
+.bookmark-btn:hover {
+    transform: scale(1.2);
+}
 
     </style>
 
@@ -673,7 +697,13 @@
             </div>
 
             <!-- 제목 -->
-            <h1 class="detail-title">${dto.title }</h1> <br>
+            <div class="detail-header">
+    <h1 class="detail-title">${dto.title}</h1>
+    
+    <i class="fa-bookmark bookmark-btn ${dto.bookmarked == 1 ? 'fa-solid active' : 'fa-regular'}" 
+       data-seq="${dto.seq}" 
+       onclick="toggleBookmark(this)"></i>
+</div> <br>
 
             <!-- 작성 정보 -->
             <div class="detail-info">
@@ -718,7 +748,7 @@
 
             <!-- 버튼 -->
             <div class="detail-actions">
-                <button onclick="location.href='/boards/mainboard_list?page=1'">목록</button>
+                <button type="button" onclick="location.href=document.referrer">목록</button>
                 <c:if test="${loginId == board_writer }">
                     <button onclick="location.href='/boards/toUpdate?seq=${dto.seq}'">수정</button>
                     <button type="button" class="boards-delete-btn">삭제</button>
@@ -1090,6 +1120,35 @@
             	    }
              })
          }
+         function toggleBookmark(obj) {
+        	    // 1. 이벤트 전파 방지 (만약 부모 요소에 클릭 이벤트가 걸려있을 경우를 대비)
+        	    if (window.event) window.event.stopPropagation();
+        	    
+        	    // 2. data-seq 값 가져오기
+        	    let boardSeq = $(obj).data("seq");
+
+        	    $.ajax({
+        	        url: "/bookmark/toggle",
+        	        type: "POST",
+        	        data: { board_seq: boardSeq },
+        	        success: function(res) {
+        	            if (res === "added") {
+        	                // 채워진 별로 변경
+        	                $(obj).addClass("fa-solid active").removeClass("fa-regular");
+        	            } else if (res === "removed") {
+        	                // 빈 별로 변경
+        	                $(obj).addClass("fa-regular").removeClass("fa-solid active");
+        	            } else if (res === "login_required") {
+        	                alert("로그인이 필요한 서비스입니다.");
+        	                // 필요하다면 로그인 페이지로 유도
+        	                // location.href = "/member/login";
+        	            }
+        	        },
+        	        error: function() {
+        	            alert("서버 통신 중 오류가 발생했습니다.");
+        	        }
+        	    });
+        	}
      </script>
 </body>
 </html>

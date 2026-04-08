@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kedu.dao.AdminDAO;
@@ -37,7 +38,7 @@ public class BoardsController {
 	
 
 	@RequestMapping("/mainboard_list")
-	public String toMainBoard(int page,Model model,HttpSession session) {
+	public String toMainBoard(@RequestParam(value="page", defaultValue="1")int page,Model model,HttpSession session) {
 		
 		String loginId = (String)session.getAttribute("loginId");
 		
@@ -105,7 +106,8 @@ public class BoardsController {
 	
 	@RequestMapping("/detail")
 	public String detail(int seq,Model model,HttpSession session) {
-		BoardsDTO dto = dao.detail(seq);
+		String loginId = (String)session.getAttribute("loginId");
+		BoardsDTO dto = dao.list_detail(seq,loginId);
 		
 		model.addAttribute("dto",dto);
 		

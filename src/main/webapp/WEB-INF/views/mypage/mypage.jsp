@@ -469,7 +469,7 @@
             </a>
         </div> 
          <div class="my-activity-item">
-            <a href="#" class="my-apply-list">
+            <a href="/mypage/bookmark" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-regular fa-bookmark" style="color: rgb(110, 110, 110); margin-right:5px;"></i>
                     북마크 글 보기
@@ -552,7 +552,7 @@
             </a>
         </div> 
          <div class="my-activity-item">
-            <a href="#" class="my-apply-list">
+            <a href="/mypage/bookmark" class="my-apply-list">
                 <div class="item-name">
                     <i class="fa-regular fa-bookmark" style="color: rgb(110, 110, 110); margin-right:5px;"></i>
                     북마크 글 보기

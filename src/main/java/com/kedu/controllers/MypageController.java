@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -269,6 +270,26 @@ public class MypageController {
 		model.addAttribute(dto);
 		return "mypage/myjobpost";
 	}
-
+	
+	
+	@RequestMapping("/bookmark")
+	public String bookmark(HttpSession session, Model model,@RequestParam(value="page", defaultValue="1") int page) {
+		String memberId = (String)session.getAttribute("loginId");
+		
+		//int count = bdao.mypostRecordTotalCount(memberId);
+		int count = bdao.bookmarkRecordTotalCount(memberId);
+		List<BoardsDTO> bookmarkList = bdao.selectByBookmark(memberId, page*10-9, page*10);
+		//List<BoardsDTO> allList = bdao.selectById(memberId, page*10-9, page*10);
+		
+		//int recordTotalCount = bdao.mypostRecordTotalCount(memberId);
+		
+		model.addAttribute("currentPage", page);
+		model.addAttribute("recordCountPerPage",10);
+		model.addAttribute("naviCountPerPage",10);
+		model.addAttribute("recordTotalCount",count);
+		model.addAttribute("bookmarkList", bookmarkList);
+		model.addAttribute("count", count);
+		return "mypage/bookmark";
+	}
 	
 }

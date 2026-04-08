@@ -71,6 +71,13 @@ public class BoardsDAO {
 				+ " from boards b join members m on b.member_id = m.id where seq = ?";
 		return jdbc.queryForObject(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class),seq);
 	}
+	public BoardsDTO list_detail(int seq,String loginId) {
+		String sql = "select b.seq,m.nickname AS member_id,b.category,b.title,b.content,b.view_count,b.write_date,"
+				+ "    (SELECT COUNT(*) FROM bookmark bm WHERE bm.board_seq = b.seq AND bm.member_id = ?) AS bookmarked "
+				+ " from boards b join members m on b.member_id = m.id where seq = ?";
+		String idParam = (loginId == null) ? "" : loginId;
+		return jdbc.queryForObject(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class),idParam,seq);
+	}
 	public String writer(int seq) {
 		String sql = "select member_id from boards where seq=?";
 		return jdbc.queryForObject(sql, String.class,seq);
@@ -230,6 +237,26 @@ public class BoardsDAO {
 		String sql = "select count(*) from boards where member_id = ?";
 		return jdbc.queryForObject(sql, int.class, memberId);
 	}
+	public int bookmarkRecordTotalCount(String memberId) {
+		String sql = "select count(*) from bookmark where member_id = ?";
+		return jdbc.queryForObject(sql,Integer.class, memberId);
+	}
+	
+	public List<BoardsDTO> selectByBookmark(String loginId, int start, int end) {
+	    String sql = "SELECT * FROM ("
+	               + "    SELECT "
+	               + "        b.seq, b.category, b.title, b.view_count, b.write_date, "
+	               + "        m.nickname AS member_id, "
+	               + "        ROW_NUMBER() OVER (ORDER BY bm.bm_date DESC) AS rn "
+	               + "    FROM bookmark bm "
+	               + "    JOIN boards b ON bm.board_seq = b.seq "
+	               + "    JOIN members m ON b.member_id = m.id "
+	               + "    WHERE bm.member_id = ?"
+	               + ") WHERE rn BETWEEN ? AND ?";
+	    
+	    return jdbc.query(sql, new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class), loginId, start, end);
+	}
+	
 	
 
 }
