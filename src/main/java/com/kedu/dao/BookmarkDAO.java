@@ -23,5 +23,10 @@ public class BookmarkDAO {
 		String sql = "insert into bookmark values(sysdate,?,?)";
 		jdbc.update(sql,board_seq,loginId);
 	}
+	public int countBookmark(String id) {
+		String sql = "select count(*) from bookmark where member_id = ?";
+		return jdbc.queryForObject(sql,Integer.class,id);
+				
+	}
 
 }
