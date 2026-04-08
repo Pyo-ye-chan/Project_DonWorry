@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -146,22 +148,36 @@ public class AdminController {
 	}
 
 	@RequestMapping("/admin_members")
-	public String toMembers(Model model, @RequestParam(value="page", defaultValue="1") int page) {
-		List<MembersDTO> membersList = dao.getMembers(page*10-9, page*10);
+	public String toMembers(Model model, 
+	                        @RequestParam(value="page", defaultValue="1") int page,
+	                        @RequestParam(value="type", required=false) String type,
+	                        @RequestParam(value="state", required=false) String state,
+	                        @RequestParam(value="keyword", required=false) String keyword) {
 
-		int statecount = dao.getStateCount();
-		int recordTotalCount = dao.membersTotalCount();
-		System.out.println(recordTotalCount);
+	    // 1. 필터링된 회원 목록 가져오기
+	    List<MembersDTO> membersList = dao.selectMembers(type, state, keyword, page);
 
-		model.addAttribute("currentPage",page);
-		model.addAttribute("recordCountPerPage",10);
-		model.addAttribute("naviCountPerPage",10);
-		model.addAttribute("recordTotalCount",recordTotalCount);
-		model.addAttribute("membersList", membersList);
-		model.addAttribute("membersCount", recordTotalCount);
-		model.addAttribute("StateCount", statecount);
+	    // 2. 필터링된 결과의 전체 개수 가져오기 (페이징 계산용)
+	    int recordTotalCount = dao.getMemberCount(type, state, keyword); 
+	    
+	    // 3. 상단 요약 바를 위한 정지 회원수 (이건 전체 기준)
+	    int statecount = dao.getStateCount();
 
-		return "admin/admin_members";
+	    // 4. JSP로 데이터 보내기
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("recordCountPerPage", 10);
+	    model.addAttribute("naviCountPerPage", 10);
+	    model.addAttribute("recordTotalCount", recordTotalCount);
+	    model.addAttribute("membersList", membersList);
+	    model.addAttribute("membersCount", recordTotalCount); // 검색된 결과 수
+	    model.addAttribute("StateCount", statecount);
+	    
+	    // 5. 선택한 필터값들을 다시 JSP로 보내서 상태 유지
+	    model.addAttribute("type", type);
+	    model.addAttribute("state", state);
+	    model.addAttribute("keyword", keyword);
+
+	    return "admin/admin_members";
 	}
 
 	/* 관리자 - 게시물 관리 */

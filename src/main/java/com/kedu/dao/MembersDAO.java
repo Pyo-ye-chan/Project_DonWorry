@@ -1,5 +1,6 @@
 package com.kedu.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class MembersDAO {
 			return null;
 		}
 				
+	}
+	
+	public int selectById(String id) {
+		String sql = "select count(*) from members where id = ?";
+		return jdbc.queryForObject(sql, Integer.class, id);
 	}
 
 	public void signup(MembersDTO dto) {
@@ -209,5 +215,65 @@ public class MembersDAO {
 	public int updateMemberState(String nickname, String state) {
 	    String sql = "UPDATE members SET state = ? WHERE nickname = ?";
 	    return jdbc.update(sql, state, nickname);
+	}
+	
+	public List<MembersDTO> selectMembers(String type, String state, String keyword, int page) {
+	    // 1. 검색 조건 조립 (WHERE 1=1 전략)
+	    String baseSql = " SELECT * FROM members WHERE 1=1 ";
+	    List<Object> params = new ArrayList<>();
+
+	    if (type != null && !type.trim().isEmpty()) {
+	        baseSql += " AND type = ? ";
+	        params.add(type.trim());
+	    }
+	    
+	    if (state != null && !state.trim().isEmpty()) {
+	        baseSql += " AND state = ? ";
+	        params.add(state.trim());
+	    }
+
+	    if (keyword != null && !keyword.trim().isEmpty()) {
+	        baseSql += " AND (name LIKE ? OR email LIKE ? OR id LIKE ?) ";
+	        String searchKey = "%" + keyword.trim() + "%";
+	        params.add(searchKey); params.add(searchKey); params.add(searchKey);
+	    }
+
+	    // 2. 오라클 3중 서브쿼리 페이징 입히기
+	    String pagingSql = "SELECT * FROM ( "
+	                     + "    SELECT rownum rnum, t.* FROM ( "
+	                     +          baseSql + " ORDER BY join_date DESC "
+	                     + "    ) t "
+	                     + ") WHERE rnum BETWEEN ? AND ? ";
+
+	    int start = (page - 1) * 10 + 1;
+	    int end = page * 10;
+	    params.add(start);
+	    params.add(end);
+
+	    return jdbc.query(pagingSql, new BeanPropertyRowMapper<>(MembersDTO.class), params.toArray());
+	}
+	
+	// 검색 조건이 포함된 전체 행 개수 구하기
+	public int getMemberCount(String type, String state, String keyword) {
+	    String sql = " SELECT COUNT(*) FROM members WHERE 1=1 ";
+	    List<Object> params = new ArrayList<>();
+
+	    if (type != null && !type.trim().isEmpty()) {
+	        sql += " AND type = ? ";
+	        params.add(type.trim());
+	    }
+	    
+	    if (state != null && !state.trim().isEmpty()) {
+	        sql += " AND state = ? ";
+	        params.add(state.trim());
+	    }
+
+	    if (keyword != null && !keyword.trim().isEmpty()) {
+	        sql += " AND (name LIKE ? OR email LIKE ? OR id LIKE ?) ";
+	        String k = "%" + keyword.trim() + "%";
+	        params.add(k); params.add(k); params.add(k);
+	    }
+
+	    return jdbc.queryForObject(sql, Integer.class, params.toArray());
 	}
 }
