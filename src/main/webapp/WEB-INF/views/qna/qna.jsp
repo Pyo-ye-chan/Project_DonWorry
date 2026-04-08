@@ -500,9 +500,7 @@
                     <i class="fa-solid fa-chevron-left"></i>
                 </a>
             </c:when>
-            <c:otherwise>
-                <span class="nav-btn disabled"><i class="fa-solid fa-chevron-left"></i></span>
-            </c:otherwise>
+            
         </c:choose>
 
         <c:forEach var="i" begin="${startNavi}" end="${endNavi}">
@@ -515,9 +513,7 @@
                     <i class="fa-solid fa-chevron-right"></i>
                 </a>
             </c:when>
-            <c:otherwise>
-                <span class="nav-btn disabled"><i class="fa-solid fa-chevron-right"></i></span>
-            </c:otherwise>
+            
         </c:choose>
     </div>
 </c:if>
@@ -529,12 +525,16 @@
         <p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침 | 이용약관 | 고객센터</p>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            $(".faq-question").click(function () {
-                $(this).parent(".faq-item").toggleClass("active");
-            });
+    <script> 
+    
+    console.log(${needNext})
+    
+    
+    $(document).ready(function () {
+        $(".faq-question").click(function () {
+            $(this).parent(".faq-item").toggleClass("active");
         });
+    });
     </script>
 </body>
 

@@ -10,19 +10,23 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
 import com.kedu.dao.AdminDAO;
 import com.kedu.dao.BoardsDAO;
+import com.kedu.dao.FaqDAO;
 import com.kedu.dao.FilesDAO;
 import com.kedu.dao.MembersDAO;
 import com.kedu.dao.QnaDAO;
 import com.kedu.dao.ReplyDAO;
 import com.kedu.dto.BoardsDTO;
+import com.kedu.dto.FaqDTO;
 import com.kedu.dto.FilesDTO;
 import com.kedu.dto.MembersDTO;
 import com.kedu.dto.QnaDTO;
@@ -49,6 +53,12 @@ public class AdminController {
 	
 	@Autowired
 	private ReplyDAO rdao;
+	
+	@Autowired
+	private FaqDAO fadao;
+	
+	@Autowired
+	private Gson gson;
 	
 	@RequestMapping("/admin/admin_main")
 	public String adminMain(Model model) {
@@ -260,6 +270,64 @@ public class AdminController {
 	        e.printStackTrace();
 	        return "error";
 	    }
+	}
+	@ResponseBody
+	@RequestMapping("/api/faq_register")
+	public String faq_register(FaqDTO dto) {
+		int result = fadao.insert(dto);
+		if(result > 0) {
+			return "success";
+		}return "fail";
+	}
+	@ResponseBody
+	@RequestMapping("/api/faq_list")
+	public String faq_list(@RequestParam(value="page", defaultValue="1")int page) {
+		
+		int countPerPage = 5;
+		
+		int start = (page - 1) * countPerPage + 1;
+	    int end = page * countPerPage;
+		
+		List<FaqDTO> list = fadao.adminList(start,end);
+		int totalCount = fadao.getTotalCount();
+		
+		Map<String, Object> map = new HashMap<>();
+	    map.put("list", list);
+	    map.put("totalCount", totalCount);
+	    map.put("currentPage", page);
+	    
+	    return gson.toJson(map);
+	}
+	@ResponseBody
+	@RequestMapping("/api/faq_toggle_show")
+	public String faq_toggle_show(int seq,String is_show) {
+		int result = fadao.updateIs_show(seq,is_show);
+		if(result > 0) {
+			return "success";
+		}return "fail";
+		
+	}
+	@ResponseBody
+	@Transactional
+	@RequestMapping("/api/faq_update_sort")
+	public String faq_update_sort(int seq,int sort_order) {
+		fadao.pullBackOrder(seq);
+		fadao.pushBackOrder(sort_order);
+		
+		int result = fadao.updateSort(seq,sort_order);
+		if(result > 0) {
+			return "success";
+		}return "fail";
+	}
+	@ResponseBody
+	@RequestMapping("/api/faq_delete")
+	public String faq_delete(int seq) {
+		fadao.pullBackOrder(seq);
+		int result = fadao.delete(seq);
+		
+		if(result > 0) {
+			return "success";
+		}return "fail";
 	}
 	
 	

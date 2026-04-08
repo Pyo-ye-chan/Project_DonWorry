@@ -22,384 +22,419 @@
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        /* 기존 공통 스타일 유지 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    font-family: 'Pretendard', sans-serif;
-    background-color: #ffffff;
-    color: #333;
-    line-height: 1.6;
-}
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
 
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-/* 상단 */
-.top-auth {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 15px;
-    padding: 8px 0;
-}
+        .top-auth {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            padding: 8px 0;
+        }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
 
-.logo {
-    color: #2563eb;
-    font-weight: 800;
-    font-size: 20px;
-    text-decoration: none;
-}
+        .logo {
+            color: #2563eb;
+            font-weight: 800;
+            font-size: 20px;
+            text-decoration: none;
+        }
 
-.nav-menu {
-    display: flex;
-    gap: 40px;
-}
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+        }
 
-.nav-menu a {
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
-    font-weight: 500;
-}
+        .nav-menu a {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
-.nav-menu a.active {
-    color: #2563eb;
-}
+        .nav-menu a.active {
+            color: #2563eb;
+        }
 
-.my-page {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 5px 10px;
-    cursor: pointer;
-}
+        .logout-btn {
+            width: 60px;
+            height: 30px;
+            background-color: #ffffff;
+            color: #868e96;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
 
- .logout-btn { 
-    width:60px;
-    height:30px;
-    background-color: #ffffff; 
-    color: #868e96;
-    border: 1px solid #dee2e6; 
-    border-radius: 6px; 
-    font-size: 13px;
-    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-}
+        .logout-btn:hover {
+            background-color: #f8f9fa;
+            color: #495057;
+            border-color: #ced4da;
+        }
 
-.logout-btn:hover { 
-    width:60px;
-    height:30px;
-   	background-color: #f8f9fa;
-    color: #495057;
-    border-color: #ced4da;
-    border: 1px solid #dee2e6; 
-    border-radius: 6px; 
-    font-size: 13px;
-    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-}		
+        .now-admin {
+            width: 60px;
+            height: 30px;
+            background-color: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
 
-.now-admin{
-    width: 60px;
-    height: 30px;
-    background-color: #2563eb;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    border: none;
-    font-size: 13px;
-    cursor: pointer;
-}
+        .admin-page {
+            padding: 36px 0 0;
+            min-height: 800px;
+        }
 
-/* 페이지 공통 */
-.admin-page {
-    padding: 36px 0 0;
-    min-height: 800px;
-}
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+            gap: 20px;
+        }
 
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 28px;
-    gap: 20px;
-}
+        .page-title-wrap h2 {
+            font-size: 30px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 6px;
+            padding-left: 10px;
+        }
 
-.page-title-wrap h2 {
-    font-size: 30px;
-    font-weight: 800;
-    color: #1e293b;
-    margin-bottom: 6px;
-    padding-left: 10px;
-}
+        .page-title-wrap p {
+            font-size: 14px;
+            color: #64748b;
+            padding-left: 10px;
+        }
 
-.page-title-wrap p {
-    font-size: 14px;
-    color: #64748b;
-    padding-left: 10px;
-}
+        .page-date-box {
+            background: #fff;
+            padding: 12px 16px;
+            font-size: 15px;
+            color: #475569;
+        }
 
-.page-date-box {
-    background: #fff;
-    padding: 12px 16px;
-    font-size: 15px;
-    color: #475569;
-}
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
 
-/* 요약 카드 */
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-bottom: 22px;
-}
+        .summary-card {
+            background: #fff;
+            border: 1px solid #e7eef8;
+            border-radius: 18px;
+            padding: 22px;
+        }
 
-.summary-card {
-    background: #fff;
-    border: 1px solid #e7eef8;
-    border-radius: 18px;
-    padding: 22px;
-}
+        .summary-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
 
-.summary-label {
-    font-size: 14px;
-    color: #64748b;
-    margin-bottom: 8px;
-    font-weight: 600;
-}
+        .summary-value {
+            font-size: 30px;
+            font-weight: 800;
+            color: #0f172a;
+        }
 
-.summary-value {
-    font-size: 30px;
-    font-weight: 800;
-    color: #0f172a;
-}
+        .summary-desc {
+            font-size: 13px;
+            color: #2563eb;
+            margin-top: 6px;
+        }
 
-.summary-desc {
-    font-size: 13px;
-    color: #2563eb;
-    margin-top: 6px;
-}
+        .panel {
+            background: #fff;
+            border: 1px solid #e7eef8;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 40px;
+        }
 
-/* 패널 */
-.panel {
-    background: #fff;
-    border: 1px solid #e7eef8;
-    border-radius: 18px;
-    padding: 22px;
-    margin-bottom: 40px;
-}
+        .panel-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
 
-.panel-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-}
+        .panel-head h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1e293b;
+        }
 
-.panel-head h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 800;
-    color: #1e293b;
-}
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 18px;
+        }
 
-/* 검색 */
-.filter-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 18px;
-}
+        .filter-row select,
+        .filter-row input {
+            height: 42px;
+            border: 1px solid #dbe3ef;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+        }
 
-.filter-row select,
-.filter-row input {
-    height: 42px;
-    border: 1px solid #dbe3ef;
-    border-radius: 10px;
-    padding: 0 12px;
-    font-size: 14px;
-    outline: none;
-}
+        .filter-row input {
+            min-width: 260px;
+            flex: 1;
+        }
 
-.filter-row input {
-    min-width: 260px;
-    flex: 1;
-}
+        .btn-search {
+            height: 42px;
+            border: none;
+            border-radius: 10px;
+            padding: 0 16px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+        }
 
-.btn-search {
-    height: 42px;
-    border: none;
-    border-radius: 10px;
-    padding: 0 16px;
-    background: #2563eb;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 700;
-}
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-.btn-blue-light {
-    height: 34px;
-    border: 1px solid #cfe0ff;
-    border-radius: 8px;
-    padding: 0 12px;
-    background: #f8fbff;
-    color: #2563eb;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-}
+        .admin-table th,
+        .admin-table td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #eef2f7;
+            font-size: 14px;
+            text-align: center;
+        }
 
-.btn-red {
-    height: 34px;
-    border: none;
-    border-radius: 8px;
-    padding: 0 12px;
-    background: #ef4444;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-}
+        .admin-table th {
+            background-color: #fafcff;
+            color: #64748b;
+            font-weight: 700;
+        }
 
-/* 테이블 */
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        .admin-table tbody tr:hover {
+            background-color: #f8fbff;
+        }
 
-.admin-table th,
-.admin-table td {
-    padding: 14px 10px;
-    border-bottom: 1px solid #eef2f7;
-    font-size: 14px;
-    vertical-align: middle;
-}
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 72px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
-.admin-table th {
-    text-align: center;
-    background-color: #fafcff;
-    color: #64748b;
-    font-weight: 700;
-}
+        .status-wait {
+            background: #fff4db;
+            color: #d97706;
+        }
 
-.admin-table td {
-    text-align: center;
-}
+        .status-done {
+            background: #eaf4ff;
+            color: #2563eb;
+        }
 
-.admin-table tbody tr:hover {
-    background-color: #f8fbff;
-}
+        .pagination-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 22px;
+        }
 
-/* 상태 뱃지 */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 72px;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-}
+        .page-btn {
+            min-width: 34px;
+            height: 34px;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            background: #fff;
+            color: #475569;
+            font-size: 13px;
+            cursor: pointer;
+        }
 
-.status-wait {
-    background: #fff4db;
-    color: #d97706;
-}
+        .page-btn.active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #2563eb;
+        }
 
-.status-done {
-    background: #eaf4ff;
-    color: #2563eb;
-}
+        .container-footer {
+            border-top: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+            padding: 40px 0;
+            margin-top: 80px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+        }
 
-/* 페이지네이션 */
-.pagination-wrap {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 22px;
-}
+        /* FAQ 등록 전용 스타일 - 파란색 선 제거 및 panel 스타일 통일 */
+        .faq-panel {
+            margin-bottom: 24px;
+        }
 
-.page-btn {
-    min-width: 34px;
-    height: 34px;
-    border: 1px solid #dbe3ef;
-    border-radius: 8px;
-    background: #fff;
-    color: #475569;
-    font-size: 13px;
-    cursor: pointer;
-}
+        .faq-quick-form {
+            display: none;
+            background: #f8fafc;
+            border-top: 1px dashed #cbd5e1;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
 
-.page-btn.active {
-    background: #2563eb;
-    color: #fff;
-    border-color: #2563eb;
-}
+        .faq-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-/* footer */
-.container-footer {
-    border-top: 1px solid #e5e7eb;
-    background-color: #f9fafb;
-    padding: 40px 0;
-    margin-top: 80px;
-    text-align: center;
-    color: #999;
-    font-size: 13px;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-}
+        .faq-input-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-/* 반응형 */
-@media (max-width: 1024px) {
-    .summary-grid {
-        grid-template-columns: 1fr;
-    }
-}
+        .faq-input-item label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+        }
 
-@media (max-width: 768px) {
-    .page-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+        .faq-input-item input,
+        .faq-input-item textarea {
+            width: 100%;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
 
-    .nav-menu {
-        gap: 16px;
-        flex-wrap: wrap;
-    }
+        .faq-input-item input:focus,
+        .faq-input-item textarea:focus {
+            border-color: #2563eb;
+        }
 
-    .filter-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
+        .faq-form-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+        }
 
-    .filter-row select,
-    .filter-row input,
-    .btn-search {
-        width: 100%;
-    }
-}
-</style>
+        .btn-save {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: #fff;
+            color: #64748b;
+            border: 1px solid #dbe3ef;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-menu {
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-row select,
+            .filter-row input,
+            .btn-search {
+                width: 100%;
+            }
+        }
+        .sort-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #dbe3ef;
+            border-radius: 4px;
+        }
+
+        .btn-sm-delete {
+            padding: 4px 8px;
+            font-size: 12px;
+            background: #fff1f2;
+            color: #e11d48;
+            border: 1px solid #fecdd3;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-sm-delete:hover {
+            background: #ffe4e6;
+        }
+    </style>
 </head>
 <body>
 
@@ -474,6 +509,63 @@ body {
                 <div class="summary-desc">평균 처리 시간 <fmt:formatNumber value="${replyTime}" pattern="0.0"/>일</div>
             </div>
         </section>
+        
+        <section class="panel faq-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #1e293b;">
+                            <i class="fa-solid fa-circle-info" style="color: #2563eb; margin-right: 8px;"></i>자주 묻는
+                            질문(FAQ) 간편 등록
+                        </h3>
+                        <p style="margin: 5px 0 0 28px; font-size: 13px; color: #64748b;">문의가 많은 내용은 여기서 바로 FAQ로 등록하세요.
+                        </p>
+                    </div>
+                    <button type="button" class="btn-search" id="btnToggleFaq"
+                        style="background: #1e293b; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-pen-to-square"></i> 작성하기
+                    </button>
+                </div>
+
+                <div id="faqForm" class="faq-quick-form">
+                    <form id="faqSubmitForm">
+                        <div class="faq-input-group">
+                            <div class="faq-input-item">
+                                <label>질문 제목</label>
+                                <input type="text" name="title" placeholder="예: 비밀번호를 잊어버렸어요.">
+                            </div>
+                            <div class="faq-input-item">
+                                <label>답변 내용</label>
+                                <textarea name="content" rows="3" placeholder="간결하고 명확하게 답변을 작성해 주세요."></textarea>
+                            </div>
+                        </div>
+                        <div class="faq-form-btns">
+                            <button type="button" class="btn-cancel" id="btnCancelFaq">취소</button>
+                            <button type="submit" class="btn-save">등록하기</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            
+            <section class="panel">
+                <div class="panel-head">
+                    <h3>등록된 FAQ 목록</h3>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">순서</th>
+                            <th>질문 제목</th>
+                            <th style="width: 100px;">노출</th>
+                            <th style="width: 100px;">관리</th>
+                        </tr>
+                    </thead>
+                    <tbody id="faqTableBody">
+                    </tbody>
+                </table>
+                <div class="pagination-wrap" id="faqPaginationBox"></div>
+            </section>
+            
+        
 
         <section class="panel">
             <div class="panel-head">
@@ -520,6 +612,7 @@ body {
 $(document).ready(function() {
     // 1. 처음 페이지 로드 시 1페이지 목록 불러오기
     loadInquiryList(1);
+    loadAdminFaqList(1);
 
     // 2. 검색 버튼 클릭 이벤트
     $("#searchBtn").on("click", function() {
@@ -541,7 +634,167 @@ $(document).ready(function() {
         const targetPage = $(this).data("page");
         if(targetPage) loadInquiryList(targetPage);
     });
+    
+ 	// FAQ 폼 토글 (열기/닫기)
+    $("#btnToggleFaq, #btnCancelFaq").on("click", function () {
+        $("#faqForm").slideToggle(300);
+    });
+
+    // FAQ 등록 Ajax
+    $("#faqSubmitForm").on("submit", function (e) {
+        e.preventDefault();
+        const title = $("input[name='title']").val();
+        const content = $("textarea[name='content']").val();
+
+        if (!title || !content) {
+            alert("질문과 답변을 모두 입력해주세요.");
+            return;
+        }
+
+        $.ajax({
+            url: "/admin/api/faq_register",
+            type: "POST",
+            data: { title: title, content: content },
+            success: function (res) {
+                alert("FAQ가 성공적으로 등록되었습니다.");
+                $("#faqSubmitForm")[0].reset();
+                $("#faqForm").slideUp();
+                loadAdminFaqList(1); // 등록 후 첫 페이지 갱신
+            },
+            error: function () {
+                alert("등록 중 오류가 발생했습니다.");
+            }
+        });
+    });
 });
+
+//FAQ 리스트 불러오기 (페이징 포함)
+function loadAdminFaqList(page) {
+    $.ajax({
+        url: "/admin/api/faq_list",
+        type: "GET",
+        dataType:"json",
+        data: { page: page },
+        success: function(res) {
+            // 1. 테이블 렌더링
+            let html = "";
+            if (res.list.length === 0) {
+                html = '<tr><td colspan="4" style="padding:40px 0; color:#94a3b8;">등록된 FAQ가 없습니다.</td></tr>';
+            } else {
+                res.list.forEach(item => {
+                	// 상태값에 따른 클래스 미리 계산
+                    var statusClass = (item.is_show === 'Y') ? 'status-done' : 'status-wait';
+                    
+                    html += '<tr>';
+                    // 1. 순서 수정 (입력창으로 변경)
+                    html += '    <td><input type="number" class="sort-input" min="1" value="' + item.sort_order + '" onchange="updateSort(' + item.seq + ', this.value)"></td>';
+                    html += '    <td style="text-align:left; padding-left:20px;">' + item.title + '</td>';
+                    // 2. 노출 여부 수정 (배지 클릭 시 토글)
+                    html += '    <td><span class="status-badge ' + statusClass + '" style="cursor:pointer" onclick="toggleShow(' + item.seq + ', \'' + item.is_show + '\')">' + item.is_show + '</span></td>';
+                    html += '    <td><button class="btn-sm-delete" onclick="deleteFaq(' + item.seq + ')">삭제</button></td>';
+                    html += '</tr>';
+                });
+            }
+            $("#faqTableBody").html(html);
+
+            // 2. 페이징 렌더링 (인자로 호출할 함수명을 던짐)
+            renderFaqPagination(res.currentPage, res.totalCount, 'loadAdminFaqList');
+        }
+    });
+}
+
+//FAQ 전용 페이징 출력
+function renderFaqPagination(currentPage, totalCount, funcName) {
+    var recordPerPage = 5;  // 한 페이지에 5개씩 보여주기로 했으므로 5로 수정
+    var naviPerPage = 5;
+    var totalPage = Math.ceil(totalCount / recordPerPage);
+    
+    if(totalPage <= 0) {
+        $("#faqPaginationBox").html(""); // 데이터 없으면 페이징 삭제
+        return;
+    }
+
+    var startNavi = Math.floor((currentPage - 1) / naviPerPage) * naviPerPage + 1;
+    var endNavi = startNavi + naviPerPage - 1;
+    if (endNavi > totalPage) endNavi = totalPage;
+
+    var html = "";
+    
+    // [이전] 버튼
+    if (startNavi > 1) {
+        html += '<button class="page-btn" onclick="' + funcName + '(' + (startNavi - 1) + ')">&lt;</button>';
+    }
+    
+    // 숫자 버튼
+    for (var i = startNavi; i <= endNavi; i++) {
+        var activeClass = (i === currentPage) ? 'active' : '';
+        html += '<button class="page-btn ' + activeClass + '" onclick="' + funcName + '(' + i + ')">' + i + '</button>';
+    }
+    
+    // [다음] 버튼
+    if (endNavi < totalPage) {
+        html += '<button class="page-btn" onclick="' + funcName + '(' + (endNavi + 1) + ')">&gt;</button>';
+    }
+    
+    $("#faqPaginationBox").html(html);
+}
+
+//노출 상태 변경 (Y <-> N)
+function toggleShow(seq, currentStatus) {
+    const nextStatus = (currentStatus === 'Y') ? 'N' : 'Y';
+    
+    $.ajax({
+        url: "/admin/api/faq_toggle_show",
+        type: "POST",
+        data: { seq: seq, is_show: nextStatus },
+        success: function() {
+            loadAdminFaqList(1); // 상태 변경 후 목록 갱신
+        },
+        error: function() {
+            alert("상태 변경 중 오류가 발생했습니다.");
+        }
+    });
+}
+
+// 순서 변경 (숫자 입력 시 즉시 반영)
+function updateSort(seq, newOrder) {
+	
+	if (newOrder < 1) {
+        alert("순서는 1 이상의 숫자여야 합니다.");
+        loadAdminFaqList(1); // 원상복구를 위해 목록 새로고침
+        return;
+    }
+	
+    $.ajax({
+        url: "/admin/api/faq_update_sort",
+        type: "POST",
+        data: { seq: seq, sort_order: newOrder },
+        success: function() {
+            loadAdminFaqList(1); // 순서 변경 후 재정렬을 위해 갱신
+        },
+        error: function() {
+            alert("순서 변경 중 오류가 발생했습니다.");
+            loadAdminFaqList(1);
+        }
+    });
+}
+
+// FAQ 삭제
+function deleteFaq(seq) {
+    if(!confirm("이 FAQ를 삭제하시겠습니까?\n삭제 후 순서는 자동으로 재정렬됩니다.")) return;
+    
+    $.ajax({
+        url: "/admin/api/faq_delete",
+        type: "POST",
+        data: { seq: seq },
+        success: function(res) {
+            if(res === "success") {
+                alert("삭제되었습니다.");
+                loadAdminFaqList(1); // 리스트 새로고침
+            }
+        }
+    });
+}
 
 /**
  * 서버로부터 데이터를 받아와 화면을 그리는 핵심 함수

@@ -60,8 +60,16 @@ public class QnaController {
 		if (endNavi > pageTotalCount) { endNavi = pageTotalCount; }
 
 		// 이전/다음 버튼 노출 여부
-		boolean needPrev = startNavi > 1;
-		boolean needNext = endNavi < pageTotalCount;
+		boolean needPrev = true;
+		boolean needNext = true;
+		
+		
+		if(startNavi == 1){
+			needPrev = false;
+		}
+		if(endNavi == pageTotalCount){
+			needNext = false;
+		}
 
 		// --- Model에 담기 ---
 		model.addAttribute("currentPage", page);
