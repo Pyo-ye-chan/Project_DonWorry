@@ -128,6 +128,27 @@ public class MembersDAO {
 	    });
 	}
 	
+//	public List<MembersDTO> getMembers(int start, int end) {
+//	    String sql = "SELECT * FROM ("
+//	               + "    SELECT m.*, ROW_NUMBER() OVER(ORDER BY join_date DESC) AS rn "
+//	               + "    FROM members m "
+//	               + ") WHERE rn BETWEEN ? AND ?";
+//	               
+//	    return jdbc.query(sql, (rs, rowNum) -> {
+//	        MembersDTO dto = new MembersDTO();
+//	        dto.setId(rs.getString("id"));
+//	        dto.setName(rs.getString("name"));
+//	        dto.setNickname(rs.getString("nickname"));
+//	        dto.setPhone(rs.getString("phone"));
+//	        dto.setEmail(rs.getString("email"));
+//	        dto.setType(rs.getString("type")); // 개인, 사업자, 관리자
+//	        dto.setState(rs.getString("state")); // 탈퇴 여부 등
+//	        dto.setRrn(rs.getString("rrn"));
+//	        dto.setJoin_date(rs.getTimestamp("join_date"));
+//	        return dto;
+//	    }, start, end);
+//	}
+	
 	public List<MembersDTO> getMembers(int start, int end) {
 	    String sql = "SELECT * FROM ("
 	               + "    SELECT m.*, ROW_NUMBER() OVER(ORDER BY join_date DESC) AS rn "
@@ -145,6 +166,29 @@ public class MembersDAO {
 	        dto.setState(rs.getString("state")); // 탈퇴 여부 등
 	        dto.setRrn(rs.getString("rrn"));
 	        dto.setJoin_date(rs.getTimestamp("join_date"));
+	        
+	        // 주민번호(rrn) 가져오기 (예: 950101-1)
+	        String rrn = rs.getString("rrn");
+	        if (rrn != null && rrn.contains("-")) {
+	            String[] parts = rrn.split("-");
+	            // 하이픈 뒤에 글자가 진짜 있는지(배열 크기가 2인지) 확인
+	            if (parts.length >= 2 && !parts[1].isEmpty()) {
+	                char genderCode = parts[1].charAt(0);
+	                
+	                if (genderCode == '1' || genderCode == '3') {
+	                    dto.setGender("남성");
+	                } else if (genderCode == '2' || genderCode == '4') {
+	                    dto.setGender("여성");
+	                } else {
+	                    dto.setGender("기타");
+	                }
+	            } else {
+	                dto.setGender("미입력");
+	            }
+	        } else {
+	            dto.setGender("형식오류");
+	        }
+	        
 	        return dto;
 	    }, start, end);
 	}
@@ -152,5 +196,15 @@ public class MembersDAO {
 	public int membersTotalCount() {
 		String sql = "select count(*) from members";
 		return jdbc.queryForObject(sql,Integer.class);
+	}
+	
+	public int getStateCount() {
+		String sql = "select count(*) from members where state='Y'";
+		return jdbc.queryForObject(sql, Integer.class);
+	}
+	
+	public int updateMemberState(String nickname, String state) {
+	    String sql = "UPDATE members SET state = ? WHERE nickname = ?";
+	    return jdbc.update(sql, state, nickname);
 	}
 }

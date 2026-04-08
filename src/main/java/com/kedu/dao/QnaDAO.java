@@ -20,9 +20,13 @@ public class QnaDAO {
 		String sql = "insert into qna values(qna_seq.nextval,?,?,?,'status-waiting',sysdate)";
 		jdbc.update(sql,dto.getMember_id(),dto.getTitle(),dto.getContent());
 	}
-	public List<QnaDTO> list(String member_id){
-		String sql = "select * from qna where member_id = ?";
-		return jdbc.query(sql,new BeanPropertyRowMapper<QnaDTO>(QnaDTO.class),member_id);
+	public List<QnaDTO> list(String member_id,int start,int end){
+		String sql = "SELECT * FROM ("
+	               + "    SELECT qna.*, ROW_NUMBER() OVER (ORDER BY seq DESC) AS rnum "
+	               + "    FROM qna "
+	               + "    WHERE member_id = ?"
+	               + ") WHERE rnum BETWEEN ? AND ?";
+		return jdbc.query(sql,new BeanPropertyRowMapper<QnaDTO>(QnaDTO.class),member_id,start,end);
 	}
 	public List<QnaDTO> listAll(){
 		String sql = "select * from qna";
@@ -123,6 +127,10 @@ public class QnaDAO {
 	public void statusReset(int seq) {
 	    String sql = "update qna set status = 'status-waiting' where seq = ?";
 	    jdbc.update(sql, seq);
+	}
+	public int recordTotalCount(String member_id) {
+		String sql = "select count(*) from qna where member_id = ?";
+		return jdbc.queryForObject(sql,Integer.class,member_id);
 	}
 
 }

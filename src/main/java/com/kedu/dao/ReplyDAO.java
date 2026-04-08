@@ -33,5 +33,10 @@ public class ReplyDAO {
 		String sql = "update reply set content = ? where seq = ?";
 		jdbc.update(sql,content,seq);
 	}
+	
+	public int replyCount() {
+		String sql ="select count(*) from reply";
+		return jdbc.queryForObject(sql,Integer.class);
+	}
 
 }

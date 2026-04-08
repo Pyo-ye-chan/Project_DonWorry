@@ -302,6 +302,50 @@
             width: 100vw;
             margin-left: calc(-50vw + 50%);
         }
+        /* [7] 페이징 내비게이션 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 40px 0;
+}
+
+.pagination a, .pagination span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #495057;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s;
+}
+
+.pagination a:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+}
+
+.pagination .active {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+    font-weight: 600;
+}
+
+.pagination .nav-btn {
+    background-color: #ffffff;
+}
+
+.pagination .disabled {
+    color: #dee2e6;
+    cursor: default;
+    pointer-events: none;
+}
     </style>
 </head>
 
@@ -354,7 +398,7 @@
                             style="color: rgb(203, 203, 203); margin-right:5px;"></i> 구인구직</a>
                     <a href="/boards/mainboard_list?page=1"><i class="fa-regular fa-message fa-lg"
                             style="color: rgb(203, 203, 203); margin-right:5px;"></i> 커뮤니티</a>
-                    <a href="/qna/qna" class="active"><i class="fa-solid fa-question fa-lg"
+                    <a href="/qna/qna?page=1" class="active"><i class="fa-solid fa-question fa-lg"
                             style="color: rgb(36, 99, 235); margin-right:5px;"></i> 고객지원</a>
                 </div>
             </div>
@@ -427,7 +471,7 @@
                         <c:otherwise>
                             <c:forEach var="dto" items="${list}" varStatus="status">
                                 <tr onclick="location.href='/qna/detail?seq=${dto.seq}'">
-                                    <td>${status.count }</td>
+                                    <td>${((currentPage - 1) * 10) + status.count}</td>
                                     <td class="title-cell" >${dto.title }</td>
                                     <td>
                                         <fmt:formatDate value="${dto.write_date}" pattern="yyyy-MM-dd" />
@@ -448,6 +492,35 @@
                     
                 </tbody>
             </table>
+            <c:if test="${not empty list}">
+    <div class="pagination">
+        <c:choose>
+            <c:when test="${needPrev}">
+                <a href="/qna/qna?page=${startNavi - 1}" class="nav-btn">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+            </c:when>
+            <c:otherwise>
+                <span class="nav-btn disabled"><i class="fa-solid fa-chevron-left"></i></span>
+            </c:otherwise>
+        </c:choose>
+
+        <c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+            <a href="/qna/qna?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+        </c:forEach>
+
+        <c:choose>
+            <c:when test="${needNext}">
+                <a href="/qna/qna?page=${endNavi + 1}" class="nav-btn">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </c:when>
+            <c:otherwise>
+                <span class="nav-btn disabled"><i class="fa-solid fa-chevron-right"></i></span>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</c:if>
         </div>
     </div>
 

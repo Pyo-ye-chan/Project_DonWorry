@@ -33,16 +33,42 @@ public class QnaController {
 	private Qna_replyDAO qdao;
 	
 	@RequestMapping("/qna")
-	public String qna(HttpSession session,Model model) {
+	public String qna(HttpSession session,Model model,int page) {
 		String member_id = (String)session.getAttribute("loginId");
 		List<QnaDTO> list = null;
 		if(member_id != null) {
 			if(member_id.equals("admin") ) {
 				list = dao.listAll();
 			}else {
-				list = dao.list(member_id);
+				list = dao.list(member_id,page*10-9,page*10);
 			}		
 		}
+		
+		// --- 계산 로직 (Service나 Controller에서 수행) ---
+		int recordCountPerPage = 10;
+		int naviCountPerPage = 10;
+
+		// 전체 페이지 개수
+		int recordTotalCount = dao.recordTotalCount(member_id);
+		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
+
+		// 현재 페이지가 속한 네비게이션 구간의 시작과 끝
+		int startNavi = ((page - 1) / naviCountPerPage) * naviCountPerPage + 1;
+		int endNavi = startNavi + naviCountPerPage - 1;
+
+		// 끝 번호가 전체 페이지를 초과하지 않도록 보정
+		if (endNavi > pageTotalCount) { endNavi = pageTotalCount; }
+
+		// 이전/다음 버튼 노출 여부
+		boolean needPrev = startNavi > 1;
+		boolean needNext = endNavi < pageTotalCount;
+
+		// --- Model에 담기 ---
+		model.addAttribute("currentPage", page);
+		model.addAttribute("startNavi", startNavi);
+		model.addAttribute("endNavi", endNavi);
+		model.addAttribute("needPrev", needPrev);
+		model.addAttribute("needNext", needNext);
 		model.addAttribute("list",list);
 		return "/qna/qna";
 	}

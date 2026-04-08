@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kedu.dao.AdminDAO;
 import com.kedu.dao.BoardsDAO;
 import com.kedu.dao.FilesDAO;
 import com.kedu.dto.BoardsDTO;
@@ -30,6 +31,9 @@ public class BoardsController {
 	
 	@Autowired
 	private FilesDAO fdao;
+	
+	@Autowired
+	private AdminDAO adao;
 	
 
 	@RequestMapping("/mainboard_list")
@@ -46,6 +50,10 @@ public class BoardsController {
 		model.addAttribute("recordTotalCount",recordTotalCount);
 		//model.addAttribute("recordTotalCount",233); // 임시
 		model.addAttribute("mainList", mainList);
+		
+		//공지사항 
+	    List<BoardsDTO> notice_mainList = adao.adminNoticeList();
+	    model.addAttribute("notice_mainList", notice_mainList); // 바구니 이름을 JSP와 똑같이!
 		
 		return "boards/mainboard_list";
 	}

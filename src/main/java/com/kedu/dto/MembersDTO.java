@@ -14,6 +14,7 @@ public class MembersDTO {
 	private String state;
 	private String rrn;
 	private String business_number;
+	private String gender;
 	private Timestamp join_date;
 	
 	
@@ -21,7 +22,7 @@ public class MembersDTO {
 	public MembersDTO() {}
 	
 	public MembersDTO(String id, String pw, String name, String nickname, String phone, String email, String type,
-			String state, String rrn, String business_number, Timestamp join_date) {
+			String state, String rrn, String business_number, String gender, Timestamp join_date) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -33,8 +34,12 @@ public class MembersDTO {
 		this.state = state;
 		this.rrn = rrn;
 		this.business_number = business_number;
+		this.gender = gender;
 		this.join_date = join_date;
 	}
+	
+	public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 	
 	public String getId() {
 		return id;
