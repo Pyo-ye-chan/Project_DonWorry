@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kedu.dto.BoardsDTO;
+import com.kedu.dto.ReplyDTO;
 
 @Repository
 public class AdminDAO {
@@ -64,6 +65,49 @@ public class AdminDAO {
 				+ "order by b.seq desc" ;
 		
 		return jdbc.query(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class));		
+	}
+	
+	//댓글 가져옴
+	public List<ReplyDTO> admin_replyList(int start, int end) {
+		String sql="SELECT * FROM (\r\n"
+				+ "    SELECT \r\n"
+				+ "        ROW_NUMBER() OVER (ORDER BY r.seq DESC) AS rn,\r\n"
+				+ "        r.seq,\r\n"
+				+ "        r.parent_seq,\r\n"
+				+ "        m.nickname AS member_id,\r\n"
+				+ "        r.content,\r\n"
+				+ "        r.write_date,\r\n"
+				+ "        r.re_reply_seq,\r\n"
+				+ "        r.member_id AS writer,\r\n"
+				+ "        COUNT(rp.seq) AS report_count -- 신고 테이블의 seq 카운트\r\n"
+				+ "    FROM reply r \r\n"
+				+ "    JOIN members m ON r.member_id = m.id\r\n"
+				+ "    LEFT JOIN report rp ON r.seq = rp.reply_seq -- 댓글 번호로 신고 테이블 조인\r\n"
+				+ "    GROUP BY \r\n"
+				+ "        r.seq, r.parent_seq, m.nickname, r.content, \r\n"
+				+ "        r.write_date, r.re_reply_seq, r.member_id\r\n"
+				+ ") \r\n"
+				+ "WHERE rn BETWEEN ? AND ?";
+		
+		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class),start,end);
+	}
+	
+	//신고된 댓글 가져옴
+	public List<ReplyDTO> admin_report_replyList() {
+		String sql="SELECT \r\n"
+				+ "    r.seq, r.parent_seq, m.nickname AS member_id, \r\n"
+				+ "    r.content, r.write_date, r.re_reply_seq, r.member_id AS writer,\r\n"
+				+ "    COUNT(rp.seq) AS report_count\r\n"
+				+ "FROM reply r \r\n"
+				+ "JOIN members m ON r.member_id = m.id\r\n"
+				+ "JOIN report rp ON r.seq = rp.reply_seq \r\n"
+				+ "GROUP BY \r\n"
+				+ "    r.seq, r.parent_seq, m.nickname, r.content, \r\n"
+				+ "    r.write_date, r.re_reply_seq, r.member_id\r\n"
+				+ "HAVING COUNT(rp.seq) > 0 -- 신고가 1개 이상인 것만\r\n"
+				+ "ORDER BY r.seq DESC";
+		
+		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class));
 	}
 	
 }

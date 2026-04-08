@@ -799,6 +799,20 @@
         	 }).done(function(data){
         		 $(".comment-title").html("댓글 "+data.totalCount);
         		 appendReplyList(data.list);
+        		 
+        		// 🔥 댓글 목록을 다 그린 후, URL에 해시(#reply)가 있다면 해당 위치로 이동
+        	        if (location.hash) {
+        	            let target = $(location.hash);
+        	            if (target.length) {
+        	                $('html, body').animate({
+        	                    scrollTop: target.offset().top - 100 // 상단 여유를 위해 100px 정도 뺌
+        	                }, 500);
+        	                
+        	                // 강조 효과 (선택사항)
+        	                target.css("background-color", "#f0f7ff");
+        	                setTimeout(() => target.css("background-color", "transparent"), 2000);
+        	            }
+        	        }
         	 })
          }
          $(document).ready(function(){
@@ -813,7 +827,7 @@
         	 
         	 list.forEach(function(comment){
         		 
-        		 html += `<div class="comment-item" data-seq=`+comment.seq+`>
+        		 html += `<div class="comment-item" data-seq=`+comment.seq+` id="reply` + comment.seq + `">
         		        <div class="comment-header">
         	            <div class="comment-left">
         	                <span class="comment-writer">`+ comment.member_id +`</span>
@@ -850,7 +864,7 @@
         	        	comment.replies.forEach(function(reply){
         	        		
         	        		html += `
-            	        		<div class="reply-item" data-seq=`+reply.seq+`> 
+            	        		<div class="reply-item" data-seq=`+reply.seq+` id="reply` + reply.seq + `"> 
                                 <div class="comment-header">
                                     <div class="comment-left">
                                         <span class="comment-writer">`+reply.member_id+`</span>

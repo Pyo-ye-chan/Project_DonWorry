@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>관리자 - 회원 게시물 관리</title>
+<title>관리자 - 회원 댓글 관리</title>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -223,7 +223,7 @@ body {
     font-weight: 700;
 }
 
-.board-detail-btn {
+.reply-detail-btn {
     height: 34px;
     border: 1px solid #cfe0ff;
     border-radius: 8px;
@@ -234,7 +234,7 @@ body {
     font-weight: 700;
 }
 
-.board-del-btn {
+.reply-del-btn{
     height: 34px;
     border: none;
     border-radius: 8px;
@@ -411,7 +411,7 @@ body {
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>번호</th>
+                        <th>댓글 번호</th>
                         <th>게시판 번호</th>
                         <th>작성자</th>
                         <th>작성일</th>
@@ -420,29 +420,22 @@ body {
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="i" items="${board_mainList}">
-                <c:if test="${i.member_id!='관리자'}">
+                <c:forEach var="i" items="${replyList}">
                     <tr>
-                        <td>${i.seq}</td>                       
-                        <c:choose>
-	                        <c:when test="${i.category =='free'}"><td>자유</td></c:when>
-	                        <c:when test="${i.category =='qna'}"><td>질문</td></c:when>
-	                        <c:when test="${i.category =='review'}"><td>리뷰</td></c:when>
-	                        <c:when test="${i.category =='main'}"><td>메인</td></c:when>
-                        </c:choose>                       
-                        <td>${i.title}</td>
+                        <td>${i.seq}</td>                                              
+                        <td>${i.parent_seq}</td>
                         <td>${i.member_id}</td>
                         <td id="write_date">
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
                         </td>
                         <c:choose>
-                        <c:when test="${i.report_count>0}">
-	                        <td>
-	                        	<span class="state-pill state-report">
-	                        		신고
-	                        	</span>
-	                        </td>
-                        </c:when>
+	                        <c:when test="${i.report_count>0}">
+		                        <td>
+		                        	<span class="state-pill state-report">
+		                        		신고
+		                        	</span>
+		                        </td>
+	                        </c:when>
                         <c:otherwise>
 	                        <td>
 	                        	<span class="state-pill state-show">
@@ -452,11 +445,10 @@ body {
 	                    </c:otherwise>
                         </c:choose>
                         <td>
-                            <button class="board-detail-btn" type="button" data-seq="${i.seq}">보기</button>
-                            <button class="board-del-btn" type="button" data-seq="${i.seq}">삭제</button>
+                            <button class="reply-detail-btn" type="button" data-seq="${i.seq}" data-parent="${i.parent_seq}">보기</button>
+                            <button class="reply-del-btn" type="button" data-seq="${i.seq}" >삭제</button>
                         </td>
                     </tr>
-                    </c:if>
                 </c:forEach>                  
                 </tbody>
             </table>
@@ -482,31 +474,27 @@ body {
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>번호</th>
-                        <th>제목</th>
+                        <th>댓글 번호</th>
+                        <th>글 내용</th>
                         <th>작성자</th>
                         <th>작성일</th>
-                        <th>상태</th>
                         <th>관리</th>
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="i" items="${notice_mainList}">
-                <c:if test="${fn:contains(i.member_id,'관리자')}">
+                <c:forEach var="i" items="${report_replyList}">
                     <tr>
                         <td>${i.seq}</td>
-                        <td>${i.title}</td>
+                        <td>${i.content}</td>
                         <td>${i.member_id}</td>
                         <td id="write_date">
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
                         </td>
-                        <td><span class="state-pill state-show">게시중</span></td>
                         <td>
-                            <button class="board-detail-btn notice-detail-btn" type="button"  data-seq="${i.seq}">보기</button>
-                            <button class="board-del-btn notice-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
+                            <button class="board-del-btn reply-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
                         </td>
+                        
                     </tr>
-                </c:if>
                 </c:forEach>
 
                 </tbody>
@@ -551,7 +539,7 @@ body {
 		let btn = $("<button>");
 		btn.addClass("page-btn");
 		btn.html("&lt;");
-		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (startNavi-1)+"'");
+		btn.attr("onclick","location.href='/admin/admin_reply?page="+ (startNavi-1)+"'");
 		board_navi.append(btn);
 	}
 	
@@ -559,7 +547,7 @@ body {
 		let btn = $("<button>");
 		btn.addClass("page-btn");
 		btn.html(i);
-		btn.attr("onclick","location.href='/admin/admin_boards?page="+ i +"'");
+		btn.attr("onclick","location.href='/admin/admin_reply?page="+ i +"'");
 		
 		if(i== currentPage){
 			btn.addClass("active");//현재 페이지 파란색 처리
@@ -572,23 +560,23 @@ body {
 		let btn = $("<button>");
 		btn.addClass("page-btn");
 		btn.html("&gt;");//구글 라이브러리 > 모양
-		btn.attr("onclick","location.href='/admin/admin_boards?page="+ (endNavi+1) +"'");
+		btn.attr("onclick","location.href='/admin/admin_reply?page="+ (endNavi+1) +"'");
 		board_navi.append(btn);
 	}
 	
 	//보기 버튼 클릭
-	$(".board-detail-btn").on("click",function(){
-		let seq = $(this).data("seq");
-		let page = "${currentPage}" || "1";//page 비었을 경우 대비
-		location.href='/admin/admin_board_detail?seq='+seq+'&page='+page;
+	$(".reply-detail-btn").on("click",function(){
+		let parentSeq = $(this).data("parent"); 
+	    let replySeq = $(this).data("seq");
+		location.href = '/boards/detail?seq=' + parentSeq + '#reply' + replySeq;
 	});
 	
-	//삭제 버튼 클릭
-	$(".board-del-btn").on("click",function(){
+ 	//삭제 버튼 클릭
+	$(".reply-del-btn").on("click",function(){
 		let seq = $(this).data("seq");
 		let page = "${currentPage}";
-		location.href='/admin/admin_board_delete?seq='+seq+'&page='+page;
-	});
+		location.href='/admin/admin_reply_delete?seq='+seq+'&page='+page;
+	}); 
 	
  
 //====================공지글=======================//

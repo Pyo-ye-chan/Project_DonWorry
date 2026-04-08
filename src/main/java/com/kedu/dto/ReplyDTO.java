@@ -15,6 +15,16 @@ public class ReplyDTO {
 	
 	private String write_date_str;
 
+	private int report_count;
+
+	public int getReport_count() {
+		return report_count;
+	}
+
+	public void setReport_count(int report_count) {
+		this.report_count = report_count;
+	}
+	
 	public String getWrite_date_str() {
 	    return write_date_str;
 	}
