@@ -429,6 +429,10 @@
 .bookmark-btn.active {
     color: #ffc107; /* 노란색 꽉 찬 별 */
 }
+.tag.tag-qna {
+    background-color: #fff7ed; /* 연한 주황 */
+    color: #ea580c;
+}
 </style>
 </head>
 <body>
@@ -529,7 +533,7 @@
                                 <div class="user-info">
                                     <div class="meta">
                                         <span class="nickname">${i.member_id}</span>
-                                        <span class="tag free">
+                                        <span class="tag tag-qna">
                                             <c:choose>
                                                 <c:when test="${i.category == 'main'}">메인게시판</c:when>
                                                 <c:when test="${i.category == 'free'}">자유게시판</c:when>
