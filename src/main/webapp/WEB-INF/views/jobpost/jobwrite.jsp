@@ -504,33 +504,50 @@ textarea {
             <option value="요일협의">요일협의</option>
         </select>
 
-        <select name="work_starttime" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-            <c:forEach var="h" begin="0" end="23">
-                <c:set var="hourStr" value="${h < 10 ? '0' : ''}${h}" />
-                <c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
-                <c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
-                <c:if test="${displayHour == 0}"><c:set var="displayHour" value="12"/></c:if>
-                
-                <option value="${h * 60}">${ampm} ${displayHour}:00</option>
-                <option value="${h * 60 + 30}">${ampm} ${displayHour}:30</option>
-            </c:forEach>
-        </select>
+       <select name="work_starttime" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+    <c:forEach var="h" begin="0" end="23">
+        <c:set var="hourStr" value="${h < 10 ? '0' : ''}${h}" />
+        <c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
+        <c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
+        <c:if test="${displayHour == 0}">
+            <c:set var="displayHour" value="12"/>
+        </c:if>
 
-        <span style="align-self: center;">~</span>
+        <option value="${hourStr}:00"
+            <c:if test="${post.work_starttime == hourStr.concat(':00')}">selected</c:if>>
+            ${ampm} ${displayHour}:00
+        </option>
+        <option value="${hourStr}:30"
+            <c:if test="${post.work_starttime == hourStr.concat(':30')}">selected</c:if>>
+            ${ampm} ${displayHour}:30
+        </option>
+    </c:forEach>
+</select>
 
-        <select name="work_endtime" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-            <c:forEach var="h" begin="0" end="23">
-                <c:set var="hourStr" value="${h < 10 ? '0' : ''}${h}" />
-                <c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
-                <c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
-                <c:if test="${displayHour == 0}"><c:set var="displayHour" value="12"/></c:if>
-                
-                <option value="${h * 60}">${ampm} ${displayHour}:00</option>
-                <option value="${h * 60 + 30}">${ampm} ${displayHour}:30</option>
-            </c:forEach>
-        </select>
+<span style="align-self: center;">~</span>
+
+<select name="work_endtime" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+    <c:forEach var="h" begin="0" end="23">
+        <c:set var="hourStr" value="${h < 10 ? '0' : ''}${h}" />
+        <c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
+        <c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
+        <c:if test="${displayHour == 0}">
+            <c:set var="displayHour" value="12"/>
+        </c:if>
+
+        <option value="${hourStr}:00"
+            <c:if test="${post.work_endtime == hourStr.concat(':00')}">selected</c:if>>
+            ${ampm} ${displayHour}:00
+        </option>
+        <option value="${hourStr}:30"
+            <c:if test="${post.work_endtime == hourStr.concat(':30')}">selected</c:if>>
+            ${ampm} ${displayHour}:30
+        </option>
+    </c:forEach>
+</select>
     </div>
 </div>
+
 
 				<div class="form-row" style="align-items: flex-start;">
 					<div class="form-label" style="padding-top: 10px;">
@@ -682,6 +699,8 @@ textarea {
             });
         });
     });
+    
+
 </script>
 </body>
 </html>

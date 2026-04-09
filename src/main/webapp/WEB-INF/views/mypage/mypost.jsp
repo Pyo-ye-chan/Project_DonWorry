@@ -310,23 +310,14 @@ body {
 	margin-top: 6px;
 }
 
-.tag.question {
-	background-color: #e7f3ff;
-	color: #007bff;
-}
-
-.tag.free {
-	background-color: #e6fffa;
-	color: #38b2ac;
-}
+.status-freeboard { background-color:#cff7ef; color: #179791; } /* 초록색 */
+.status-reviewboard{ background-color: #cfe5ff; color: #185fb0; }
+.status-qnaboard{ background-color: #ffb2b7; color: #a91620;}
 
 .status-tag {
 	font-size: 12px;
 	padding: 4px 10px;
 	border-radius: 8px;
-	background-color: #f8f9fa;
-	color: #868e96;
-	border: 1px solid #e9ecef;
 	font-weight: 600;
 }
 
@@ -553,11 +544,18 @@ body {
 							onclick="location.href='/mypage/view?seq=${a.seq}&view_count=${a.view_count }'">
 							<div class="post-top">
 								<div class="post-title">${a.title }</div>
-								<span class="tag free"> <c:choose>
+								<span class="tag"> 
+									<c:choose>
 										<c:when test="${a.category == 'main'}">메인게시판</c:when>
-										<c:when test="${a.category == 'free'}">자유게시판</c:when>
-										<c:when test="${a.category == 'qna'}">질문게시판</c:when>
-										<c:when test="${a.category == 'review'}">리뷰게시판</c:when>
+										<c:when test="${a.category == 'free'}">
+										<span class="tag status-tag status-freeboard">자유게시판</span>
+										</c:when>
+										<c:when test="${a.category == 'qna'}">
+										<span class="tag status-tag status-qnaboard">질문게시판</span>
+										</c:when>
+										<c:when test="${a.category == 'review'}">
+										<span class="tag status-tag status-reviewboard">리뷰게시판</span>
+										</c:when>
 									</c:choose>
 								</span>
 								<div class="post-meta"">
