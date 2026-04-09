@@ -1129,78 +1129,79 @@ body {
 	            }
 	            url += "&startTime=" + startTime + "&endTime=" + endTime;
 	        }
-	        
-	        location.href = url;
-	    });
+	});
 	    
-	    let selectedJobSeq = null; // 어떤 공고에 지원할지 저장할 변수
+	    $(function() {
+	        // [1] 페이지 로드 시 서버로부터 온 알림 메시지 처리 (1회성)
+	        // 컨트롤러에서 RedirectAttributes로 보낸 메시지는 여기서 딱 한 번만 띄운다.
+	        const successMsg = "${message}";
+	        const resumeMsg = "${resume}";
+	        
+	        if (successMsg !== "") alert(successMsg);
+	        if (resumeMsg !== "") alert(resumeMsg);
 
-	    $(".btn-apply").on("click", function() {
-	        let loginId = "${loginId}";
-	        selectedJobSeq = $(this).attr("data-seq"); // 클릭한 공고 번호 저장
+	        // [2] 지원하기 버튼 클릭 시 (이력서 목록 가져오기)
+	        let selectedJobSeq = null; 
 
-	        if (!loginId || loginId === "" || loginId === "null") {
-	            alert("로그인이 필요한 서비스입니다.");
-	            location.href = "/members/toLogin";
-	            return;
-	        }
+	        $(".btn-apply").on("click", function() {
+	            const loginId = "${loginId}";
+	            selectedJobSeq = $(this).attr("data-seq");
 
-	        // [Step 1] Ajax로 내 이력서 목록 가져오기
-	        $.ajax({
-	            url: "/jobapplys/getMyResumes", // 컨트롤러에 새로 만들 주소
-	            type: "get",
-	            success: function(resumes) {
-	                if (resumes.length === 0) {
-	                    alert("등록된 이력서가 없습니다. 이력서를 먼저 작성해주세요!");
-	                    return;
-	                }
+	            if (!loginId || loginId === "" || loginId === "null") {
+	                alert("로그인이 필요한 서비스입니다.");
+	                location.href = "/members/toLogin";
+	                return;
+	            }
 
-	                let html = "";
-	                resumes.forEach(r => {
-	                    html += `<li style="padding:10px; border-bottom:1px solid #eee;">
+	            $.ajax({
+	                url: "/jobapplys/getMyResumes",
+	                type: "get",
+	                success: function(resumes) {
+	                    if (!resumes || resumes.length === 0) {
+	                        alert("등록된 이력서가 없습니다. 이력서를 먼저 작성해주세요!");
+	                        location.href = "/mypage/resume";
+	                        return; // 로직 중단
+	                    }
+
+	                    let html = "";
+	                    resumes.forEach(r => {
+	                        html += `
+	                            <li style="padding:10px; border-bottom:1px solid #eee;">
 	                                <label style="cursor:pointer; display:block;">
 	                                    <input type="radio" name="resumeIdx" value="\${r.seq}"> \${r.title}
 	                                </label>
-	                             </li>`;
-	                });
-	                $("#modalResumeList").html(html);
-	                $("#resumeModal").show(); // 모달 띄우기
+	                            </li>`;
+	                    });
+	                    
+	                    $("#modalResumeList").html(html);
+	                    $("#resumeModal").fadeIn(200); // 부드럽게 나타나기
+	                },
+	                error: function() {
+	                    alert("이력서 목록을 가져오는 데 실패했습니다.");
+	                }
+	            });
+	        });
+
+	        // [3] 모달 내 '최종 지원하기' 버튼 클릭 시
+	        $("#btnConfirmApply").on("click", function() {
+	            const resumeNum = $("input[name='resumeIdx']:checked").val();
+	            
+	            if (!resumeNum) {
+	                alert("지원하실 이력서를 선택해주세요.");
+	                return;
+	            }
+
+	            // 서버로 전송 (여기서는 알림 메시지 체크를 하지 않음!)
+	            location.href = `/jobapplys/insert?jobPostNum=\${selectedJobSeq}&resumeNum=\${resumeNum}`;
+	        });
+
+	        // [4] 모달 외부나 취소 버튼 클릭 시 닫기 기능 (추가 권장)
+	        $(document).on("click", function(e) {
+	            if ($(e.target).is("#resumeModal")) {
+	                $("#resumeModal").fadeOut(200);
 	            }
 	        });
 	    });
-
-	    // [Step 2] 모달 안에서 진짜 '지원하기' 눌렀을 때
-	    $("#btnConfirmApply").on("click", function() {
-	        let resumeNum = $("input[name='resumeIdx']:checked").val();
-	        
-	        if (!resumeNum) {
-	            alert("이력서를 선택해주세요.");
-	            return;
-	        }
-
-	        // 최종 지원 요청
-	        location.href = `/jobapplys/insert?jobPostNum=\${selectedJobSeq}&resumeNum=\${resumeNum}`;
-	    });
-	    
-	    $(function() {
-	        let errorMsg = "${error}"; 
-	        let successMsg = "${message}";
-	        let resume = "${resume}";
-	        if (errorMsg !== "") {
-	            alert(errorMsg);
-	        }
-
-	        if (successMsg !== "") {
-	            alert(successMsg);
-	        }
-	        
-	        if(resume !== ""){
-	        	alert(resume);
-	        	location.href = "/mypage/resume";
-	        }
-	    });
-	    
-	    
 	});
 	</script>
 </body>
