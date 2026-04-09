@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.kedu.commons.EncryptionUtils;
 import com.kedu.dao.BoardsDAO;
+import com.kedu.dao.BookmarkDAO;
 import com.kedu.dao.FilesDAO;
 import com.kedu.dao.JobPostDAO;
 import com.kedu.dao.MembersDAO;
@@ -40,6 +41,9 @@ public class MypageController {
 	private FilesDAO fdao;
 	@Autowired
 	private JobPostDAO jpdao;
+	@Autowired
+	private BookmarkDAO bookdao;
+	
 	
 	@Autowired
 	private Gson gson;
@@ -52,6 +56,9 @@ public class MypageController {
 		List<MembersDTO> list = mdao.selectAll(id);
 		String type = (String)session.getAttribute("type");
 		model.addAttribute("list",list);
+		
+		int bookmarkCount =  bookdao.countBookmark(id);
+		model.addAttribute("bookmarkCount",bookmarkCount);
 		
 		return "mypage/mypage";
 	}
@@ -81,6 +88,22 @@ public class MypageController {
 		List<MembersDTO> list = mdao.selectAll(id);	
 		return "mypage/job_activity";
 	}
+	//이력서 작성
+	@RequestMapping("/resume")
+	public String toResume(Model model) {
+		List<JobPostDTO> main_jobCateList =  dao.getJobCategory();
+		model.addAttribute("main_jobCateList",main_jobCateList);
+		
+		return "mypage/resume";
+	}
+	
+	//대분류 선택 시 소분류 목록을 가져오는 AJAX API
+    @ResponseBody
+    @RequestMapping(value = "/getSubCategories", produces = "application/json; charset=utf-8")
+    public List<JobPostDTO> getSubCategories(@RequestParam("parentId") int parentId) {
+        // 부모 ID(대분류 ID)를 전달하여 소분류 목록 반환
+        return dao.getSubCategory(parentId);
+    }
 	
 	@RequestMapping("/toAccount")
 	public String toAccount() {

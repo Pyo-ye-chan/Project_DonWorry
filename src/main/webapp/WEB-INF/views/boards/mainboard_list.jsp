@@ -477,6 +477,25 @@
 .bookmark-btn.active {
     color: #ffc107; /* 노란색 꽉 찬 별 */
 }
+.tag.tag-main {
+    background-color: #eef2ff; /* 연한 파랑 */
+    color: #4f46e5;
+}
+
+.tag.tag-free {
+    background-color: #f0fdf4; /* 연한 초록 */
+    color: #16a34a;
+}
+
+.tag.tag-qna {
+    background-color: #fff7ed; /* 연한 주황 */
+    color: #ea580c;
+}
+
+.tag.tag-review {
+    background-color: #fdf2f8; /* 연한 분홍 */
+    color: #db2777;
+}
 </style>
 </head>
 <body>
@@ -598,14 +617,21 @@
                                 <div class="user-info">
                                     <div class="meta">
                                         <span class="nickname">${i.member_id}</span>
-                                        <span class="tag free">
-                                            <c:choose>
-                                                <c:when test="${i.category == 'main'}">메인게시판</c:when>
-                                                <c:when test="${i.category == 'free'}">자유게시판</c:when>
-                                                <c:when test="${i.category == 'qna'}">질문게시판</c:when>
-                                                <c:when test="${i.category == 'review'}">리뷰게시판</c:when>
-                                            </c:choose>
-                                        </span>
+                                        <c:choose>
+                                        <c:when test="${i.category == 'main'}">
+            								<span class="tag tag-main">메인게시판</span>
+        								</c:when>
+        								<c:when test="${i.category == 'free'}">
+            								<span class="tag free">자유게시판</span>
+        								</c:when>
+        								<c:when test="${i.category == 'qna'}">
+            								<span class="tag tag-qna">질문게시판</span>
+        								</c:when>
+        								<c:when test="${i.category == 'review'}">
+            								<span class="tag tag-review">리뷰게시판</span>
+        								</c:when>
+        								
+        								</c:choose>
                                         <p class="time">
                                             <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
                                         </p>
