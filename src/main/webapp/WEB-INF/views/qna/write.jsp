@@ -331,11 +331,11 @@
                     <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
                     홈
                 </a>
-                <a href="salary/calendar">
+                <a href="/salary/calendar">
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
                 </a>
-                <a href="#">
+                <a href="/jobposts/jobpost">
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
@@ -402,7 +402,7 @@
 
             <!-- 버튼 영역 -->
             <div class="btn-group">
-                <button type="button" class="cancel-btn" onclick="location.href='/customer/qna'">취소</button>
+                <button type="button" class="cancel-btn" onclick="location.href='/qna/qna'">취소</button>
                 <button type="submit" class="submit-btn">등록</button>
             </div>
 

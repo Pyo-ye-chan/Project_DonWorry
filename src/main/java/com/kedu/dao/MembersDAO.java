@@ -276,4 +276,12 @@ public class MembersDAO {
 
 	    return jdbc.queryForObject(sql, Integer.class, params.toArray());
 	}
+	public MembersDTO selectByLoginId(String id) {
+		String sql = "select * from members where id = ?";
+		return jdbc.queryForObject(sql,new BeanPropertyRowMapper<MembersDTO>(MembersDTO.class),id);		
+	}
+	public int changePw(String id, String pw, String newPw) {
+		String sql = "update members set pw = ? where id = ? and pw = ?";
+		return jdbc.update(sql,newPw,id,pw);
+	}
 }
