@@ -17,4 +17,9 @@ public class ResumeDAO {
 		return jdbc.update(sql,dto.getId(),dto.getTitle(),dto.getPrferred_job(),dto.getWorking_condition(),
 				dto.getCareer(),dto.getCareer_write(),dto.getIntroduction());
 	}
+	
+	public int getPrimaryResume(String id) {
+		String sql = "select seq from resume where id=?";
+		return jdbc.queryForObject(sql, Integer.class, id);
+	}
 }

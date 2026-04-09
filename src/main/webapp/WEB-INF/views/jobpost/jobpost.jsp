@@ -853,9 +853,9 @@ body {
 					</div>
 
 					<div class="job-btn-group">
-						<button class="btn-apply">지원하기</button>
+						<button class="btn-apply" data-seq="${post.seq }">지원하기</button>
 						<button class="btn-detail"
-							onclick="location.href='/jobposts/jobdetail?seq=${post.seq}'">자세히
+							onclick="location.href='/jobposts/jobdetail?seq=${post.seq}&page=${currentPage }'">자세히
 							보기</button>
 					</div>
 				</div>
@@ -1110,6 +1110,30 @@ body {
 	        }
 	        
 	        location.href = url;
+	    });
+	    
+	    $(".btn-apply").on("click", function() {
+	        let loginId = "${loginId}";
+	        let jobPostNum = $(this).attr("data-seq");
+
+	        if (!loginId || loginId === "null") { 
+	            alert("로그인이 필요한 서비스입니다.");
+	            location.href = "/members/toLogin";
+	        }else {
+	        	location.href = "/jobapplys/insert?jobPostNum=" + jobPostNum;
+	        }
+	    });
+	    
+	    $(function() {
+	        let errorMsg = "${error}"; 
+	        let successMsg = "${message}";
+	        if (errorMsg !== "") {
+	            alert(errorMsg);
+	        }
+
+	        if (successMsg !== "") {
+	            alert(successMsg);
+	        }
 	    });
 	    
 	    

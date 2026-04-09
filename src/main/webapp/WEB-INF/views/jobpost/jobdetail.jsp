@@ -346,8 +346,8 @@
             </div>
         </div>
         <div class="header-right">
-            <button class="btn-apply">지원하기</button>
-            <button class="btn-list" onclick="location.href='/jobposts/jobpost'">목록으로</button>
+            <button class="btn-apply" data-seq="${post.seq }">지원하기</button>
+            <button class="btn-list" onclick="location.href='/jobposts/jobpost?page=${page}'">목록으로</button>
         </div>
     </div>
 
@@ -391,6 +391,34 @@
     <p>© 2026 돈워리. All rights reserved.</p>
     <p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침 | 이용약관 | 고객센터</p>
 </div>
+
+<script>
+	
+	$(document).on("click", ".btn-apply", function() {
+    let loginId = "${loginId}";
+    let jobPostNum = $(this).attr("data-seq"); // 리스트든 상세든 버튼에 심긴 seq를 읽어옴
+
+    if (!loginId || loginId === "null" || loginId === "") {
+        alert("로그인이 필요한 서비스입니다.");
+        location.href = "/members/toLogin";
+    } else {
+        location.href = "/jobapplys/insert?jobPostNum=" + jobPostNum;
+        alert("지원이 완료되었습니다.")
+    }
+});
+	
+	$(function() {
+        let errorMsg = "${error}"; 
+        let successMsg = "${message}";
+        if (errorMsg !== "") {
+            alert(errorMsg);
+        }
+
+        if (successMsg !== "") {
+            alert(successMsg);
+        }
+    });
+</script>
 	
 	
 </body>

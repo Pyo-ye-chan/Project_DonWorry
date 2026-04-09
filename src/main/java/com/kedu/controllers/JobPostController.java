@@ -32,7 +32,8 @@ public class JobPostController {
 			@RequestParam(value="page", defaultValue="1") int page,
 			@RequestParam(value="workDay", required=false) String workDay, 
 			@RequestParam(value="startTime", required=false) Integer starttime, 
-			@RequestParam(value="endTime", required=false) Integer endtime) {
+			@RequestParam(value="endTime", required=false) Integer endtime,
+			String selectByLocation){
 
 		List<JobPostDTO> jobList;
 		int recordTotalCount;
@@ -52,7 +53,13 @@ public class JobPostController {
 			jobList = dao.searchKeywordPaged(searchKeyword, start, end, workDay, starttime, endtime);
 			recordTotalCount = dao.getSearchTotalCount(searchKeyword, workDay, starttime, endtime);
 			model.addAttribute("searchKeyword", searchKeyword);
-		} else {
+		} else if(selectByLocation != null) {
+			jobList = dao.selectByLocation(selectByLocation);
+			recordTotalCount = dao.getSearchTotalCount(selectByLocation, workDay, starttime, endtime);
+			model.addAttribute("selectByLocation", selectByLocation);
+		}
+		
+		else {
 			jobList = dao.jobList(start, end, workDay, starttime, endtime);
 			recordTotalCount = dao.jobRecordTotalCount(workDay, starttime, endtime);
 		}
@@ -111,10 +118,11 @@ public class JobPostController {
 	}
 
 	@RequestMapping("/jobdetail")
-	public String jobdetail(int seq, Model model) {
+	public String jobdetail(int seq, Model model, int page) {
 		JobPostDTO post = dao.getPostDetail(seq);
 
 		model.addAttribute("post", post);
+		model.addAttribute("page", page);
 		return "jobpost/jobdetail";
 	}
 
