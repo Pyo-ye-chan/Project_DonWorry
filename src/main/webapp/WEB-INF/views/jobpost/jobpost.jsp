@@ -244,7 +244,7 @@ body {
 	border-radius: 12px;
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 	z-index: 100;
-	margin-top: -15px;
+	margin-top: 10px;
 	overflow: hidden;
 }
 
@@ -619,44 +619,39 @@ body {
 		</c:choose>
 
 		<nav class="navbar">
-        <div style="display: flex; align-items: center; gap: 40px;">
-            <a href="/" class="logo"> 돈워리</a>
-            <div class="nav-menu">
-                <a href="/"> 
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
-                    홈
-                </a>
-                <a href="/salary/calendar">
-                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
-                    급여 캘린더
-                    </a>
-                <a href="/jobposts/jobpost"  class="active"> 
-                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(36, 99, 235); margin-right:5px;"></i>
-                    구인구직
-                </a>
-                <a href="/boards/mainboard_list?page=1"> 
-                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
-                    커뮤니티
-                </a> 
-                <a href="/qna/qna?page=1"> 
-                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    고객지원
-                </a>              
-            </div>           
-        </div>
-        <c:if test="${nickName==null }">   
-	        <a class="my-page" href="members/toLogin"> 
-	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-	            마이페이지
-	        </a>  
-        </c:if> 
-        <c:if test="${nickName!=null }">   
-	        <a class="my-page" href="/mypage/toMypage"> 
-	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-	            마이페이지
-	        </a>  
-        </c:if>   
-    </nav>
+			<div style="display: flex; align-items: center; gap: 40px;">
+				<a href="/" class="logo"> 돈워리</a>
+				<div class="nav-menu">
+					<a href="/"> <i class="fa-solid fa-house fa-lg"
+						style="color: rgb(203, 203, 203);"></i> 홈
+					</a> <a href="/salary/calendar"> <i
+						class="fa-regular fa-calendar fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
+					</a> <a href="/jobposts/jobpost" class="active"> <i
+						class="fa-solid fa-briefcase fa-lg"
+						style="color: rgb(36, 99, 235); margin-right: 5px;"></i> 구인구직
+					</a> <a href="/boards/mainboard_list?page=1"> <i
+						class="fa-regular fa-message fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
+					</a> <a href="/qna/qna?page=1"> <i
+						class="fa-solid fa-question fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
+					</a>
+				</div>
+			</div>
+			<c:if test="${nickName==null }">
+				<a class="my-page" href="members/toLogin"> <i
+					class="fa-solid fa-user-gear fa-lg"
+					style="color: rgb(197, 197, 197);"></i> 마이페이지
+				</a>
+			</c:if>
+			<c:if test="${nickName!=null }">
+				<a class="my-page" href="/mypage/toMypage"> <i
+					class="fa-solid fa-user-gear fa-lg"
+					style="color: rgb(197, 197, 197);"></i> 마이페이지
+				</a>
+			</c:if>
+		</nav>
 	</div>
 
 	<div class="job-section">
@@ -716,7 +711,7 @@ body {
 			</div>
 
 			<div id="categoryLayer"
-				style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); z-index: 101; margin-top: -15px; overflow: hidden;">
+				style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); z-index: 101; margin-top: 10px; overflow: hidden;">
 				<div class="layer-header">
 					<h4 style="font-size: 15px; font-weight: 600;">직종 선택</h4>
 					<button type="button" class="categoryLayerClose"
@@ -739,148 +734,180 @@ body {
 			</div>
 
 			<div id="timeLayer"
-				style="display: none; position: absolute; top: 100%; left: 200px; width: 300px; height: auto; background: #fff; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); z-index: 101; margin-top: 5px; overflow: hidden;">
+				style="display: none; position: absolute; top: 100%; left: 110px; width: 520px; background: #fff; border: 1px solid #e1e7f0; border-radius: 16px; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.15); z-index: 101; margin-top: 10px; overflow: hidden;">
 
 				<div class="layer-header"
-					style="display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid #eee; background: #fcfcfc;">
+					style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #f1f3f5; background: #fff;">
 					<h4
-						style="font-size: 12px; font-weight: 600; margin: 0; color: #333;">근무
-						시간 선택</h4>
+						style="font-size: 15px; font-weight: 700; margin: 0; color: #1e293b;">
+						<i class="fa-regular fa-clock"
+							style="color: #2563eb; margin-right: 6px;"></i>근무 조건 상세 설정
+					</h4>
 					<button type="button" class="timeLayerClose"
-						style="font-size: 16px; color: #999; cursor: pointer; border: none; background: none; padding: 0;">&times;</button>
+						style="font-size: 22px; color: #94a3b8; cursor: pointer; border: none; background: none; padding: 0; line-height: 1;">&times;</button>
 				</div>
 
 				<div class="layer-content"
-					style="display: flex !important; justify-content: center !important; align-items: center !important; padding: 15px 0 !important; gap: 8px !important;">
+					style="display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 25px 20px !important; gap: 10px !important;">
 
-					<div class="time-select-group"
-						style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-						<p style="font-size: 11px; color: #888; margin: 0;">시작</p>
+					<div class="select-box-wrap"
+						style="flex: 1.2; display: flex; flex-direction: column; gap: 8px;">
+						<p
+							style="font-size: 12px; font-weight: 600; color: #64748b; margin: 0; text-align: left;">근무
+							요일</p>
+						<select id="searchWorkDay"
+							style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; color: #334155; background: #f8fafc; outline: none; transition: 0.2s;">
+							<option value="">날짜무관</option>
+							<option value="평일">평일 (월~금)</option>
+							<option value="주말">주말 (토,일)</option>
+						</select>
+					</div>
+
+					<div class="select-box-wrap"
+						style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+						<p
+							style="font-size: 12px; font-weight: 600; color: #64748b; margin: 0; text-align: left;">시작
+							시간</p>
 						<select id="searchStartTime"
-							style="padding: 4px; border-radius: 4px; border: 1px solid #dee2e6; width: 100px; font-size: 12px; background: #fff;">
+							style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; color: #334155; background: #f8fafc; outline: none;">
 							<c:forEach var="h" begin="0" end="23">
 								<c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
 								<c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
 								<c:if test="${displayHour == 0}">
 									<c:set var="displayHour" value="12" />
 								</c:if>
-								<option value="${h * 60}">${ampm} ${displayHour}:00</option>
+								<option value="${h * 60}">${ampm}${displayHour}:00</option>
 								<option value="${h * 60 + 30}">${ampm}
 									${displayHour}:30</option>
 							</c:forEach>
 						</select>
 					</div>
 
-					<span style="font-size: 14px; color: #ccc; margin-top: 15px;">~</span>
+					<span style="font-size: 16px; color: #cbd5e1; margin-top: 22px;">~</span>
 
-					<div class="time-select-group"
-						style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-						<p style="font-size: 11px; color: #888; margin: 0;">종료</p>
+					<div class="select-box-wrap"
+						style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+						<p
+							style="font-size: 12px; font-weight: 600; color: #64748b; margin: 0; text-align: left;">종료
+							시간</p>
 						<select id="searchEndTime"
-							style="padding: 4px; border-radius: 4px; border: 1px solid #dee2e6; width: 100px; font-size: 12px; background: #fff;">
+							style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; color: #334155; background: #f8fafc; outline: none;">
 							<c:forEach var="h" begin="0" end="23">
 								<c:set var="ampm" value="${h < 12 ? '오전' : '오후'}" />
 								<c:set var="displayHour" value="${h <= 12 ? h : h - 12}" />
 								<c:if test="${displayHour == 0}">
 									<c:set var="displayHour" value="12" />
 								</c:if>
-								<option value="${h * 60}">${ampm} ${displayHour}:00</option>
-								<option value="${h * 60 + 30}"
-									selected="${h==23 ? 'selected' : ''}">${ampm}
+								<option value="${h * 60}">${ampm}${displayHour}:00</option>
+								<option value="${h * 60 + 30}">${ampm}
 									${displayHour}:30</option>
 							</c:forEach>
+							<option value="1440" selected>오전 12:00 (익일)</option>
 						</select>
 					</div>
 				</div>
 
 				<div
-					style="display: flex; justify-content: center; padding: 8px; background: #fcfcfc; border-top: 1px solid #eee;">
+					style="display: flex; justify-content: flex-end; gap: 10px; padding: 16px 20px; background: #f8fafc; border-top: 1px solid #f1f3f5;">
+					<button type="button" class="timeLayerClose"
+						style="padding: 8px 16px; background: #fff; color: #64748b; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">취소</button>
 					<button id="btnTimeSearch"
-						style="padding: 5px 30px; background-color: #2563eb; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 12px;">검색</button>
+						style="padding: 8px 24px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;">조건
+						적용</button>
 				</div>
 			</div>
-
 		</div>
-		<div class="job-list">
-			<c:forEach var="post" items="${jobList}">
-				<div class="job-card">
-					<div class="job-icon">
-						<i class="fa-solid fa-briefcase"></i>
+
+	</div>
+	<div class="job-list">
+		<c:forEach var="post" items="${jobList}">
+			<div class="job-card">
+				<div class="job-icon">
+					<i class="fa-solid fa-briefcase"></i>
+				</div>
+				<div class="job-info">
+					<div class="job-title-row">
+						<h3>${post.title}</h3>
+						<span class="job-badge">${post.work_days}</span>
 					</div>
-					<div class="job-info">
-						<div class="job-title-row">
-							<h3>${post.title}</h3>
-							<span class="job-badge">${post.work_days}</span>
-						</div>
-						<div class="company-name">${post.company_name}</div>
-						<div class="job-desc">${post.content}</div>
+					<div class="company-name">${post.company_name}</div>
+					<div class="job-desc">${post.content}</div>
 
-						<div class="job-meta-row">
-							<div class="meta-item">
-								<i class="fa-solid fa-location-dot"></i> ${post.sido}
-								${post.gugun} ${post.dong}
-							</div>
-							<div class="meta-item">
-								<i class="fa-solid fa-won-sign"></i> <span class="pay-text">시급
-									<fmt:formatNumber value="${post.pay}" pattern="#,###" />원
-								</span>
-							</div>
-							<div class="meta-item">
-								<i class="fa-regular fa-clock"></i> ${post.work_starttime} ~
-								${post.work_endtime}
-							</div>
-							<div class="meta-item">
-								<i class="fa-solid fa-suitcase"></i> ${post.main_category_name}
-							</div>
+					<div class="job-meta-row">
+						<div class="meta-item">
+							<i class="fa-solid fa-location-dot"></i> ${post.sido}
+							${post.gugun} ${post.dong}
 						</div>
+						<div class="meta-item">
+							<i class="fa-solid fa-won-sign"></i> <span class="pay-text">시급
+								<fmt:formatNumber value="${post.pay}" pattern="#,###" />원
+							</span>
+						</div>
+						<div class="meta-item">
+							<i class="fa-regular fa-clock"></i> ${post.work_starttime} ~
+							${post.work_endtime}
+						</div>
+						<div class="meta-item">
+							<i class="fa-solid fa-suitcase"></i> ${post.main_category_name}
+						</div>
+					</div>
 
-						<div class="job-btn-group">
-							<button class="btn-apply">지원하기</button>
-							<button class="btn-detail"
-								onclick="location.href='/jobposts/jobdetail?seq=${post.seq}'">자세히
-								보기</button>
-						</div>
+					<div class="job-btn-group">
+						<button class="btn-apply">지원하기</button>
+						<button class="btn-detail"
+							onclick="location.href='/jobposts/jobdetail?seq=${post.seq}'">자세히
+							보기</button>
 					</div>
 				</div>
+			</div>
+		</c:forEach>
+
+		<c:if test="${empty jobList}">
+			<div style="padding: 100px 0; color: #999;">등록된 구인공고가 없습니다.</div>
+		</c:if>
+	</div>
+
+	<div class="pagination">
+		<c:if test="${recordTotalCount > 0}">
+			<%-- 1. 전체 페이지 수 계산 --%>
+			<fmt:parseNumber var="pageCount"
+				value="${(recordTotalCount - 1) / recordCountPerPage + 1}"
+				integerOnly="true" />
+
+			<%-- 2. 시작 네비게이터 번호 계산 (중요!) --%>
+			<%-- 현재 페이지를 10으로 나눈 몫을 먼저 구함 (예: 1~10페이지면 결과는 0) --%>
+			<fmt:parseNumber var="tempStart"
+				value="${(currentPage - 1) / naviCountPerPage}" integerOnly="true" />
+			<%-- 그 결과에 다시 10을 곱하고 1을 더함 (예: 0 * 10 + 1 = 1) --%>
+			<c:set var="startNavi" value="${tempStart * naviCountPerPage + 1}" />
+
+			<%-- 3. 끝 네비게이터 번호 계산 --%>
+			<c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
+			<c:if test="${endNavi > pageCount}">
+				<c:set var="endNavi" value="${pageCount}" />
+			</c:if>
+
+			<%-- [이전 묶음] 버튼: 11페이지 이상일 때만 노출 --%>
+			<c:if test="${startNavi > 1}">
+				<a
+					href="/jobposts/jobpost?page=${startNavi - 1}&searchKeyword=${searchKeyword}"
+					class="page-link">&lt;</a>
+			</c:if>
+
+			<%-- [번호] 버튼: startNavi부터 endNavi까지 고정 --%>
+			<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+				<a href="/jobposts/jobpost?page=${i}&searchKeyword=${searchKeyword}"
+					class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
 			</c:forEach>
 
-			<c:if test="${empty jobList}">
-				<div style="padding: 100px 0; color: #999;">등록된 구인공고가 없습니다.</div>
+			<%-- [다음 묶음] 버튼: 다음 묶음(11, 21...)이 존재할 때만 노출 --%>
+			<c:if test="${endNavi < pageCount}">
+				<a
+					href="/jobposts/jobpost?page=${endNavi + 1}&searchKeyword=${searchKeyword}"
+					class="page-link">&gt;</a>
 			</c:if>
-		</div>
-
-		<div class="pagination">
-			<c:if test="${recordTotalCount > 0}">
-				<fmt:parseNumber var="pageCount"
-					value="${(recordTotalCount - 1) / recordCountPerPage + 1}"
-					integerOnly="true" />
-				<fmt:parseNumber var="startNavi"
-					value="${((currentPage - 1) / naviCountPerPage) * naviCountPerPage + 1}"
-					integerOnly="true" />
-				<c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
-				<c:if test="${endNavi > pageCount}">
-					<c:set var="endNavi" value="${pageCount}" />
-				</c:if>
-
-				<c:if test="${startNavi > 1}">
-					<a
-						href="/jobposts/jobpost?page=${startNavi - 1}&searchKeyword=${searchKeyword}"
-						class="page-link">&lt;</a>
-				</c:if>
-
-				<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
-					<a
-						href="/jobposts/jobpost?page=${i}&searchKeyword=${searchKeyword}"
-						class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
-				</c:forEach>
-
-				<c:if test="${endNavi < pageCount}">
-					<a
-						href="/jobposts/jobpost?page=${endNavi + 1}&searchKeyword=${searchKeyword}"
-						class="page-link">&gt;</a>
-				</c:if>
-			</c:if>
-		</div>
+		</c:if>
+	</div>
 
 	</div>
 	</div>
@@ -1067,16 +1094,22 @@ body {
 	    });
 	    
 	    $('#btnTimeSearch').on('click', function() {
+	        const workDay = $('#searchWorkDay').val();
 	        const startTime = $('#searchStartTime').val();
 	        const endTime = $('#searchEndTime').val();
 	        
-	        if(parseInt(startTime) >= parseInt(endTime)) {
-	            alert("종료 시간은 시작 시간보다 이후여야 합니다.");
-	            return;
+	        let url = "/jobposts/jobpost?workDay=" + encodeURIComponent(workDay);
+	        
+	        // 시간이 둘 다 선택되었을 때만 파라미터 추가
+	        if(startTime !== "" && endTime !== "") {
+	            if(parseInt(startTime) >= parseInt(endTime)) {
+	                alert("종료 시간은 시작 시간보다 이후여야 합니다.");
+	                return;
+	            }
+	            url += "&startTime=" + startTime + "&endTime=" + endTime;
 	        }
 	        
-	        // 서버의 jobpost 컨트롤러로 시작시간과 종료시간(분 단위)을 전달
-	        location.href = "/jobposts/jobpost?startTime=" + startTime + "&endTime=" + endTime;
+	        location.href = url;
 	    });
 	    
 	    
