@@ -495,6 +495,7 @@
                 </div>
 
                 <form action="/mypage/toUpdateResume" method="get">
+                <input type="hidden" name = "seq" value="${dto.seq }">
                     <div class="resume-form-card">
 
 

@@ -44,4 +44,10 @@ public class ResumeDAO {
 		String sql = "delete from resume where seq = ?";
 		jdbc.update(sql,seq);
 	}
+	public void update(ResumeDTO dto) {
+		String sql = "update resume set title = ? , preferred_job = ? , working_condition = ?,"
+				+ "career = ?, career_write =? ,introduction = ? where seq = ?";
+		jdbc.update(sql,dto.getTitle(),dto.getPreferred_job(),dto.getWorking_condition(),
+				dto.getCareer(),dto.getCareer_write(),dto.getIntroduction(),dto.getSeq());
+	}
 }

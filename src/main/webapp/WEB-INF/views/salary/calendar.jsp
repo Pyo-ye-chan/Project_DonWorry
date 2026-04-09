@@ -463,6 +463,19 @@ body {
 	outline: none;
 	transition: 0.15s ease;
 }
+#payday {
+	width: 122px;
+	background: #fff;
+	border: 1px solid #dbe3ec;
+	border-radius: 12px;
+	padding: 4px 12px;
+	font-size: 14px;
+	color: #111827;
+	font-family: inherit;
+	outline: none;
+	transition: 0.15s ease;
+	margin: -2px 6px 0px 0px;
+}
 
 .form-row input, .form-row select {
 	height: 46px;
@@ -687,11 +700,11 @@ body {
 				        <strong id="summaryWeeklyPay">+ 0원</strong>
 				    </div>
 				    <div class="salary-row">
-				        <span id="summaryTaxLabel">세금</span>
+				        <span id="summaryTaxLabel">세금(근무지별 합산)</span>
 				        <strong id="summaryTax">- 0원</strong>
 				    </div>
 				    <div class="salary-row">
-				        <span id="summaryInsuranceLabel">보험료</span>
+				        <span id="summaryInsuranceLabel">보험료세금(근무지별 합산)</span>
 				        <strong id="summaryInsurance">- 0원</strong>
 				    </div>
 				
@@ -837,8 +850,7 @@ body {
 						<div class="form-row" style="margin-top: 5px;">
 							<label for="payday">급여일</label>
 							<div style="display: flex; align-items: center; gap: 8px;">
-								<select id="payday" name="payday" required
-									style="width: 100px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+								<select id="payday" name="payday" required>
 									<option value="">선택</option>
 									<c:forEach var="i" begin="1" end="31">
 										<option value="${i}">${i}일</option>
@@ -1472,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", function () {
         summaryOvertimePayEl.innerText = "+ " + formatWon(overtimePay);
         summaryHolidayPayEl.innerText = "+ " + formatWon(holidayPay);
         summaryWeeklyPayEl.innerText = "+ " + formatWon(weeklyPay);
-        summaryTaxLabelEl.innerText = taxRate > 0 ? "세금(근무지별 합산)" : "세금";
+        summaryTaxLabelEl.innerText = taxRate > 0 ? "세금(근무지별 합산)" : "세금(근무지별 합산)";
         summaryTaxEl.innerText = "- " + formatWon(tax);
         summaryInsuranceLabelEl.innerText = "보험료(근무지별 합산)";
         summaryInsuranceEl.innerText = "- " + formatWon(insurance);

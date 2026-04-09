@@ -51,7 +51,7 @@ public class MypageController {
 	@Autowired
 
     private CateGoryDAO catdao;
-
+	@Autowired
 	private ResumeDAO rdao;
 
 	
@@ -410,6 +410,19 @@ public class MypageController {
 		}else {
 			return "redirect:/mypage/myjobpost?isSuccess=false"+seq;
 		}
+	}
+	@RequestMapping("/toUpdateResume")
+	public String toUpdateResume(int seq,Model model) {
+		ResumeDTO dto = rdao.detail(seq);
+		model.addAttribute("dto",dto);
+		List<JobPostDTO> main_jobCateList =  dao.getJobCategory();
+		model.addAttribute("main_jobCateList",main_jobCateList);
+		return "mypage/resume/update";
+	}
+	@RequestMapping("/update_resume")
+	public String update_resume(ResumeDTO dto) {
+		rdao.update(dto);
+		return "redirect:/mypage/resume_detail?seq=" + dto.getSeq();
 	}
 	
 }

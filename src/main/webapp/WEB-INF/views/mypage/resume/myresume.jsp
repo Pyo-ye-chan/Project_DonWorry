@@ -563,8 +563,7 @@ body {
 								</div>
 							</div>
 	  
-							<div class="post-content">${a.preferred_job } / ${a.working_condition }</div>
-
+							${empty a.preferred_job ? '희망직종 없음' : a.preferred_job} / ${a.working_condition}
 						</div>
 					</c:forEach>
 				</div>
