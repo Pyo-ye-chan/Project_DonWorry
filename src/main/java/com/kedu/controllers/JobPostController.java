@@ -20,63 +20,54 @@ import com.kedu.dto.JobPostDTO;
 @Controller
 @RequestMapping("/jobposts")
 public class JobPostController {
-	
+
 	@Autowired
 	private JobPostDAO dao;
 	@Autowired
-    private CateGoryDAO catdao;
+	private CateGoryDAO catdao;
 
 	@RequestMapping("/jobpost")
 	public String jobpost(Model model, 
-	                     String searchKeyword, 
-	                     @RequestParam(value="page", defaultValue="1") int page,
-	                     Integer starttime, Integer endtime) {
-	    
-	    List<JobPostDTO> jobList;
-	    int recordTotalCount;
-	    
-	    // 시작 번호와 끝 번호 계산 (페이지당 7개씩)
-	    int start = page * 7 - 6;
-	    int end = page * 7;
+			@RequestParam(value="searchKeyword", required=false) String searchKeyword, 
+			@RequestParam(value="page", defaultValue="1") int page,
+			@RequestParam(value="workDay", required=false) String workDay, 
+			@RequestParam(value="startTime", required=false) Integer starttime, 
+			@RequestParam(value="endTime", required=false) Integer endtime) {
 
-	    // [중요] 아무것도 입력 안 했을 때(전체보기) null 처리를 확실하게!
-	    // 검색어가 공백으로 넘어오면 null로 취급해야 전체 리스트가 나옴
-	    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
-	        searchKeyword = null; 
-	    }
+		List<JobPostDTO> jobList;
+		int recordTotalCount;
 
-	    if (searchKeyword != null) {
-	        // [검색어가 있을 때] DAO 파라미터 순서: (키워드, 시작row, 끝row, 시작시간, 종료시간)
-	        jobList = dao.searchKeywordPaged(searchKeyword, start, end, starttime, endtime);
-	        recordTotalCount = dao.getSearchTotalCount(searchKeyword, starttime, endtime);
-	        
-	        model.addAttribute("searchKeyword", searchKeyword);
-	    } else {
-	        // [기본 리스트] DAO 파라미터 순서: (시작row, 끝row, 시작시간, 종료시간)
-	        // 기존에 start, end를 중복해서 넣던 부분을 starttime, endtime으로 수정함!
-	        jobList = dao.jobList(start, end, starttime, endtime);
-	        recordTotalCount = dao.jobRecordTotalCount(starttime, endtime);
-	    }
-	    
-	    // JSP에 검색 조건 유지를 위해 시간 값도 다시 보냄 (페이징 클릭 시 유지용)
-	    model.addAttribute("starttime", starttime);
-	    model.addAttribute("endtime", endtime);
-	    
-	    // 페이징 네비게이터를 위한 속성들
-	    model.addAttribute("currentPage", page);
-	    model.addAttribute("recordCountPerPage", 7);
-	    model.addAttribute("naviCountPerPage", 7);
-	    model.addAttribute("recordTotalCount", recordTotalCount);
-	    model.addAttribute("jobList", jobList);
-	    
-	    return "jobpost/jobpost";
-	}
-	
-	@RequestMapping("/selectByLocation")
-	public String selectByLocation(String selectByLocation, Model model) {
-		List<JobPostDTO> list;
-		list = dao.selectByLocation(selectByLocation);
-		model.addAttribute("jobList", list);
+		// 한 페이지에 7개씩 보여주기로 했으니까!
+		int recordCountPerPage = 7; 
+		int naviCountPerPage = 7;
+
+		int start = page * recordCountPerPage - (recordCountPerPage - 1);
+		int end = page * recordCountPerPage;
+
+		if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
+			searchKeyword = null; 
+		}
+
+		if (searchKeyword != null) {
+			jobList = dao.searchKeywordPaged(searchKeyword, start, end, workDay, starttime, endtime);
+			recordTotalCount = dao.getSearchTotalCount(searchKeyword, workDay, starttime, endtime);
+			model.addAttribute("searchKeyword", searchKeyword);
+		} else {
+			jobList = dao.jobList(start, end, workDay, starttime, endtime);
+			recordTotalCount = dao.jobRecordTotalCount(workDay, starttime, endtime);
+		}
+
+		// [여기가 핵심!] JSP의 페이징 계산식에서 사용할 변수들을 꼭 보내줘야 함
+		model.addAttribute("recordCountPerPage", recordCountPerPage); // 이게 없어서 Infinity 뜬 거야!
+		model.addAttribute("naviCountPerPage", naviCountPerPage);
+
+		model.addAttribute("workDay", workDay);
+		model.addAttribute("starttime", starttime);
+		model.addAttribute("endtime", endtime);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("recordTotalCount", recordTotalCount);
+		model.addAttribute("jobList", jobList);
+
 		return "jobpost/jobpost";
 	}
 
@@ -84,48 +75,48 @@ public class JobPostController {
 	@RequestMapping("/jobwrite")
 	public String jobwrite(Model model){
 		List<CateGoryDTO> upperList = catdao.getUpperCategories();
-		
+
 		model.addAttribute("upperList", upperList);
-		
+
 		return "jobpost/jobwrite";
 	}
-	
+
 	@RequestMapping("/insert")
 	public String insert(JobPostDTO dto, HttpSession session) {
 		String memberId = (String) session.getAttribute("loginId");
-        dto.setMember_id(memberId);
-		
-        dao.insert(dto);
-		
+		dto.setMember_id(memberId);
+
+		dao.insert(dto);
+
 		return "redirect:/jobposts/jobpost";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/getSub")
-    public List<CateGoryDTO> getSubCategories(@RequestParam("parentId") int parentId) {
-        // 대분류 ID를 받아서 하위 카테고리 리스트 반환
-        return catdao.getSubCategories(parentId);
-    }
-	
+	public List<CateGoryDTO> getSubCategories(@RequestParam("parentId") int parentId) {
+		// 대분류 ID를 받아서 하위 카테고리 리스트 반환
+		return catdao.getSubCategories(parentId);
+	}
+
 	@RequestMapping("/getUpperCategory")
 	@ResponseBody
 	public List<CateGoryDTO> getUpperCategory() {
-	    return catdao.getUpperCategories(); // parent_id IS NULL 인 것들
+		return catdao.getUpperCategories(); // parent_id IS NULL 인 것들
 	}
 
 	@RequestMapping("/getSubCategory")
 	@ResponseBody
 	public List<CateGoryDTO> getSubCategory(@RequestParam("parentId") int parentId) {
-	    return catdao.getSubCategories(parentId); // parent_id = ? 인 것들
+		return catdao.getSubCategories(parentId); // parent_id = ? 인 것들
 	}
-	
+
 	@RequestMapping("/jobdetail")
 	public String jobdetail(int seq, Model model) {
 		JobPostDTO post = dao.getPostDetail(seq);
-		
+
 		model.addAttribute("post", post);
 		return "jobpost/jobdetail";
 	}
-	
-	
+
+
 }

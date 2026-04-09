@@ -53,16 +53,26 @@ public class JobPostDAO {
     };
 
     // [1] 기본 리스트 조회
-    public List<JobPostDTO> jobList(int start, int end, Integer startT, Integer endT) {
+    public List<JobPostDTO> jobList(int start, int end, String workDay, Integer startT, Integer endT) {
+    	System.out.println("데이터 :" +  workDay);
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM ( SELECT p.*, c1.cat_name AS main_category_name, c2.cat_name AS sub_category_name, ");
         sql.append("ROW_NUMBER() OVER(ORDER BY p.write_date DESC) AS rn FROM job_post p ");
         sql.append("LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id WHERE 1=1 ");
         
         List<Object> params = new ArrayList<>();
-        // 시간 파라미터가 둘 다 있을 때만 조건 추가
+
+        // [추가] 요일 조건 (null이 아니고 '요일협의'가 아닐 때만 필터링하고 싶다면 조건 조절 가능)
+        if (workDay != null && !workDay.isEmpty()) {
+            sql.append(" AND p.work_days = ? ");
+            params.add(workDay);
+        }
+        
         if (startT != null && endT != null) {
-            sql.append(" AND p.work_starttime >= ? AND p.work_endtime <= ? ");
+            // 시작 시간이나 종료 시간 중 하나라도 사용자 범위 안에 걸치면 나오게 수정
+            sql.append(" AND ((p.work_starttime BETWEEN ? AND ?) OR (p.work_endtime BETWEEN ? AND ?)) ");
+            params.add(startT); 
+            params.add(endT);
             params.add(startT); 
             params.add(endT);
         }
@@ -75,10 +85,15 @@ public class JobPostDAO {
     }
 
     // [2] 기본 리스트 총 개수
-    public int jobRecordTotalCount(Integer startT, Integer endT) {
+    public int jobRecordTotalCount(String workDay, Integer startT, Integer endT) {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM job_post WHERE 1=1 ");
         List<Object> params = new ArrayList<>();
         
+        if (workDay != null && !workDay.isEmpty()) {
+            sql.append(" AND work_days = ? ");
+            params.add(workDay);
+        }
+
         if (startT != null && endT != null) {
             sql.append(" AND work_starttime >= ? AND work_endtime <= ? ");
             params.add(startT); 
@@ -88,32 +103,34 @@ public class JobPostDAO {
     }
 
     // [3] 검색 리스트 조회
-    public List<JobPostDTO> searchKeywordPaged(String keyword, int start, int end, Integer startT, Integer endT) {
+    public List<JobPostDTO> searchKeywordPaged(String keyword, int start, int end, String workDay, Integer startT, Integer endT) {
         StringBuilder sql = new StringBuilder();
-        // 1. 서브쿼리 시작
         sql.append("SELECT * FROM ( SELECT p.*, c1.cat_name AS main_category_name, c2.cat_name AS sub_category_name, ");
         sql.append("ROW_NUMBER() OVER(ORDER BY p.write_date DESC) AS rn FROM job_post p ");
         sql.append("LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id ");
         sql.append("LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id ");
         
-        // 2. [수정] 카테고리명(cat_name) 검색 조건 추가
+        // 검색어 조건
         sql.append("WHERE (p.sido LIKE ? OR p.gugun LIKE ? OR p.dong LIKE ? OR p.title LIKE ? OR p.company_name LIKE ? ");
-        sql.append("OR c1.cat_name LIKE ? OR c2.cat_name LIKE ?) "); // <-- 이 부분 추가!
+        sql.append("OR c1.cat_name LIKE ? OR c2.cat_name LIKE ?) ");
         
         String tag = "%" + keyword + "%";
         List<Object> params = new ArrayList<>();
-        
-        // 파라미터가 5개에서 7개로 늘어남!
         for(int i=0; i<7; i++) params.add(tag); 
 
-        // 3. 시간 필터링
+        // [추가] 요일 필터링
+        if (workDay != null && !workDay.isEmpty() && !workDay.equals("요일협의")) {
+            sql.append(" AND p.work_days = ? ");
+            params.add(workDay);
+        }
+
+        // 시간 필터링
         if (startT != null && endT != null) {
             sql.append(" AND p.work_starttime >= ? AND p.work_endtime <= ? ");
             params.add(startT); 
             params.add(endT);
         }
         
-        // 4. 페이징 처리
         sql.append(") WHERE rn BETWEEN ? AND ?");
         params.add(start); 
         params.add(end);
@@ -122,18 +139,25 @@ public class JobPostDAO {
     }
 
     // [4] 검색 결과 총 개수
-    public int getSearchTotalCount(String keyword, Integer startT, Integer endT) {
+    public int getSearchTotalCount(String keyword, String workDay, Integer startT, Integer endT) {
+    	
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT COUNT(*) FROM job_post p ");
-        sql.append("LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id "); // 조인 필요
+        sql.append("LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id ");
         sql.append("LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id ");
         sql.append("WHERE (p.sido LIKE ? OR p.gugun LIKE ? OR p.dong LIKE ? OR p.title LIKE ? OR p.company_name LIKE ? ");
-        sql.append("OR c1.cat_name LIKE ? OR c2.cat_name LIKE ?) "); // 조인된 카테고리명 검색
+        sql.append("OR c1.cat_name LIKE ? OR c2.cat_name LIKE ?) ");
         
         String tag = "%" + keyword + "%";
         List<Object> params = new ArrayList<>();
         for(int i=0; i<7; i++) params.add(tag);
         
+        // [추가] 요일 필터링
+        if (workDay != null && !workDay.isEmpty() && !workDay.equals("요일협의")) {
+            sql.append(" AND p.work_days = ? ");
+            params.add(workDay);
+        }
+
         if (startT != null && endT != null) {
             sql.append(" AND p.work_starttime >= ? AND p.work_endtime <= ? ");
             params.add(startT); 

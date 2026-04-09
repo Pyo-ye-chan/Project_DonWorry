@@ -415,7 +415,7 @@ body {
 						<%-- (현재페이지-1) / 10 * 10 + 1 공식이야 --%>
 						<fmt:parseNumber var="startNavi"
 							value="${((currentPage - 1) / naviCountPerPage)}"
-							integerOnly="true"/>
+							integerOnly="true" />
 						<c:set var="startNavi" value="${startNavi * naviCountPerPage + 1}" />
 
 						<%-- 3. 끝 네비게이터 번호 --%>
@@ -426,10 +426,10 @@ body {
 
 						<%-- [이전] 버튼 --%>
 						<c:if test="${currentPage > 1}">
-								<a href="/admin/admin_members?page=${currentPage - 1}"
-									class="page-btn"> <i class="fa-solid fa-angle-left"></i>
-								</a>
-							</c:if>
+							<a href="/admin/admin_members?page=${currentPage - 1}"
+								class="page-btn"> <i class="fa-solid fa-angle-left"></i>
+							</a>
+						</c:if>
 
 						<%-- [번호] 버튼 --%>
 						<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
@@ -437,12 +437,14 @@ body {
 								onclick="goPage(${i})">${i}</button>
 						</c:forEach>
 
-						<%-- [다음] 버튼 --%>
-						<c:if test="${currentPage < pageCount}">
-								<a href="/admin/admin_members?page=${currentPage + 1}"
-									class="page-btn"> <i class="fa-solid fa-angle-right"></i>
-								</a>
-							</c:if>
+						<%-- [다음 묶음] 버튼: 현재 뭉치의 끝번호(endNavi)보다 전체 페이지(pageCount)가 더 클 때만 노출 --%>
+						<c:if test="${endNavi < pageCount}">
+							<%-- 다음 뭉치의 첫 번째 페이지(endNavi + 1)로 이동 --%>
+							<a
+								href="/admin/admin_members?page=${endNavi + 1}&type=${param.type}&state=${param.state}&keyword=${param.keyword}"
+								class="page-btn"> <i class="fa-solid fa-angle-right"></i>
+							</a>
+						</c:if>
 					</c:if>
 				</div>
 
