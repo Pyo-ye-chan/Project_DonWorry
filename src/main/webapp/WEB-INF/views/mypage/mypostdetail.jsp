@@ -223,6 +223,7 @@
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.4;
+            padding: 10px;
         }
 
         /* 작성 정보 */
@@ -272,14 +273,16 @@
 
         .detail-category {
             display: inline-block;
-            background-color: #e0edff;
-            color: #2563eb;
             font-size: 13px;
             font-weight: 600;
             padding: 5px 12px;
             border-radius: 20px;
             margin-bottom: 10px;
         }
+        .status-freeboard { background-color:#cff7ef; color: #179791; } /* 초록색 */
+		.status-reviewboard{ background-color: #cfe5ff; color: #185fb0; }
+		.status-qnaboard{ background-color: #ffb2b7; color: #a91620;}
+        
 
         .info-left {
             display: flex;
@@ -666,16 +669,22 @@
         <div class="post-detail">
 
             <!-- 카테고리 -->
-            <div class="detail-category">
-                <c:choose>
-                    <c:when test="${dto.category == 'main'}">메인게시판</c:when>
-                    <c:when test="${dto.category == 'free'}">자유게시판</c:when>
-                    <c:when test="${dto.category == 'qna'}">질문게시판</c:when>
-                    <c:when test="${dto.category == 'review'}">리뷰게시판</c:when>
-                </c:choose>
-            </div>
+			<div>
+				<c:choose>
+					<c:when test="${dto.category == 'main'}">메인게시판</c:when>
+					<c:when test="${dto.category == 'free'}">
+						<span class="detail-category status-freeboard">자유게시판</span>
+					</c:when>
+					<c:when test="${dto.category == 'qna'}">
+						<span class="detail-category status-qnaboard">질문게시판</span>
+					</c:when>
+					<c:when test="${dto.category == 'review'}">
+						<span class="detail-category status-reviewboard">리뷰게시판</span>
+					</c:when>
+				</c:choose>
+			</div>
 
-            <!-- 제목 -->
+			<!-- 제목 -->
             <h1 class="detail-title">${dto.title }</h1> <br>
 
             <!-- 작성 정보 -->
