@@ -239,5 +239,37 @@ public class JobPostDAO {
     	
     	return jdbc.queryForObject(sql, Integer.class);
     }
+    
+    public int JobPostUpdate(JobPostDTO dto) {
+    	String sql = "update job_post set company_name = ?, phone = ?, sido = ?, gugun =?,"
+    			+ "dong = ?, address_detail = ?, count = ?, title = ?, pay = ?,"
+    			+ "work_days = ?, work_starttime = ?, work_endtime = ?,"
+    			+ "main_category = ?, sub_category = ?, content = ?, benefit = ? where seq =?";
+    	
+    	String[] startArr = dto.getWork_starttime().split(":");
+    	int startTime = Integer.parseInt(startArr[0]) * 60 
+    	              + Integer.parseInt(startArr[1]);
+
+    	String[] endArr = dto.getWork_endtime().split(":");
+    	int endTime = Integer.parseInt(endArr[0]) * 60 
+    	            + Integer.parseInt(endArr[1]);
+
+    	if(endTime == 0) {
+    	    endTime = 1440;
+    	}
+        // 종료 시간이 0(자정)이라면 1440으로 변경해서 DB 정합성 유지
+        if(endTime == 0) {
+            endTime = 1440;
+        }
+
+        
+    	return jdbc.update(sql, dto.getCompany_name(), dto.getPhone(), dto.getSido(),
+    			dto.getGugun(), dto.getDong(), dto.getAddress_detail(), dto.getCount(),
+    			dto.getTitle(), dto.getPay(), dto.getWork_days(), startTime,
+    			endTime, dto.getMain_category(), dto.getSub_category(),
+    			dto.getContent(), dto.getBenefit(), dto.getSeq());
+    }
+    
+    
 
 }

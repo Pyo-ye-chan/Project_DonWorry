@@ -185,6 +185,7 @@
         color: #475569;
         margin-bottom: 6px;
         font-weight: 600;
+        padding-left: 13px;
     }
 
     .detail-title {
@@ -194,18 +195,18 @@
         line-height: 1.3;
         margin-bottom: 14px;
         word-break: keep-all;
+        padding-left: 10px;
     }
 
     .detail-pay {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: #eef4ff;
         color: #4f67e8;
         font-size: 24px;
         font-weight: 800;
-        padding: 10px 16px;
         border-radius: 14px;
+        padding-left: 10px;
     }
 
     .detail-right {
@@ -278,7 +279,7 @@
         background: #f8fbff;
         border: 1px solid #e6edf8;
         border-radius: 16px;
-        padding: 18px 20px;
+        padding: 8px 20px;
     }
 
     .info-label {
@@ -453,8 +454,8 @@
                         <div class="detail-company">${post.company_name}</div>
                         <div class="detail-title">${post.title}</div>
                         <div class="detail-pay">
-                            <i class="fa-solid fa-coins"></i>
-                            시급 <fmt:formatNumber value="${post.pay}" pattern="#,###" />원
+                            
+                          시급 <fmt:formatNumber value="${post.pay}" pattern="#,###" />원
                         </div>
                     </div>
 
@@ -538,7 +539,7 @@
                 <button type="button" class="line-btn" onclick="location.href='/mypage/employ_activity?page=1'">
                     목록
                 </button>
-                <button type="button" class="blue-btn">
+                <button type="button" class="blue-btn" onclick="location.href='/mypage/myjobpost_update?seq='+${post.seq}">
                     수정하기
                 </button>
             </div>
