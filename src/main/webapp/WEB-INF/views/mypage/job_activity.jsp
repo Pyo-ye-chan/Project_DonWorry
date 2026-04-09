@@ -92,6 +92,31 @@
     .comm-header h5 { font-size: 24px; font-weight: 700; color: #333; margin-top: 15px; }
     .comm-header p { color: #666; font-size: 15px; margin-top: 8px; }
 
+.resume-btn{
+	 	background-color: #f8fafc;
+        color: #475569;
+        border: 1px solid #dbe2ea;
+        /*상우하좌  */
+        padding: 13px 15px 15px 15px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom:10px;
+        
+        display: flex;       /* 아이콘과 글자 정렬을 위해 flex 권장 */
+    	align-items: center;
+    	margin-left: auto;   /* ★ 핵심: 왼쪽 마진을 자동으로 채워 오른쪽으로 밀기 */
+}
+.resume-btn:hover{
+	   background-color: #eff6ff;
+        color: #4f67e8;
+        border-color: #c7d2fe;
+}
+.resume-btn:hover i{
+        color: #4f67e8 !important;
+}
     .tab-menu {
         display: flex;
         background-color: #f1f3f5;
@@ -234,7 +259,12 @@
             <h5>나의 지원 현황</h5>
             <p>지원한 공고의 진행 상태를 한눈에 확인하세요</p>
         </div>
-
+        <a href="/mypage/resume" style="text-decoration:none;">
+		<button class="resume-btn">
+               <i class="fa-regular fa-clipboard fa-lg" style="color: rgb(98, 98, 98); margin-right:5px;"></i>
+               <span>이력서 등록</span>
+        </button>
+        </a>
         <nav class="tab-menu">
             <button class="tab-item active">지원 공고</button>
             <button class="tab-item">지원 취소 공고</button>
@@ -262,10 +292,11 @@
         </section>
 
         <div class="page-nav">
-            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_left</span></a>
+            <!-- <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_left</span></a>
             <a href="#" class="page-num active">1</a>
-            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span></a>
+            <a href="#" class="page-num"><span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span></a> -->
         </div>
+         
     </div>
 </div>
 <div class="container-footer">
