@@ -832,369 +832,288 @@
     
     
     
+     
      <script>
-         function toggleReply(el) {
-           // 모든 입력창 닫기
-          	 document.querySelectorAll('.reply-write').forEach(box => {
-         	box.style.display = 'none';
-          	});
-
-                    const replyBox = el.closest('.comment-item').querySelector('.reply-write');
-                    replyBox.style.display = "flex";
-         }
-         
-         function getReplyList(){
-        	 $.ajax({
-        		 url : "/reply/list",
-        		 data : {parent_seq : "${dto.seq}"},
-        		 dataType:"json"
-        	 }).done(function(data){
-        		 $(".comment-title").html("댓글 "+data.totalCount);
-        		 appendReplyList(data.list);
-        		 
-        		// 🔥 댓글 목록을 다 그린 후, URL에 해시(#reply)가 있다면 해당 위치로 이동
-        	        if (location.hash) {
-        	            let target = $(location.hash);
-        	            if (target.length) {
-        	                $('html, body').animate({
-        	                    scrollTop: target.offset().top - 100 // 상단 여유를 위해 100px 정도 뺌
-        	                }, 500);
-        	                
-        	                // 강조 효과 (선택사항)
-        	                target.css("background-color", "#f0f7ff");
-        	                setTimeout(() => target.css("background-color", "transparent"), 2000);
-        	            }
-        	        }
-        	 })
-         }
-         $(document).ready(function(){
-        	 
-        	    getReplyList();
-        	 // [목록] 버튼 클릭 이벤트
-        	    $(".list-btn").on("click", function() {
-        	        // 1. URL 파라미터에 'from'이 있는지 확인 (수정을 거쳐온 경우)
-        	        const urlParams = new URLSearchParams(window.location.search);
-        	        const fromUrl = urlParams.get('from');
-
-        	        if (fromUrl && fromUrl !== "") {
-        	            // 파라미터가 있다면 해당 주소로 이동 (디코딩은 브라우저가 자동으로 처리)
-        	            location.href = fromUrl;
-        	        } else {
-        	            // 2. 파라미터가 없다면 document.referrer(이전 페이지) 활용
-        	            const ref = document.referrer;
-        	            
-        	            // referrer가 존재하고, 현재 상세 페이지 주소와 다르며, 수정 관련 주소가 아닐 때만 작동
-        	            if (ref && ref !== "" && !ref.includes('/toUpdate') && !ref.includes('/detail')) {
-        	                location.href = ref;
-        	            } else {
-        	                // 3. 위 조건이 모두 해당 안 될 경우의 기본 목록 주소
-        	                location.href = "/boards/mainboard_list?page=1";
-        	            }
-        	        }
-        	    });
-        	});
-         
-         function appendReplyList(list){
-        	 let html = "";
-        	 let loginId = "${loginId}"
-        	 let isNotice = "${dto.member_id}" == "admin";
-        	 
-        	 list.forEach(function(comment){
-        		 
-        		 html += `<div class="comment-item" data-seq=`+comment.seq+` id="reply` + comment.seq + `">
-        		        <div class="comment-header">
-        	            <div class="comment-left">
-        	                <span class="comment-writer">`+ comment.member_id +`</span>
-        	                <span class="divider">|</span>
-        	                <span class="comment-date">`+ comment.write_date_str +`</span>
-        	            </div>
-        	            <div class="comment-actions">
-        	                <span onclick="toggleReply(this)">답글</span>`;
-        	           
-        	                if(loginId == comment.writer){
-        	                	
-        	                	html+=`
-        	                		<span class="reply-edit-btn" onclick="toggleEdit(this)" style="cursor:pointer;">수정</span>
-        	                        <span class="reply-delete-btn" style="cursor:pointer;">삭제</span>`;
-        	                }
-        	                html+=`
-        	                <span class="report-btn">신고</span>
-        	            </div>
-
-
-        	        </div>
-
-        	        <div class="comment-content">
-        	            `+ comment.content +`
-        	        </div>
-
-        	        <div class="reply-write" style="display: none;">
-        	            <textarea placeholder="답글을 입력하세요"></textarea>
-        	            <button class ="reply-btn">등록</button>
-        	        </div>
-        	        <div class="reply-list">`;
-        	        
-        	        if(comment.replies && comment.replies.length > 0){
-        	        	comment.replies.forEach(function(reply){
-        	        		
-        	        		html += `
-            	        		<div class="reply-item" data-seq=`+reply.seq+` id="reply` + reply.seq + `"> 
-                                <div class="comment-header">
-                                    <div class="comment-left">
-                                        <span class="comment-writer">`+reply.member_id+`</span>
-                                        <span class="divider">|</span>
-                                        <span class="comment-date">`+reply.write_date_str+`</span>
-                                    </div>
-                                    <div class="comment-actions">`;
-                                    if(loginId == reply.writer){
-                                    	html +=`
-                                    		<span class="reply-edit-btn" onclick="toggleEdit(this)" style="cursor:pointer;">수정</span>
-                                            <span class="reply-delete-btn" style="cursor:pointer;">삭제</span>`;
-                                    }
-                                    html +=`	
-                                        <span class="report-btn">신고</span>
-                                    </div>
-                                </div>
-
-                                <div class="comment-content">
-                                	`+reply.content+`
-                                </div>
-                            </div>`;
-        	        	})
-        	        	    	
-        	        }
-        	        
-        	        html+=`
-        	        </div>
-        	    </div>`;
-        	 })
-        	 $(".comment-list").html(html);
-         }
-         
-         
-         $(".reply-insert-btn").on("click",function(){
-        	 let loginId = "${loginId}"
-        	 if(loginId == ""){
-        		 alert("로그인 후 입력가능합니다.")
-        		 return false;
-        	 }
-        	 
-        	 
-        	 $.ajax({
-        		 url : "/reply/insert",
-        		 data :{parent_seq : "${dto.seq}",
-        			 	member_id : "${loginId}",
-        			 	content : $(".content").val(),
-        			 	re_reply_seq: null},
-        		 
-        		 type: "post"
-        	 }).done(function(){
-        		 $(".content").val("")
-        		 getReplyList();
-        	 })
-         })
-         $(document).on("click",".reply-btn",function(){
-        	 let loginId = "${loginId}"
-            	 if(loginId == ""){
-            		 alert("로그인 후 입력가능합니다.")
-            		 return false;
-            	 }
-        	 let commentItem = $(this).closest(".comment-item");
-			 let parentCommentSeq = commentItem.data("seq"); 
-        	 let content = commentItem.find("textarea").val();
-        	 
-        	 $.ajax({
-        		 url : "/reply/insert",
-        		 type: "post",
-        		 data :{parent_seq : "${dto.seq}",
-        			 	member_id : "${loginId}",
-    			 		content : content,
-    			 		re_reply_seq: parentCommentSeq}     		 
-        	 }).done(function(){
-        		 getReplyList();
-        	 })
-         })
-         $(".boards-delete-btn").on("click",function(){
-        	 if (!confirm("정말 삭제하시겠습니까?")) {
- 				return false;
- 			}
-        	 location.href = "/boards/delete?seq="+${dto.seq}
-         })
-         $(document).on("click",".reply-delete-btn",function(){
-        	 if (!confirm("정말 삭제하시겠습니까?")) {
-  				return false;
-  			}
-        	 let seq = $(this).closest("[data-seq]").data("seq");
-  			$.ajax({
-  				url : "/reply/delete",
-  				data : {seq : seq},
-  				type : "post"
-  			}).done(function(){
-  				getReplyList();
-  			})	
-        	 
-         })
-         
-         $(document).on("click", ".update-submit-btn", function() {
-    		let item = $(this).closest("[data-seq]");
-    		let seq = item.data("seq");
-    		let content = item.find(".update-content").val();
-
-   		 $.ajax({
-        		url: "/reply/update",
-       		 type: "post",
-        		data: { seq: seq, content: content }
-    		}).done(function() {
-        		getReplyList(); // 수정 후 목록 갱신
-    		});
-		});
-         function toggleEdit(el) {
-        	    // 1. 다른 수정창이 열려있다면 초기화 (중복 방지)
-        	    //getReplyList(); 
-
-        	    // 2. 클릭한 버튼의 부모(댓글 아이템) 찾기
-        	    const item = $(el).closest("[data-seq]");
-        	    
-        	    // 3. 기존 내용 가져오기 (.comment-content 안의 텍스트)
-        	    // .html() 대신 .text()를 써야 <br> 태그 등이 텍스트로 꼬이지 않습니다.
-        	    const contentBox = item.find(".comment-content").first();
-        	    const originalContent = contentBox.text().trim();;
-
-        	    // 4. 기존 내용을 지우고 '수정용 UI' 주입
-        	    // 기존 .comment-write 클래스를 활용해 디자인을 통일합니다.
-        	    item.find(".comment-content").first().html(`
-        	        <div class="comment-write" style="margin-top:10px; display:flex; gap:10px;">
-        	            <textarea class="update-content" style="flex:1; height:80px;">`+originalContent+`</textarea>
-        	            <div class="edit-btn-group" style="display:flex; flex-direction:column; gap:5px;">
-        	                <button class="update-submit-btn" style="width:80px; height:40px; background-color:#2563eb; color:white; border:none; border-radius:8px; cursor:pointer;">저장</button>
-        	                <button type="button" onclick="getReplyList()" style="width:80px; height:40px; background-color:#6b7280; color:white; border:none; border-radius:8px; cursor:pointer;">취소</button>
-        	            </div>
-        	        </div>
-        	    `);
-        	    
-        	    // 5. 버튼들(답글/수정/삭제)은 수정 중에는 안 보이게 숨김
-        	    item.find(".comment-actions").hide();
-        	}
-         
-      // 1. 모달 열기 (게시글용)
-         $(document).on("click", ".post-detail .report-btn", function () {
-        	 let loginId = "${loginId}"
-            	 if(loginId == ""){
-            		 alert("로그인 후 이용가능합니다.")
-            		 return false;
-            	 }
-             openReportModal("${dto.seq}", "board");
+     function toggleReply(el) {
+         // 모든 입력창 닫기
+         document.querySelectorAll('.reply-write').forEach(box => {
+             box.style.display = 'none';
          });
 
-         // 2. 모달 열기 (댓글/대댓글용)
-         $(document).on("click", ".comment-item .report-btn", function () {
-        	 let loginId = "${loginId}"
-            	 if(loginId == ""){
-            		 alert("로그인 후 이용가능합니다.")
-            		 return false;
-            	 }
-             let seq = $(this).closest("[data-seq]").data("seq");
-             openReportModal(seq, "reply");
-         });
+         const replyBox = el.closest('.comment-item').querySelector('.reply-write');
+         replyBox.style.display = "flex";
+     }
 
-         function openReportModal(seq, type) {
-             $("#reportTargetSeq").val(seq);
-             $("#reportTargetType").val(type);
-             $("#reportModal").show();
-         }
+     function getReplyList() {
+         $.ajax({
+             url: "/reply/list",
+             data: { parent_seq: "${dto.seq}" },
+             dataType: "json"
+         }).done(function(data) {
+             $(".comment-title").html("댓글 " + data.totalCount);
+             appendReplyList(data.list);
 
-         function closeReportModal() {
-             $("#reportModal").hide();
-             $("input[name='reportReason']").prop("checked", false);
-             $("#etcReason").hide().val("");
-         }
+             if (location.hash) {
+                 let target = $(location.hash);
+                 if (target.length) {
+                     $('html, body').animate({
+                         scrollTop: target.offset().top - 100
+                     }, 500);
 
-         // "기타" 선택 시 텍스트 영역 보이기
-         $(document).on("change", "input[name='reportReason']", function () {
-             if ($(this).val() === "etc") {
-                 $("#etcReason").show().focus();
-             } else {
-                 $("#etcReason").hide();
-             }
-         });
-
-         // 3. 서버로 데이터 전송
-         function submitReport() {
-             let targetSeq = $("#reportTargetSeq").val();
-             let targetType = $("#reportTargetType").val();
-             let reason = $("input[name='reportReason']:checked").val();
-             let loginId = "${loginId}";
-
-             if (!reason) {
-                 alert("신고 사유를 선택해주세요.");
-                 return;
-             }
-
-             if (reason === "etc") {
-                 reason = $("#etcReason").val().trim();
-                 if (reason === "") {
-                     alert("상세 사유를 입력해주세요.");
-                     return;
+                     target.css("background-color", "#f0f7ff");
+                     setTimeout(() => target.css("background-color", "transparent"), 2000);
                  }
              }
-             let sendData = {reason : reason,
-            		 member_id : loginId}
-             if (targetType === "board") {
-                 sendData.boards_seq = targetSeq;
-             } else {
-                 sendData.reply_seq = targetSeq;
-                 sendData.boards_seq = "${dto.seq}";
+         });
+     }
+
+     $(document).ready(function() {
+         getReplyList();
+         $(".list-btn").on("click", function() {
+             const ref = document.referrer;
+             const urlParams = new URLSearchParams(window.location.search);
+             const fromParam = urlParams.get('from');
+
+             if (fromParam && fromParam.trim() !== "") {
+                 location.href = fromParam;
+             } else if (ref && ref.includes("/mypage/bookmark")) {
+                 location.href = ref;
              }
+              else {
+                 location.href = "/boards/mainboard_list?page=1";
+             }
+         });
+     });
 
-             $.ajax({
-                 url: "/report/report", // 서버 컨트롤러 경로
-                 type: "POST",
-                 data: sendData
-                     
-                 
-             }).done(function (resp) {
-            	 if(resp === "success") {
-            	        alert("신고가 정상적으로 접수되었습니다.");
-            	        closeReportModal(); // 모달 닫기
-            	    }else if(resp === "already_reported"){
-            	    	alert("이미 신고하신 내역이 존재합니다.");
-            	    	closeReportModal();          	        
-            	    }else{
-            	    	alert("신고 접수에 실패했습니다. 다시 시도해주세요.");
-            	    }
-             })
+     function appendReplyList(list) {
+         let html = "";
+         let loginId = "${loginId}";
+
+         list.forEach(function(comment) {
+             html += `<div class="comment-item" data-seq=` + comment.seq + ` id="reply` + comment.seq + `">
+                         <div class="comment-header">
+                             <div class="comment-left">
+                                 <span class="comment-writer">` + comment.member_id + `</span>
+                                 <span class="divider">|</span>
+                                 <span class="comment-date">` + comment.write_date_str + `</span>
+                             </div>
+                             <div class="comment-actions">
+                                 <span onclick="toggleReply(this)" style="cursor:pointer;">답글</span>`;
+
+             if (loginId == comment.writer) {
+                 html += `
+                     <span class="reply-edit-btn" onclick="toggleEdit(this)" style="cursor:pointer;">수정</span>
+                     <span class="reply-delete-btn" style="cursor:pointer;">삭제</span>`;
+             }
+             html += `
+                         <span class="report-btn">신고</span>
+                     </div>
+                 </div>
+                 <div class="comment-content">` + comment.content + `</div>
+                 <div class="reply-write" style="display: none;">
+                     <textarea placeholder="답글을 입력하세요"></textarea>
+                     <button class="reply-btn">등록</button>
+                 </div>
+                 <div class="reply-list">`;
+
+             if (comment.replies && comment.replies.length > 0) {
+                 comment.replies.forEach(function(reply) {
+                     html += `
+                         <div class="reply-item" data-seq=` + reply.seq + ` id="reply` + reply.seq + `"> 
+                             <div class="comment-header">
+                                 <div class="comment-left">
+                                     <span class="comment-writer">` + reply.member_id + `</span>
+                                     <span class="divider">|</span>
+                                     <span class="comment-date">` + reply.write_date_str + `</span>
+                                 </div>
+                                 <div class="comment-actions">`;
+                     if (loginId == reply.writer) {
+                         html += `
+                                     <span class="reply-edit-btn" onclick="toggleEdit(this)" style="cursor:pointer;">수정</span>
+                                     <span class="reply-delete-btn" style="cursor:pointer;">삭제</span>`;
+                     }
+                     html += `
+                                     <span class="report-btn">신고</span>
+                                 </div>
+                             </div>
+                             <div class="comment-content">` + reply.content + `</div>
+                         </div>`;
+                 });
+             }
+             html += `</div></div>`;
+         });
+         $(".comment-list").html(html);
+     }
+
+     $(".reply-insert-btn").on("click", function() {
+         if ("${loginId}" == "") {
+             alert("로그인 후 입력가능합니다.");
+             return false;
          }
-         function toggleBookmark(obj) {
-        	    // 1. 이벤트 전파 방지 (만약 부모 요소에 클릭 이벤트가 걸려있을 경우를 대비)
-        	    if (window.event) window.event.stopPropagation();
-        	    
-        	    // 2. data-seq 값 가져오기
-        	    let boardSeq = $(obj).data("seq");
+         $.ajax({
+             url: "/reply/insert",
+             type: "post",
+             data: {
+                 parent_seq: "${dto.seq}",
+                 member_id: "${loginId}",
+                 content: $(".content").val(),
+                 re_reply_seq: null
+             }
+         }).done(function() {
+             $(".content").val("");
+             getReplyList();
+         });
+     });
 
-        	    $.ajax({
-        	        url: "/bookmark/toggle",
-        	        type: "POST",
-        	        data: { board_seq: boardSeq },
-        	        success: function(res) {
-        	            if (res === "added") {
-        	                // 채워진 별로 변경
-        	                $(obj).addClass("fa-solid active").removeClass("fa-regular");
-        	            } else if (res === "removed") {
-        	                // 빈 별로 변경
-        	                $(obj).addClass("fa-regular").removeClass("fa-solid active");
-        	            } else if (res === "login_required") {
-        	                alert("로그인이 필요한 서비스입니다.");
-        	                // 필요하다면 로그인 페이지로 유도
-        	                // location.href = "/member/login";
-        	            }
-        	        },
-        	        error: function() {
-        	            alert("서버 통신 중 오류가 발생했습니다.");
-        	        }
-        	    });
-        	}
-        
-         
-     </script>
+     $(document).on("click", ".reply-btn", function() {
+         if ("${loginId}" == "") {
+             alert("로그인 후 입력가능합니다.");
+             return false;
+         }
+         let commentItem = $(this).closest(".comment-item");
+         let parentCommentSeq = commentItem.data("seq");
+         let content = commentItem.find("textarea").val();
+
+         $.ajax({
+             url: "/reply/insert",
+             type: "post",
+             data: {
+                 parent_seq: "${dto.seq}",
+                 member_id: "${loginId}",
+                 content: content,
+                 re_reply_seq: parentCommentSeq
+             }
+         }).done(function() {
+             getReplyList();
+         });
+     });
+
+     $(".boards-delete-btn").on("click", function() {
+         if (!confirm("정말 삭제하시겠습니까?")) return false;
+         location.href = "/boards/delete?seq=" + ${dto.seq};
+     });
+
+     $(document).on("click", ".reply-delete-btn", function() {
+         if (!confirm("정말 삭제하시겠습니까?")) return false;
+         let seq = $(this).closest("[data-seq]").data("seq");
+         $.ajax({
+             url: "/reply/delete",
+             data: { seq: seq },
+             type: "post"
+         }).done(function() {
+             getReplyList();
+         });
+     });
+
+     $(document).on("click", ".update-submit-btn", function() {
+         let item = $(this).closest("[data-seq]");
+         let seq = item.data("seq");
+         let content = item.find(".update-content").val();
+         $.ajax({
+             url: "/reply/update",
+             type: "post",
+             data: { seq: seq, content: content }
+         }).done(function() {
+             getReplyList();
+         });
+     });
+
+     function toggleEdit(el) {
+         const item = $(el).closest("[data-seq]");
+         const contentBox = item.find(".comment-content").first();
+         const originalContent = contentBox.text().trim();
+
+         contentBox.html(`
+             <div class="comment-write" style="margin-top:10px; display:flex; gap:10px;">
+                 <textarea class="update-content" style="flex:1; height:80px;">` + originalContent + `</textarea>
+                 <div class="edit-btn-group" style="display:flex; flex-direction:column; gap:5px;">
+                     <button class="update-submit-btn" style="width:80px; height:40px; background-color:#2563eb; color:white; border:none; border-radius:8px; cursor:pointer;">저장</button>
+                     <button type="button" onclick="getReplyList()" style="width:80px; height:40px; background-color:#6b7280; color:white; border:none; border-radius:8px; cursor:pointer;">취소</button>
+                 </div>
+             </div>
+         `);
+         item.find(".comment-actions").hide();
+     }
+
+     $(document).on("click", ".post-detail .report-btn", function() {
+         if ("${loginId}" == "") { alert("로그인 후 이용가능합니다."); return false; }
+         openReportModal("${dto.seq}", "board");
+     });
+
+     $(document).on("click", ".comment-item .report-btn", function() {
+         if ("${loginId}" == "") { alert("로그인 후 이용가능합니다."); return false; }
+         let seq = $(this).closest("[data-seq]").data("seq");
+         openReportModal(seq, "reply");
+     });
+
+     function openReportModal(seq, type) {
+         $("#reportTargetSeq").val(seq);
+         $("#reportTargetType").val(type);
+         $("#reportModal").show();
+     }
+
+     function closeReportModal() {
+         $("#reportModal").hide();
+         $("input[name='reportReason']").prop("checked", false);
+         $("#etcReason").hide().val("");
+     }
+
+     $(document).on("change", "input[name='reportReason']", function() {
+         if ($(this).val() === "etc") $("#etcReason").show().focus();
+         else $("#etcReason").hide();
+     });
+
+     function submitReport() {
+         let targetSeq = $("#reportTargetSeq").val();
+         let targetType = $("#reportTargetType").val();
+         let reason = $("input[name='reportReason']:checked").val();
+         let loginId = "${loginId}";
+
+         if (!reason) { alert("신고 사유를 선택해주세요."); return; }
+         if (reason === "etc") {
+             reason = $("#etcReason").val().trim();
+             if (reason === "") { alert("상세 사유를 입력해주세요."); return; }
+         }
+
+         let sendData = { reason: reason, member_id: loginId };
+         if (targetType === "board") sendData.boards_seq = targetSeq;
+         else {
+             sendData.reply_seq = targetSeq;
+             sendData.boards_seq = "${dto.seq}";
+         }
+
+         $.ajax({
+             url: "/report/report",
+             type: "POST",
+             data: sendData
+         }).done(function(resp) {
+             if (resp === "success") {
+                 alert("신고가 정상적으로 접수되었습니다.");
+                 closeReportModal();
+             } else if (resp === "already_reported") {
+                 alert("이미 신고하신 내역이 존재합니다.");
+                 closeReportModal();
+             } else {
+                 alert("신고 접수에 실패했습니다.");
+             }
+         });
+     }
+
+     function toggleBookmark(obj) {
+         if (window.event) window.event.stopPropagation();
+         let boardSeq = $(obj).data("seq");
+         $.ajax({
+             url: "/bookmark/toggle",
+             type: "POST",
+             data: { board_seq: boardSeq },
+             success: function(res) {
+                 if (res === "added") $(obj).addClass("fa-solid active").removeClass("fa-regular");
+                 else if (res === "removed") $(obj).addClass("fa-regular").removeClass("fa-solid active");
+                 else if (res === "login_required") alert("로그인이 필요한 서비스입니다.");
+             }
+         });
+     }
+ </script>
+     
 </body>
 </html>

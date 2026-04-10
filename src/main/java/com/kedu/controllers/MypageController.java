@@ -349,6 +349,7 @@ public class MypageController {
 		
 		//int recordTotalCount = bdao.mypostRecordTotalCount(memberId);
 		
+		
 		model.addAttribute("currentPage", page);
 		model.addAttribute("recordCountPerPage",10);
 		model.addAttribute("naviCountPerPage",10);
