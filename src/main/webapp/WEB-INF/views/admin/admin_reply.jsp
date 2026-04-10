@@ -262,11 +262,30 @@ body {
 .admin-table th {
     text-align: center;
     background: #fafcff;
+    table-layout: fixed;
     color: #64748b;
     font-weight: 700;
 }
 
+/* 댓글 관리  */
+.admin-table th:nth-child(1) { width: 8%; }  /* 번호 */
+.admin-table th:nth-child(2) { width: 10%; } /* 게시판 번호 */
+.admin-table th:nth-child(3) { width: 35%; } /* 작성자 */
+.admin-table th:nth-child(4) { width: 12%; } /* 작성일 */
+.admin-table th:nth-child(5) { width: 10%; } /* 상태 */
+.admin-table th:nth-child(6) { width: 10%; } /* 관리 */
+
+/* 신고 댓글 관리  */
+.reply-report th:nth-child(1) { width: 8%; }  /* 번호 */
+.reply-report th:nth-child(2) { width: 35%; } /* 글 내용 */
+.reply-report th:nth-child(3) { width: 20%; } /* 작성자 */
+.reply-report th:nth-child(4) { width: 15%; } /* 작성일 */
+.reply-report th:nth-child(5) { width: 12%; } /* 관리 */
+
 .admin-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
 }
 
@@ -466,7 +485,7 @@ body {
                 <button class="btn-blue" type="button">검색</button>
             </div>
 
-            <table class="admin-table">
+            <table class="admin-table reply-report">
                 <thead>
                     <tr>
                         <th>댓글 번호</th>
@@ -534,14 +553,13 @@ body {
 	//이전 버튼 <
 	if(needPrev){	
 		let btn = $("<button>").addClass("page-btn").html("&lt;");
-		btn.attr("onclick","location.href='/admin/admin_reply?page="+ (startNavi-1)+"'");
+		btn.attr("onclick","location.href='"+getPageUrl(startNavi-1) + "'");
 		board_navi.append(btn);
 	}
 	
 	for(let i = startNavi; i <= endNavi; i++){
 		let btn = $("<button>").addClass("page-btn").html(i);
-		btn.attr("onclick","location.href='/admin/admin_reply?page="+ i +"'");
-		
+		btn.attr("onclick","location.href='"+getPageUrl(i) + "'");
 		if(i== currentPage){
 			btn.addClass("active");//현재 페이지 파란색 처리
 		}
@@ -550,12 +568,57 @@ body {
 	
 	//다음 버튼 >
 	if(needNext){		 
-		let btn = $("<button>");
-		btn.addClass("page-btn");
-		btn.html("&gt;");//구글 라이브러리 > 모양
-		btn.attr("onclick","location.href='/admin/admin_reply?page="+ (endNavi+1) +"'");
+		let btn = $("<button>").addClass("page-btn").html("&gt;");//구글 라이브러리 > 모양
+		btn.attr("onclick","location.href='"+getPageUrl(endNavi+1) + "'");
 		board_navi.append(btn);
 	}
+	
+	//검색 버튼 클릭
+	$(".reply-search-btn").on("click",function(){
+		let cat = $("select[name='category']").val(); // 카테고리 값 가져오기 
+		let keyword = $(".keyword").val();
+		//검색
+		location.href = "/admin/admin_reply?page=1&category=" + cat +"&keyword="+encodeURIComponent(keyword);
+	})
+	
+	//전체 버튼 클릭
+	$(".reply-all-btn").on("click",function(){
+		$(".keyword").val(""); // 검색창 비우기
+		location.href = "/admin/admin_reply?page=1&category=all"//1p로 가고 전체 카테로 함
+	})
+	
+	//카테고리 선택
+	$("select[name='category']").on("change", function() {
+	    let category = $(this).val();
+	    let keyword = $(".keyword").val();
+	    
+	    let url = "/admin/admin_reply?page=1&category=" + category;
+	    
+	    // 키워드가 입력되어 있다면 키워드도 같이 보냄
+	    if(keyword && keyword.trim() != "") {
+	        url += "&keyword=" + encodeURIComponent(keyword);
+	    }	    
+	    location.href = url;
+	});
+	
+	//검색 키워드 
+	function getPageUrl(page){//이동 페이지 값 받아
+	 	let cat =  "${category}" || "all";
+		let url = "/admin/admin_reply?page="+page+"&category="+cat; //해당 페이지 주소로 만들어줌
+		if(keyword && keyword.trim()!= ""){//검색어가 있고 빈 문자열이 아니어야함
+			url+="&keyword="+encodeURIComponent(keyword);
+		//검색어에 한글이나 특수문자가 섞여 있을 때 브라우저가 주소를 안전하게 인식하도록 변환해주는 장치
+		}
+		return url;
+	}
+	
+	//카테고리 유지
+	$(document).ready(function(){
+		let curCategory = "${category}";
+		if(curCategory){
+			$("select[name='category']").val(curCategory);
+		}
+	})
 	
 	//보기 버튼 클릭
 	$(".reply-detail-btn").on("click",function(){

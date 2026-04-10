@@ -150,18 +150,40 @@ public class AdminDAO {
 		return jdbc.query(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class));		
 	}
 	
-	//닉넴 키워드 검색 결과 카운트
-	public int getReplySearchCount(String keyword) {
-	    String sql = "SELECT COUNT(*) "
-	               + "FROM reply r "
-	               + "JOIN members m ON r.member_id = m.id "
-	               + "WHERE m.nickname LIKE '%' || ? || '%'";
-	    
-	    return jdbc.queryForObject(sql, Integer.class, keyword);
-	}
+	//닉넴 키워드 검색 결과, 댓글 신고 카운트
+		public int getReplyTotalCount(String category, String keyword) {
+		    // 1. 기본 SQL (관리자 제외)
+		    String sql = "SELECT COUNT(*) FROM ( "
+		               + "    SELECT r.seq "
+		               + "    FROM reply r "
+		               + "    LEFT JOIN members m ON r.member_id = m.id "
+		               + "    LEFT JOIN report rp ON r.seq = rp.reply_seq ";
+
+		    // 2. 검색어 조건 추가
+		    if (keyword != null && !keyword.trim().isEmpty()) {
+		        sql += " WHERE m.nickname LIKE '%' || ? || '%' ";
+		    }
+
+		    sql += " GROUP BY r.seq ";
+
+		    //  리스트 쿼리와 똑같은 HAVING 조건을 걸어줘야 개수가 같
+		    if ("report".equals(category)) {
+		        sql += " HAVING COUNT(rp.seq) > 0 ";
+		    } else if ("normal".equals(category)) {
+		        sql += " HAVING COUNT(rp.seq) = 0 ";
+		    }
+
+		    sql += " )";
+
+		    if (keyword != null && !keyword.trim().isEmpty()) {
+		        return jdbc.queryForObject(sql, Integer.class, keyword);
+		    } else {
+		        return jdbc.queryForObject(sql, Integer.class);
+		    }
+		}
 	
-	//댓글 작성자 검색
-	public List<ReplyDTO> searchReplyById(int start, int end, String keyword) {
+	//댓글 작성자 검색 및 신고 일반 카테
+	public List<ReplyDTO> searchReplyById(int start, int end, String keyword, String category) {
 		String sql="SELECT * FROM (\r\n"
 				+ "    SELECT \r\n"
 				+ "        ROW_NUMBER() OVER (ORDER BY r.seq DESC) AS rn,\r\n"
@@ -175,14 +197,19 @@ public class AdminDAO {
 				+ "    WHERE m.nickname LIKE '%' || ? || '%' "
 				+ "    GROUP BY \r\n"
 				+ "        r.seq, r.parent_seq, m.nickname, r.content, \r\n"
-				+ "        r.write_date, r.re_reply_seq, r.member_id\r\n"
-				+ ") \r\n"
-				+ "WHERE rn BETWEEN ? AND ?";
+				+ "        r.write_date, r.re_reply_seq, r.member_id ";
+		//신고 일반 카테고리 조건 추가
+		if("report".equals(category)) {
+			sql += " HAVING COUNT(distinct rp.seq)>0";
+		}else if("normal".equals(category)) {
+			sql += " HAVING COUNT(distinct rp.seq)=0";
+		}
+		sql +=") WHERE rn BETWEEN ? AND ?";
 		
 		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class),keyword,start,end);
 	}
 	//댓글 가져옴
-	public List<ReplyDTO> admin_replyList(int start, int end) {
+	public List<ReplyDTO> admin_replyList(int start, int end, String category) {
 		String sql="SELECT * FROM (\r\n"
 				+ "    SELECT \r\n"
 				+ "        ROW_NUMBER() OVER (ORDER BY r.seq DESC) AS rn,\r\n"
@@ -199,9 +226,15 @@ public class AdminDAO {
 				+ "    LEFT JOIN report rp ON r.seq = rp.reply_seq -- 댓글 번호로 신고 테이블 조인\r\n"
 				+ "    GROUP BY \r\n"
 				+ "        r.seq, r.parent_seq, m.nickname, r.content, \r\n"
-				+ "        r.write_date, r.re_reply_seq, r.member_id\r\n"
-				+ ") \r\n"
-				+ "WHERE rn BETWEEN ? AND ?";
+				+ "        r.write_date, r.re_reply_seq, r.member_id";
+
+		if ("report".equals(category)) {
+	        sql += " HAVING COUNT(rp.seq) > 0 ";
+	    } else if ("normal".equals(category)) {
+	        sql += " HAVING COUNT(rp.seq) = 0 ";
+	    }
+
+	    sql += ") WHERE rn BETWEEN ? AND ?";
 		
 		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class),start,end);
 	}

@@ -276,8 +276,25 @@ body {
 /* ===== Table ===== */
 .admin-table {
     width: 100%;
-    border-collapse: collapse;
+    table-layout: fixed;/*내용 길이 달라도 칸 크기 안 변함  */
+    border-collapse: collapse; /* 내용 길면 .처리  */
 }
+/*게시글 관리 */
+.admin-table th:nth-child(1) { width: 8%; }  /* 번호 */
+.admin-table th:nth-child(2) { width: 10%; } /* 게시판 */
+.admin-table th:nth-child(3) { width: 25%; } /* 제목 (가장 넓게) */
+.admin-table th:nth-child(4) { width: 15%; } /* 작성자 */
+.admin-table th:nth-child(5) { width: 12%; } /* 작성일 */
+.admin-table th:nth-child(6) { width: 10%; } /* 상태 */
+.admin-table th:nth-child(7) { width: 20%; } /* 관리 */
+
+/*공지글 관리 */
+.notice-table th:nth-child(1) { width: 8%; }  /* 번호 */
+.notice-table th:nth-child(2) { width: 30%; } /* 제목 */
+.notice-table th:nth-child(3) { width: 20%; } /* 작성자 */
+.notice-table th:nth-child(4) { width: 12%; } /* 작성일 */
+.notice-table th:nth-child(5) { width: 10%; } /* 상태 */
+.notice-table th:nth-child(6) { width: 20%; } /* 관리 */
 
 .admin-table th,
 .admin-table td {
@@ -295,6 +312,10 @@ body {
 }
 
 .admin-table td {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
 }
 
@@ -516,7 +537,7 @@ body {
                 <h3>공지글 목록</h3>
             </div>
 
-            <table class="admin-table">
+            <table class="admin-table notice-table">
                 <thead>
                     <tr>
                         <th>번호</th>
@@ -634,18 +655,18 @@ body {
 	})
 	//카테고리 선택
 	$("select[name='category']").on("change", function() {
-    let category = $(this).val();
-    let keyword = $(".keyword").val();
-    
-    let url = "/admin/admin_boards?page=1&category=" + category;
-    
-    // 키워드가 입력되어 있다면 키워드도 같이 보냄
-    if(keyword && keyword.trim() != "") {
-        url += "&keyword=" + encodeURIComponent(keyword);
-    }
-    
-    location.href = url;
-});
+	    let category = $(this).val();
+	    let keyword = $(".keyword").val();
+	    
+	    let url = "/admin/admin_boards?page=1&category=" + category;
+	    
+	    // 키워드가 입력되어 있다면 키워드도 같이 보냄
+	    if(keyword && keyword.trim() != "") {
+	        url += "&keyword=" + encodeURIComponent(keyword);
+	    }
+	    
+	    location.href = url;
+	});
 	//카테고리 유지
 	$(document).ready(function(){
 		let curCategory = "${category}";
