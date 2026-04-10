@@ -419,6 +419,52 @@
             width: 100vw;                  /* 화면 끝까지 너비 확장 */
             margin-left: calc(-50vw + 50%); /* 컨테이너를 벗어나 화면 꽉 채우기 */
         }
+        /* 모달 배경을 투명하게 바꾸고 크기를 최소화 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    /* 위치 조절: 우측 하단에 배치 */
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+    height: auto;
+    background-color: transparent; /* 어두운 배경 제거 */
+}
+
+
+/* 2. 이미지는 무조건 팝업 박스 너비에 맞춤 */
+.popup-img {
+    width: 100%;         /* 부모인 .modal-content 너비(300px)에 꽉 맞춤 */
+    height: auto;        /* 세로 비율은 이미지에 맞게 자동 조절 */
+    display: block;
+    object-fit: cover;   /* 비율이 깨지지 않게 꽉 채움 */
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between; /* 양 끝 정렬 핵심 */
+    align-items: center;
+    padding: 10px 15px;
+    background: #f8f9fa;
+    font-size: 13px;
+    color: #333;
+    border-top: 1px solid #eee;
+}
+
+#close-text-btn:hover {
+    color: #2563eb; /* 마우스 올렸을 때 브랜드 컬러로 강조 */
+}
+
+/* 팝업 박스 크기 고정 */
+.modal-content {
+    width: 300px; 
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
+}
     </style>
 </head>
 
@@ -638,6 +684,11 @@
         <p>© 2026 돈워리. All rights reserved.</p>
         <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
 </div>
+<div id="image-modal" class="modal">
+    <div class="modal-content">
+        
+            <img src="/upload/popup-banner.jpg" alt="이벤트 배너" class="popup-img">
+        
 
 <script>
 $(function() {
@@ -648,6 +699,47 @@ $(function() {
     }
 });
 </script>
+        <div class="modal-footer">
+            <label>
+                <input type="checkbox" id="today-check"> 오늘 하루 보지 않기
+            </label>
+            <span id="close-text-btn" style="cursor:pointer; font-weight:bold;">닫기</span>
+        </div>
+    </div>
+</div>
+<script>
+//쿠키 설정 함수
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+}
 
+// 쿠키 가져오기 함수
+function getCookie(name) {
+    const value = "; " + document.cookie;
+    const parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
+
+//ID 값을 새로 만든 텍스트 버튼으로 변경
+const closeTextBtn = document.getElementById('close-text-btn');
+const popup = document.getElementById('image-modal');
+
+window.onload = () => {
+    if (getCookie("hidePopup") !== "true") {
+        popup.style.display = 'block';
+    }
+};
+
+// 텍스트 버튼 클릭 시 동작
+closeTextBtn.onclick = () => {
+    if (document.getElementById('today-check').checked) {
+        setCookie("hidePopup", "true", 1);
+    }
+    popup.style.display = 'none';
+};
+</script>
 </body>
 </html>

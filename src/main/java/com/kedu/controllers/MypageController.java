@@ -1,7 +1,9 @@
 package com.kedu.controllers;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.kedu.commons.EncryptionUtils;
+import com.kedu.dao.ApplicantResumeDAO;
 import com.kedu.dao.BoardsDAO;
 import com.kedu.dao.BookmarkDAO;
 import com.kedu.dao.CateGoryDAO;
@@ -25,6 +28,7 @@ import com.kedu.dao.JobPostDAO;
 import com.kedu.dao.MembersDAO;
 import com.kedu.dao.MypageDAO;
 import com.kedu.dao.ResumeDAO;
+import com.kedu.dto.ApplicantResumeDTO;
 import com.kedu.dto.BoardsDTO;
 import com.kedu.dto.CateGoryDTO;
 import com.kedu.dto.FilesDTO;
@@ -49,10 +53,11 @@ public class MypageController {
 	@Autowired
 	private BookmarkDAO bookdao;
 	@Autowired
-
     private CateGoryDAO catdao;
 	@Autowired
 	private ResumeDAO rdao;
+	@Autowired
+	private ApplicantResumeDAO ardao;
 
 	
 	
@@ -70,6 +75,12 @@ public class MypageController {
 		
 		int bookmarkCount =  bookdao.countBookmark(id);
 		model.addAttribute("bookmarkCount",bookmarkCount);
+		
+		int resumeCount = rdao.countById(id);
+		model.addAttribute("resumeCount",resumeCount);
+		
+		int boardsCount = bdao.mypostRecordTotalCount(id);
+		model.addAttribute("boardsCount",boardsCount);
 		
 		return "mypage/mypage";
 	}
@@ -169,12 +180,20 @@ public class MypageController {
 		
 		int recordTotalCount = jpdao.mypostRecordTotalCount(memberId);
 		
+	    Map<Integer, List<ApplicantResumeDTO>> applicantMap = new HashMap<>();
+
+	    for (JobPostDTO post : allList) {
+	        List<ApplicantResumeDTO> applicants = ardao.selectApplicantsByPost(post.getSeq());
+	        applicantMap.put(post.getSeq(), applicants);
+	    }
+		
 		model.addAttribute("currentPage", page);
 		model.addAttribute("recordCountPerPage",2);
 		model.addAttribute("naviCountPerPage",10);
 		model.addAttribute("recordTotalCount",recordTotalCount);
 		model.addAttribute("allList", allList);
 		model.addAttribute("count", count);
+		  model.addAttribute("applicantMap", applicantMap);
 		return "mypage/employ_activity";
 	}
 	
@@ -423,6 +442,12 @@ public class MypageController {
 	public String update_resume(ResumeDTO dto) {
 		rdao.update(dto);
 		return "redirect:/mypage/resume_detail?seq=" + dto.getSeq();
+	}
+	
+	@RequestMapping("/viewresume")
+	public String toViewResume(int resume_num) {
+		
+		return "mypage/viewresume";
 	}
 	
 }

@@ -471,7 +471,7 @@
                     내가 작성한 글
                 </div>
                 <div class="item-result">
-                    <span class="apply-list-count" >12</span>
+                    <span class="apply-list-count" >${boardsCount }</span>
                     <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
                 </div> 
             </a>
@@ -487,11 +487,7 @@
                     <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
                 </div> 
             </a>
-        </div>       
-    </div>    
-  <!-- 설정 -->  
-    <div class="my-activity">
-        <div class="my-activity-title">설정</div>
+        </div>
         <div class="my-activity-item">
             <a href="/mypage/myresume" class="my-apply-list">
                 <div class="item-name">
@@ -499,11 +495,16 @@
                     이력서 관리
                 </div>
                 <div class="item-result">
-                    <span class="apply-list-count" >12</span>
+                    <span class="apply-list-count" >${resumeCount }</span>
                     <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
                 </div>
             </a>
-        </div>  
+        </div>         
+    </div>    
+  <!-- 설정 -->  
+    <div class="my-activity">
+        <div class="my-activity-title">설정</div>
+        
         <div class="my-activity-item">
             <a href="#" class="my-apply-list">
                 <div class="item-name">
@@ -554,7 +555,7 @@
                     내가 작성한 글
                 </div>
                 <div class="item-result">
-                    <span class="apply-list-count" >12</span>
+                    <span class="apply-list-count" >${boardsCount }</span>
                     <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
                 </div> 
             </a>

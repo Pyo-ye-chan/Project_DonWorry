@@ -503,7 +503,7 @@
                             <label class="form-label">
                                 <span><i class="fa-solid fa-quote-left"></i>이력서 제목</span>
 
-                                <c:choose>
+                               <!--   <c:choose>
                                     <c:when test="${dto.is_show == 'Y'}">
                                         <span class="status-toggle status-public">
                                             <i class="fa-solid fa-eye"></i> 공개 중
@@ -514,7 +514,7 @@
                                             <i class="fa-solid fa-eye-slash"></i> 비공개
                                         </span>
                                     </c:otherwise>
-                                </c:choose>
+                                </c:choose>-->
                             </label>
                             <div class="info-display" style="color:#2563eb; font-weight:800;">${dto.title}</div>
                         </div>
