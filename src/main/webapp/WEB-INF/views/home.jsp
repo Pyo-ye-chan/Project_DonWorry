@@ -639,5 +639,15 @@
         <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
 </div>
 
+<script>
+$(function() {
+    let successMsg = "${joinSuccess}";
+    if (successMsg !== "") {
+        alert(successMsg);
+        location.href = "/members/toLogin";
+    }
+});
+</script>
+
 </body>
 </html>

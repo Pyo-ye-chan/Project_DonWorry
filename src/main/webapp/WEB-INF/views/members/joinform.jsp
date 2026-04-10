@@ -8,7 +8,176 @@
 <meta charset="UTF-8">
 <title>돈워리 - 회원가입</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 기본 초기화 및 폰트 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+    		display: block; /* flex 해제 */
+    		background-color: #F4F6F9;
+    		min-height: 100vh;
+		}
+
+        /* 레이아웃 컨테이너 */
+        .container {
+            max-width: 1100px;
+        width: 100%; 
+        margin: 0 auto;
+        padding: 0 20px;
+        flex: 1; /* 컨텐츠가 적을 때 푸터를 아래로 밀어주는 최소한의 장치 */
+        }
+        /* 로그인 및 관리자 */
+        .top-auth {
+            display: flex;
+            justify-content: flex-end; /* 오른쪽 정렬 핵심 */
+            align-items: center;
+            gap: 15px;                 /* 요소 간 간격 */
+            padding: 8px 0;           /* 위아래 여백 */
+        }
+        .logout-btn { 
+         	width:60px;
+            height:30px;
+		    background-color: #ffffff; 
+		    color: #868e96;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
+		.logout-btn:hover { 
+         	width:60px;
+            height:30px;
+		   	background-color: #f8f9fa;
+		    color: #495057;
+		    border-color: #ced4da;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
+		
+        /*관리자 버튼*/
+        .now-admin {
+            width:60px;
+            height:30px;
+            background-color: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center; /*세로 중앙 정렬*/
+            justify-content: center; /* 가로 중앙 정렬 */
+            border-radius: 6px;
+            border: none;           
+            font-size: 13px;
+            cursor: pointer;
+        }
+        /*기업 버튼*/
+        .now-business {
+            width:60px;
+            height:30px;
+            background-color: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center; /*세로 중앙 정렬*/
+            justify-content: center; /* 가로 중앙 정렬 */
+            border-radius: 6px;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        /*개인 버튼*/
+        .now-personal {
+            width:60px;
+            height:30px;
+            background-color: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center; /*세로 중앙 정렬*/
+            justify-content: center; /* 가로 중앙 정렬 */
+            border-radius: 6px;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+		
+        /* [3] 네비게이션바 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .logo {
+            color: #2563eb;
+            font-weight: 800;
+            font-size: 20px;
+            text-decoration: none;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .my-page{
+            display: flex;
+            align-items: center;
+            gap: 8px; /* 아이콘과 글자 사이 간격 */
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            /* 중요: 클릭 영역을 확실히 확보 */
+            padding: 5px 10px; 
+            cursor: pointer;
+
+        }
+        .nav-menu a.active { color: #2563eb; }
+
+        /* [4] 히어로 섹션 */
+        .hero {
+            height:300px;
+            text-align: center;
+            padding: 80px 0;
+        }
+        .hero-badge {
+            background-color: #eff6ff;
+            color: #2563eb;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        .hero p {
+            color: #888;
+            margin-bottom: 35px;
+        }
+        .reg-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
 /* 1. 전체적인 분위기 (메인 페이지 스타일 계승) */
 :root { -
 	-primary-color: #0055FF; /* 메인 파란색 */ -
@@ -30,13 +199,21 @@ body {
 
 /* 2. 가입 폼 컨테이너 */
 .register-container {
-	background-color: #fff;
-	padding: 10px 40px;
-	border-radius: 20px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* 은은한 그림자 */
-	width: 100%;
-	max-width: 500px; /* 너무 넓지 않게 */
-	text-align: center;
+    background-color: #fff;
+    padding: 40px; /* 패딩 상하 조절 */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 700px;
+    margin: 50px auto; /* 상하 여백을 주고 가로 중앙 정렬 */
+    text-align: center;
+}
+
+.input-row.rrn-email-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    width: 100%;
 }
 
 /* 3. 타이틀 스타일 ("알바 급여 관리..." 느낌) */
@@ -80,6 +257,11 @@ body {
 	outline: none;
 	border-color: var(- -primary-color);
 	box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.1);
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box; /* 패딩이 너비를 벗어나지 않게 */
 }
 
 /* 5. 주소/카테고리 선택 셀렉트 박스 (가로 배치) */
@@ -208,7 +390,7 @@ body {
 	display: none;
 }
 
-#pwCheck-box{
+#pwCheck-box {
 	color: #ff0000;
 	margin-top: 10px;
 	font-size: 14px;
@@ -216,6 +398,78 @@ body {
 </style>
 </head>
 <body>
+<div class="container">
+<c:choose>
+<c:when test="${nickName==null}">
+    <div class="top-auth">
+        <span style="font-size: 13px; color: #666; cursor: pointer;">
+            <a href="members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
+                <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
+            </a>
+        </span>
+    </div>
+</c:when>
+<c:otherwise>
+    <div class="top-auth">  
+        <span style="font-size: 13px; color: #666; cursor: pointer;">
+        	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+            	${nickName}님 환영합니다.
+            <a href="members/logout" style="text-decoration: none; color:black">
+            <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
+            </a>
+        </span>
+		<c:if test="${type=='관리자'}">
+            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin">관리자</div></a>
+		</c:if>
+		<c:if test="${type=='사업자'}">
+            <div class="now-business">사업자</div>
+        </c:if>
+		<c:if test="${type=='개인'}">        
+            <div class="now-personal">개인</div>
+		</c:if>
+    </div>
+</c:otherwise>
+</c:choose>
+    
+    <nav class="navbar">
+        <div style="display: flex; align-items: center; gap: 40px;">
+            <a href="/" class="logo"> 돈워리</a>
+            <div class="nav-menu">
+                <a href="/" class="active"> 
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
+                    홈
+                </a>
+                <a href="/salary/calendar">
+                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
+                    급여 캘린더
+                    </a>
+                <a href="/jobposts/jobpost"> 
+                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    구인구직
+                </a>
+                <a href="/boards/mainboard_list?page=1"> 
+                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
+                    커뮤니티
+                </a> 
+                <a href="/qna/qna?page=1"> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    고객지원
+                </a>              
+            </div>           
+        </div>
+        <c:if test="${nickName==null }">   
+	        <a class="my-page" href="members/toLogin"> 
+	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+	            마이페이지
+	        </a>  
+        </c:if> 
+        <c:if test="${nickName!=null }">   
+	        <a class="my-page" href="/mypage/toMypage"> 
+	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+	            마이페이지
+	        </a>  
+        </c:if>   
+    </nav>
 
 	<div class="register-container">
 		<div
@@ -226,7 +480,7 @@ body {
 		<p>쉽고 정확한 알바 관리, 지금 가입하세요.</p>
 
 
-		<form action="/members/signup" method="post">
+		<form action="/members/signup" method="post" id="form">
 
 			<div class="form-group">
 				<label>가입 유형</label>
@@ -241,7 +495,8 @@ body {
 			<div class="form-group">
 				<label>아이디</label>
 				<div class="id-check-group">
-					<input type="text" placeholder="아이디를 입력해주세요" name="id" id="input-id">
+					<input type="text" placeholder="아이디를 입력해주세요" name="id"
+						id="input-id" required>
 					<button type="button" class="id-check-btn">중복확인</button>
 				</div>
 				<div id="idCheck-box"></div>
@@ -256,12 +511,13 @@ body {
 				<label for="memberRePw">비밀번호 확인</label> <input type="password"
 					id="memberRePw" name="memberRePw" placeholder="영문, 숫자 포함 8자 이상"
 					required>
-				<div id="pwCheck-box">비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야 합니다.</div>
+				<div id="pwCheck-box">비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야
+					합니다.</div>
 			</div>
 
 			<div class="form-group">
 				<label for="phone">전화번호</label> <input type="text" id="phone"
-					name="phone" placeholder="전화번호를 입력해주세요" required>
+					name="phone" placeholder="전화번호를 입력해주세요 *숫자만 입력" required>
 			</div>
 
 			<div class="form-group">
@@ -273,7 +529,7 @@ body {
 
 					<div style="flex: 1; display: flex; flex-direction: column;">
 						<label for="nickname">닉네임</label> <input type="text" id="nickname"
-							name="nickname" placeholder="닉네임 입력" required>
+							name="nickname" placeholder="닉네임 입력 *2~10글자 내외" required>
 					</div>
 				</div>
 			</div>
@@ -281,7 +537,7 @@ body {
 			<div class="form-group" id="businessNumberGroup"
 				style="display: none;">
 				<label for="business_number">사업자 번호</label> <input type="text"
-					id="business_number" name="business_number" placeholder="사업자 번호 입력">
+					id="business_number" name="business_number" placeholder="사업자 번호 입력 *숫자만 입력">
 			</div>
 
 			<div class="form-group">
@@ -298,7 +554,7 @@ body {
 					<span class="rrn-item"
 						style="margin-bottom: 12px; font-weight: 800; color: #9ca3af;">-</span>
 
-					<div class="rrn-item"
+					<div class="rrn-item rrn2"
 						style="flex: 1; display: flex; flex-direction: column;">
 						<input type="text" id="rrn_back" name="rrn_back" placeholder="1"
 							maxlength="1" required style="text-align: center;">
@@ -320,71 +576,190 @@ body {
 	</div>
 
 	<script>
-	$(document).ready(function() {
+		$(document).ready(function() {
+			$('input[name="type"]').change(function() {
+				if ($(this).val() === '사업자') {
+					$('#businessNumberGroup').show();
+					$('#business_number').prop('required', true);
 
-	    $('input[name="type"]').change(function() {
-	        if ($(this).val() === '사업자') {
-	            $('#businessNumberGroup').show();
-	            $('#business_number').prop('required', true);
-	            
-	            // 생년월일 관련 클래스(.rrn-item) 한꺼번에 숨기기
-	            $('.rrn-item').hide();
-	            $('#rrn_front, #rrn_back').prop('required', false).val("");
-	        } else {
-	            $('#businessNumberGroup').hide();
-	            $('#business_number').prop('required', false).val("");
-	            
-	            // 생년월일 관련 클래스(.rrn-item) 다시 보이기
-	            // ※ .show() 대신 .css('display', 'flex')를 쓰면 레이아웃이 더 잘 유지돼!
-	            $('.rrn-item').show();
-	            $('#rrn_front, #rrn_back').prop('required', true);
-	        }
-	    });
-	    
-	});
-	
-	$(".id-check-btn").on("click", function() {
-        const userId = $("#input-id").val();
+					// 생년월일 관련 클래스(.rrn-item) 한꺼번에 숨기기
+					$('.rrn-item').hide();
+					$('#rrn_front, #rrn_back').prop('required', false).val("");
+				} else {
+					$('#businessNumberGroup').hide();
+					$('#business_number').prop('required', false).val("");
 
-        // 1. 빈값 체크
-        if (userId === "") {
-            alert("아이디를 입력하세요");
-            $("#input-id").focus();
-            return;
+					// 생년월일 관련 클래스(.rrn-item) 다시 보이기
+					// ※ .show() 대신 .css('display', 'flex')를 쓰면 레이아웃이 더 잘 유지돼!
+					$('.rrn-item').show();
+					$('#rrn_front, #rrn_back').prop('required', true);
+				}
+			});
+
+		});
+
+		$(".id-check-btn").on("click", function() {
+			const userId = $("#input-id").val();
+
+			// 1. 빈값 체크
+			if (userId === "") {
+				alert("아이디를 입력하세요");
+				$("#input-id").focus();
+				return;
+			}
+			$.ajax({
+				url : "/members/idCheck?id=" + userId,
+				dataType : "json"
+			}).done(function(idcheck) {
+				if (idcheck == 0) {
+					$("#idCheck-box").html("사용 가능한 아이디입니다.").css({
+						"color" : "#2563eb",
+						"display" : "block",
+						"margin-top" : "10px",
+						"font-size" : "14px"
+					});
+				} else {
+					$("#idCheck-box").html("중복된 아이디 입니다.").css({
+						"color" : "#ff0000",
+						"display" : "block",
+						"margin-top" : "10px",
+						"font-size" : "14px"
+					});
+				}
+			}).fail(function() {
+				alert("서버 통신에 실패했습니다.");
+			});
+		});
+
+		$("#memberPw, #memberRePw").on(
+				"keyup",
+				function() {
+					let pw = $("#memberPw").val();
+					let rePw = $("#memberRePw").val();
+
+					if (pw == "" && rePw == "") {
+						$("#pwCheck-box").html(
+								"비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야 합니다.");
+					} else if (pw == rePw) {
+						$("#pwCheck-box").html("비밀번호 일치").css({
+							"color" : "#2563eb",
+							"display" : "block",
+							"margin-top" : "10px",
+							"font-size" : "14px"
+						});
+					} else {
+						$("#pwCheck-box").html("비밀번호 불일치").css({
+							"color" : "#ff0000",
+							"display" : "block",
+							"margin-top" : "10px",
+							"font-size" : "14px"
+						});
+					}
+				});
+
+		// 아이디 키업 정규식
+		$("#input-id").on(
+				"keyup",
+				function() {
+					if (!/^[a-z][a-z0-9]{3,13}$/.test($(
+							"#input-id").val())) {
+						$("#idCheck-box").html(
+								"ID는 영문 소문자, 숫자 포함 4~14자리 이내로 생성 가능합니다.")
+								.css({
+									"color" : "#ff0000",
+									"display" : "block",
+									"margin-top" : "10px",
+									"font-size" : "14px"
+								});
+					} else {
+						$("#idCheck-box").html("ID 조건이 충족되었습니다.").css({
+							"color" : "#2563eb",
+							"display" : "block",
+							"margin-top" : "10px",
+							"font-size" : "14px"
+						});
+					}
+				});
+
+		// 서브밋 정규식
+		$("#form").on("submit", function() {
+    // 0. 현재 선택된 가입 유형 가져오기 (수정됨)
+    let type = $('input[name="type"]:checked').val();
+
+    // 1. 아이디 체크
+    if (!/^[a-z][a-z0-9]{3,13}$/.test($("#input-id").val())) {
+        alert("아이디는 영소문자로 시작하며 숫자 포함 4~14글자여야 합니다.");
+        $("#input-id").focus();
+        return false;
+    }
+
+    // 2. 비밀번호 체크
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{4,16}$/.test($("#memberPw").val())) {
+        alert("비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩 포함된 4~16자여야 합니다.");
+        $("#memberPw").focus();
+        return false;
+    }
+
+    // 3. 비밀번호 확인
+    if ($("#memberPw").val() !== $("#memberRePw").val()) {
+        alert("비밀번호가 일치하지 않습니다.");
+        $("#memberRePw").focus();
+        return false;
+    }
+
+    // 4. 전화번호 체크
+    if (!/^010[0-9]{4}\d{4}$/.test($("#phone").val())) {
+        alert("전화번호 형식이 올바르지 않습니다. (예: 01012345678)");
+        $("#phone").focus();
+        return false;
+    }
+
+    // 5. 이름 체크
+    if (!/^[가-힣a-zA-Z]{2,6}$/.test($("#name").val())) {
+        alert("이름은 2~6자의 한글 또는 영문만 입력 가능합니다.");
+        $("#name").focus();
+        return false;
+    }
+
+    // 6. 닉네임 체크
+    if (!/^[a-zA-Z가-힣0-9]{2,10}$/.test($("#nickname").val())) {
+        alert("닉네임은 한글, 영문, 숫자 포함 2~10글자 이내로 작성 가능합니다.");
+        $("#nickname").focus();
+        return false;
+    }
+
+    // --- 유형별 선택적 체크 ---
+    if (type === "사업자") {
+        // 사업자일 때만 사업자 번호 체크
+        if (!/^[0-9]{10}$/.test($("#business_number").val())) {
+            alert("사업자번호 10자리를 숫자만 입력해주세요.");
+            $("#business_number").focus();
+            return false;
         }
-        $.ajax({
-            url: "/members/idCheck?id=" + userId,
-            dataType: "json"
-        }).done(function(idcheck) {
-            if (idcheck == 0) {
-                $("#idCheck-box").html("사용 가능한 아이디입니다.")
-                                 .css({"color": "#2563eb", "display": "block", "margin-top": "10px", "font-size": "14px"});
-            } else {
-                $("#idCheck-box").html("중복된 아이디 입니다.")
-                                 .css({"color": "#ff0000", "display": "block", "margin-top": "10px", "font-size": "14px"});
-            }
-        }).fail(function() {
-            alert("서버 통신에 실패했습니다.");
-        });
-	});
-	
-	$("#memberPw, #memberRePw").on("keyup", function () {
-        let pw = $("#memberPw").val();
-        let rePw = $("#memberRePw").val();
-
-        if (pw == "" && rePw == "") {
-            $("#pwCheck-box").html("비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야 합니다.");
-        } else if (pw == rePw) {
-            $("#pwCheck-box").html("비밀번호 일치")
-            			.css({"color": "#2563eb", "display": "block", "margin-top": "10px", "font-size": "14px"});
-        } else {
-            $("#pwCheck-box").html("비밀번호 불일치")
-            			.css({"color": "#ff0000", "display": "block", "margin-top": "10px", "font-size": "14px"});
+    } else {
+        // 개인일 때만 생년월일 및 성별 체크
+        if (!/^([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/.test($("#rrn_front").val())) {
+            alert("생년월일 형식이 올바르지 않습니다. (예: 950101)");
+            $("#rrn_front").focus();
+            return false;
         }
-    });
-	
-	
-</script>
+        if (!/^[1-4]{1}$/.test($("#rrn_back").val())) {
+            alert("성별 코드가 올바르지 않습니다. (1~4 사이의 숫자 1자리)");
+            $("#rrn_back").focus();
+            return false;
+        }
+    }
+
+    // 7. 이메일 체크
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test($("#email").val())) {
+        alert("올바른 이메일 주소 형식이 아닙니다.");
+        $("#email").focus();
+        return false;
+    }
+
+    return true; // 모든 검사 통과 시 전송
+});
+	</script>
 
 </body>
 </html>

@@ -51,12 +51,12 @@ public class MembersDAO {
 		return jdbc.queryForObject(sql, Integer.class, id);
 	}
 
-	public void signup(MembersDTO dto) {
+	public int signup(MembersDTO dto) {
 		if(dto.getType().equals("개인")) {
 			String sql = "INSERT INTO members (id, pw, name, nickname, phone, email, type, rrn, join_date) "
 		               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
 		               
-		    jdbc.update(sql, 
+		    return jdbc.update(sql,
 		        dto.getId(), 
 		        dto.getPw(),
 		        dto.getName(), 
@@ -70,7 +70,7 @@ public class MembersDAO {
 			String sql = "INSERT INTO members (id, pw, name, nickname, phone, email, type, rrn, business_number, join_date) "
 		               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, sysdate)";
 		               
-		    jdbc.update(sql, 
+			return jdbc.update(sql, 
 		        dto.getId(), 
 		        dto.getPw(),
 		        dto.getName(), 
