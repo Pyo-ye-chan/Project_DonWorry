@@ -38,13 +38,16 @@ public class MembersController {
 	}
 	
 	@RequestMapping("/login")
-	public String login(String id, String pw,HttpSession session) {
+	public String login(String id, String pw,HttpSession session,RedirectAttributes rttr) {
 		
 		boolean result = dao.login(id,eu.getSha512(pw));
 		if(result) {	
 			session.setAttribute("loginId",id);
 			session.setAttribute("nickName", dao.getNickname(id));	
 			session.setAttribute("type", dao.getType(id));
+		}else {
+			rttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:/members/toLogin";
 		}
 		return "redirect:/";
 	}

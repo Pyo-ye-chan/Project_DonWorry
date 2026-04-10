@@ -450,6 +450,9 @@
         .btn-sm-delete:hover {
             background: #ffe4e6;
         }
+        td{
+        word-break: break-all;
+        }
     </style>
 </head>
 <body>

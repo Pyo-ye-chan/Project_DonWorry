@@ -116,52 +116,98 @@
 
 
         /* [3] 상단바 스타일 (보내주신 원본과 100% 일치) */
-        .top-auth {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 15px;
-            padding: 8px 0;
-        }
+        /* [1] 상단 인증/알림 바 (로그인, 로그아웃, 환영 메시지 등) */
+.top-auth {
+    display: flex;
+    justify-content: flex-end; /* 우측 정렬 */
+    align-items: center;
+    gap: 15px;
+    padding: 8px 0;
+}
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
+.top-auth a {
+    text-decoration: none;
+    color: black;
+}
 
-        .logo {
-            color: #2563eb;
-            font-weight: 800;
-            font-size: 20px;
-            text-decoration: none;
-        }
+/* 로그아웃 버튼 스타일 */
+.logout-btn { 
+    width: 60px;
+    height: 30px;
+    background-color: #ffffff; 
+    color: #868e96;
+    border: 1px solid #dee2e6; 
+    border-radius: 6px; 
+    font-size: 13px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
 
-        .nav-menu {
-            display: flex;
-            gap: 40px;
-        }
+.logout-btn:hover { 
+    background-color: #f8f9fa;
+    color: #495057;
+    border-color: #ced4da;
+}
 
-        .nav-menu a {
-            text-decoration: none;
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-        }
+/* 권한 표시 배지 (관리자, 사업자, 개인) */
+.now-admin, .now-business, .now-personal {
+    width: 60px;
+    height: 30px;
+    background-color: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: none;           
+    font-size: 13px;
+    cursor: pointer;
+}
 
-        .my-page {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
+/* [2] 메인 네비게이션 바 (로고 + 메뉴) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.logo {
+    color: #2563eb;
+    font-weight: 800;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 40px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nav-menu a.active { 
+    color: #2563eb; 
+}
+
+/* 마이페이지 버튼 */
+.my-page {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 10px; 
+    cursor: pointer;
+}
 
         .nav-menu a.active {
             color: #2563eb;
@@ -634,16 +680,16 @@
         <c:choose>
             <c:when test="${nickName==null}">
                 <div class="top-auth">
-                    <span style="font-size: 13px; color: #666; cursor: pointer;">
+                    <span style="font-size: 13px; color: #666; cursor: pointer; margin-right:10px;">
                         <a href="/members/toLogin" style="text-decoration: none; color:black">
                             <i class="fa-regular fa-user fa-lg"
                                 style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
                         </a>
                     </span>
-                    <!-- 일단 관리자 빼고 다 숨겨둠 -->
+                    <!-- 일단 관리자 빼고 다 숨겨둠 
                     <a href="/admin/admin_main" style="text-decoration:none;">
                         <div class="now-admin">관리자</div>
-                    </a>
+                    </a>-->
                 </div>
             </c:when>
             <c:otherwise>
