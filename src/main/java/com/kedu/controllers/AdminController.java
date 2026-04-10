@@ -182,7 +182,7 @@ public class AdminController {
 	
 	/* 관리자 - 게시물 관리 */
 	@RequestMapping("/admin_boards")
-	public String adminBoards(Integer page,Integer rPage, String keyword,String category, Model model) {
+	public String adminBoards(Integer page,Integer rPage, String keyword, String rKeyword,String category, Model model) {
 		//일반 게시글
 		if(category == null)
 			category = "all";
@@ -199,8 +199,8 @@ public class AdminController {
 		int reportEnd = rPage * 5;
 		
 		// 신고 게시글만 목록
-	    List<BoardsDTO> admin_report_boardList = adao.admin_report_boardList_paging(reportStart, reportEnd);
-	    int reportTotalCount = adao.getReportTotalCount();
+	    List<BoardsDTO> admin_report_boardList = adao.admin_report_boardList(reportStart, reportEnd, rKeyword);
+	    int reportTotalCount = adao.getReportTotalCount(rKeyword);
 	    
 		//오늘 신규 게시글 카운트
 		int getRecordCountToday = adao.getRecordCountToday();
@@ -239,6 +239,7 @@ public class AdminController {
 		model.addAttribute("replyCount",replyCount);
 		model.addAttribute("category",category);
 		model.addAttribute("keyword",keyword);
+		model.addAttribute("rKeyword", rKeyword);
 		return "admin/admin_boards";
 	}
 

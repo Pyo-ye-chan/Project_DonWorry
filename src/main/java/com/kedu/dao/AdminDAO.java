@@ -127,13 +127,24 @@ public class AdminDAO {
 	}
 	
 	// 신고된 게시글 총 개수 조회 (신고가 1건이라도 있는 게시글 수)
-	public int getReportTotalCount() {
-	    String sql = "SELECT COUNT(DISTINCT boards_seq) FROM report";
-	    return jdbc.queryForObject(sql, Integer.class);
+	public int getReportTotalCount(String rKeyword) {
+	    String sql = "SELECT COUNT(DISTINCT b.seq) "
+	               + "FROM boards b "
+	               + "JOIN members m ON b.member_id = m.id "
+	               + "JOIN report rp ON b.seq = rp.boards_seq";
+
+	    if (rKeyword != null && !rKeyword.trim().isEmpty()) {
+	        // 검색어가 있을 때
+	        sql += " WHERE m.nickname LIKE ?";
+	        return jdbc.queryForObject(sql, Integer.class, "%" + rKeyword + "%");
+	    } else {
+	        // 검색어가 없을 때
+	        return jdbc.queryForObject(sql, Integer.class);
+	    }
 	}
 
 	// 신고된 게시글 목록 조회 (페이징 + LISTAGG 포함)
-	public List<BoardsDTO> admin_report_boardList_paging(int start, int end) {
+	public List<BoardsDTO> admin_report_boardList(int start, int end, String keyword) {
 	    String sql = "SELECT * FROM ( "
 	               + "    SELECT "
 	               + "        b.seq, b.title, m.nickname AS member_id, "
@@ -143,29 +154,23 @@ public class AdminDAO {
 	               + "        ROW_NUMBER() OVER(ORDER BY b.seq DESC) AS rn "
 	               + "    FROM boards b "
 	               + "    JOIN members m ON b.member_id = m.id "
-	               + "    JOIN report rp ON b.seq = rp.boards_seq "
-	               + "    GROUP BY b.seq, b.title, m.nickname, b.write_date, b.category "
-	               + ") WHERE rn BETWEEN ? AND ?";
-	    
-	    return jdbc.query(sql, new BeanPropertyRowMapper<>(BoardsDTO.class), start, end);
+	               + "    JOIN report rp ON b.seq = rp.boards_seq ";
+
+	 // 검색어가 있을 때 WHERE 절 추가
+	    if (keyword != null && !keyword.isEmpty()) {
+	        sql += " WHERE m.nickname LIKE ? ";
+	    }
+
+	    sql += "    GROUP BY b.seq, b.title, m.nickname, b.write_date, b.category "
+	         + ") WHERE rn BETWEEN ? AND ?";
+
+	    if (keyword != null && !keyword.isEmpty()) {
+	        return jdbc.query(sql, new BeanPropertyRowMapper<>(BoardsDTO.class), "%" + keyword + "%", start, end);
+	    } else {
+	        return jdbc.query(sql, new BeanPropertyRowMapper<>(BoardsDTO.class), start, end);
+	    }  
 	}
-	
-	//신고 게시글 가져와야함
-	public List<BoardsDTO> admin_report_boardList() {
-	    String sql = "SELECT "
-	               + "    b.seq, b.title, m.nickname AS member_id, "
-	               + "    b.write_date, "
-	               + "    COUNT(rp.seq) AS report_count, "
-	               + "    LISTAGG(rp.reason, ', ') WITHIN GROUP (ORDER BY rp.seq) AS reason "
-	               + "FROM boards b "
-	               + "JOIN members m ON b.member_id = m.id " // 게시글 작성자 ID로 닉네임 조인
-	               + "JOIN report rp ON b.seq = rp.boards_seq " // 게시글 신고는 보통 board_seq 컬럼 사용
-	               + "GROUP BY b.seq, b.title, m.nickname, b.write_date "
-	               + "HAVING COUNT(rp.seq) > 0 "
-	               + "ORDER BY b.seq DESC";
-	    
-	    return jdbc.query(sql, new BeanPropertyRowMapper<>(BoardsDTO.class));
-	}
+
 
 	//공지글만 가져옴
 	public List<BoardsDTO> adminNoticeList(){

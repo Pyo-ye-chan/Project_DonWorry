@@ -572,9 +572,9 @@ body {
             </div>
 
             <div class="filter-row">
-                <input type="text" name="keyword" placeholder="작성자 검색" class="keyword">
-                <button class="btn-blue board-search-btn" type="button">검색</button>
-                <button class="btn-blue board-all-btn" type="button">전체</button>
+                <input type="text" name="keyword" placeholder="작성자 검색" class="report-keyword">
+                <button class="btn-blue board-report-search-btn" type="button">검색</button>
+                <button class="btn-blue board-report-all-btn" type="button">전체</button>
             </div>
 
             <table class="admin-table board-report">
@@ -771,7 +771,6 @@ body {
 	});
 	
 //====================신고게시글=======================//
-	
  	let rTotalCount = ${rTotalCount}; //신고글 총 개수
 	let rCurrentPage = ${rCurrentPage}; // 신고 현재 페이지
 	let rRecordCountPerPage = 5; // 한 페이지당 5개
@@ -821,11 +820,37 @@ body {
 		report_navi.append(btn);
 	}
 	
+	// 신고 게시글 검색 버튼 클릭
+	$(".board-report-search-btn").on("click", function() {
+	    let rKeyword = $(".report-keyword").val(); // 같은 부모(filter-row) 안의 input 값 가져오기
+	    
+	 // URL 생성: 일반 게시글 페이지(page)는 유지하고, 신고 게시글 페이지(rPage)만 1로 리셋
+	    let url = "/admin/admin_boards?page=${currentPage}&rPage=1";
+	    
+	    if(rKeyword) {
+	        url += "&rKeyword=" + encodeURIComponent(rKeyword);
+	    }
+	    
+	    location.href = url;
+	});
+
+	// 신고 게시글 전체 버튼 클릭
+	$(".board-report-all-btn").on("click", function() {
+	    // 모든 검색 조건 초기화하여 이동
+	    location.href = "/admin/admin_boards?page=1&rPage=1&keyword=";
+	});
+	
 	// 신고 전용 URL 생성 함수
 	function getReportPageUrl(targetRPage) {
 	    // 일반 게시글의 현재 페이지(${currentPage})를 같이 보내야 상단 목록이 유지됨
 	    let url = "/admin/admin_boards?page=${currentPage}&rPage=" + targetRPage;
 	    url += "&category=${category}&keyword=" + encodeURIComponent("${keyword}");
+	 // 현재 주소창에 rKeyword가 있다면 그것을 유지, 없다면 JSP 전달값 사용
+	    let currentRKeyword = $(".report-keyword").val() || "${rKeyword}"; 
+	    
+	    if (currentRKeyword) {
+	        url += "&rKeyword=" + encodeURIComponent(currentRKeyword);
+	    }
 	    return url;
 	}
  
