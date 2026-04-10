@@ -177,16 +177,16 @@ public class JobPostDAO {
                    + "VALUES (job_post_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
         
         // String으로 넘어온다면 Integer로 파싱해서 체크 (DTO 필드 타입에 따라 맞춰주세요)
-        int startTime = Integer.parseInt(dto.getWork_starttime());
-        int endTime = Integer.parseInt(dto.getWork_endtime());
+//        int startTime = Integer.parseInt(dto.getWork_starttime());
+//        int endTime = Integer.parseInt(dto.getWork_endtime());
         
-//        String[] startArr = dto.getWork_starttime().split(":"); // 수정본
-//        int startTime = Integer.parseInt(startArr[0]) * 60 
-//                      + Integer.parseInt(startArr[1]);
-//
-//        String[] endArr = dto.getWork_endtime().split(":");
-//        int endTime = Integer.parseInt(endArr[0]) * 60 
-//                    + Integer.parseInt(endArr[1]);
+        String[] startArr = dto.getWork_starttime().split(":"); // 수정본
+        int startTime = Integer.parseInt(startArr[0]) * 60 
+                      + Integer.parseInt(startArr[1]);
+
+        String[] endArr = dto.getWork_endtime().split(":");
+        int endTime = Integer.parseInt(endArr[0]) * 60 
+                    + Integer.parseInt(endArr[1]);
 
         
         // 종료 시간이 0(자정)이라면 1440으로 변경해서 DB 정합성 유지
@@ -281,6 +281,11 @@ public class JobPostDAO {
     			dto.getTitle(), dto.getPay(), dto.getWork_days(), startTime,
     			endTime, dto.getMain_category(), dto.getSub_category(),
     			dto.getContent(), dto.getBenefit(), dto.getSeq());
+    }
+    
+    public void deletePost(int seq) {
+    	String sql = "delete from job_post where seq=?";
+    	jdbc.update(sql,seq);
     }
     
     

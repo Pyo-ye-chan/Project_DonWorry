@@ -370,6 +370,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+	min-width: 0;
 }
 
 .job-title-row {
@@ -382,6 +383,12 @@ body {
 	font-size: 20px;
 	font-weight: 700;
 	color: #333;
+	display: block;           /* 말줄임표를 위해 필요 */
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 .job-badge {
@@ -390,6 +397,8 @@ body {
 	padding: 2px 8px;
 	border-radius: 4px;
 	font-size: 12px;
+	white-space: nowrap;
+	width: fit-content;
 }
 
 .job-meta-row {
@@ -577,6 +586,13 @@ body {
 	border-color: #2563eb;
 	font-weight: 700;
 }
+
+img{
+        max-width: 100%;    /* 부모 너비를 넘지 않음 */
+    height: auto;       /* 비율 유지 */
+    display: block;     /* 하단 여백 제거 */
+    margin: 10px 0;    /* 이미지 위아래 여백 */
+        }
 </style>
 </head>
 <body>
@@ -832,7 +848,7 @@ body {
 						<span class="job-badge">${post.work_days}</span>
 					</div>
 					<div class="company-name">${post.company_name}</div>
-					<div class="job-desc">${post.content}</div>
+<%-- 					<div class="job-desc">${post.content}</div> --%>
 
 					<div class="job-meta-row">
 						<div class="meta-item">

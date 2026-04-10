@@ -154,6 +154,13 @@ public class JobPostController {
 		model.addAttribute("page", page);
 		return "jobpost/jobdetail";
 	}
+	
+	@RequestMapping("/delete")
+	public String delete(int seq) {
+
+	        dao.deletePost(seq);
+	        return "redirect:/jobposts/jobpost";
+	}
 
 
 }
