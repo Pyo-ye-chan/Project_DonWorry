@@ -60,6 +60,17 @@ body {
 	font-size: 13px;
 	transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
 }
+.now-admin{
+    width: 60px;
+    height: 30px;
+    background: #2563eb;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 13px;
+}
 
 .logout-btn:hover {
 	width: 60px;
@@ -490,7 +501,13 @@ body {
 
 			</section>
 		</main>
+	
+		
 	</div>
+		 <div class="container-footer">
+     <p>© 2026 돈워리. All rights reserved.</p>
+     <p style="margin-top:10px; font-size:11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
+     </div>
 
 	<script>
         // 공통 페이지 이동 함수 (필터 정보 유지)
