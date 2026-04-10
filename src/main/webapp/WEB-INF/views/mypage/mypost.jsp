@@ -326,6 +326,7 @@ body {
 	font-weight: 800;
 	color: #222;
 	margin-bottom: 8px;
+	word-break: break-all;
 }
 
 .post-meta {
@@ -338,6 +339,7 @@ body {
 	color: #495057;
 	margin: 18px 0 20px;
 	line-height: 1.7;
+	word-break: break-all;
 }
 
 .post-info-row {
@@ -461,6 +463,12 @@ body {
 		flex-wrap: wrap;
 	}
 }
+img{
+        max-width: 100%;    /* 부모 너비를 넘지 않음 */
+    height: auto;       /* 비율 유지 */
+    display: block;     /* 하단 여백 제거 */
+    margin: 10px 0;    /* 이미지 위아래 여백 */
+        }
 </style>
 </head>
 <body>

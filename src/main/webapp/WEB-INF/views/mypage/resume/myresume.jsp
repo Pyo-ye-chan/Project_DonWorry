@@ -268,6 +268,7 @@ body {
 	width: 100%;
 	transition: all 0.2s ease;
 	cursor: pointer;
+	word-break: break-all;
 	
 }
 

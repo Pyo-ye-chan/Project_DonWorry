@@ -14,6 +14,7 @@
 	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <script
 	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
 <style>
 /* [1] 원본 초기화 및 레이아웃 유지 */
 * {
@@ -315,6 +316,24 @@ textarea {
     margin-bottom: 20px;
     gap: 20px;
 }
+
+/* 본문 */
+        .detail-content {
+            margin-top: 30px;
+            font-size: 17px;
+            /* 기존 15 → 크게 */
+            line-height: 1.9;
+            /* 가독성 핵심 */
+            color: #333;
+            min-height: 300px;
+            word-break: break-all;
+        }
+        .detail-content img{
+        max-width: 100%;    /* 부모 너비를 넘지 않음 */
+    height: auto;       /* 비율 유지 */
+    display: block;     /* 하단 여백 제거 */
+    margin: 10px 0;    /* 이미지 위아래 여백 */
+        }
 </style>
 </head>
 <body>

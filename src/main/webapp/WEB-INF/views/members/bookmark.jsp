@@ -267,6 +267,7 @@ body {
 	margin-bottom: 20px;
 	width: 100%;
 	transition: all 0.2s ease;
+	word-break: break-all;
 }
 
 .post-card:hover {

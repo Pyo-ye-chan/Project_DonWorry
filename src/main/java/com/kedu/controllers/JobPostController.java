@@ -47,7 +47,7 @@ public class JobPostController {
 
 		// 한 페이지에 7개씩 보여주기로 했으니까!
 		int recordCountPerPage = 7; 
-		int naviCountPerPage = 7;
+		int naviCountPerPage = 10;
 
 		int start = page * recordCountPerPage - (recordCountPerPage - 1);
 		int end = page * recordCountPerPage;
@@ -153,6 +153,13 @@ public class JobPostController {
 		model.addAttribute("post", post);
 		model.addAttribute("page", page);
 		return "jobpost/jobdetail";
+	}
+	
+	@RequestMapping("/delete")
+	public String delete(int seq) {
+
+	        dao.deletePost(seq);
+	        return "redirect:/jobposts/jobpost";
 	}
 
 

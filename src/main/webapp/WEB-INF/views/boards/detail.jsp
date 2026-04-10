@@ -220,6 +220,7 @@
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.4;
+            word-break: break-all;
         }
 
         /* 작성 정보 */
@@ -242,6 +243,7 @@
             /* 가독성 핵심 */
             color: #333;
             min-height: 300px;
+            word-break: break-all;
         }
         .detail-content img{
         max-width: 100%;    /* 부모 너비를 넘지 않음 */
@@ -370,6 +372,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            word-break: break-all;
         }
 
         /* 댓글 */
@@ -767,9 +770,9 @@
 
             <!-- 버튼 -->
             <div class="detail-actions">
-                <button type="button" onclick="location.href=document.referrer">목록</button>
+                <button type="button" class ="list-btn">목록</button>
                 <c:if test="${loginId == board_writer }">
-                    <button onclick="location.href='/boards/toUpdate?seq=${dto.seq}'">수정</button>
+                    <button type="button" onclick="location.href='/boards/toUpdate?seq=${dto.seq}&from=${param.from}'">수정</button>
                     <button type="button" class="boards-delete-btn">삭제</button>
                 </c:if>
             </div>
@@ -867,6 +870,28 @@
          $(document).ready(function(){
         	 
         	    getReplyList();
+        	 // [목록] 버튼 클릭 이벤트
+        	    $(".list-btn").on("click", function() {
+        	        // 1. URL 파라미터에 'from'이 있는지 확인 (수정을 거쳐온 경우)
+        	        const urlParams = new URLSearchParams(window.location.search);
+        	        const fromUrl = urlParams.get('from');
+
+        	        if (fromUrl && fromUrl !== "") {
+        	            // 파라미터가 있다면 해당 주소로 이동 (디코딩은 브라우저가 자동으로 처리)
+        	            location.href = fromUrl;
+        	        } else {
+        	            // 2. 파라미터가 없다면 document.referrer(이전 페이지) 활용
+        	            const ref = document.referrer;
+        	            
+        	            // referrer가 존재하고, 현재 상세 페이지 주소와 다르며, 수정 관련 주소가 아닐 때만 작동
+        	            if (ref && ref !== "" && !ref.includes('/toUpdate') && !ref.includes('/detail')) {
+        	                location.href = ref;
+        	            } else {
+        	                // 3. 위 조건이 모두 해당 안 될 경우의 기본 목록 주소
+        	                location.href = "/boards/mainboard_list?page=1";
+        	            }
+        	        }
+        	    });
         	});
          
          function appendReplyList(list){
@@ -1168,6 +1193,8 @@
         	        }
         	    });
         	}
+        
+         
      </script>
 </body>
 </html>

@@ -384,6 +384,7 @@
 
         <form action="/boards/update" method="post" id = "frm" enctype="multipart/form-data">
         <input type="hidden" value ="${dto.seq }" name ="seq">
+        <input type="hidden" value ="${from }" name ="from">
         	
     		<!-- 카테고리 -->
 			<div class="input-group">
@@ -446,7 +447,7 @@
 
             <!-- 버튼 영역 -->
             <div class="btn-group">
-                <button type="button" class="cancel-btn" onclick="location.href='/boards/detail?seq=${dto.seq}'">취소</button>
+                <button type="button" class="cancel-btn" onclick="location.href='/boards/detail?seq=${dto.seq}&$from=${from }'">취소</button>
                 <button type="submit" class="submit-btn">수정완료</button>
             </div>
 

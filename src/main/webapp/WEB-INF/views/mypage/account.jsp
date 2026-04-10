@@ -597,6 +597,12 @@
                 alert("비밀번호가 일치하지 않습니다.");
                 return false;
             }
+            // 2. 비밀번호 체크
+            if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{4,16}$/.test($("#newPw").val())) {
+                alert("비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩 포함된 4~16자여야 합니다.");
+                $("#memberPw").focus();
+                return false;
+            }
         })
         var alertMsg = "${msg}";
 

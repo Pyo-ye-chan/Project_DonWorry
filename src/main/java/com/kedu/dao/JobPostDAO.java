@@ -176,7 +176,8 @@ public class JobPostDAO {
         String sql = "INSERT INTO job_post (seq, member_id, company_name, phone, sido, gugun, dong, address_detail, count, title, pay, work_days, work_starttime, work_endtime, main_category, sub_category, content, benefit, write_date) "
                    + "VALUES (job_post_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
         
-//        // String으로 넘어온다면 Integer로 파싱해서 체크 (DTO 필드 타입에 따라 맞춰주세요)
+
+//        String으로 넘어온다면 Integer로 파싱해서 체크 (DTO 필드 타입에 따라 맞춰주세요)
 //        int startTime = Integer.parseInt(dto.getWork_starttime());
 //        int endTime = Integer.parseInt(dto.getWork_endtime());
         
@@ -281,6 +282,11 @@ public class JobPostDAO {
     			dto.getTitle(), dto.getPay(), dto.getWork_days(), startTime,
     			endTime, dto.getMain_category(), dto.getSub_category(),
     			dto.getContent(), dto.getBenefit(), dto.getSeq());
+    }
+    
+    public void deletePost(int seq) {
+    	String sql = "delete from job_post where seq=?";
+    	jdbc.update(sql,seq);
     }
     
     

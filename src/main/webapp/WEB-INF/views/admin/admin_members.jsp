@@ -13,11 +13,11 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
-/* 기존 스타일 유지 (가로 스크롤 방지 포함) */
 * {
 	margin: 0;
 	padding: 0;
@@ -26,14 +26,13 @@
 
 body {
 	font-family: 'Pretendard', sans-serif;
-	background: #fff;
+	background: #f8fbff;
 	color: #333;
 	line-height: 1.6;
-	overflow-x: hidden;
 }
 
 .container {
-	max-width: 1100px;
+	max-width: 1240px;
 	margin: 0 auto;
 	padding: 0 20px;
 }
@@ -43,49 +42,56 @@ body {
 	justify-content: flex-end;
 	align-items: center;
 	gap: 15px;
-	padding: 8px 0;
+	padding: 10px 0;
 }
 
 .navbar {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 20px 0;
-	border-bottom: 1px solid #f0f0f0;
+	padding: 20px 0 22px;
+	border-bottom: 1px solid #e8eef7;
 }
 
 .logo {
 	color: #2563eb;
 	font-weight: 800;
-	font-size: 20px;
+	font-size: 22px;
 	text-decoration: none;
 }
 
 .nav-menu {
 	display: flex;
-	gap: 40px;
+	gap: 34px;
+	align-items: center;
 }
 
 .nav-menu a {
 	text-decoration: none;
-	color: #666;
+	color: #64748b;
 	font-size: 14px;
-	font-weight: 500;
+	font-weight: 600;
+	transition: .2s;
 }
 
-.nav-menu a.active {
+.nav-menu a:hover, .nav-menu a.active {
 	color: #2563eb;
 }
 
 .logout-btn {
-	width: 60px;
-	height: 30px;
-	background-color: #ffffff;
-	color: #868e96;
-	border: 1px solid #dee2e6;
-	border-radius: 6px;
+	width: 72px;
+	height: 34px;
+	background: #fff;
+	color: #64748b;
+	border: 1px solid #d9e2ec;
+	border-radius: 8px;
 	font-size: 13px;
-	cursor: pointer;
+	transition: .2s;
+}
+
+.logout-btn:hover {
+	background: #f8fafc;
+	color: #334155;
 }
 
 .admin-page {
@@ -102,9 +108,9 @@ body {
 }
 
 .page-title h2 {
-	font-size: 28px;
+	font-size: 32px;
 	font-weight: 800;
-	color: #1e293b;
+	color: #0f172a;
 	margin-bottom: 6px;
 }
 
@@ -293,23 +299,38 @@ body {
 		<div class="top-auth">
 			<span style="font-size: 13px; color: #666;"> <i
 				class="fa-regular fa-user fa-lg"
-				style="color: #cbcbcb; margin-right: 5px;"></i> ${nickName}님 환영합니다.
-				<a href="/members/logout"><button class="logout-btn"
-						style="margin-left: 10px;">로그아웃</button></a>
+				style="color: #cbd5e1; margin-right: 5px;"></i> ${nickName}님 환영합니다.
+				<a href="/members/logout"
+				style="text-decoration: none; color: black;">
+					<button class="logout-btn" type="button" style="margin-left: 10px;">로그아웃</button>
+			</a>
 			</span>
+
+			<c:if test="${type == '관리자'}">
+				<a href="/admin/admin_main" style="text-decoration: none;">
+					<div class="now-admin">관리자</div>
+				</a>
+			</c:if>
 		</div>
 
 		<nav class="navbar">
 			<div style="display: flex; align-items: center; gap: 40px;">
 				<a href="/" class="logo">돈워리</a>
+
 				<div class="nav-menu">
-					<a href="/admin/admin_main"><i class="fa-solid fa-wrench fa-lg"></i>
-						관리자 대시보드</a> <a href="/admin/admin_boards"><i
-						class="fa-solid fa-file-pen fa-lg"></i> 게시물 관리</a> <a
-						href="/admin/admin_members" class="active"><i
-						class="fa-solid fa-user-shield fa-lg"></i> 회원 관리</a> <a
-						href="/admin/admin_inquiry"><i
-						class="fa-regular fa-circle-question fa-lg"></i> Q&A 관리</a>
+					<a href="/admin/admin_main" class="active"> <i
+						class="fa-solid fa-wrench fa-lg" style="margin-right: 6px;"></i>
+						관리자 대시보드
+					</a> <a href="/admin/admin_boards?page=1"> <i
+						class="fa-solid fa-file-pen fa-lg"
+						style="color: #c5c5c5; margin-right: 6px;"></i> 게시물 관리
+					</a> <a href="/admin/admin_members"> <i
+						class="fa-solid fa-user-shield fa-lg"
+						style="color: #c5c5c5; margin-right: 6px;"></i> 회원 관리
+					</a> <a href="/admin/admin_inquiry"> <i
+						class="fa-regular fa-circle-question fa-lg"
+						style="color: #c5c5c5; margin-right: 6px;"></i> Q&A 관리
+					</a>
 				</div>
 			</div>
 		</nav>

@@ -278,19 +278,33 @@
 
         /* 각 텍스트 항목 공통 스타일 */
         .job-item-info > div, 
-        .job-item-info > span {
-            flex: 1;            /* 모든 항목이 동일 너비 */
-            font-size: 14px;
-            color: #333;
-            text-align: left;   /* 왼 정렬 */
-        }
-        /* 시급(마지막 항목) 강조 */
-        .job-pay {
-            flex: 1;
-            text-align: right;  /* 시급만 오른쪽 정렬 */
-            font-weight: 700;
-            color: #2563eb;
-        }
+.job-item-info > span {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    
+    /* --- 말줄임표 처리를 위한 핵심 추가 속성 --- */
+    white-space: nowrap;      /* 줄바꿈 방지 */
+    overflow: hidden;         /* 영역 밖 숨김 */
+    text-overflow: ellipsis;  /* 넘치는 부분 ... 처리 */
+    min-width: 0;             /* flex 아이템에서 말줄임이 작동하기 위한 필수 조건 */
+}
+
+/* 상호명에 좀 더 여유 공간을 주고 싶다면 flex 비율을 조정할 수 있습니다 */
+.job-item-info .item-name {
+    flex: 1.5;               /* 다른 항목보다 조금 더 넓게 배정 */
+    font-weight: 700;
+}
+
+.job-pay {
+    flex: 1;
+    text-align: right;
+    font-weight: 700;
+    color: #2563eb;
+    /* 시급은 숫자가 중요하므로 말줄임에서 제외하거나 충분한 너비 확보 */
+    overflow: visible !important; 
+}
         .job-pay-label {
             font-weight: normal;
             color: #666;
@@ -318,6 +332,7 @@
             display: flex;
             justify-content: space-between; /* 왼쪽 텍스트와 오른쪽 시급을 양끝으로 */
             align-items: flex-end;         /* 아래쪽 기준으로 정렬 */
+            
         }
 
         /* 게시물 왼쪽 정보 (이름, 역할 등) */
@@ -333,6 +348,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            width: 100%;             /* 부모 너비를 꽉 채우도록 설정 */
+    		overflow: hidden;        /* 자식 요소의 말줄임이 작동하도록 설정 */
+    		justify-content: space-between; /* 추가: 양 끝 정렬 */
         }
 
         .item-name {
@@ -342,19 +360,28 @@
 
         /* 상태 태그 (근무중, 퇴사 등) */
         .status-tag {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
+		    flex-shrink: 0; /* 추가: 태그가 찌그러지지 않도록 설정 */
+		    font-size: 11px;
+		    padding: 2px 8px;
+		    border-radius: 4px;
+		    font-weight: bold;
+		    white-space: nowrap; /* 추가: 태그 안 글자 줄바꿈 방지 */
+		}
         .status-freeboard { background-color:#cff7ef; color: #179791; } /* 초록색 */
         .status-reviewboard{ background-color: #cfe5ff; color: #185fb0; }
 		.status-qnaboard{ background-color: #ffb2b7; color: #a91620;}
 
         .contents-title {
-            font-size: 17px;
-            color: #252525;
-        }
+		    font-size: 17px;
+		    color: #252525;
+		    display: inline-block;
+		    /* 제목이 너무 길어서 태그를 침범하지 않도록 너비 조정 */
+		    max-width: calc(100% - 100px); 
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    vertical-align: middle;
+		}
         .writer{
             font-size: 14px;
             color: #888;
@@ -419,6 +446,52 @@
             width: 100vw;                  /* 화면 끝까지 너비 확장 */
             margin-left: calc(-50vw + 50%); /* 컨테이너를 벗어나 화면 꽉 채우기 */
         }
+        /* 모달 배경을 투명하게 바꾸고 크기를 최소화 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    /* 위치 조절: 우측 하단에 배치 */
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+    height: auto;
+    background-color: transparent; /* 어두운 배경 제거 */
+}
+
+
+/* 2. 이미지는 무조건 팝업 박스 너비에 맞춤 */
+.popup-img {
+    width: 100%;         /* 부모인 .modal-content 너비(300px)에 꽉 맞춤 */
+    height: auto;        /* 세로 비율은 이미지에 맞게 자동 조절 */
+    display: block;
+    object-fit: cover;   /* 비율이 깨지지 않게 꽉 채움 */
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between; /* 양 끝 정렬 핵심 */
+    align-items: center;
+    padding: 10px 15px;
+    background: #f8f9fa;
+    font-size: 13px;
+    color: #333;
+    border-top: 1px solid #eee;
+}
+
+#close-text-btn:hover {
+    color: #2563eb; /* 마우스 올렸을 때 브랜드 컬러로 강조 */
+}
+
+/* 팝업 박스 크기 고정 */
+.modal-content {
+    width: 300px; 
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
+}
     </style>
 </head>
 
@@ -484,7 +557,7 @@
             </div>           
         </div>
         <c:if test="${nickName==null }">   
-	        <a class="my-page" href="members/toLogin"> 
+	        <a class="my-page" href="/members/toLogin"> 
 	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
 	            마이페이지
 	        </a>  
@@ -514,7 +587,7 @@
 <c:when test="${nickName==null }">
 <div class="summary-grid">
         <div class="card">
-            <a href="members/toLogin" style="text-decoration: none; ">
+            <a href="/members/toLogin" style="text-decoration: none; ">
             <div class="card-title">🏪 편의점 알바</div>
             <div class="info-item"><span class="info-label">예상 급여</span><span class="info-val blue">1,245,000원</span></div>
             <div class="info-item"><span class="info-label">근무 일수</span><span class="info-val">16일</span></div>
@@ -581,7 +654,7 @@
     <div class="job-board">
     <c:forEach var="i" items="${jobList}">
         <div class="job-board-item">
-            <a href="/jobposts/jobdetail?seq=${i.seq}" class="job-item-info">
+            <a href="/jobposts/jobdetail?seq=${i.seq}&page=1" class="job-item-info">
                 <div class="item-name">${i.company_name}</div>
                 <div class="item-role">${i.main_category_name}</div>
                 <div class="item-loc">${i.sido}/${i.gugun}</div>
@@ -638,6 +711,62 @@
         <p>© 2026 돈워리. All rights reserved.</p>
         <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
 </div>
+<div id="image-modal" class="modal">
+    <div class="modal-content">
+        
+            <img src="/upload/popup-banner.jpg" alt="이벤트 배너" class="popup-img">
+        
 
+<script>
+$(function() {
+    let successMsg = "${joinSuccess}";
+    if (successMsg !== "") {
+        alert(successMsg);
+        location.href = "/members/toLogin";
+    }
+});
+</script>
+        <div class="modal-footer">
+            <label>
+                <input type="checkbox" id="today-check"> 오늘 하루 보지 않기
+            </label>
+            <span id="close-text-btn" style="cursor:pointer; font-weight:bold;">닫기</span>
+        </div>
+    </div>
+</div>
+<script>
+//쿠키 설정 함수
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+}
+
+// 쿠키 가져오기 함수
+function getCookie(name) {
+    const value = "; " + document.cookie;
+    const parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
+
+//ID 값을 새로 만든 텍스트 버튼으로 변경
+const closeTextBtn = document.getElementById('close-text-btn');
+const popup = document.getElementById('image-modal');
+
+window.onload = () => {
+    if (getCookie("hidePopup") !== "true") {
+        popup.style.display = 'block';
+    }
+};
+
+// 텍스트 버튼 클릭 시 동작
+closeTextBtn.onclick = () => {
+    if (document.getElementById('today-check').checked) {
+        setCookie("hidePopup", "true", 1);
+    }
+    popup.style.display = 'none';
+};
+</script>
 </body>
 </html>

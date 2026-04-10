@@ -237,8 +237,24 @@
 
         .admin-table {
             width: 100%;
+            table-layout: fixed; /* 컬럼 너비를 고정함 */
             border-collapse: collapse;
         }
+        /* [2] 제목 셀 말줄임 처리 스타일 */
+.ellipsis-cell {
+    white-space: nowrap;      /* 줄바꿈 금지 */
+    overflow: hidden;         /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis;  /* 넘치면 ... 표시 */
+    text-align: center; 
+    padding-left: 20px !important;
+}
+
+/* [3] 각 컬럼별 너비 지정 (합계 100% 혹은 px) */
+.col-seq { width: 80px; }
+.col-title { width: auto; } /* 제목이 남은 공간 다 차지 */
+.col-author { width: 120px; }
+.col-date { width: 150px; }
+.col-status { width: 120px; }
 
         .admin-table th,
         .admin-table td {
@@ -842,7 +858,7 @@ function renderTable(list) {
             html += `
             	<tr onclick="location.href='/admin/qnaDetail?seq=`+item.seq+`'" style="cursor:pointer;">
                     <td>`+item.seq+`</td>
-                    <td colspan="2">`+item.title+`</td>
+                    <td colspan="2" class="ellipsis-cell" title = item.title>`+item.title+`</td>
                     <td>`+item.member_id+`</td>
                     <td>`+item.write_date_str+`</td>
                     <td colspan="2">`;

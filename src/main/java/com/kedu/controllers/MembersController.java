@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.kedu.commons.EncryptionUtils;
@@ -72,12 +73,19 @@ public class MembersController {
 	}
 	
 	@RequestMapping("/signup")
-	public String signup(MembersDTO dto, String rrn_front, String rrn_back) {
+	public String signup(MembersDTO dto, String rrn_front, String rrn_back, RedirectAttributes rattr) {
 		dto.setRrn(rrn_front + "-" + rrn_back);
 		dto.setPw(eu.getSha512(dto.getPw()));
-		dao.signup(dto);
+		int result = dao.signup(dto);
 		
-		return "redirect:/";
+		if(result > 0) {
+			rattr.addFlashAttribute("joinSuccess", "회원가입이 완료되었습니다. 로그인창으로 이동합니다.");
+			return "redirect:/";
+		}else {
+			return "나중에 에러 JSP 넣기";
+		}
+		
+		
 	}
 	
 	@RequestMapping("/toPwSearch")

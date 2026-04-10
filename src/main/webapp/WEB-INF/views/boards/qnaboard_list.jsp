@@ -140,23 +140,49 @@
             font-size: 14px;
         }
 
-        /* 배너 */
         .main-banner {
-            width: 100%;
-            height: 180px;
-            background-color: #000;
-            border-radius: 20px;
-            margin: 30px 0;
+    width: 100%;
+    height: auto; /* 이미지 비율 유지 */
+}
 
-            overflow: hidden;
-        }
+.swiper-slide img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* 이미지가 잘리지 않게 설정 */
+}
 
-        .main-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.8;
-        }
+/* 화살표 컨테이너 - 위치 정밀 조정 */
+.swiper-button-next, .swiper-button-prev {
+    background: none !important;
+    border: none !important;
+    
+    /* [핵심] 세로 정중앙 배치 공식 */
+    top: 50% !important;
+    transform: translateY(-50%) !important; 
+    
+    width: auto !important;
+    height: auto !important;
+    margin-top: 0 !important; /* 기본 Swiper 스타일 마진 제거 */
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+/* 화살표 아이콘 자체 스타일 */
+.swiper-button-next::after, .swiper-button-prev::after {
+    font-size: 30px !important; /* 가시성을 위해 크기를 조금 더 키움 */
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5) !important; /* 살짝 투명 */
+    text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3); /* 밝은 배경 대비 그림자 */
+}
+
+/* 호버 시 선명해짐 */
+.swiper-button-next:hover::after, .swiper-button-prev:hover::after {
+    color: rgba(255, 255, 255, 1) !important; /* 100% 불투명 */
+}
+
+/* 양쪽 벽에서의 간격 */
+.swiper-button-prev { left: 15px !important; }
+.swiper-button-next { right: 15px !important; }
 
         /* 탭 메뉴 */
         .tab-menu {
@@ -203,6 +229,7 @@
             margin-bottom: 20px;
             transition: transform 0.2s;
             cursor: pointer;
+            word-break: break-all;
         }
 
         .post-card:hover {
@@ -509,9 +536,31 @@
         </c:if>         
     </nav>
     
-    <div class="main-banner">
-            <img src="banner.png" alt="커뮤니티 이미지">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<div class="main-banner swiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="/upload/banner1.png" alt="청년지원금 안내">
         </div>
+        <div class="swiper-slide">
+            <img src="/upload/banner2.png" alt="급여 계산기">
+        </div>
+        <div class="swiper-slide">
+            <img src="/upload/banner3.png" alt="사업자 세무 가이드">
+        </div>
+        <div class="swiper-slide">
+            <img src="/upload/banner4.png" alt="사업자 세무 가이드">
+        </div>
+    </div>
+    
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    
+    <div class="swiper-pagination"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
         <nav class="tab-menu">
             <button class="tab-item" onclick = "location.href = '/boards/mainboard_list?page=1'">메인 게시판</button>                  
@@ -657,6 +706,28 @@ $(".floating-write-btn").on("click",function(){
 		        }
 		    });
 		}
+		const swiper = new Swiper('.swiper', {
+		    // 자동 재생 설정
+		    autoplay: {
+		        delay: 3000, // 3초마다 변경
+		        disableOnInteraction: false, // 사용자 클릭 후에도 자동 재생 유지
+		    },
+		    
+		    // 반복 재생
+		    loop: true,
+		    
+		    // 화살표 설정
+		    navigation: {
+		        nextEl: '.swiper-button-next',
+		        prevEl: '.swiper-button-prev',
+		    },
+		    
+		    // 하단 페이지 표시 점 설정
+		    pagination: {
+		        el: '.swiper-pagination',
+		        clickable: true,
+		    },
+		});
 </script>
 </body>
 </html>

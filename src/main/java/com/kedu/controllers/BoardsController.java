@@ -136,15 +136,16 @@ public class BoardsController {
 		}
 	}
 	@RequestMapping("/toUpdate")
-	public String toUpdate(int seq,Model model) {
+	public String toUpdate(int seq,Model model,String from) {
 		BoardsDTO dto = dao.detail(seq);
 		model.addAttribute("dto",dto);
 		List<FilesDTO> filesList = fdao.selectByParent_seq(seq);
 		model.addAttribute("filesList",filesList);
+		model.addAttribute("from",from);
 		return "boards/update";
 	}
 	@RequestMapping("/update")
-	public String update(BoardsDTO dto,MultipartFile[] files) {
+	public String update(BoardsDTO dto,MultipartFile[] files,String from) {
 		dao.update(dto);
 		
 		String savePath = "c:/files";
@@ -185,7 +186,7 @@ public class BoardsController {
 	        }
 	    }
 
-		return "redirect:/boards/detail?seq="+dto.getSeq();
+		return "redirect:/boards/detail?seq="+dto.getSeq()+"&from="+from;
 	}
 	@RequestMapping("/delete")
 	public String delete(int seq) {

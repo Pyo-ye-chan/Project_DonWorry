@@ -300,6 +300,7 @@
             display: flex;
             align-items: center;
             border: 1px solid #f1f5f9;
+            word-break: break-all;
         }
 
         .info-display.textarea {

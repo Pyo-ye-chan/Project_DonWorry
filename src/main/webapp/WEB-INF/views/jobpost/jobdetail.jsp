@@ -194,23 +194,39 @@ body {
 /* [2] 상단 헤더 섹션 */
 .detail-header {
 	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	padding-bottom: 30px;
-	border-bottom: 2px solid #333;
+    justify-content: space-between;
+    align-items: flex-start; /* flex-end에서 변경: 제목이 길어지면 위쪽 기준 정렬이 예쁨 */
+    padding-bottom: 30px;
+    border-bottom: 2px solid #333;
+    gap: 30px; /* 제목과 버튼 사이 최소 간격 확보 */
 }
 
 .header-left .company-name {
 	font-size: 18px;
 	color: #666;
 	margin-bottom: 10px;
+	word-break: break-all;
+}
+
+.header-left {
+    flex: 1; /* 남는 공간을 다 차지하되 버튼 영역은 침범 안 함 */
+    min-width: 0; /* 중요: 내부 텍스트가 길 때 flex 박스가 터지는 걸 방지 */
+}
+
+.header-right {
+    flex-shrink: 0; /* 중요: 버튼 영역이 좁아지지 않도록 고정 */
+    display: flex;
+    flex-direction: column; /* 버튼들을 세로로 배치 (이미지처럼) */
+    gap: 10px;
 }
 
 .header-left h1 {
-	font-size: 32px;
-	font-weight: 800;
-	color: #111;
-	margin-bottom: 15px;
+    font-size: 32px;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 15px;
+    word-break: break-all; /* 영문/숫자도 박스 끝에서 줄바꿈 */
+    overflow-wrap: break-word; /* 단어 단위 줄바꿈 시도 */
 }
 
 .pay-info {
@@ -268,6 +284,7 @@ body {
 	border: 1px solid #eee;
 	border-radius: 10px;
 	margin-bottom: 40px;
+	word-break: break-all;
 }
 
 /* 버튼 스타일 */
@@ -281,6 +298,7 @@ body {
 	border-radius: 8px;
 	font-size: 16px; /* 18px에서 조금 줄여서 목록 버튼과 통일 */
 	font-weight: 700;
+	margin-left: 10px;
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
@@ -313,6 +331,20 @@ body {
 .btn-list:hover {
 	background: #f8f9fa;
 	border-color: #999;
+}
+
+img{
+    max-width: 100%;    /* 부모 너비를 넘지 않음 */
+    max-height: 100%;
+    height: auto;       /* 비율 유지 */
+    display: block;     /* 하단 여백 제거 */
+    margin: 10px 0;    /* 이미지 위아래 여백 */
+        }
+        
+#btnDeletePost:hover {
+    background-color: #fef2f2;
+    border-color: #ef4444;
+    color: #b91c1c;
 }
 </style>
 </head>
@@ -468,6 +500,16 @@ body {
 					${post.benefit}</div>
 			</div>
 		</div>
+		
+		<c:if test="${loginId == post.member_id}">
+    <div style="text-align: right; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee;">
+        <button type="button" id="btnDeletePost" class="btn-list" style="color: #ef4444; border-color: #fca5a5;">
+            <i class="fa-regular fa-trash-can"></i> 공고 삭제
+        </button>
+        </div>
+</c:if>
+		
+		
 	</div>
 
 
@@ -479,6 +521,13 @@ body {
 	</div>
 
 	<script>
+	
+	$("#btnDeletePost").on("click", function() {
+        if (confirm("정말로 이 공고를 삭제하시겠습니까?\n삭제 후에는 복구가 불가능합니다.")) {
+            // 삭제를 처리할 컨트롤러 주소로 이동 (공고 번호 전달)
+            location.href = `/jobposts/delete?seq=${post.seq}`;
+        }
+    });
 	
 $(function() {
     // [1] 페이지 로드 시 서버로부터 온 알림 메시지 처리 (1회성)
