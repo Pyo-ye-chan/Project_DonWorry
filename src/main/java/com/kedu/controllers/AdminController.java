@@ -190,7 +190,8 @@ public class AdminController {
 			page=1;
 		int start = page*5-4;
 		int end = page*5;
-		
+		//오늘 신규 게시글 카운트
+		int getRecordCountToday = adao.getRecordCountToday();
 		//회원 게시글 페이지네이션 적용
 		List<BoardsDTO> board_mainList;	
 		int recordTotalCount = adao.getRecordTotalCount(category,keyword);
@@ -205,9 +206,9 @@ public class AdminController {
 		}
 		model.addAttribute("currentPage",page);
 		model.addAttribute("recordCountPerPage",5);
-		model.addAttribute("naviCountPerPage",10);
-		
+		model.addAttribute("naviCountPerPage",10);	
 		model.addAttribute("recordTotalCount",recordTotalCount);
+		model.addAttribute("getRecordCountToday",getRecordCountToday);
 		model.addAttribute("board_mainList", board_mainList);
 
 		//공지글 페이지 ㄴ
@@ -276,21 +277,34 @@ public class AdminController {
 
 		return "redirect:/admin/admin_boards?page=1";
 	}
-
+	
 	//댓글리스트
-
 	@RequestMapping("/admin_reply")
 	public String admin_Reply(//page가 없을 때 자동으로 1
-			@RequestParam(value="page", defaultValue="1")int page, Model model) {
+			@RequestParam(value="page", defaultValue="1")int page,String keyword, Model model) {
+		int start=page*5-4;
+		int end = page*5;
 		//회원 댓글 전체 불러옴
-		List<ReplyDTO> replyList =  adao.admin_replyList(page*5-4,page*5);
-		int recordTotalCount = rdao.replyCount();
+		List<ReplyDTO> replyList;
+		int recordTotalCount;
 		
+		if(keyword!=null && !keyword.isEmpty()) {//검색어 있으면 id 필터링한 리스트 뽑음
+			replyList = adao.searchReplyById(start,end,keyword);
+			recordTotalCount = adao.getReplySearchCount(keyword);
+		}else {
+			//없으면 페이지든 뭐든 전체 가져옴
+			replyList  =  adao.admin_replyList(start,end);
+			recordTotalCount = rdao.replyCount();
+		}
+
 		model.addAttribute("currentPage",page);
 		model.addAttribute("recordCountPerPage",5);
 		model.addAttribute("naviCountPerPage",10);
+		
 		model.addAttribute("recordTotalCount",recordTotalCount);
 		model.addAttribute("replyList", replyList);
+		
+		model.addAttribute("keyword",keyword);
 		
 		//신고댓글만 불러옴
 		List<ReplyDTO> report_replyList = adao.admin_report_replyList();

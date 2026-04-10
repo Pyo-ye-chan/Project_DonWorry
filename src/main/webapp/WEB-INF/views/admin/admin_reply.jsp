@@ -393,13 +393,14 @@ body {
             </div>
 
             <div class="filter-row">
-                <select>
-                    <option>전체 상태</option>
-                    <option>신고</option>
-                    <option>일반</option>
+                <select name="category">
+                    <option value="all">전체 상태</option>
+                    <option value="report">신고</option>
+                    <option value="normal">일반</option>
                 </select>
-                <input type="text" placeholder="작성자 검색">
-                <button class="btn-blue" type="button">검색</button>
+                <input name="keyword" class="keyword" type="text" placeholder="작성자 검색">
+                <button class="btn-blue reply-search-btn" type="button">검색</button>
+                <button class="btn-blue reply-all-btn" type="button">전체</button>
             </div>
 
             <table class="admin-table">
@@ -502,6 +503,8 @@ body {
   </div>
 <script>
 
+	let keyword = "${keyword}";
+	let category = "${category}";
 	let recordTotalCount = ${recordTotalCount}; // 총 개수
 	let recordCountPerPage = ${recordCountPerPage}; // 한페이지에 몇개 (5)
 	let naviCountPerPage  = ${naviCountPerPage }; // navi 몇개 (10)
@@ -530,17 +533,13 @@ body {
 	
 	//이전 버튼 <
 	if(needPrev){	
-		let btn = $("<button>");
-		btn.addClass("page-btn");
-		btn.html("&lt;");
+		let btn = $("<button>").addClass("page-btn").html("&lt;");
 		btn.attr("onclick","location.href='/admin/admin_reply?page="+ (startNavi-1)+"'");
 		board_navi.append(btn);
 	}
 	
 	for(let i = startNavi; i <= endNavi; i++){
-		let btn = $("<button>");
-		btn.addClass("page-btn");
-		btn.html(i);
+		let btn = $("<button>").addClass("page-btn").html(i);
 		btn.attr("onclick","location.href='/admin/admin_reply?page="+ i +"'");
 		
 		if(i== currentPage){

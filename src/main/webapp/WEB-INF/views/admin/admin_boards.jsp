@@ -419,7 +419,7 @@ body {
             <div class="summary-card">
                 <div class="summary-label">전체 게시글</div>
                 <div class="summary-value">${recordTotalCount}</div>
-                <div class="summary-sub">오늘 신규 ${recordTotalCount}건</div>
+                <div class="summary-sub">오늘 신규 ${getRecordCountToday}건</div>
             </div>
             <div class="summary-card notice">
                 <div class="summary-label">공지 게시글</div>

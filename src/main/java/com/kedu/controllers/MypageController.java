@@ -76,6 +76,12 @@ public class MypageController {
 		int bookmarkCount =  bookdao.countBookmark(id);
 		model.addAttribute("bookmarkCount",bookmarkCount);
 		
+		int resumeCount = rdao.countById(id);
+		model.addAttribute("resumeCount",resumeCount);
+		
+		int boardsCount = bdao.mypostRecordTotalCount(id);
+		model.addAttribute("boardsCount",boardsCount);
+		
 		return "mypage/mypage";
 	}
 	
