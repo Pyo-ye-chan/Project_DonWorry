@@ -905,46 +905,35 @@ img{
 	</div>
 
 	<div class="pagination">
-		<c:if test="${recordTotalCount > 0}">
-			<%-- 1. 전체 페이지 수 계산 --%>
-			<fmt:parseNumber var="pageCount"
-				value="${(recordTotalCount - 1) / recordCountPerPage + 1}"
-				integerOnly="true" />
+    <c:if test="${recordTotalCount > 0}">
+        <fmt:parseNumber var="pageCount" value="${(recordTotalCount - 1) / recordCountPerPage + 1}" integerOnly="true" />
+        <fmt:parseNumber var="tempStart" value="${(currentPage - 1) / naviCountPerPage}" integerOnly="true" />
+        <c:set var="startNavi" value="${tempStart * naviCountPerPage + 1}" />
+        <c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
+        <c:if test="${endNavi > pageCount}">
+            <c:set var="endNavi" value="${pageCount}" />
+        </c:if>
 
-			<%-- 2. 시작 네비게이터 번호 계산 (중요!) --%>
-			<%-- 현재 페이지를 10으로 나눈 몫을 먼저 구함 (예: 1~10페이지면 결과는 0) --%>
-			<fmt:parseNumber var="tempStart"
-				value="${(currentPage - 1) / naviCountPerPage}" integerOnly="true" />
-			<%-- 그 결과에 다시 10을 곱하고 1을 더함 (예: 0 * 10 + 1 = 1) --%>
-			<c:set var="startNavi" value="${tempStart * naviCountPerPage + 1}" />
+        <%-- 공통 파라미터 문자열 생성 --%>
+        <c:set var="query" value="&searchKeyword=${searchKeyword}&workDay=${param.workDay}&startTime=${param.startTime}&endTime=${param.endTime}" />
 
-			<%-- 3. 끝 네비게이터 번호 계산 --%>
-			<c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
-			<c:if test="${endNavi > pageCount}">
-				<c:set var="endNavi" value="${pageCount}" />
-			</c:if>
+        <%-- [이전 묶음] 버튼 --%>
+        <c:if test="${startNavi > 1}">
+            <a href="/jobposts/jobpost?page=${startNavi - 1}${query}" class="page-link">&lt;</a>
+        </c:if>
 
-			<%-- [이전 묶음] 버튼: 11페이지 이상일 때만 노출 --%>
-			<c:if test="${startNavi > 1}">
-				<a
-					href="/jobposts/jobpost?page=${startNavi - 1}&searchKeyword=${searchKeyword}"
-					class="page-link">&lt;</a>
-			</c:if>
+        <%-- [번호] 버튼 --%>
+        <c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+            <a href="/jobposts/jobpost?page=${i}${query}"
+                class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
+        </c:forEach>
 
-			<%-- [번호] 버튼: startNavi부터 endNavi까지 고정 --%>
-			<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
-				<a href="/jobposts/jobpost?page=${i}&searchKeyword=${searchKeyword}"
-					class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
-			</c:forEach>
-
-			<%-- [다음 묶음] 버튼: 다음 묶음(11, 21...)이 존재할 때만 노출 --%>
-			<c:if test="${endNavi < pageCount}">
-				<a
-					href="/jobposts/jobpost?page=${endNavi + 1}&searchKeyword=${searchKeyword}"
-					class="page-link">&gt;</a>
-			</c:if>
-		</c:if>
-	</div>
+        <%-- [다음 묶음] 버튼 --%>
+        <c:if test="${endNavi < pageCount}">
+            <a href="/jobposts/jobpost?page=${endNavi + 1}${query}" class="page-link">&gt;</a>
+        </c:if>
+    </c:if>
+</div>
 
 	</div>
 	</div>
@@ -1145,9 +1134,9 @@ img{
 	            }
 	            url += "&startTime=" + startTime + "&endTime=" + endTime;
 	        }
+	        location.href = url;
 	});
 	    
-	    $(function() {
 	        // [1] 페이지 로드 시 서버로부터 온 알림 메시지 처리 (1회성)
 	        // 컨트롤러에서 RedirectAttributes로 보낸 메시지는 여기서 딱 한 번만 띄운다.
 	        const successMsg = "${message}";
@@ -1217,7 +1206,6 @@ img{
 	                $("#resumeModal").fadeOut(200);
 	            }
 	        });
-	    });
 	});
 	</script>
 </body>
