@@ -31,8 +31,28 @@ public class JobPostDTO {
     private Timestamp write_date;
     
     private String status; // 추가
+    
+    private int resume_num;
+    
+    private int apply_seq;
 
-    public JobPostDTO() {
+    public int getApply_seq() {
+		return apply_seq;
+	}
+
+	public void setApply_seq(int apply_seq) {
+		this.apply_seq = apply_seq;
+	}
+
+	public int getResume_num() {
+		return resume_num;
+	}
+
+	public void setResume_num(int resume_num) {
+		this.resume_num = resume_num;
+	}
+
+	public JobPostDTO() {
         super();
     }
 

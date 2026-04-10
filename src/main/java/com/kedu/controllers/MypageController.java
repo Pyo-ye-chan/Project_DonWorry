@@ -24,6 +24,7 @@ import com.kedu.dao.BoardsDAO;
 import com.kedu.dao.BookmarkDAO;
 import com.kedu.dao.CateGoryDAO;
 import com.kedu.dao.FilesDAO;
+import com.kedu.dao.JobApplyDAO;
 import com.kedu.dao.JobPostDAO;
 import com.kedu.dao.MembersDAO;
 import com.kedu.dao.MypageDAO;
@@ -50,6 +51,8 @@ public class MypageController {
 	private FilesDAO fdao;
 	@Autowired
 	private JobPostDAO jpdao;
+	@Autowired
+	private JobApplyDAO jadao;
 	@Autowired
 	private BookmarkDAO bookdao;
 	@Autowired
@@ -107,12 +110,38 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/job_activity")
-	public String to_Job_activity(HttpSession session) {
+	public String to_Job_activity(HttpSession session,Model model) {
 		String id =(String)session.getAttribute("loginId");	
 		String type = (String)session.getAttribute("type");
 		
 		List<MembersDTO> list = mdao.selectAll(id);	
+		
+		//지원한 구ㅇ인공고
+		List<JobPostDTO> selectApplyList = jadao.selectApplyList(id);
+		model.addAttribute("selectApplyList",selectApplyList);
 		return "mypage/job_activity";
+		/*JobPostDTO post = dao.getPostDetail(seq);
+
+		model.addAttribute("post", post);*/
+	}
+	
+	@RequestMapping("/job_activity_detail")
+	public String job_activity_detail(HttpSession session,Model model, Integer seq) {
+		String id =(String)session.getAttribute("loginId");	
+		String type = (String)session.getAttribute("type");
+		if (seq == null) {
+	        // 혹시라도 seq 없이 들어오면 리스트 페이지로 돌려보내기
+	        return "redirect:/mypage/toJobActivity"; 
+	    }
+		List<MembersDTO> list = mdao.selectAll(id);	
+		JobPostDTO post = jpdao.getPostDetail(seq);
+
+		model.addAttribute("post", post);
+		//지원한 구ㅇ인공고
+		List<JobPostDTO> selectApplyList = jadao.selectApplyList(id);
+		model.addAttribute("selectApplyList",selectApplyList);
+		return "/mypage/job_activity_detail";
+		
 	}
 	//이력서 작성
 	@RequestMapping("/resume")
