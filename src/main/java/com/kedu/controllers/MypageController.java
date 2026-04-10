@@ -116,6 +116,28 @@ public class MypageController {
 		List<JobPostDTO> selectApplyList = jadao.selectApplyList(id);
 		model.addAttribute("selectApplyList",selectApplyList);
 		return "mypage/job_activity";
+		/*JobPostDTO post = dao.getPostDetail(seq);
+
+		model.addAttribute("post", post);*/
+	}
+	
+	@RequestMapping("/job_activity_detail")
+	public String job_activity_detail(HttpSession session,Model model, Integer seq) {
+		String id =(String)session.getAttribute("loginId");	
+		String type = (String)session.getAttribute("type");
+		if (seq == null) {
+	        // 혹시라도 seq 없이 들어오면 리스트 페이지로 돌려보내기
+	        return "redirect:/mypage/toJobActivity"; 
+	    }
+		List<MembersDTO> list = mdao.selectAll(id);	
+		JobPostDTO post = jpdao.getPostDetail(seq);
+
+		model.addAttribute("post", post);
+		//지원한 구ㅇ인공고
+		List<JobPostDTO> selectApplyList = jadao.selectApplyList(id);
+		model.addAttribute("selectApplyList",selectApplyList);
+		return "/mypage/job_activity_detail";
+		
 	}
 	//이력서 작성
 	@RequestMapping("/resume")

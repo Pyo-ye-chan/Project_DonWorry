@@ -236,11 +236,11 @@
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
-                <a href="/boards/mainboard_list">
+                <a href="/boards/mainboard_list?page=1">
                     <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     커뮤니티
                 </a>
-                 <a href="/qna/qna"> 
+                 <a href="/qna/qna?page=1"> 
                     <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     고객지원
                 </a>              
@@ -284,9 +284,10 @@
                     </div>
                     <h2 class="post-content">${i.title}</h2>
                     <div class="post-footer">
-                        <button class="apply-cancel-btn">지원 취소</button>
+                        <button class="apply-cancel-btn" 
+                        onclick="location.href='/jobapplys/delete?seq=${i.apply_seq}'">지원 취소</button>
                         <button class="apply-detail-btn"
-                        onclick="location.href='/jobposts/jobdetail?seq=${post.seq}&page=${currentPage}'">상세보기</button>
+                        onclick="location.href='/mypage/job_activity_detail?seq=${i.seq}'">상세보기</button>
                     </div>
                 </div>
             </div>
