@@ -72,6 +72,10 @@ public class MypageController {
 	@RequestMapping("/toMypage")
 	public String toMypage(HttpSession session, Model model) {
 		String id =(String)session.getAttribute("loginId");	
+	    if(id == null) {
+	        return "redirect:/members/toLogin";
+	    }
+	    
 		List<MembersDTO> list = mdao.selectAll(id);
 		String type = (String)session.getAttribute("type");
 		model.addAttribute("list",list);

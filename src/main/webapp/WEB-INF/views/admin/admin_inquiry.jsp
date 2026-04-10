@@ -126,17 +126,19 @@
         }
 
         .page-title-wrap h2 {
-            font-size: 30px;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 6px;
-            padding-left: 10px;
+		    font-size: 28px;
+		    font-weight: 800;
+		    color: #1e293b;
+		    margin-bottom: 6px;
+		    padding-left: 10px;
+
         }
 
         .page-title-wrap p {
-            font-size: 14px;
-            color: #64748b;
-            padding-left: 10px;
+		    font-size: 14px;
+		    color: #64748b;
+		    padding-left: 10px;
+
         }
 
         .page-date-box {

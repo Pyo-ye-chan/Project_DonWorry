@@ -26,72 +26,93 @@
 
 body {
 	font-family: 'Pretendard', sans-serif;
-	background: #f8fbff;
-	color: #333;
+	background-color: #ffffff;
 	line-height: 1.6;
+	min-height: 105vh;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
 }
 
 .container {
-	max-width: 1240px;
+	max-width: 1100px;
+	width: 100%;
 	margin: 0 auto;
 	padding: 0 20px;
+	flex: 1;
 }
 
 .top-auth {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: flex-end; /* 오른쪽 정렬 핵심 */
 	align-items: center;
-	gap: 15px;
-	padding: 10px 0;
+	gap: 15px; /* 요소 간 간격 */
+	padding: 8px 0; /* 위아래 여백 */
+}
+
+.logout-btn {
+	width: 60px;
+	height: 30px;
+	background-color: #ffffff;
+	color: #868e96;
+	border: 1px solid #dee2e6;
+	border-radius: 6px;
+	font-size: 13px;
+	transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+}
+.now-admin{
+    width: 60px;
+    height: 30px;
+    background: #2563eb;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.logout-btn:hover {
+	width: 60px;
+	height: 30px;
+	background-color: #f8f9fa;
+	color: #495057;
+	border-color: #ced4da;
+	border: 1px solid #dee2e6;
+	border-radius: 6px;
+	font-size: 13px;
+	transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
 }
 
 .navbar {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 20px 0 22px;
-	border-bottom: 1px solid #e8eef7;
+	padding: 20px 0;
+	border-bottom: 1px solid #f0f0f0;
 }
 
 .logo {
 	color: #2563eb;
 	font-weight: 800;
-	font-size: 22px;
+	font-size: 20px;
 	text-decoration: none;
 }
 
 .nav-menu {
 	display: flex;
-	gap: 34px;
-	align-items: center;
+	gap: 40px;
 }
 
 .nav-menu a {
 	text-decoration: none;
-	color: #64748b;
+	color: #666;
 	font-size: 14px;
-	font-weight: 600;
-	transition: .2s;
+	font-weight: 500;
 }
 
-.nav-menu a:hover, .nav-menu a.active {
+.nav-menu a.active {
 	color: #2563eb;
-}
-
-.logout-btn {
-	width: 72px;
-	height: 34px;
-	background: #fff;
-	color: #64748b;
-	border: 1px solid #d9e2ec;
-	border-radius: 8px;
-	font-size: 13px;
-	transition: .2s;
-}
-
-.logout-btn:hover {
-	background: #f8fafc;
-	color: #334155;
 }
 
 .admin-page {
@@ -108,11 +129,19 @@ body {
 }
 
 .page-title h2 {
-	font-size: 32px;
-	font-weight: 800;
-	color: #0f172a;
-	margin-bottom: 6px;
+    font-size: 28px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 6px;
+    padding-left: 10px;
+
 }
+.page-title p {
+    font-size: 14px;
+    color: #64748b;
+    padding-left: 10px;
+}
+
 
 .summary-grid {
 	display: grid;
@@ -318,18 +347,19 @@ body {
 				<a href="/" class="logo">돈워리</a>
 
 				<div class="nav-menu">
-					<a href="/admin/admin_main" class="active"> <i
-						class="fa-solid fa-wrench fa-lg" style="margin-right: 6px;"></i>
-						관리자 대시보드
-					</a> <a href="/admin/admin_boards?page=1"> <i
+					<a href="/admin/admin_main"> <i
+						class="fa-solid fa-wrench fa-lg"
+						style="color: rgb(197, 197, 197); margin-right: 6px;"></i> 관리자
+						대시보드
+					</a> <a href="/admin/admin_boards"> <i
 						class="fa-solid fa-file-pen fa-lg"
-						style="color: #c5c5c5; margin-right: 6px;"></i> 게시물 관리
-					</a> <a href="/admin/admin_members"> <i
+						style="color: rgb(197, 197, 197); margin-right: 6px;"></i> 게시물 관리
+					</a> <a href="/admin/admin_members" class="active"> <i
 						class="fa-solid fa-user-shield fa-lg"
-						style="color: #c5c5c5; margin-right: 6px;"></i> 회원 관리
+						style="color: rgb(36, 99, 235); margin-right: 6px;"></i> 회원 관리
 					</a> <a href="/admin/admin_inquiry"> <i
 						class="fa-regular fa-circle-question fa-lg"
-						style="color: #c5c5c5; margin-right: 6px;"></i> Q&A 관리
+						style="color: rgb(197, 197, 197); margin-right: 6px;"></i> Q&A 관리
 					</a>
 				</div>
 			</div>
@@ -471,7 +501,13 @@ body {
 
 			</section>
 		</main>
+	
+		
 	</div>
+		 <div class="container-footer">
+     <p>© 2026 돈워리. All rights reserved.</p>
+     <p style="margin-top:10px; font-size:11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
+     </div>
 
 	<script>
         // 공통 페이지 이동 함수 (필터 정보 유지)

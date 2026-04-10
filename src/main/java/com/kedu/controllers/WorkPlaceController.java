@@ -56,10 +56,6 @@ public class WorkPlaceController {
 
         int result = dao.insertToworkpalce(dto);
 
-        System.out.println("id : " + dto.getId());
-        System.out.println("insurance_applied : " + dto.getInsurance_applied());
-        System.out.println("employment_insurance : " + dto.getEmployment_insurance());
-
         if (result > 0) {
             return "redirect:/salary/calendar?insertSuccess=true";
         } else {

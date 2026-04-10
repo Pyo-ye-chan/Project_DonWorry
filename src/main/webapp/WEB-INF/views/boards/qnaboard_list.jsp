@@ -610,10 +610,12 @@
 
 
             </div>
+            <c:if test="${nickName != null }">
             <button class="floating-write-btn">
                 <span class="material-symbols-outlined">edit</span>
                 <span>글쓰기</span>
             </button>
+            </c:if>
             </section>
     </div>
     
@@ -657,14 +659,14 @@ $(".floating-write-btn").on("click",function(){
 			span.html("chevron_left");
 			let a = $("<a>");
 			a.addClass("page-num");
-			a.attr("href","/boards/mainboard_list?page="+ (startNavi-1));
+			a.attr("href","/boards/qnaboard_list?page="+ (startNavi-1));
 			a.append(span);
 			$(".page-nav").append(a);
 		}
 		
 		for(let i = startNavi; i <= endNavi; i++){
 			let a = $("<a>")
-			a.attr("href" , "/boards/mainboard_list?page="+i);
+			a.attr("href" , "/boards/qnaboard_list?page="+i);
 			a.addClass("page-num");
 			
 			if (i == currentPage) {
@@ -682,7 +684,7 @@ $(".floating-write-btn").on("click",function(){
 				span.html("chevron_right");
 				let a = $("<a>");
 				a.addClass("page-num");
-				a.attr("href","/boards/mainboard_list?page="+(endNavi+1));
+				a.attr("href","/boards/qnaboard_list?page="+(endNavi+1));
 				a.append(span);
 				$(".page-nav").append(a);
 		}

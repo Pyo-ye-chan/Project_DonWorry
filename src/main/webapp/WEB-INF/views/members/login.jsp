@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>돈워리- css배포용</title>
+<title>돈워리 - 로그인</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
@@ -133,7 +133,7 @@
 
 <div class="community-container">
     <div class="top-auth">
-        <span style="font-size: 13px; color: #666; cursor: pointer;">
+        <span style="font-size: 13px; color: #666; cursor: pointer; margin-right:10px;">
             <a href="#" style="text-decoration: none; color:black">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
@@ -164,7 +164,7 @@
                 </a>           
             </div>          
         </div>   
-        <a class="my-page" href="#">
+        <a class="my-page" href="/members/toLogin">
             <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
             마이페이지
         </a>    

@@ -28,12 +28,16 @@ body {
 	background-color: #ffffff;
 	color: #333;
 	line-height: 1.6;
+	display: flex; /* 풋터 하단 이동 */
+	flex-direction: column;
+	min-height: 100vh; /* 있으면 더 안정 */
 }
 
 .container {
 	max-width: 1100px;
 	margin: 0 auto;
 	padding: 0 20px;
+	flex: 1; /* 풋터 하단 이동 */
 }
 
 .top-auth {
@@ -166,6 +170,7 @@ body {
 	font-weight: 700;
 	color: #111827;
 	margin-bottom: 18px;
+	word-break: break-all;
 }
 
 .info-item {
@@ -463,6 +468,7 @@ body {
 	outline: none;
 	transition: 0.15s ease;
 }
+
 #payday {
 	width: 122px;
 	background: #fff;
@@ -488,7 +494,8 @@ body {
 	line-height: 1.6;
 }
 
-.form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus
+	{
 	border-color: #94a3b8;
 	box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.10);
 }
@@ -599,23 +606,27 @@ body {
 			<c:when test="${nickName==null}">
 				<div class="top-auth">
 					<span style="font-size: 13px; color: #666; cursor: pointer;">
-						<a href="members/toLogin" style="text-decoration: none; color: black; margin-right: 10px;">
-							<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
-						</a>
+						<a href="members/toLogin"
+						style="text-decoration: none; color: black; margin-right: 10px;">
+							<i class="fa-regular fa-user fa-lg"
+							style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
+					</a>
 					</span>
 				</div>
 			</c:when>
 			<c:otherwise>
 				<div class="top-auth">
 					<span style="font-size: 13px; color: #666; cursor: pointer;">
-						<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
-						${nickName}님 환영합니다.
-						<a href="members/logout" style="text-decoration: none; color: black">
+						<i class="fa-regular fa-user fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
+						${nickName}님 환영합니다. <a href="/members/logout"
+						style="text-decoration: none; color: black">
 							<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
-						</a>
+					</a>
 					</span>
 					<c:if test="${type=='관리자'}">
-						<a href="/admin/admin_main" style="text-decoration: none;"><div class="now-admin">관리자</div></a>
+						<a href="/admin/admin_main" style="text-decoration: none;"><div
+								class="now-admin">관리자</div></a>
 					</c:if>
 					<c:if test="${type=='사업자'}">
 						<div class="now-business">사업자</div>
@@ -631,14 +642,24 @@ body {
 			<div style="display: flex; align-items: center; gap: 40px;">
 				<a href="/" class="logo">돈워리</a>
 				<div class="nav-menu">
-					<a href="/"><i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i> 홈</a>
-					<a href="/salary/calendar" class="active"><i class="fa-regular fa-calendar fa-lg" style="color: rgb(36, 99, 235); margin-right: 5px;"></i> 급여 캘린더</a>
-					<a href="/jobposts/jobpost"><i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 구인구직</a>
-					<a href="/boards/mainboard_list?page=1"><i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티</a>
-					<a href="/qna/qna"><i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원</a>
+					<a href="/"><i class="fa-solid fa-house fa-lg"
+						style="color: rgb(203, 203, 203);"></i> 홈</a> <a
+						href="/salary/calendar" class="active"><i
+						class="fa-regular fa-calendar fa-lg"
+						style="color: rgb(36, 99, 235); margin-right: 5px;"></i> 급여 캘린더</a> <a
+						href="/jobposts/jobpost"><i
+						class="fa-solid fa-briefcase fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 구인구직</a> <a
+						href="/boards/mainboard_list?page=1"><i
+						class="fa-regular fa-message fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티</a> <a
+						href="/qna/qna"><i class="fa-solid fa-question fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원</a>
 				</div>
 			</div>
-			<a class="my-page" href="/mypage/toMypage"><i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i> 마이페이지</a>
+			<a class="my-page" href="/mypage/toMypage"><i
+				class="fa-solid fa-user-gear fa-lg"
+				style="color: rgb(197, 197, 197);"></i> 마이페이지</a>
 		</nav>
 
 		<h2 class="section-header">급여 캘린더</h2>
@@ -649,16 +670,14 @@ body {
 					<div class="card" data-seq="${i.seq}">
 						<div class="card-title">${i.name}</div>
 						<div class="info-item">
-							<span class="info-label">예상 급여</span>
-							<span class="info-val blue"><fmt:formatNumber value="${i.totalPay}" pattern="#,###" />원</span>
+							<span class="info-label">예상 급여</span> <span class="info-val blue"><fmt:formatNumber
+									value="${i.totalPay}" pattern="#,###" />원</span>
 						</div>
 						<div class="info-item">
-							<span class="info-label">근무 일수</span>
-							<span class="info-val">${i.workDays}일</span>
+							<span class="info-label">근무 일수</span> <span class="info-val">${i.workDays}일</span>
 						</div>
 						<div class="info-item">
-							<span class="info-label">근무 시간</span>
-							<span class="info-val">${i.totalHours}시간</span>
+							<span class="info-label">근무 시간</span> <span class="info-val">${i.totalHours}시간</span>
 						</div>
 					</div>
 				</c:forEach>
@@ -673,51 +692,48 @@ body {
 					<div id="calendar"></div>
 				</div>
 				<div class="salary-box">
-				    <h3>급여 명세서</h3>
-				
-				    <div class="salary-row">
-				        <span>총 근무 시간</span>
-				        <strong id="summaryTotalHours">0시간 0분</strong>
-				    </div>
-				    <div class="salary-row">
-				        <span>기본 급여</span>
-				        <strong id="summaryBasePay">0원</strong>
-				    </div>
-				    <div class="salary-row">
-				        <span>야간수당</span>
-				        <strong id="summaryNightPay">+ 0원</strong>
-				    </div>
-				    <div class="salary-row">
-				        <span>연장수당</span>
-				        <strong id="summaryOvertimePay">+ 0원</strong>
-				    </div>
-				    <div class="salary-row">
-				        <span>휴일수당</span>
-				        <strong id="summaryHolidayPay">+ 0원</strong>
-				    </div>
-				    <div class="salary-row">
-				        <span>주휴 수당</span>
-				        <strong id="summaryWeeklyPay">+ 0원</strong>
-				    </div>
-				    <div class="salary-row">
-				        <span id="summaryTaxLabel">세금(근무지별 합산)</span>
-				        <strong id="summaryTax">- 0원</strong>
-				    </div>
-				    <div class="salary-row">
-				        <span id="summaryInsuranceLabel">보험료세금(근무지별 합산)</span>
-				        <strong id="summaryInsurance">- 0원</strong>
-				    </div>
-				
-				    <div class="salary-total" id="summaryFinalPay">0원</div>
+					<h3>급여 명세서</h3>
+
+					<div class="salary-row">
+						<span>총 근무 시간</span> <strong id="summaryTotalHours">0시간
+							0분</strong>
+					</div>
+					<div class="salary-row">
+						<span>기본 급여</span> <strong id="summaryBasePay">0원</strong>
+					</div>
+					<div class="salary-row">
+						<span>야간수당</span> <strong id="summaryNightPay">+ 0원</strong>
+					</div>
+					<div class="salary-row">
+						<span>연장수당</span> <strong id="summaryOvertimePay">+ 0원</strong>
+					</div>
+					<div class="salary-row">
+						<span>휴일수당</span> <strong id="summaryHolidayPay">+ 0원</strong>
+					</div>
+					<div class="salary-row">
+						<span>주휴 수당</span> <strong id="summaryWeeklyPay">+ 0원</strong>
+					</div>
+					<div class="salary-row">
+						<span id="summaryTaxLabel">세금(근무지별 합산)</span> <strong
+							id="summaryTax">- 0원</strong>
+					</div>
+					<div class="salary-row">
+						<span id="summaryInsuranceLabel">보험료세금(근무지별 합산)</span> <strong
+							id="summaryInsurance">- 0원</strong>
+					</div>
+
+					<div class="salary-total" id="summaryFinalPay">0원</div>
 				</div>
-				
+
 			</div>
 		</div>
 
-		<div class="container-footer">
-			<p>© 2026 돈워리. All rights reserved.</p>
-			<p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
-		</div>
+
+	</div>
+	<div class="container-footer">
+		<p>© 2026 돈워리. All rights reserved.</p>
+		<p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 |
+			고객센터</p>
 	</div>
 
 	<div id="workModal" class="modal">
@@ -733,52 +749,53 @@ body {
 				<div class="modal-body">
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="parent_seq">근무지</label>
-							<select id="parent_seq" name="parent_seq" required></select>
+							<label for="parent_seq">근무지</label> <select id="parent_seq"
+								name="parent_seq" required></select>
 						</div>
 						<div class="form-row">
-							<label for="work_date">근무 날짜</label>
-							<input type="date" id="work_date" name="work_date" required>
+							<label for="work_date">근무 날짜</label> <input type="date"
+								id="work_date" name="work_date" required>
 						</div>
 					</div>
 
 					<div class="section-title">근무 시간</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="start_time">근무 시작시간</label>
-							<input type="datetime-local" id="start_time" name="start_time" required>
+							<label for="start_time">근무 시작시간</label> <input
+								type="datetime-local" id="start_time" name="start_time" required>
 						</div>
 						<div class="form-row">
-							<label for="end_time">근무 종료시간</label>
-							<input type="datetime-local" id="end_time" name="end_time" required>
+							<label for="end_time">근무 종료시간</label> <input
+								type="datetime-local" id="end_time" name="end_time" required>
 						</div>
 					</div>
 
 					<div class="section-title">휴게 시간</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="breaktime">휴게 시간(분)</label>
-							<input type="number" id="breaktime" name="breaktime" min="0" value="0" placeholder="예: 30">
+							<label for="breaktime">휴게 시간(분)</label> <input type="number"
+								id="breaktime" name="breaktime" min="0" value="0"
+								placeholder="예: 30">
 						</div>
 					</div>
 
 					<div class="section-title">수당 / 급여</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="night_pay">야간수당</label>
-							<input type="number" id="night_pay" name="night_pay" min="0" value="0">
+							<label for="night_pay">야간수당</label> <input type="number"
+								id="night_pay" name="night_pay" min="0" value="0">
 						</div>
 						<div class="form-row">
-							<label for="overtime_pay">연장수당</label>
-							<input type="number" id="overtime_pay" name="overtime_pay" min="0" value="0">
+							<label for="overtime_pay">연장수당</label> <input type="number"
+								id="overtime_pay" name="overtime_pay" min="0" value="0">
 						</div>
 						<div class="form-row">
-							<label for="holiday_pay">휴일수당</label>
-							<input type="number" id="holiday_pay" name="holiday_pay" min="0" value="0">
+							<label for="holiday_pay">휴일수당</label> <input type="number"
+								id="holiday_pay" name="holiday_pay" min="0" value="0">
 						</div>
 						<div class="form-row">
-							<label for="total_pay">총 급여</label>
-							<input type="number" id="total_pay" name="total_pay" min="0" value="0" required>
+							<label for="total_pay">총 급여</label> <input type="number"
+								id="total_pay" name="total_pay" min="0" value="0" required>
 						</div>
 					</div>
 
@@ -796,7 +813,8 @@ body {
 
 					<div class="form-row">
 						<label for="memo">메모</label>
-						<textarea id="memo" name="memo" rows="5" placeholder="근무 특이사항, 지각/조퇴, 메모 등을 입력하세요."></textarea>
+						<textarea id="memo" name="memo" rows="5"
+							placeholder="근무 특이사항, 지각/조퇴, 메모 등을 입력하세요."></textarea>
 					</div>
 				</div>
 
@@ -818,19 +836,20 @@ body {
 			<form id="workplaceForm" action="/workplaces/insert" method="post">
 				<div class="modal-body">
 					<div class="form-row">
-						<label for="name">근무지 이름</label>
-						<input type="text" id="name" name="name" placeholder="예: 강남 편의점" required>
+						<label for="name">근무지 이름</label> <input type="text" id="name"
+							name="name" placeholder="예: 강남 편의점" required>
 					</div>
 
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="pay_per_hour">급여 금액</label>
-							<input type="number" id="pay_per_hour" name="pay_per_hour" value="10320" min="0" required>
+							<label for="pay_per_hour">급여 금액</label> <input type="number"
+								id="pay_per_hour" name="pay_per_hour" value="10320" min="0"
+								required>
 						</div>
 
 						<div class="form-row">
-							<label for="pay_type">급여 타입</label>
-							<select id="pay_type" name="pay_type" required>
+							<label for="pay_type">급여 타입</label> <select id="pay_type"
+								name="pay_type" required>
 								<option value="시급">시급</option>
 								<option value="일급">일급</option>
 								<option value="월급">월급</option>
@@ -840,8 +859,8 @@ body {
 
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="pay_cycle">지급 주기</label>
-							<select id="pay_cycle" name="pay_cycle" required>
+							<label for="pay_cycle">지급 주기</label> <select id="pay_cycle"
+								name="pay_cycle" required>
 								<option value="주급">주급</option>
 								<option value="월급">월급</option>
 							</select>
@@ -855,8 +874,8 @@ body {
 									<c:forEach var="i" begin="1" end="31">
 										<option value="${i}">${i}일</option>
 									</c:forEach>
-								</select>
-								<span style="font-size: 14px; color: #666;">매월 정해진 날짜에 급여가 계산됩니다.</span>
+								</select> <span style="font-size: 14px; color: #666;">매월 정해진 날짜에
+									급여가 계산됩니다.</span>
 							</div>
 						</div>
 					</div>
@@ -866,52 +885,67 @@ body {
 					<div class="form-row full-width">
 						<label>세금 적용 여부</label>
 						<div class="tax-option-group">
-							<label class="tax-option-item"><input type="radio" name="tax_radio" value="0" checked> 미적용</label>
-							<label class="tax-option-item"><input type="radio" name="tax_radio" value="3.3"> 3.3% (프리랜서 등)</label>
-							<label class="tax-option-item"><input type="radio" name="tax_radio" value="custom" id="taxCustom"> 직접 입력</label>
+							<label class="tax-option-item"><input type="radio"
+								name="tax_radio" value="0" checked> 미적용</label> <label
+								class="tax-option-item"><input type="radio"
+								name="tax_radio" value="3.3"> 3.3% (프리랜서 등)</label> <label
+								class="tax-option-item"><input type="radio"
+								name="tax_radio" value="custom" id="taxCustom"> 직접 입력</label>
 
-							<div class="custom-tax-input" style="display: flex; align-items: center; gap: 4px;">
-								<input type="number" id="custom_tax_value" name="custom_tax_value" placeholder="0.0" step="0.1" min="0" max="100"
-									style="width: 60px; height: 30px; padding: 4px; font-size: 13px;" disabled>
-								<span style="font-size: 13px; color: #374151;">%</span>
+							<div class="custom-tax-input"
+								style="display: flex; align-items: center; gap: 4px;">
+								<input type="number" id="custom_tax_value"
+									name="custom_tax_value" placeholder="0.0" step="0.1" min="0"
+									max="100"
+									style="width: 60px; height: 30px; padding: 4px; font-size: 13px;"
+									disabled> <span
+									style="font-size: 13px; color: #374151;">%</span>
 							</div>
-							<input type="hidden" id="tax_applied" name="tax_applied" value="0">
+							<input type="hidden" id="tax_applied" name="tax_applied"
+								value="0">
 						</div>
 					</div>
 
 					<div class="form-row full-width" style="margin-top: 5px;">
 						<label>4대보험 적용 여부</label>
 						<div class="tax-option-group">
-							<label class="tax-option-item"><input type="radio" name="insurance_radio" value="N" checked> 미적용</label>
-							<label class="tax-option-item"><input type="radio" name="insurance_radio" value="Y"> 적용</label>
+							<label class="tax-option-item"><input type="radio"
+								name="insurance_radio" value="N" checked> 미적용</label> <label
+								class="tax-option-item"><input type="radio"
+								name="insurance_radio" value="Y"> 적용</label>
 						</div>
-						<input type="hidden" id="insurance_applied" name="insurance_applied" value="N">
+						<input type="hidden" id="insurance_applied"
+							name="insurance_applied" value="N">
 					</div>
 
 					<div class="form-row full-width" style="margin-top: 5px;">
 						<label>고용보험 적용 여부</label>
 						<div class="tax-option-group">
-							<label class="tax-option-item"><input type="radio" name="employment_radio" value="N" checked> 미적용</label>
-							<label class="tax-option-item"><input type="radio" name="employment_radio" value="Y"> 적용</label>
+							<label class="tax-option-item"><input type="radio"
+								name="employment_radio" value="N" checked> 미적용</label> <label
+								class="tax-option-item"><input type="radio"
+								name="employment_radio" value="Y"> 적용</label>
 						</div>
-						<input type="hidden" id="employment_insurance" name="employment_insurance" value="N">
+						<input type="hidden" id="employment_insurance"
+							name="employment_insurance" value="N">
 					</div>
 
 					<div class="section-title">기본 근무 시간 (선택)</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="work_start_time">기본 시작시간</label>
-							<input type="time" id="work_start_time" name="work_start_time">
+							<label for="work_start_time">기본 시작시간</label> <input type="time"
+								id="work_start_time" name="work_start_time">
 						</div>
 						<div class="form-row">
-							<label for="work_end_time">기본 종료시간</label>
-							<input type="time" id="work_end_time" name="work_end_time">
+							<label for="work_end_time">기본 종료시간</label> <input type="time"
+								id="work_end_time" name="work_end_time">
 						</div>
 					</div>
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-cancel" id="cancelWorkplaceBtn">취소</button>
+					<button type="button" class="btn btn-cancel"
+						id="cancelWorkplaceBtn">취소</button>
 					<button type="submit" class="btn btn-save">근무지 저장</button>
 				</div>
 			</form>
@@ -931,57 +965,64 @@ body {
 				<div class="modal-body">
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="detail_parent_seq">근무지</label>
-							<select id="detail_parent_seq" name="parent_seq" required disabled></select>
+							<label for="detail_parent_seq">근무지</label> <select
+								id="detail_parent_seq" name="parent_seq" required disabled></select>
 						</div>
 
 						<div class="form-row">
-							<label for="detail_work_date">근무 날짜</label>
-							<input type="date" id="detail_work_date" name="work_date" required readonly>
+							<label for="detail_work_date">근무 날짜</label> <input type="date"
+								id="detail_work_date" name="work_date" required readonly>
 						</div>
 					</div>
 
 					<div class="section-title">근무 시간</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="detail_start_time">근무 시작시간</label>
-							<input type="datetime-local" id="detail_start_time" name="start_time" required readonly>
+							<label for="detail_start_time">근무 시작시간</label> <input
+								type="datetime-local" id="detail_start_time" name="start_time"
+								required readonly>
 						</div>
 
 						<div class="form-row">
-							<label for="detail_end_time">근무 종료시간</label>
-							<input type="datetime-local" id="detail_end_time" name="end_time" required readonly>
+							<label for="detail_end_time">근무 종료시간</label> <input
+								type="datetime-local" id="detail_end_time" name="end_time"
+								required readonly>
 						</div>
 					</div>
 
 					<div class="section-title">휴게 시간</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="detail_breaktime">휴게 시간(분)</label>
-							<input type="number" id="detail_breaktime" name="breaktime" min="0" value="0" readonly>
+							<label for="detail_breaktime">휴게 시간(분)</label> <input
+								type="number" id="detail_breaktime" name="breaktime" min="0"
+								value="0" readonly>
 						</div>
 					</div>
 
 					<div class="section-title">수당 / 급여</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="detail_night_pay">야간수당</label>
-							<input type="number" id="detail_night_pay" name="night_pay" min="0" value="0" readonly>
+							<label for="detail_night_pay">야간수당</label> <input type="number"
+								id="detail_night_pay" name="night_pay" min="0" value="0"
+								readonly>
 						</div>
 
 						<div class="form-row">
-							<label for="detail_overtime_pay">연장수당</label>
-							<input type="number" id="detail_overtime_pay" name="overtime_pay" min="0" value="0" readonly>
+							<label for="detail_overtime_pay">연장수당</label> <input
+								type="number" id="detail_overtime_pay" name="overtime_pay"
+								min="0" value="0" readonly>
 						</div>
 
 						<div class="form-row">
-							<label for="detail_holiday_pay">휴일수당</label>
-							<input type="number" id="detail_holiday_pay" name="holiday_pay" min="0" value="0" readonly>
+							<label for="detail_holiday_pay">휴일수당</label> <input type="number"
+								id="detail_holiday_pay" name="holiday_pay" min="0" value="0"
+								readonly>
 						</div>
 
 						<div class="form-row">
-							<label for="detail_total_pay">총 급여 (세금 및 보험료 적용)</label>
-							<input type="number" id="detail_total_pay" name="total_pay" min="0" value="0" required readonly>
+							<label for="detail_total_pay">총 급여 (세금 및 보험료 적용)</label> <input
+								type="number" id="detail_total_pay" name="total_pay" min="0"
+								value="0" required readonly>
 						</div>
 					</div>
 
@@ -990,16 +1031,19 @@ body {
 							<span>총 근무시간</span> <strong id="detailWorkResult">0시간 0분</strong>
 						</div>
 						<div class="result-row">
-							<span>총 휴게시간</span> <strong id="detailBreakResult">0시간 0분</strong>
+							<span>총 휴게시간</span> <strong id="detailBreakResult">0시간
+								0분</strong>
 						</div>
 						<div class="result-row">
-							<span>실근무시간</span> <strong id="detailRealWorkResult">0시간 0분</strong>
+							<span>실근무시간</span> <strong id="detailRealWorkResult">0시간
+								0분</strong>
 						</div>
 					</div>
 
 					<div class="form-row">
 						<label for="detail_memo">메모</label>
-						<textarea id="detail_memo" name="memo" rows="5" readonly placeholder="근무 특이사항, 지각/조퇴, 메모 등을 입력하세요."></textarea>
+						<textarea id="detail_memo" name="memo" rows="5" readonly
+							placeholder="근무 특이사항, 지각/조퇴, 메모 등을 입력하세요."></textarea>
 					</div>
 				</div>
 
@@ -1009,8 +1053,10 @@ body {
 					<button type="button" class="btn btn-save" id="detailEditBtn">수정</button>
 				</div>
 
-				<div class="modal-footer" id="detailEditButtons" style="display: none;">
-					<button type="button" class="btn btn-cancel" id="detailEditCancelBtn">수정 취소</button>
+				<div class="modal-footer" id="detailEditButtons"
+					style="display: none;">
+					<button type="button" class="btn btn-cancel"
+						id="detailEditCancelBtn">수정 취소</button>
 					<button type="submit" class="btn btn-save" id="detailSaveBtn">저장</button>
 				</div>
 			</form>
@@ -1021,7 +1067,8 @@ body {
 		<div class="modal-content">
 			<div class="modal-header">
 				<h2 id="workplaceDetailTitle">근무지 상세보기</h2>
-				<button type="button" id="closeWorkplaceDetailModal" class="close-btn">×</button>
+				<button type="button" id="closeWorkplaceDetailModal"
+					class="close-btn">×</button>
 			</div>
 
 			<form id="workplaceDetailForm">
@@ -1029,19 +1076,21 @@ body {
 
 				<div class="modal-body">
 					<div class="form-row">
-						<label for="detail_workplace_name">근무지 이름</label>
-						<input type="text" id="detail_workplace_name" name="name" placeholder="예: 강남 편의점">
+						<label for="detail_workplace_name">근무지 이름</label> <input
+							type="text" id="detail_workplace_name" name="name"
+							placeholder="예: 강남 편의점">
 					</div>
 
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="detail_workplace_pay_per_hour">급여 금액</label>
-							<input type="number" id="detail_workplace_pay_per_hour" name="pay_per_hour" min="0">
+							<label for="detail_workplace_pay_per_hour">급여 금액</label> <input
+								type="number" id="detail_workplace_pay_per_hour"
+								name="pay_per_hour" min="0">
 						</div>
 
 						<div class="form-row">
-							<label for="detail_workplace_pay_type">급여 타입</label>
-							<select id="detail_workplace_pay_type" name="pay_type">
+							<label for="detail_workplace_pay_type">급여 타입</label> <select
+								id="detail_workplace_pay_type" name="pay_type">
 								<option value="시급">시급</option>
 								<option value="일급">일급</option>
 								<option value="월급">월급</option>
@@ -1051,8 +1100,8 @@ body {
 
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="detail_workplace_pay_cycle">지급 주기</label>
-							<select id="detail_workplace_pay_cycle" name="pay_cycle">
+							<label for="detail_workplace_pay_cycle">지급 주기</label> <select
+								id="detail_workplace_pay_cycle" name="pay_cycle">
 								<option value="주급">주급</option>
 								<option value="월급">월급</option>
 							</select>
@@ -1067,8 +1116,8 @@ body {
 									<c:forEach var="i" begin="1" end="31">
 										<option value="${i}">${i}일</option>
 									</c:forEach>
-								</select>
-								<span style="font-size: 14px; color: #666;">매월 정해진 날짜에 급여가 계산됩니다.</span>
+								</select> <span style="font-size: 14px; color: #666;">매월 정해진 날짜에
+									급여가 계산됩니다.</span>
 							</div>
 						</div>
 					</div>
@@ -1078,65 +1127,86 @@ body {
 					<div class="form-row full-width">
 						<label>세금 적용 여부</label>
 						<div class="tax-option-group">
-							<label class="tax-option-item"><input type="radio" name="detail_workplace_tax_radio" value="0"> 미적용</label>
-							<label class="tax-option-item"><input type="radio" name="detail_workplace_tax_radio" value="3.3"> 3.3% (프리랜서 등)</label>
-							<label class="tax-option-item"><input type="radio" name="detail_workplace_tax_radio" value="custom" id="detail_workplace_tax_custom_radio"> 직접 입력</label>
+							<label class="tax-option-item"><input type="radio"
+								name="detail_workplace_tax_radio" value="0"> 미적용</label> <label
+								class="tax-option-item"><input type="radio"
+								name="detail_workplace_tax_radio" value="3.3"> 3.3%
+								(프리랜서 등)</label> <label class="tax-option-item"><input
+								type="radio" name="detail_workplace_tax_radio" value="custom"
+								id="detail_workplace_tax_custom_radio"> 직접 입력</label>
 
-							<div class="custom-tax-input" style="display: flex; align-items: center; gap: 4px;">
-								<input type="number" id="detail_workplace_custom_tax_value" placeholder="0.0" step="0.1" min="0" max="100"
-									style="width: 60px; height: 30px; padding: 4px; font-size: 13px;" disabled>
-								<span style="font-size: 13px; color: #374151;">%</span>
+							<div class="custom-tax-input"
+								style="display: flex; align-items: center; gap: 4px;">
+								<input type="number" id="detail_workplace_custom_tax_value"
+									placeholder="0.0" step="0.1" min="0" max="100"
+									style="width: 60px; height: 30px; padding: 4px; font-size: 13px;"
+									disabled> <span
+									style="font-size: 13px; color: #374151;">%</span>
 							</div>
 						</div>
-						<input type="hidden" id="detail_workplace_tax_applied" name="tax_applied" value="0">
+						<input type="hidden" id="detail_workplace_tax_applied"
+							name="tax_applied" value="0">
 					</div>
 
 					<div class="form-row full-width" style="margin-top: 5px;">
 						<label>4대보험 적용 여부</label>
 						<div class="tax-option-group">
-							<label class="tax-option-item"><input type="radio" name="detail_workplace_insurance_radio" value="N"> 미적용</label>
-							<label class="tax-option-item"><input type="radio" name="detail_workplace_insurance_radio" value="Y"> 적용</label>
+							<label class="tax-option-item"><input type="radio"
+								name="detail_workplace_insurance_radio" value="N"> 미적용</label> <label
+								class="tax-option-item"><input type="radio"
+								name="detail_workplace_insurance_radio" value="Y"> 적용</label>
 						</div>
-						<input type="hidden" id="detail_workplace_insurance_applied" name="insurance_applied" value="N">
+						<input type="hidden" id="detail_workplace_insurance_applied"
+							name="insurance_applied" value="N">
 					</div>
 
 					<div class="form-row full-width" style="margin-top: 5px;">
 						<label>고용보험 적용 여부</label>
 						<div class="tax-option-group">
-							<label class="tax-option-item"><input type="radio" name="detail_workplace_employment_radio" value="N"> 미적용</label>
-							<label class="tax-option-item"><input type="radio" name="detail_workplace_employment_radio" value="Y"> 적용</label>
+							<label class="tax-option-item"><input type="radio"
+								name="detail_workplace_employment_radio" value="N"> 미적용</label>
+							<label class="tax-option-item"><input type="radio"
+								name="detail_workplace_employment_radio" value="Y"> 적용</label>
 						</div>
-						<input type="hidden" id="detail_workplace_employment_insurance" name="employment_insurance" value="N">
+						<input type="hidden" id="detail_workplace_employment_insurance"
+							name="employment_insurance" value="N">
 					</div>
 
 					<div class="section-title">기본 근무 시간 (선택)</div>
 					<div class="form-grid two-col">
 						<div class="form-row">
-							<label for="detail_workplace_start_time">기본 시작시간</label>
-							<input type="time" id="detail_workplace_start_time" name="work_start_time">
+							<label for="detail_workplace_start_time">기본 시작시간</label> <input
+								type="time" id="detail_workplace_start_time"
+								name="work_start_time">
 						</div>
 						<div class="form-row">
-							<label for="detail_workplace_end_time">기본 종료시간</label>
-							<input type="time" id="detail_workplace_end_time" name="work_end_time">
+							<label for="detail_workplace_end_time">기본 종료시간</label> <input
+								type="time" id="detail_workplace_end_time" name="work_end_time">
 						</div>
 					</div>
 				</div>
 
 				<div class="modal-footer" id="workplaceDetailViewButtons">
-					<button type="button" class="btn btn-delete" id="workplaceDetailDeleteBtn">삭제</button>
-					<button type="button" class="btn btn-cancel" id="workplaceDetailCloseBtn">확인</button>
-					<button type="button" class="btn btn-save" id="workplaceDetailEditBtn">수정</button>
+					<button type="button" class="btn btn-delete"
+						id="workplaceDetailDeleteBtn">삭제</button>
+					<button type="button" class="btn btn-cancel"
+						id="workplaceDetailCloseBtn">확인</button>
+					<button type="button" class="btn btn-save"
+						id="workplaceDetailEditBtn">수정</button>
 				</div>
 
-				<div class="modal-footer" id="workplaceDetailEditButtons" style="display: none;">
-					<button type="button" class="btn btn-cancel" id="workplaceDetailCancelEditBtn">수정 취소</button>
-					<button type="button" class="btn btn-save" id="workplaceDetailSaveBtn">저장</button>
+				<div class="modal-footer" id="workplaceDetailEditButtons"
+					style="display: none;">
+					<button type="button" class="btn btn-cancel"
+						id="workplaceDetailCancelEditBtn">수정 취소</button>
+					<button type="button" class="btn btn-save"
+						id="workplaceDetailSaveBtn">저장</button>
 				</div>
 			</form>
 		</div>
 	</div>
 
-<script>
+	<script>
 document.addEventListener("DOMContentLoaded", function () {
     const calendarEl = document.getElementById("calendar");
 
@@ -1452,17 +1522,29 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!summaryTotalHoursEl) return;
 
         if (!data) {
+//             summaryTotalHoursEl.innerText = "0시간 0분";
+//             summaryBasePayEl.innerText = "0원";
+//             summaryNightPayEl.innerText = "+ 0원";
+//             summaryOvertimePayEl.innerText = "+ 0원";
+//             summaryHolidayPayEl.innerText = "+ 0원";
+//             summaryWeeklyPayEl.innerText = "+ 0원";
+//             summaryTaxLabelEl.innerText = "세금(근무지별 합산)";
+//             summaryTaxEl.innerText = "- 0원";
+//             summaryInsuranceLabelEl.innerText = "보험료(근무지별 합산)";
+//             summaryInsuranceEl.innerText = "- 0원";
+//             summaryFinalPayEl.innerText = "0원";
+            
             summaryTotalHoursEl.innerText = "0시간 0분";
-            summaryBasePayEl.innerText = "0원";
-            summaryNightPayEl.innerText = "+ 0원";
-            summaryOvertimePayEl.innerText = "+ 0원";
-            summaryHolidayPayEl.innerText = "+ 0원";
-            summaryWeeklyPayEl.innerText = "+ 0원";
+            summaryBasePayEl.innerText = formatWon(basePay);
+            summaryNightPayEl.innerText = "+ " + formatWon(nightPay);
+            summaryOvertimePayEl.innerText = "+ " + formatWon(overtimePay);
+            summaryHolidayPayEl.innerText = "+ " + formatWon(holidayPay);
+            summaryWeeklyPayEl.innerText = "+ " + formatWon(weeklyPay);
             summaryTaxLabelEl.innerText = "세금(근무지별 합산)";
-            summaryTaxEl.innerText = "- 0원";
+            summaryTaxEl.innerText = "- " + formatWon(tax);
             summaryInsuranceLabelEl.innerText = "보험료(근무지별 합산)";
-            summaryInsuranceEl.innerText = "- 0원";
-            summaryFinalPayEl.innerText = "0원";
+            summaryInsuranceEl.innerText = "- " + formatWon(insurance);
+            summaryFinalPayEl.innerText = formatWon(finalPay);
             return;
         }
 
@@ -2418,23 +2500,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
-<c:if test="${param.insertSuccess == 'false'}">
-	<script>
+	<c:if test="${param.insertSuccess == 'false'}">
+		<script>
 	    alert("근무 등록에 실패했습니다.");
 	</script>
-</c:if>
+	</c:if>
 
-<c:if test="${param.deleteSuccess == 'true'}">
-	<script>
+	<c:if test="${param.deleteSuccess == 'true'}">
+		<script>
 	    alert("삭제가 완료되었습니다.");
 	</script>
-</c:if>
+	</c:if>
 
-<c:if test="${param.deleteSuccess == 'false'}">
-	<script>
+	<c:if test="${param.deleteSuccess == 'false'}">
+		<script>
 	    alert("삭제에 실패했습니다.");
 	</script>
-</c:if>
+	</c:if>
 
 </body>
 </html>
