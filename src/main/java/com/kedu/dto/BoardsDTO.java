@@ -14,8 +14,16 @@ public class BoardsDTO {
 	
 	private int bookmarked;
 	
+	private String reason;	
 	
-	
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	public int getBookmarked() {
 		return bookmarked;
 	}

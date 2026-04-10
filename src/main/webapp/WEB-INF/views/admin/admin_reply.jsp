@@ -247,6 +247,7 @@ body {
 
 /* ===== Table ===== */
 .admin-table {
+	table-layout: fixed; /* 너비를 엄격하게 지키도록 설정 */
     width: 100%;
     border-collapse: collapse;
 }
@@ -270,17 +271,48 @@ body {
 /* 댓글 관리  */
 .admin-table th:nth-child(1) { width: 8%; }  /* 번호 */
 .admin-table th:nth-child(2) { width: 10%; } /* 게시판 번호 */
-.admin-table th:nth-child(3) { width: 35%; } /* 작성자 */
+.admin-table th:nth-child(3) { width: 20%; } /* 작성자 */
 .admin-table th:nth-child(4) { width: 12%; } /* 작성일 */
 .admin-table th:nth-child(5) { width: 10%; } /* 상태 */
 .admin-table th:nth-child(6) { width: 10%; } /* 관리 */
 
+.reply-report th{
+	white-space: normal;       /* 기본 줄바꿈 허용 */
+    word-break: break-all;     /* 영어/숫자도 너비를 넘어가면 강제 줄바꿈 */
+    overflow-wrap: break-word; /* 긴 단어가 있으면 줄바꿈 처리 */
+    max-width: 400px;          /* (선택) 특정 너비를 넘어가면 줄바꿈 되도록 너비 제한 */
+    line-height: 1.5;          /* 줄 간격을 주면 훨씬 읽기 편합니다. */
+}
 /* 신고 댓글 관리  */
 .reply-report th:nth-child(1) { width: 8%; }  /* 번호 */
-.reply-report th:nth-child(2) { width: 35%; } /* 글 내용 */
-.reply-report th:nth-child(3) { width: 20%; } /* 작성자 */
-.reply-report th:nth-child(4) { width: 15%; } /* 작성일 */
-.reply-report th:nth-child(5) { width: 12%; } /* 관리 */
+/* 신고사유 */
+.reply-report th:nth-child(2) { 
+	width:20%;
+ } 
+ .reply-report td:nth-child(2) { 
+    white-space: normal;       /* 한 줄 제한 해제 */
+    word-break: break-all;     /* 강제 줄바꿈 */
+    text-overflow: clip;       /* 생략 제거 */
+    overflow: visible;
+ }
+ /* 글 내용 */
+.reply-report th:nth-child(3) {
+ 	width: auto; 
+ 	white-space: normal;       /* nowrap 해제: 다음 줄로 넘어가게 함 */
+ 	word-break: break-all;     /* 긴 영문/숫자 강제 줄바꿈 */
+    text-overflow: clip;       /* ... 생략 표시 제거 */
+    overflow: visible;         /* 숨김 해제 */
+    line-height: 1.5;
+ } 
+ .reply-report td:nth-child(3) {
+    white-space: normal;       /* 한 줄 제한 해제 */
+    word-break: break-all;     /* 강제 줄바꿈 */
+    text-overflow: clip;       /* 생략 제거 */
+    overflow: visible;
+}
+.reply-report th:nth-child(4) { width: 20%; } /* 작성자 */
+.reply-report th:nth-child(5) { width: 15%; } /* 작성일 */
+.reply-report th:nth-child(6) { width: 12%; } /* 관리 */
 
 .admin-table td {
     white-space: nowrap;
@@ -401,7 +433,7 @@ body {
     <main class="admin-page">
         <div class="page-header">
             <div class="page-title">
-                <h2>댓글 관리</h2>
+                <h2>전체 댓글 관리</h2>
                 <p>커뮤니티 게시글 조회, 삭제가 가능합니다.</p>
             </div>
         </div>
@@ -476,19 +508,11 @@ body {
                 <h3>신고 댓글 목록</h3>
             </div>
 
-            <div class="filter-row">
-                <select>
-                    <option>최신순</option>
-                    <option>과거순</option>
-                </select>
-                <input type="text" placeholder="작성자 검색">
-                <button class="btn-blue" type="button">검색</button>
-            </div>
-
             <table class="admin-table reply-report">
                 <thead>
                     <tr>
                         <th>댓글 번호</th>
+                        <th>신고 사유</th>
                         <th>글 내용</th>
                         <th>작성자</th>
                         <th>작성일</th>
@@ -499,6 +523,7 @@ body {
                 <c:forEach var="i" items="${report_replyList}">
                     <tr>
                         <td>${i.seq}</td>
+                        <td>${i.reason}</td>
                         <td>${i.content}</td>
                         <td>${i.member_id}</td>
                         <td id="write_date">

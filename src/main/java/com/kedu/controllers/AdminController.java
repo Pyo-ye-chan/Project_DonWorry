@@ -182,7 +182,8 @@ public class AdminController {
 	
 	/* 관리자 - 게시물 관리 */
 	@RequestMapping("/admin_boards")
-	public String adminBoards(Integer page, String keyword,String category, Model model) {
+	public String adminBoards(Integer page,Integer rPage, String keyword,String category, Model model) {
+		//일반 게시글
 		if(category == null)
 			category = "all";
 		
@@ -190,9 +191,21 @@ public class AdminController {
 			page=1;
 		int start = page*5-4;
 		int end = page*5;
+		
+		//신고 게시글
+		if(rPage==null)	
+			rPage=1;
+		int reportStart = rPage * 5 - 4;
+		int reportEnd = rPage * 5;
+		
+		// 신고 게시글만 목록
+	    List<BoardsDTO> admin_report_boardList = adao.admin_report_boardList_paging(reportStart, reportEnd);
+	    int reportTotalCount = adao.getReportTotalCount();
+	    
 		//오늘 신규 게시글 카운트
 		int getRecordCountToday = adao.getRecordCountToday();
-		//회원 게시글 페이지네이션 적용
+		
+		//일반 게시글 페이지네이션 적용
 		List<BoardsDTO> board_mainList;	
 		int recordTotalCount = adao.getRecordTotalCount(category,keyword);
 
@@ -204,13 +217,19 @@ public class AdminController {
 			board_mainList =  adao.admin_boardList(start,end,category);	
 //			recordTotalCount = bdao.mainRecordTotalCount(); //카테고리 전
 		}
+		//일반 게시글 모델
 		model.addAttribute("currentPage",page);
 		model.addAttribute("recordCountPerPage",5);
 		model.addAttribute("naviCountPerPage",10);	
 		model.addAttribute("recordTotalCount",recordTotalCount);
 		model.addAttribute("getRecordCountToday",getRecordCountToday);
 		model.addAttribute("board_mainList", board_mainList);
-
+	
+		//신고게시글 모델
+		model.addAttribute("rCurrentPage", rPage); // JSP에서 사용할 신고 현재 페이지
+	    model.addAttribute("rTotalCount", reportTotalCount); // 신고 게시글 총 개수
+		model.addAttribute("admin_report_boardList",admin_report_boardList);
+		
 		//공지글 페이지 ㄴ
 		List<BoardsDTO> notice_mainList =  adao.adminNoticeList();
 		model.addAttribute("notice_mainList",notice_mainList);
@@ -288,14 +307,9 @@ public class AdminController {
 		List<ReplyDTO> replyList;
 		int recordTotalCount;
 		
-		if(keyword!=null && !keyword.isEmpty()) {//검색어 있으면 id 필터링한 리스트 뽑음
-			replyList = adao.searchReplyById(start,end,keyword,category);
-			
-		}else {
-			//없으면 페이지든 뭐든 전체 가져옴
-			replyList  =  adao.admin_replyList(start,end,category);
-		}
-		recordTotalCount = adao.getReplyTotalCount(keyword,category);
+		replyList = adao.searchReplyById(start,end,keyword,category);
+
+		recordTotalCount = adao.getReplyTotalCount(category,keyword);
 		
 		model.addAttribute("currentPage",page);
 		model.addAttribute("recordCountPerPage",5);
