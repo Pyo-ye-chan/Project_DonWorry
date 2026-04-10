@@ -180,6 +180,15 @@ public class JobPostDAO {
         int startTime = Integer.parseInt(dto.getWork_starttime());
         int endTime = Integer.parseInt(dto.getWork_endtime());
         
+//        String[] startArr = dto.getWork_starttime().split(":"); // 수정본
+//        int startTime = Integer.parseInt(startArr[0]) * 60 
+//                      + Integer.parseInt(startArr[1]);
+//
+//        String[] endArr = dto.getWork_endtime().split(":");
+//        int endTime = Integer.parseInt(endArr[0]) * 60 
+//                    + Integer.parseInt(endArr[1]);
+
+        
         // 종료 시간이 0(자정)이라면 1440으로 변경해서 DB 정합성 유지
         if(endTime == 0) {
             endTime = 1440;
