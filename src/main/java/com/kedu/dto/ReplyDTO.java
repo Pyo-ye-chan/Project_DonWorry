@@ -16,6 +16,17 @@ public class ReplyDTO {
 	private String write_date_str;
 
 	private int report_count;
+	
+	private String reason;
+	
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 
 	public int getReport_count() {
 		return report_count;

@@ -220,6 +220,7 @@
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.4;
+            word-break: break-all;
         }
 
         /* 작성 정보 */
@@ -235,6 +236,7 @@
 
         /* 본문 */
         .detail-content {
+            word-break: break-all;
             margin-top: 30px;
             font-size: 17px;
             /* 기존 15 → 크게 */
@@ -242,8 +244,14 @@
             /* 가독성 핵심 */
             color: #333;
             min-height: 300px;
+            word-break: break-all;
         }
-
+        .detail-content img{
+	        max-width: 100%;    /* 부모 너비를 넘지 않음 */
+		    height: auto;       /* 비율 유지 */
+		    display: block;     /* 하단 여백 제거 */
+		    margin: 10px 0;    /* 이미지 위아래 여백 */
+        }
         /* 버튼 */
         .detail-actions {
             margin-top: 40px;
@@ -313,6 +321,7 @@
 
         /* 리스트 */
         .comment-list {
+        word-break: break-all;
             display: flex;
             flex-direction: column;
             gap: 15px;

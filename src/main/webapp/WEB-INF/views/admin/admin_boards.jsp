@@ -276,8 +276,59 @@ body {
 /* ===== Table ===== */
 .admin-table {
     width: 100%;
-    border-collapse: collapse;
+    table-layout: fixed;/*내용 길이 달라도 칸 크기 안 변함  */
+    border-collapse: collapse; /* 내용 길면 .처리  */
 }
+/*게시글 관리 */
+.admin-table th:nth-child(1) { width: 8%; }  /* 번호 */
+.admin-table th:nth-child(2) { width: 10%; } /* 게시판 */
+.admin-table th:nth-child(3) { width: 25%; } /* 제목 (가장 넓게) */
+.admin-table th:nth-child(4) { width: 15%; } /* 작성자 */
+.admin-table th:nth-child(5) { width: 12%; } /* 작성일 */
+.admin-table th:nth-child(6) { width: 10%; } /* 상태 */
+.admin-table th:nth-child(7) { width: 20%; } /* 관리 */
+
+/*신고 게시글 관리 */
+.board-report th:nth-child(1) { width: 8%; }  /* 번호 */
+/*신고 사유  */
+.board-report th:nth-child(2) { 
+	width: 25%; 
+} 
+.board-report td:nth-child(2) { 
+    white-space: pre-wrap !important;
+    word-break: break-all !important; /* 긴 단어 강제 줄바꿈 */
+    text-overflow: clip !important;   /* ... 표시 제거 */
+    overflow: visible !important;     /* 넘치는 내용 보이기 */
+    height: auto;                     /* 높이 제한 해제 */
+ }
+/* 제목 */
+.board-report th:nth-child(3) {
+ 	width: auto; 
+ 	white-space: normal;       /* nowrap 해제: 다음 줄로 넘어가게 함 */
+ 	word-break: break-all;     /* 긴 영문/숫자 강제 줄바꿈 */
+    text-overflow: clip;       /* ... 생략 표시 제거 */
+    overflow: visible;         /* 숨김 해제 */
+    line-height: 1.5;
+ } 
+ .board-report td:nth-child(3) {
+	white-space: normal;       /* 한 줄 제한 해제 */
+    word-break: break-all;     /* 강제 줄바꿈 */
+    text-overflow: clip;       /* 생략 제거 */
+    overflow: visible;
+ }
+ /* 작성자 */
+.board-report th:nth-child(4) { width: 12%; }
+ /* 작성일 */
+.board-report th:nth-child(5) { width: 10%; }
+.board-report th:nth-child(6) { width: 20%; } /* 관리 */
+
+/*공지글 관리 */
+.notice-table th:nth-child(1) { width: 8%; }  /* 번호 */
+.notice-table th:nth-child(2) { width: 30%; } /* 제목 */
+.notice-table th:nth-child(3) { width: 20%; } /* 작성자 */
+.notice-table th:nth-child(4) { width: 12%; } /* 작성일 */
+.notice-table th:nth-child(5) { width: 10%; } /* 상태 */
+.notice-table th:nth-child(6) { width: 20%; } /* 관리 */
 
 .admin-table th,
 .admin-table td {
@@ -295,6 +346,10 @@ body {
 }
 
 .admin-table td {
+    text-align: center;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;/*내용길면 ..처리 */
     text-align: center;
 }
 
@@ -510,13 +565,59 @@ body {
             <div class="pagination-wrap" id="admin_board_navi">
             </div>
         </section>
+<!-- 게시글 신고 목록 -->
+       <section class="panel">
+            <div class="panel-head">
+                <h3>신고 게시글 목록</h3>
+            </div>
+
+            <div class="filter-row">
+                <input type="text" name="keyword" placeholder="작성자 검색" class="keyword">
+                <button class="btn-blue board-search-btn" type="button">검색</button>
+                <button class="btn-blue board-all-btn" type="button">전체</button>
+            </div>
+
+            <table class="admin-table board-report">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>신고 사유</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="i" items="${admin_report_boardList}">
+                <c:if test="${i.member_id!='관리자'}">
+                    <tr>
+                        <td>${i.seq}</td>                       
+                        <td>${i.reason}<br></td>                      
+                        <td>${i.title}</td>
+                        <td>${i.member_id}</td>
+                        <td id="write_date">
+                        	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
+                        </td>
+                        <td>
+                            <button class="board-del-btn" type="button" data-seq="${i.seq}">삭제</button>
+                        </td>
+                    </tr>
+                    </c:if>
+                </c:forEach>                  
+                </tbody>
+            </table>
+
+            <div class="pagination-wrap" id="admin_report_navi">
+            </div>
+        </section>
 
         <section class="panel">
             <div class="panel-head">
                 <h3>공지글 목록</h3>
             </div>
 
-            <table class="admin-table">
+            <table class="admin-table notice-table">
                 <thead>
                     <tr>
                         <th>번호</th>
@@ -532,7 +633,7 @@ body {
                 <c:if test="${fn:contains(i.member_id,'관리자')}">
                     <tr>
                         <td>${i.seq}</td>
-                        <td>${i.title}</td>
+                        <td >${i.title}</td>
                         <td>${i.member_id}</td>
                         <td id="write_date">
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
@@ -556,6 +657,7 @@ body {
      <p style="margin-top:10px; font-size:11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
   </div>
 <script>
+//일반 게시글
 	let keyword = "${keyword}";
 	let category = "${category}";
 	let recordTotalCount = ${recordTotalCount}; // 총 개수
@@ -634,18 +736,18 @@ body {
 	})
 	//카테고리 선택
 	$("select[name='category']").on("change", function() {
-    let category = $(this).val();
-    let keyword = $(".keyword").val();
-    
-    let url = "/admin/admin_boards?page=1&category=" + category;
-    
-    // 키워드가 입력되어 있다면 키워드도 같이 보냄
-    if(keyword && keyword.trim() != "") {
-        url += "&keyword=" + encodeURIComponent(keyword);
-    }
-    
-    location.href = url;
-});
+	    let category = $(this).val();
+	    let keyword = $(".keyword").val();
+	    
+	    let url = "/admin/admin_boards?page=1&category=" + category;
+	    
+	    // 키워드가 입력되어 있다면 키워드도 같이 보냄
+	    if(keyword && keyword.trim() != "") {
+	        url += "&keyword=" + encodeURIComponent(keyword);
+	    }
+	    
+	    location.href = url;
+	});
 	//카테고리 유지
 	$(document).ready(function(){
 		let curCategory = "${category}";
@@ -668,6 +770,64 @@ body {
 		location.href='/admin/admin_board_delete?seq='+seq+'&page='+page;
 	});
 	
+//====================신고게시글=======================//
+	
+ 	let rTotalCount = ${rTotalCount}; //신고글 총 개수
+	let rCurrentPage = ${rCurrentPage}; // 신고 현재 페이지
+	let rRecordCountPerPage = 5; // 한 페이지당 5개
+	let rNaviCountPerPage = 10; 
+	let rPageTotalCount = Math.ceil(rTotalCount / rRecordCountPerPage);
+	
+	let rStartNavi = Math.floor((rCurrentPage - 1) / rNaviCountPerPage) * rNaviCountPerPage + 1;
+	let rEndNavi = rStartNavi + rNaviCountPerPage - 1;
+	
+	if (rEndNavi > rPageTotalCount) { 
+		rEndNavi = rPageTotalCount; 
+	}
+	
+	let rNeedPrev = true;
+	let rNeedNext = true;
+	
+	if(rStartNavi == 1){
+		rNeedPrev = false;
+	}
+	if(rEndNavi == rPageTotalCount){
+		rNeedNext = false;
+	}
+	
+	/*게시물 관리 id = admin_board_navi*/
+	let report_navi = $("#admin_report_navi");
+	
+	//이전 버튼 <
+	if(rNeedPrev){	
+		let btn = $("<button>").addClass("page-btn").html("&lt;");
+		btn.attr("onclick","location.href='"+getReportPageUrl(rStartNavi - 1) + "'");
+		report_navi.append(btn);
+	}	
+	// 페이지 번호
+	for (let i = rStartNavi; i <= rEndNavi; i++) {
+	    let btn = $("<button>").addClass("page-btn").html(i);
+	    btn.attr("onclick", "location.href='" + getReportPageUrl(i) + "'");
+	    if (i == rCurrentPage) {
+	        btn.addClass("active");
+	    }
+	    report_navi.append(btn);
+	}
+	
+	//다음 버튼 >
+	if(rNeedNext){		 
+		let btn = $("<button>").addClass("page-btn").html("&gt;");//구글 라이브러리 > 모양
+		btn.attr("onclick","location.href='"+getReportPageUrl(rEndNavi + 1) + "'");
+		report_navi.append(btn);
+	}
+	
+	// 신고 전용 URL 생성 함수
+	function getReportPageUrl(targetRPage) {
+	    // 일반 게시글의 현재 페이지(${currentPage})를 같이 보내야 상단 목록이 유지됨
+	    let url = "/admin/admin_boards?page=${currentPage}&rPage=" + targetRPage;
+	    url += "&category=${category}&keyword=" + encodeURIComponent("${keyword}");
+	    return url;
+	}
  
 //====================공지글=======================//
 
