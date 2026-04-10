@@ -501,13 +501,13 @@ img{
 			</div>
 		</div>
 		
-		<c:if test="${loginId == post.member_id}">
-    <div style="text-align: right; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee;">
-        <button type="button" id="btnDeletePost" class="btn-list" style="color: #ef4444; border-color: #fca5a5;">
-            <i class="fa-regular fa-trash-can"></i> 공고 삭제
-        </button>
-        </div>
-</c:if>
+<%-- 		<c:if test="${loginId == post.member_id}"> --%>
+<!--     <div style="text-align: right; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee;"> -->
+<!--         <button type="button" id="btnDeletePost" class="btn-list" style="color: #ef4444; border-color: #fca5a5;"> -->
+<!--             <i class="fa-regular fa-trash-can"></i> 공고 삭제 -->
+<!--         </button> -->
+<!--         </div> -->
+<%-- </c:if> --%>
 		
 		
 	</div>
