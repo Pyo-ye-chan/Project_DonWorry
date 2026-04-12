@@ -269,7 +269,7 @@ public class AdminController {
 	public String noticeWrite(BoardsDTO dto,MultipartFile[] files) {
 
 		int nextVal = bdao.seqNextval();
-		System.out.println(nextVal);
+
 		bdao.insert(nextVal,dto);
 
 

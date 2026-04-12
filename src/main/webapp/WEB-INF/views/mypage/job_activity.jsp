@@ -265,12 +265,9 @@
                <span>이력서 등록</span>
         </button>
         </a>
-        <nav class="tab-menu">
-            <button class="tab-item active">지원 공고</button>
-        </nav>
 
         <section class="post-list">
-            <div style="font-size: 14px; color: #868e96; margin-bottom: 15px; font-weight: 600; padding-left: 5px;">전체 지원 내역 (1)</div>
+            <div style="font-size: 14px; color: #868e96; margin-bottom: 15px; font-weight: 600; padding-left: 5px;">전체 지원 내역 (${selectApplyList.size()})</div>
             <c:forEach var="i" items="${selectApplyList}">
             <div class="post-container">
                 <div class="post-card">

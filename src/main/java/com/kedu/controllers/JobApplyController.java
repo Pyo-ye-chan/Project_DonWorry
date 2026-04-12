@@ -41,7 +41,6 @@ public class JobApplyController {
 	
 	@RequestMapping("/delete")
 	public String delete(int seq, RedirectAttributes rattr) {
-	    // 1. DAO를 통해 지원 내역 삭제
 	    int result = dao.delete(seq);
 	    
 	    if(result > 0) {
@@ -50,7 +49,6 @@ public class JobApplyController {
 	        rattr.addFlashAttribute("message", "지원 취소에 실패했습니다.");
 	    }
 	    
-	    // 2. 다시 지원 현황 리스트 페이지로 돌아가기
 	    return "redirect:/mypage/job_activity";
 	}
 	

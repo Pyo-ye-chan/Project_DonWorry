@@ -45,4 +45,9 @@ public class JobApplyDAO {
 	    
 	    return jdbc.query(sql, new BeanPropertyRowMapper<JobPostDTO>(JobPostDTO.class), id);
 	}
+	
+	public int countApplyById(String id) {
+	    String sql = "SELECT COUNT(*) FROM job_apply WHERE member_id = ?";
+	    return jdbc.queryForObject(sql, Integer.class, id);
+	}
 }
