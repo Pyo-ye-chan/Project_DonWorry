@@ -89,6 +89,9 @@ public class MypageController {
 		int boardsCount = bdao.mypostRecordTotalCount(id);
 		model.addAttribute("boardsCount",boardsCount);
 		
+		int applyCount = jadao.countApplyById(id);
+		model.addAttribute("applyCount",applyCount);
+		
 		return "mypage/mypage";
 	}
 	
@@ -119,10 +122,9 @@ public class MypageController {
 		//지원한 구ㅇ인공고
 		List<JobPostDTO> selectApplyList = jadao.selectApplyList(id);
 		model.addAttribute("selectApplyList",selectApplyList);
+		
 		return "mypage/job_activity";
-		/*JobPostDTO post = dao.getPostDetail(seq);
 
-		model.addAttribute("post", post);*/
 	}
 	
 	@RequestMapping("/job_activity_detail")
@@ -158,7 +160,6 @@ public class MypageController {
 		String id = (String)session.getAttribute("loginId");
 		dto.setId(id);
 		int resume = rdao.insert_resume(dto);
-		System.out.println("resume:"+resume);
 		return "redirect:/mypage/job_activity";
 	}
 	

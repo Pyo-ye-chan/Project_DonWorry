@@ -366,7 +366,7 @@ img{
         <span style="font-size: 13px; color: #666; cursor: pointer;">
         	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
             	${nickName}님 환영합니다.
-            <a href="members/logout" style="text-decoration: none; color:black">
+            <a href="/members/logout" style="text-decoration: none; color:black">
             <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
             </a>
         </span>
