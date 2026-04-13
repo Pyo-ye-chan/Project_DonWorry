@@ -231,6 +231,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-height: 160px; /* 카드들의 최소 높이를 명시적으로 지정 */
             height: 100%;
             color: #ccc;
             padding:0;
@@ -642,7 +643,7 @@
         </div>
 	   	</c:forEach>
 	   	 	<a href="/salary/calendar" > 
-		        <div class="card add-card" >              
+		        <div class="card add-card" class="add-card-wrapper">              
 		           + 알바 추가하기         
 		        </div>
 	        </a>
