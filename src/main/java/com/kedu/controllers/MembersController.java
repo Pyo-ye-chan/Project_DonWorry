@@ -158,7 +158,7 @@ public class MembersController {
 	        return "fail";
 	    }
 
-	    int result = dao.updatePw(id, pw);
+	    int result = dao.updatePw(id, eu.getSha512(pw));
 	    
 	    if (result > 0) {
 	        session.invalidate(); 
