@@ -644,7 +644,7 @@
 		                </c:otherwise>
 	            	</c:choose>
 		                <div class="notice-title" style="flex: 3;">${i.title}</div>
-		                <div class="notice-writer">${i.member_id}</div> <%-- 닉네임인 '관리자'가 출력됨 --%>
+		                <%--<div class="notice-writer">${i.member_id}</div>  닉네임인 '관리자'가 출력됨 --%>
 		                <div class="notice-date">
 		                    <fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" />
 		                </div>
