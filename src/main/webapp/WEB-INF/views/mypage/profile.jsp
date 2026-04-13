@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>    
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -502,8 +503,12 @@
 
 		<div class="form-group">
             <label class="form-label">전화번호</label>
+            <c:set var="hp" value="${list[0].phone}" />
             <input type="text" class="form-input update-input" placeholder="전화번호를 입력하세요" readonly 
-            name="phone" value="${list[0].phone}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+            name="phone" value="${fn:substring(hp, 0, 3)}-${fn:substring(hp, 3, 7)}-${fn:substring(hp, 7, 11)}"
+            style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+            
+                                
         </div>
 
         <div class="form-group">
