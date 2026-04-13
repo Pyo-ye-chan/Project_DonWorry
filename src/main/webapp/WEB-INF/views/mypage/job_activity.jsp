@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+    // 브라우저 캐시를 방지하여 '뒤로 가기' 시 서버를 다시 호출하게 함
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%>     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 <!DOCTYPE html>
 <html>
@@ -62,6 +68,7 @@
     .nav-menu a { text-decoration: none; color: #666; font-size: 14px; font-weight: 500; }
     .my-page { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #666; font-size: 14px; font-weight: 500; padding: 5px 10px; cursor: pointer; }
     .nav-menu a.active { color: #2563eb; }
+    nav a.active { color: #2563eb; }
     
     /*사용사 식별 표시*/
     .now-business ,.now-personal ,.now-admin {
@@ -224,8 +231,8 @@
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo"> 돈워리</a>
             <div class="nav-menu">
-                <a href="/" class="active">
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
+                <a href="/" >
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
                     홈
                 </a>
                 <a href="/salary/calendar">
@@ -246,8 +253,8 @@
                 </a>              
             </div>          
         </div>   
-        <a class="my-page" href="/mypage/toMypage">
-            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
+        <a class="my-page active" href="/mypage/toMypage" >
+            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(36, 99, 235);"></i>
             마이페이지
         </a>    
     </nav>
@@ -308,6 +315,13 @@
         $(".tab-item").removeClass("active");
         $(this).addClass("active");
     });
+    $(document).ready(function() {
+    	const loginUser = "${nickName}";
+        if (!loginUser || loginUser === "") {
+            alert("잘못된 접근입니다.");
+            location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+        }
+    })
 </script>
 </body>
 </html>
