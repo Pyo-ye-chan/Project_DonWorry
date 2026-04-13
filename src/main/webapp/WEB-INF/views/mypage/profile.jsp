@@ -565,6 +565,7 @@
         <p style="margin-top: 10px; font-size: 11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
     </div>
 <script>
+
 	//수정완료 취소 버튼 안보임
 	$(".cancel-btn,.save-btn").css("display","none");
 
@@ -605,12 +606,32 @@
 	})
 	
 	$(".update-form").on("submit", function(e) {
-        let nickname = $("input[name='nickname']").val();
-        let phone = $("input[name='phone']").val();
+		let nicknameInput = $("input[name='nickname']");
+	    let phoneInput = $("input[name='phone']");
+	    let emailInput = $("input[name='email']");
 
+        let nickname = nicknameInput.val();
+        let phone = phoneInput.val();
+        let email = emailInput.val();
+        
         if(nickname == "" || phone == "" || email == "") {
             alert("빈칸을 모두 입력해주세요.");
             e.preventDefault(); // 전송 중단
+            return false;
+        }//닉네임
+    	if (!/^[a-zA-Z가-힣0-9]{2,10}$/.test(nickname)) {
+    	    alert("닉네임은 한글, 영문, 숫자 포함 2~10글자 이내로 작성 가능합니다.");
+    	    nicknameInput.focus();
+    	    return false;
+    	}//전화번호
+        if (!/^010[0-9]{4}\d{4}$/.test(phone)) {
+            alert("전화번호 형식이 올바르지 않습니다. (예: 01012345678)");
+            phoneInput.focus();
+            return false;
+        } //이메일
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+            alert("올바른 이메일 주소 형식이 아닙니다.");
+            emailInput.focus();
             return false;
         }
         

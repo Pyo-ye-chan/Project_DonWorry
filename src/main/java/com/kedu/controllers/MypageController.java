@@ -109,6 +109,9 @@ public class MypageController {
 		String id =(String)session.getAttribute("loginId");	
 		String type = (String)session.getAttribute("type");
 		int up = mdao.updateMember(id.trim(),dto);
+		if(up>0) {
+			session.setAttribute("nickName",dto.getNickname());
+		}
 		return "redirect:/mypage/toProfile";
 	}
 	
