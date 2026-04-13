@@ -92,6 +92,9 @@ public class MypageController {
 		int applyCount = jadao.countApplyById(id);
 		model.addAttribute("applyCount",applyCount);
 		
+		int jobPostCount = jpdao.jobPostCount(id);
+		model.addAttribute("jobPostCount",jobPostCount);
+		
 		return "mypage/mypage";
 	}
 	

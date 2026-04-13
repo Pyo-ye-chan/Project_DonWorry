@@ -389,7 +389,7 @@ img{
 				<div class="nav-menu">
 					<a href="/"> <i class="fa-solid fa-house fa-lg"
 						style="color: rgb(203, 203, 203);"></i> 홈
-					</a> <a href="salary/calendar"> <i
+					</a> <a href="/salary/calendar"> <i
 						class="fa-regular fa-calendar fa-lg"
 						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
 					</a> <a href="#"  class="active"> <i class="fa-solid fa-briefcase fa-lg"
@@ -397,7 +397,7 @@ img{
 					</a> <a href="/boards/mainboard_list?page=1"> <i
 						class="fa-regular fa-message fa-lg"
 						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
-					</a> <a href=""> <i class="fa-solid fa-question fa-lg"
+					</a> <a href="/qna/qna?page=1"> <i class="fa-solid fa-question fa-lg"
 						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
 					</a>
 				</div>

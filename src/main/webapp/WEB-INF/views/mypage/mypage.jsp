@@ -543,7 +543,7 @@
                     구인 활동 관리
                 </div>
                 <div class="item-result">
-                    <span class="apply-list-count" >12</span>
+                    <span class="apply-list-count" >${jobPostCount}</span>
                     <span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
                 </div> 
             </a>

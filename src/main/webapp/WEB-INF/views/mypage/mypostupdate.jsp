@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+    // 브라우저 캐시를 방지하여 '뒤로 가기' 시 서버를 다시 호출하게 함
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%>    
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <!DOCTYPE html>
 <html>
@@ -495,6 +501,13 @@ $("#boardFiles").on("change", function () {
                 $("#fileNameText").text(files[0].name + " 외 " + (files.length - 1) + "개");
             }
         });
+$(document).ready(function() {
+	const loginUser = "${nickName}";
+    if (!loginUser || loginUser === "") {
+        alert("잘못된 접근입니다.");
+        location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+    }
+})
 </script>
 </body>
 </html>

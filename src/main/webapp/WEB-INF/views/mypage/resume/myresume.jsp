@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+    // 브라우저 캐시를 방지하여 '뒤로 가기' 시 서버를 다시 호출하게 함
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%> 	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -589,65 +595,7 @@ body {
 
 	<script>
 
-	//let recordTotalCount = ${recordTotalCount}; // 총 개수
-	//let recordCountPerPage = ${recordCountPerPage}; // 한페이지에 몇개 (10)
-	//let naviCountPerPage  = ${naviCountPerPage }; // navi 몇개 (10)
-	//let currentPage = ${currentPage}; // 현재 페이지
-	//et pageTotalCount = Math.ceil(recordTotalCount/recordCountPerPage); 
-	
-	let startNavi = Math.floor((currentPage - 1) / naviCountPerPage) * naviCountPerPage +1;
-	let endNavi = startNavi + naviCountPerPage - 1;
-	
-	if(endNavi > pageTotalCount){
-		endNavi = pageTotalCount;
-	}
-	
-	let needPrev = true;
-	let needNext = true;
-	
-	if(startNavi == 1){
-		needPrev = false;
-	}
-	if(endNavi == pageTotalCount){
-		needNext = false;
-	}
-	if(needPrev){
-		
-		let span = $("<span>");
-		span.addClass("material-symbols-outlined");
-		span.css("font-size","16px");
-		span.html("chevron_left");
-		let a = $("<a>");
-		a.addClass("page-num");
-		a.attr("href","/mypage/mypost?page="+ (startNavi-1));
-		a.append(span);
-		$(".page-nav").append(a);
-	}
-	
-	for(let i = startNavi; i <= endNavi; i++){
-		let a = $("<a>")
-		a.attr("href" , "/mypage/mypost?page="+i);
-		a.addClass("page-num");
-		
-		if (i == currentPage) {
-	        a.addClass("active");
-	    }
-		a.html(i);
-		$(".page-nav").append(a);
-	}
-	
-	if(needNext){
-		 
-		 let span = $("<span>");
-			span.addClass("material-symbols-outlined");
-			span.css("font-size","16px");
-			span.html("chevron_right");
-			let a = $("<a>");
-			a.addClass("page-num");
-			a.attr("href","/mypage/mypost?page="+(endNavi+1));
-			a.append(span);
-			$(".page-nav").append(a);
-	}		
+			
 			
     $(".tab-item").on("click", function () {
         $(".tab-item").removeClass("active");
@@ -690,6 +638,13 @@ body {
         $(".list-count").text("전체 게시글 " + visibleCount + "개");
         $("#emptyBox").toggle(visibleCount === 0);
     });
+    $(document).ready(function() {
+    	const loginUser = "${nickName}";
+        if (!loginUser || loginUser === "") {
+            alert("잘못된 접근입니다.");
+            location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+        }
+    })
     
 </script>
 

@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+    // 브라우저 캐시를 방지하여 '뒤로 가기' 시 서버를 다시 호출하게 함
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%>    
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -365,6 +371,11 @@
     });
 
     $(document).ready(function() {
+    	const loginUser = "${nickName}";
+        if (!loginUser || loginUser === "") {
+            alert("잘못된 접근입니다.");
+            location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+        }
     // [1] 직종 선택 버튼 클릭 시 레이어 열기/닫기
     $('#btnCategory').on('click', function(e) {
         e.stopPropagation(); // 부모 요소로 클릭 이벤트 전파 방지
@@ -375,6 +386,7 @@
             loadMainCategory(); 
         }
     });
+  
 
     // [2] 닫기 버튼 클릭 시 레이어 숨기기
     $('.categoryLayerClose').on('click', function() {
