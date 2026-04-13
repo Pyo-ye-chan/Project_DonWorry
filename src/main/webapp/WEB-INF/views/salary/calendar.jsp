@@ -1433,6 +1433,18 @@ body {
 	        toggleEmploymentInsurance();
 	        syncInsuranceValues();
 	    }
+	    
+	    const nameInput = document.getElementById("name"); // 근무지 이름 글자수 제한
+	    const nameCount = document.getElementById("nameCount");
+
+	    nameInput.addEventListener("input", function () {
+	        let length = this.value.length;
+	        if (length > 16) {
+	            this.value = this.value.slice(0, 16);
+	            length = 16;
+	        }
+	        nameCount.innerText = length + "/16";
+	    });
 	    // =====================================================
 	    // ===== 근무지 카드 =====
 	    // =====================================================
