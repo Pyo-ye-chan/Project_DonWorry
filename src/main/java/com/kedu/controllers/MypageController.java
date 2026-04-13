@@ -178,8 +178,12 @@ public class MypageController {
     }
 	
 	@RequestMapping("/toAccount")
-	public String toAccount(HttpSession session,Model model) {
+	public String toAccount(HttpSession session,Model model,RedirectAttributes rttr) {
 		String id = (String)session.getAttribute("loginId");
+		if(id == null) {
+			rttr.addFlashAttribute("msg", "잘못된 접근입니다.");
+			return "redirect:/members/toLogin";
+		}
 		MembersDTO dto = mdao.selectByLoginId(id);
 		model.addAttribute("dto",dto);
 		return "mypage/account";
