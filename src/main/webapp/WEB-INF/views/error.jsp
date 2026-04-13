@@ -268,6 +268,15 @@
                 </span>
             </c:otherwise>
         </c:choose>
+        <c:if test="${type=='관리자'}">
+            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin">관리자</div></a>
+		</c:if>
+		<c:if test="${type=='사업자'}">
+            <div class="now-business">사업자</div>
+        </c:if>
+		<c:if test="${type=='개인'}">        
+            <div class="now-personal">개인</div>
+		</c:if>
     </div>
 
     <nav class="navbar">
