@@ -125,7 +125,11 @@
 	}
 	
 	.radio-group input[type="radio"] {
-	    display: none; /* 실제 라디오 버튼은 숨김 */
+	    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
 	}
 	
 	.radio-label {
@@ -287,7 +291,11 @@
             <div class="resume-form-card">
                 <div class="form-group">
                     <label class="form-label">이력서 제목</label>
-                    <input type="text" name="title" class="form-input" placeholder="나를 표현하는 한 줄 제목을 입력하세요 (예: 성실함이 강점인 신입입니다!)" required>
+                    <input type="text" name="title" class="form-input count-input" maxlength="100" 
+                     placeholder="나를 표현하는 한 줄 제목을 입력하세요 (예: 성실함이 강점인 신입입니다!)" required>
+                     <div class="char_count" style="font-size: 12px; color: #999; text-align: right;">
+                     	0 / 100
+                     </div>
                 </div>
 
                 <div class="form-group" style="position: relative;">
@@ -319,7 +327,7 @@
                 <div class="form-group">
 				    <label class="form-label">희망 근무 조건</label>
 				    <div class="radio-group">
-				        <input type="radio" name="working_condition" id="day_weekday"  class="form-input" value="평일" required>
+				        <input type="radio" name="working_condition" id="day_weekday"  class="form-input" value="평일">
 				        <label for="day_weekday" class="radio-label">평일</label>
 				
 				        <input type="radio" name="working_condition" id="day_weekend" class="form-input" value="주말">
@@ -343,13 +351,19 @@
 				</div>
                 <div class="form-group">
                     <label class="form-label">경력 사항</label>
-                    <input type="text" name="career_write" class="form-input" id="career_input" disabled 
-                    placeholder="예: 스타벅스 강남점 6개월 근무 (경력이 없다면 '신입' 기재)">
+                    <input type="text" name="career_write" class="form-input count-input" id="career_input" disabled 
+                    placeholder="예: 스타벅스 강남점 6개월 근무 (경력이 없다면 '신입' 기재)" maxlength="100">
+                    <div class="char_count" style="font-size: 12px; color: #999; text-align: right;">
+                     	0 / 100
+                     </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label">간단 자기소개</label>
-                    <textarea name="introduction" class="form-input" placeholder="자신의 강점이나 근무 태도 등을 자유롭게 작성해 주세요."></textarea>
+                    <textarea name="introduction" class="form-input count-input" maxlength="500" placeholder="자신의 강점이나 근무 태도 등을 자유롭게 작성해 주세요."></textarea>
+                    <div class="char_count" style="font-size: 12px; color: #999; text-align: right;" >
+                     	0 / 500
+                     </div>
                 </div>
             </div>
 
@@ -388,7 +402,7 @@
     });
   
 
-    // [2] 닫기 버튼 클릭 시 레이어 숨기기
+    // 닫기 버튼 클릭 시 레이어 숨기기
     $('.categoryLayerClose').on('click', function() {
         $('#categoryLayer').slideUp(200);
     });
@@ -399,8 +413,6 @@
             // 현재 컨트롤러가 @RequestMapping("/mypage") 이므로 앞에 /mypage를 붙입니다.
             url: "/mypage/resume", // 혹은 대분류만 따로 가져오는 별도 URL이 있다면 그곳으로 설정
             success: function(data) {
-                // 이력서 페이지 이동 시 이미 모델로 넘어오므로 이 함수는 생략 가능합니다.
-                // 만약 AJAX로 대분류만 새로고침하고 싶다면 별도의 @ResponseBody 메서드가 필요합니다.
             }
         });
     }
@@ -425,7 +437,7 @@
         });
     });
 
-    // [4] 소분류 최종 선택 시
+    // 소분류 최종 선택 시
     $(document).on('click', '#subCatList li:not(.list-header)', function() {
     	//선택시 색 변경
     	$(this).addClass('active').siblings().removeClass('active');
@@ -437,7 +449,7 @@
         $('#categoryLayer').slideUp(200);         // 선택 후 닫기
     });
 
-    // [5] 레이어 외부 클릭 시 자동으로 닫기 (사용자 편의성)
+    // 레이어 외부 클릭 시 자동으로 닫기
     $(document).on('click', function(e) {
         if (!$(e.target).closest('.form-group').length) {
             $('#categoryLayer').slideUp(200);
@@ -455,10 +467,53 @@
     })
     
     // 등록 버튼을 누를 때 실행되는 함수
-	$("form").on("submit", function() {
-	    // 전송 직전에 disabled를 풀어줘야 서버로 데이터가 전송됩니다.
+	$("form").on("submit", function(e) {
+		// 요일 선택 체크
+	    if (!$("input[name='working_condition']:checked").val()) {
+	        alert("희망 근무 요일을 선택해 주세요!");
+	        e.preventDefault(); // 전송 중단
+	        return false;
+	    }
+	    // 전송 직전에 disabled를 풀어줘야 서버로 데이터가 전송
 	    $("#career_input").attr("disabled", false); 
 	});
+    
+    /*글자 수 제한*/
+    function updateCount(input){
+    	const maxLength = input.getAttribute('maxlength');//max값 가자ㅕ옴
+       	const currentLength = input.value.length;
+       	//현재 입력창과 가까운 c- 찾음
+       	const display = input.parentElement.querySelector('.char_count');
+    	if(display){
+       		display.textContent=currentLength + " / " + maxLength;
+       		if(currentLength >=maxLength){
+       			display.style.color = 'red';
+       		}else{
+       			display.style.color = '#999';
+       		}
+       	}
+    }
+    const inputs = document.querySelectorAll('.count-input');//.count-input들이 담겨 있는 커다란 상자
+    inputs.forEach(input => {
+    	updateCount(input);
+    	input.addEventListener('input',() =>{
+    		updateCount(input);
+    	});
+    });
+   	
+   	
+   	
+    
+/*    jquery 문법
+$('.count-input').on('input', function() {
+    const maxLength = $(this).attr('maxlength');
+    const currentLength = $(this).val().length;
+    const $display = $(this).parent().find('.char-count');
+    
+    $display.text(`${currentLength} / ${maxLength}`);
+    $display.css('color', currentLength >= maxLength ? 'red' : '#999');
+}); */
+
 </script>
 </body>
 </html>

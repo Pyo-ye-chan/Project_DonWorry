@@ -291,7 +291,10 @@
             <div class="resume-form-card">
                 <div class="form-group">
                     <label class="form-label">이력서 제목</label>
-                    <input type="text" name="title" class="form-input" value = "${dto.title }" required>
+                    <input type="text" name="title" class="form-input count-input" value = "${dto.title }" required maxlength="100" >
+                     <div class="char_count" style="font-size: 12px; color: #999; text-align: right;">
+                     	0 / 100
+                     </div>
                 </div>
 
                 <div class="form-group" style="position: relative;">
@@ -323,7 +326,7 @@
                 <div class="form-group">
 				    <label class="form-label">희망 근무 조건</label>
 				    <div class="radio-group">
-				        <input type="radio" name="working_condition" id="day_weekday"  class="form-input" value="평일" ${dto.working_condition == '평일' ? 'checked' : ''}required>
+				        <input type="radio" name="working_condition" id="day_weekday"  class="form-input" value="평일" ${dto.working_condition == '평일' ? 'checked' : ''}>
 				        <label for="day_weekday" class="radio-label">평일</label>
 				
 				        <input type="radio" name="working_condition" id="day_weekend" class="form-input" value="주말" ${dto.working_condition == '주말' ? 'checked' : ''}>
@@ -347,13 +350,20 @@
 				</div>
                 <div class="form-group">
                     <label class="form-label">경력 사항</label>
-                    <input type="text" name="career_write" class="form-input" id="career_input" 
-                    ${dto.career == '경력' ? '' : 'disabled'} value = "${dto.career_write }" placeholder="예: 스타벅스 강남점 6개월 근무">
+                    <input type="text" name="career_write" class="form-input count-input" id="career_input" 
+                    ${dto.career == '경력' ? '' : 'disabled'} value = "${dto.career_write }"
+                    maxlength="100"  placeholder="예: 스타벅스 강남점 6개월 근무">
+               		<div class="char_count" style="font-size: 12px; color: #999; text-align: right;">
+                     	0 / 100
+                     </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label">간단 자기소개</label>
-                    <textarea name="introduction" class="form-input" placeholder="자신의 강점이나 근무 태도 등을 자유롭게 작성해 주세요.">${dto.introduction }</textarea>
+                    <textarea name="introduction" class="form-input count-input" maxlength="500" placeholder="자신의 강점이나 근무 태도 등을 자유롭게 작성해 주세요.">${dto.introduction }</textarea>
+                 <div class="char_count" style="font-size: 12px; color: #999; text-align: right;" >
+                     	0 / 500
+                     </div>
                 </div>
             </div>
 
@@ -459,11 +469,41 @@
     	}
     })
     
-    // 등록 버튼을 누를 때 실행되는 함수 (예시)
-	$("form").on("submit", function() {
-	    // 전송 직전에 disabled를 풀어줘야 서버로 데이터가 전송됩니다.
+   // 등록 버튼을 누를 때 실행되는 함수
+	$("form").on("submit", function(e) {
+		// 요일 선택 체크
+	    if (!$("input[name='working_condition']:checked").val()) {
+	        alert("희망 근무 요일을 선택해 주세요!");
+	        e.preventDefault(); // 전송 중단
+	        return false;
+	    }
+	    // 전송 직전에 disabled를 풀어줘야 서버로 데이터가 전송
 	    $("#career_input").attr("disabled", false); 
 	});
+    
+    /*글자 수 제한*/
+    /*글자 수 제한*/
+    function updateCount(input){
+    	const maxLength = input.getAttribute('maxlength');//max값 가자ㅕ옴
+       	const currentLength = input.value.length;
+       	//현재 입력창과 가까운 c- 찾음
+       	const display = input.parentElement.querySelector('.char_count');
+    	if(display){
+       		display.textContent=currentLength + " / " + maxLength;
+       		if(currentLength >=maxLength){
+       			display.style.color = 'red';
+       		}else{
+       			display.style.color = '#999';
+       		}
+       	}
+    }
+    const inputs = document.querySelectorAll('.count-input');//.count-input들이 담겨 있는 커다란 상자
+    inputs.forEach(input => {
+    	updateCount(input);
+    	input.addEventListener('input',() =>{
+    		updateCount(input);
+    	});
+    });
 </script>
 </body>
 </html>
