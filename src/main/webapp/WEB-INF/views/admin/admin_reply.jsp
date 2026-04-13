@@ -726,7 +726,7 @@ body {
 	    let cat = category || "all";
 	    url += "&category="+cat;
     
-	    if (keyword && keyword.trim() !== "") {
+	    if (keyword && keyword.trim() !== "") {//===는 자료형 까지 비교. 값과 자료형이 모두 다를때를 비교
 	        url += "&keyword=" + encodeURIComponent(keyword);
 	    }
 	    return url;
