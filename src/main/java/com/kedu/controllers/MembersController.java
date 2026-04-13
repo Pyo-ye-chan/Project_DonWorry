@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,13 +40,18 @@ public class MembersController {
 	}
 	
 	@RequestMapping("/login")
-	public String login(String id, String pw,HttpSession session,RedirectAttributes rttr) {
-		
+	public String login(String id, String pw,HttpSession session,RedirectAttributes rttr, Model model) {
+		int memberStatus = dao.memberStatus(id);
+		if(memberStatus > 0) {
+			rttr.addFlashAttribute("msg", "정지 상태인 계정 입니다.");
+			return "redirect:/members/toLogin";
+		}
 		boolean result = dao.login(id,eu.getSha512(pw));
 		if(result) {	
 			session.setAttribute("loginId",id);
 			session.setAttribute("nickName", dao.getNickname(id));	
 			session.setAttribute("type", dao.getType(id));
+			model.addAttribute("memberStatus", memberStatus);
 		}else {
 			rttr.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
 			return "redirect:/members/toLogin";

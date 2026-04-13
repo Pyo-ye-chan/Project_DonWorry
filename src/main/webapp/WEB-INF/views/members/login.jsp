@@ -205,11 +205,13 @@
         <p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침 | 이용약관 | 고객센터</p>
     </div>
 <script>
-var alertMsg = "${msg}"; 
+var alertMsg = "${msg}";
 
 if (alertMsg && alertMsg !== "") {
     alert(alertMsg);
 }
+
+
 </script>
 </body>
 </html>

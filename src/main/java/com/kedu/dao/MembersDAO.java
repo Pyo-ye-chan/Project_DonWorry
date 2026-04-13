@@ -85,6 +85,11 @@ public class MembersDAO {
 	    
 	}
 	
+	public int memberStatus(String id) {
+		String sql = "select count(*) from members where id = ? and state = 'Y'";
+		return jdbc.queryForObject(sql, Integer.class,id);
+	}
+	
 	public int checkMemberForPw(String id, String email) {
 		String sql = "select count(*) from members where id=? and email=?";
 		
