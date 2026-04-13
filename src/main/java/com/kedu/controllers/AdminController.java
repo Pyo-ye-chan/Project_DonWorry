@@ -235,6 +235,9 @@ public class AdminController {
 		//공지글 페이지 ㄴ
 		List<BoardsDTO> notice_mainList =  adao.adminNoticeList();
 		model.addAttribute("notice_mainList",notice_mainList);
+		
+		int noticeCount = bdao.noticeCount();
+		model.addAttribute("noticeCount",noticeCount);
 
 		//댓글 목록
 		int replyCount = rdao.replyCount();

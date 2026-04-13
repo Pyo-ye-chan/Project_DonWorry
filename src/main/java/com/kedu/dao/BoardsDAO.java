@@ -256,6 +256,10 @@ public class BoardsDAO {
 	    
 	    return jdbc.query(sql, new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class), loginId, start, end);
 	}
+	public int noticeCount() {
+		String sql = "select count(*) from boards where category = 'notice'";
+		return jdbc.queryForObject(sql,Integer.class);
+	}
 	
 	
 

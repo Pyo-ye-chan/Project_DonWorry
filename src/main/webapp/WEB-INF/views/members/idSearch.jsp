@@ -420,7 +420,7 @@ $(".find-btn").on("click", function() {
                 $(".find-result").append(idDiv);
             }
         } else {
-            $(".find-result").html("<p style='font-size:14px; color:#666;'>일치하는 정보가 없습니다.</p>");
+            $(".find-result").html("<p style='font-size:14px; color:#666; text-align:center;'>일치하는 정보가 없습니다.</p>");
         }
     });
 });

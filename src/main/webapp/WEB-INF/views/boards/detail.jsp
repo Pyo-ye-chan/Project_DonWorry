@@ -763,6 +763,7 @@
             <!-- 카테고리 -->
             <div class="detail-category">
                 <c:choose>
+                    <c:when test="${dto.category == 'notice'}">공지사항</c:when>
                     <c:when test="${dto.category == 'main'}">메인게시판</c:when>
                     <c:when test="${dto.category == 'free'}">자유게시판</c:when>
                     <c:when test="${dto.category == 'qna'}">질문게시판</c:when>

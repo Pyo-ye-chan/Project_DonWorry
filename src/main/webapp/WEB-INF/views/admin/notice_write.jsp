@@ -349,7 +349,7 @@ body {
                 <div class="write-title">공지글 작성</div>
                 <form action="/admin/notice_write" method="post" id = "frm" enctype="multipart/form-data">
 			        <!-- 카테고리 -->
-		    		<input type="hidden" name="category" value="main">
+		    		<input type="hidden" name="category" value="notice">
 	                <!-- 제목 -->
 	                <div class="input-group">
 	                    <input type="text" name="title" placeholder="제목을 입력하세요" id="title">
