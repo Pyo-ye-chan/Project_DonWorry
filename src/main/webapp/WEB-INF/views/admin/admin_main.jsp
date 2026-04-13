@@ -533,13 +533,16 @@ body {
 					<a href="/admin/admin_main" class="active"> <i
 						class="fa-solid fa-wrench fa-lg" style="margin-right: 6px;"></i>
 						관리자 대시보드
-					</a> <a href="/admin/admin_boards?page=1"> <i
+					</a> 
+					<a href="/admin/admin_boards?page=1"> <i
 						class="fa-solid fa-file-pen fa-lg"
 						style="color: #c5c5c5; margin-right: 6px;"></i> 게시물 관리
-					</a> <a href="/admin/admin_members"> <i
+					</a> 
+					<a href="/admin/admin_members"> <i
 						class="fa-solid fa-user-shield fa-lg"
 						style="color: #c5c5c5; margin-right: 6px;"></i> 회원 관리
-					</a> <a href="/admin/admin_inquiry"> <i
+					</a> 
+					<a href="/admin/admin_inquiry"> <i
 						class="fa-regular fa-circle-question fa-lg"
 						style="color: #c5c5c5; margin-right: 6px;"></i> Q&A 관리
 					</a>
@@ -563,11 +566,15 @@ body {
 			<div class="admin-toolbar">
 				<a href="/admin/admin_main" class="admin-tool-btn active"> <i
 					class="fa-solid fa-chart-line"></i> 대시보드
-				</a> <a href="/admin/admin_members" class="admin-tool-btn"> <i
-					class="fa-solid fa-user-shield"></i> 회원 관리
-				</a> <a href="/admin/admin_boards?page=1" class="admin-tool-btn"> <i
+				</a> 
+				<a href="/admin/admin_boards?page=1" class="admin-tool-btn"> <i
 					class="fa-solid fa-file-pen"></i> 게시물 관리
-				</a> <a href="/admin/admin_inquiry" class="admin-tool-btn"> <i
+				</a> 
+				<a href="/admin/admin_members" class="admin-tool-btn"> <i
+					class="fa-solid fa-user-shield"></i> 회원 관리
+				</a> 
+				
+				<a href="/admin/admin_inquiry" class="admin-tool-btn"> <i
 					class="fa-regular fa-circle-question"></i> 고객 문의 관리
 				</a>
 			</div>

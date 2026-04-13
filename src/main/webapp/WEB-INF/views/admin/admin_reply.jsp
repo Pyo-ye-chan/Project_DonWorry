@@ -606,6 +606,12 @@ body {
 		location.href = "/admin/admin_reply?page=1&category=" + cat +"&keyword="+encodeURIComponent(keyword);
 	})
 	
+	$(".keyword").on("keypress", function(e) {
+    if(e.keyCode === 13) {
+        $(".reply-search-btn").click(); // 엔터 치면 위 클릭 함수를 실행해라
+    }
+});
+	
 	//전체 버튼 클릭
 	$(".reply-all-btn").on("click",function(){
 		$(".keyword").val(""); // 검색창 비우기

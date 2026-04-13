@@ -833,6 +833,13 @@ body {
 	    
 	    location.href = url;
 	});
+	
+	// 신고 게시글 엔터키 이벤트 추가
+	$(".report-keyword").on("keypress", function(e) {
+	    if(e.keyCode === 13) {
+	        $(".board-report-search-btn").click();
+	    }
+	});
 
 	// 신고 게시글 전체 버튼 클릭
 	$(".board-report-all-btn").on("click", function() {
