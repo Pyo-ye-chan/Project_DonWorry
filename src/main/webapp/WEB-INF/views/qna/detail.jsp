@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
 <style>
-    /* [1] 원본 초기화 및 레이아웃 유지 */
+     /* [1] 원본 초기화 및 레이아웃 유지 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
@@ -122,6 +122,7 @@
         width: 100vw;                  /* 화면 끝까지 너비 확장 */
         margin-left: calc(-50vw + 50%); /* 컨테이너를 벗어나 화면 꽉 채우기 */
     }
+
     .post-detail {
             margin-top: 40px;
         }
@@ -530,65 +531,66 @@
 </head>
 <body>
 
-<div class="container">
-<c:choose>
-<c:when test="${nickName==null}">
-    <div class="top-auth">
-        <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
-                <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
-            </a>
-        </span>
-    </div>
-</c:when>
-<c:otherwise>
-    <div class="top-auth">  
-        <span style="font-size: 13px; color: #666; cursor: pointer;">
-        	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-            	${nickName}님 환영합니다.
-            <a href="members/logout" style="text-decoration: none; color:black">
-            <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
-            </a>
-        </span>
-		<c:if test="${type=='관리자'}">
-            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin">관리자</div></a>
-		</c:if>
-		<c:if test="${type=='사업자'}">
-            <div class="now-business">사업자</div>
-        </c:if>
-		<c:if test="${type=='개인'}">        
-            <div class="now-personal">개인</div>
-		</c:if>
-    </div>
-</c:otherwise>
-</c:choose>
-    
+<div class="community-container">
+    <c:choose>
+        <c:when test="${nickName==null}">
+            <div class="top-auth">
+                <span style="font-size: 13px; color: #666; cursor: pointer;">
+                    <a href="/members/toLogin" style="text-decoration: none; color:black">
+                        <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
+                    </a>
+                </span>
+                <!-- 일단 관리자 빼고 다 숨겨둠 -->
+                    <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="top-auth">  
+                <span style="font-size: 13px; color: #666; cursor: pointer;">
+                    <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                        ${nickName}님 환영합니다.
+                    <a href="/members/logout" style="text-decoration: none; color:black">
+                    <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
+                    </a>
+                </span>
+                <c:if test="${type=='관리자'}">
+                    <div class="now-admin">관리자</div>
+                </c:if>
+                <c:if test="${type=='사업자'}">
+                    <div class="now-business">사업자</div>
+                </c:if>
+                <c:if test="${type=='개인'}">        
+                    <div class="now-personal">개인</div>
+                </c:if>
+            </div>
+        </c:otherwise>
+    </c:choose>
+
     <nav class="navbar">
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo"> 돈워리</a>
             <div class="nav-menu">
-                <a href="/" class="active"> 
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
+                <a href="/" >
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
                     홈
                 </a>
                 <a href="/salary/calendar">
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
-                    </a>
-                <a href="/jobposts/jobpost"> 
+                </a>
+                <a href="/jobposts/jobpost">
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
-                <a href="/boards/mainboard_list?page=1"> 
-                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
-                    커뮤니티
-                </a> 
-                <a href="/qna/qna?page=1"> 
-                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                <a href="/boards/mainboard_list?page=1">
+                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    커뮤니티</a>   
+                <a href="/qna/qna" class="active"> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(36, 99, 235); margin-right:5px;"></i>
                     고객지원
-                </a>              
-            </div>           
-        </div>
+                </a>             
+            </div>          
+        </div>   
         <c:if test="${nickName==null }">   
 	        <a class="my-page" href="/members/toLogin"> 
 	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
@@ -600,8 +602,9 @@
 	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
 	            마이페이지
 	        </a>  
-        </c:if>   
+        </c:if>         
     </nav>
+
     
     <div class="post-detail">
 
