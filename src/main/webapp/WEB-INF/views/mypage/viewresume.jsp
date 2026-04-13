@@ -185,6 +185,7 @@
         font-weight: 800;
         color: #111827;
         margin-bottom: 10px;
+        word-break: break-all;
     }
 
     .summary-meta {

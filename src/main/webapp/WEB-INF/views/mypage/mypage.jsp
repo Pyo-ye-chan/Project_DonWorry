@@ -506,7 +506,8 @@
         <div class="my-activity-title">설정</div>
         
         <div class="my-activity-item">
-            <a href="#" class="my-apply-list">
+				<!-- <a href="/mypage/alarmsetting" class="my-apply-list"> -->
+				<a href="#" class="my-apply-list" onclick="alert('서비스 준비 중입니다.'); return false;">
                 <div class="item-name">
                     <i class="fa-regular fa-bell" style="color: rgb(110, 110, 110); margin-right:7px;"></i>
                     알림 설정
@@ -577,7 +578,8 @@
     <div class="my-activity">
         <div class="my-activity-title">설정</div>  
         <div class="my-activity-item">
-            <a href="#" class="my-apply-list">
+			<!-- <a href="/mypage/alarmsetting" class="my-apply-list"> -->           
+            <a href="#" class="my-apply-list" onclick="alert('서비스 준비 중입니다.'); return false;">
                 <div class="item-name">
                     <i class="fa-regular fa-bell" style="color: rgb(110, 110, 110); margin-right:7px;"></i>
                     알림 설정

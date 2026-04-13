@@ -91,8 +91,9 @@
 
 				<div class="form-row">
 					<label for="detail_memo">메모</label>
-					<textarea id="detail_memo" name="memo" rows="5" readonly
+					<textarea id="detail_memo" name="memo" rows="5" maxlength="300" readonly
 						placeholder="근무 특이사항, 지각/조퇴, 메모 등을 입력하세요."></textarea>
+					<span id="detail_memoCount" style="font-size:12px; color:#666;">0/300</span>	
 				</div>
 			</div>
 

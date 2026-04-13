@@ -14,7 +14,8 @@
 			<div class="modal-body">
 				<div class="form-row">
 					<label for="name">근무지 이름</label> <input type="text" id="name"
-						name="name" placeholder="예: 강남 편의점" required>
+						name="name" maxlength="16" placeholder="예: 강남 편의점" required>
+					<span id="nameCount" style="font-size:12px; color:#666;">0/16</span>
 				</div>
 
 				<div class="form-grid two-col">

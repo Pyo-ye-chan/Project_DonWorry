@@ -17,8 +17,9 @@
 			<div class="modal-body">
 				<div class="form-row">
 					<label for="detail_workplace_name">근무지 이름</label> <input
-						type="text" id="detail_workplace_name" name="name"
+						type="text" maxlength="16" id="detail_workplace_name" name="name"
 						placeholder="예: 강남 편의점">
+					<span id="detail_workplace_nameCount" style="font-size:12px; color:#666;">0/16</span>	
 				</div>
 
 				<div class="form-grid two-col">

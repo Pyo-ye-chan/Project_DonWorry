@@ -80,8 +80,9 @@
 
 				<div class="form-row">
 					<label for="memo">메모</label>
-					<textarea id="memo" name="memo" rows="5"
+					<textarea id="memo" name="memo" rows="5" maxlength="300"
 						placeholder="근무 특이사항, 지각/조퇴, 메모 등을 입력하세요."></textarea>
+					<span id="memoCount" style="font-size:12px; color:#666;">0/300</span>
 				</div>
 			</div>
 

@@ -1134,6 +1134,12 @@ body {
 
 	        if (typeof afterSync === "function") afterSync();
 	    }
+	    
+// 	    textarea.addEventListener("input", function () { // 메모 글자 수 제한
+// 	        if (textarea.value.length > 300) {
+// 	            textarea.value = textarea.value.substring(0, 300);
+// 	        }
+// 	    });
 
 	    // =====================================================
 	    // ===== 급여 요약 =====
@@ -1379,6 +1385,45 @@ body {
 	        detailModal.style.display = "none";
 	        setDetailReadonlyMode(true);
 	    }
+	    
+	    const memoInput = document.getElementById("memo");
+	    const memoCount = document.getElementById("memoCount");
+
+	    const detailInput = document.getElementById("detail_memo");
+	    const detailCount = document.getElementById("detail_memoCount");
+
+	    // ===== 입력 textarea =====
+	    if (memoInput) {
+	        memoInput.addEventListener("input", function () {
+	            let length = this.value.length;
+
+	            if (length > 300) {
+	                this.value = this.value.slice(0, 300);
+	                length = 300;
+	            }
+
+	            memoCount.innerText = length + "/300";
+	        });
+	    }
+
+	    // ===== 상세 textarea =====
+	    if (detailInput && detailCount) {
+
+	        detailCount.style.display = "none"; // 상세에서는 숨김
+
+	        detailInput.addEventListener("input", function () {
+	            let length = this.value.length;
+
+	            if (length > 300) {
+	                this.value = this.value.slice(0, 300);
+	                length = 300;
+	            }
+
+	            detailCount.style.display = "inline"; // 수정 시 표시
+	            detailCount.innerText = length + "/300";
+	        });
+	    }
+	    
 
 	    // =====================================================
 	    // ===== 근무지 등록 =====
@@ -1433,6 +1478,37 @@ body {
 	        toggleEmploymentInsurance();
 	        syncInsuranceValues();
 	    }
+	    
+	    const nameInput = document.getElementById("name"); // 근무지 이름 글자수 제한
+	    const nameCount = document.getElementById("nameCount");
+	    
+	    const detail_workplace_nameInput = document.getElementById("detail_workplace_name");
+	    const detail_workplace_nameCount = document.getElementById("detail_workplace_nameCount")
+	    
+	    nameInput.addEventListener("input", function () {
+	        let length = this.value.length;
+	        if (length > 16) {
+	            this.value = this.value.slice(0, 16);
+	            length = 16;
+	        }
+	        nameCount.innerText = length + "/16";
+	    });
+	    
+	    detail_workplace_nameCount.innerText = detail_workplace_nameInput.value.length + "/16";
+	    
+	   
+	    detail_workplace_nameCount.style.display = "none";
+	    
+	    detail_workplace_nameInput.addEventListener("input", function () {
+	        let length = this.value.length;
+	        if (length > 16) {
+	            this.value = this.value.slice(0, 16);
+	            length = 16;
+	        }
+	        const detail_workplace_nameCount = document.getElementById("detail_workplace_nameCount").innerText = length + "/16";
+	    });
+	    
+	    
 	    // =====================================================
 	    // ===== 근무지 카드 =====
 	    // =====================================================
@@ -1795,6 +1871,7 @@ body {
 	    detailCloseBtn.addEventListener("click", closeDetailModalFunc);
 
 	    detailEditBtn.addEventListener("click", function () {
+	    	detailCount.style.display = "inline"; 
 	        setDetailReadonlyMode(false);
 	    });
 
@@ -1850,7 +1927,8 @@ body {
 	    }
 
 	    if (workplaceDetailEditBtn) {
-	        workplaceDetailEditBtn.addEventListener("click", function () {
+	        	workplaceDetailEditBtn.addEventListener("click", function () {
+	        	detail_workplace_nameCount.style.display = "inline";
 	            setDetailWorkplaceReadonlyMode(false);
 	            toggleDetailEmploymentInsurance();
 	        });
