@@ -39,6 +39,19 @@ public class JobApplyController {
 	    return "redirect:/jobposts/jobpost";
 	}
 	
+	@RequestMapping("/delete")
+	public String delete(int seq, RedirectAttributes rattr) {
+	    int result = dao.delete(seq);
+	    
+	    if(result > 0) {
+	        rattr.addFlashAttribute("message", "지원이 취소되었습니다.");
+	    } else {
+	        rattr.addFlashAttribute("message", "지원 취소에 실패했습니다.");
+	    }
+	    
+	    return "redirect:/mypage/job_activity";
+	}
+	
 	@ResponseBody
 	@RequestMapping("/getMyResumes")
 	public List<ResumeDTO> getMyResumes(HttpSession session) {

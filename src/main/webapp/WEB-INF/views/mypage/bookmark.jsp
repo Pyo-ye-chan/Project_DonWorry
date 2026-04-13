@@ -646,14 +646,14 @@ body {
 		span.html("chevron_left");
 		let a = $("<a>");
 		a.addClass("page-num");
-		a.attr("href","/mypage/mypost?page="+ (startNavi-1));
+		a.attr("href","/mypage/bookmark?page="+ (startNavi-1));
 		a.append(span);
 		$(".page-nav").append(a);
 	}
 	
 	for(let i = startNavi; i <= endNavi; i++){
 		let a = $("<a>")
-		a.attr("href" , "/mypage/mypost?page="+i);
+		a.attr("href" , "/mypage/bookmark?page="+i);
 		a.addClass("page-num");
 		
 		if (i == currentPage) {
@@ -671,7 +671,7 @@ body {
 			span.html("chevron_right");
 			let a = $("<a>");
 			a.addClass("page-num");
-			a.attr("href","/mypage/mypost?page="+(endNavi+1));
+			a.attr("href","/mypage/bookmark?page="+(endNavi+1));
 			a.append(span);
 			$(".page-nav").append(a);
 	}		

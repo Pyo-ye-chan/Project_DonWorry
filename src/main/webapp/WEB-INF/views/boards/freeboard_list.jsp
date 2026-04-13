@@ -655,14 +655,14 @@ $(".floating-write-btn").on("click",function(){
 			span.html("chevron_left");
 			let a = $("<a>");
 			a.addClass("page-num");
-			a.attr("href","/boards/mainboard_list?page="+ (startNavi-1));
+			a.attr("href","/boards/freeboard_list?page="+ (startNavi-1));
 			a.append(span);
 			$(".page-nav").append(a);
 		}
 		
 		for(let i = startNavi; i <= endNavi; i++){
 			let a = $("<a>")
-			a.attr("href" , "/boards/mainboard_list?page="+i);
+			a.attr("href" , "/boards/freeboard_list?page="+i);
 			a.addClass("page-num");
 			
 			if (i == currentPage) {
@@ -680,7 +680,7 @@ $(".floating-write-btn").on("click",function(){
 				span.html("chevron_right");
 				let a = $("<a>");
 				a.addClass("page-num");
-				a.attr("href","/boards/mainboard_list?page="+(endNavi+1));
+				a.attr("href","/boards/freeboard_list?page="+(endNavi+1));
 				a.append(span);
 				$(".page-nav").append(a);
 		}
