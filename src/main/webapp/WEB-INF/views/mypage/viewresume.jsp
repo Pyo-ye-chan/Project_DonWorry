@@ -1,7 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+    // 브라우저 캐시를 방지하여 '뒤로 가기' 시 서버를 다시 호출하게 함
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -268,16 +275,22 @@
     }
 
     .full-value {
-        font-size: 15px;
-        color: #1e293b;
-        line-height: 1.9;
-        white-space: pre-wrap;
-        word-break: break-word;
-        min-height: 120px;
-    }
+    font-size: 15px;
+    color: #1e293b;
+    line-height: 1.9;      
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 120px;
+    /* 추가된 부분 */
+    text-align: left;       /* 왼쪽 정렬 */
+    display: block;         /* 블록 요소로 지정 */
+    width: 100%;            /* 너비 꽉 채우기 */
+}
 
     .empty-text {
         color: #94a3b8;
+    display: block;
+    text-align: left;
     }
 
     .status-edit-wrap {
@@ -480,7 +493,8 @@
 
                     <div class="summary-meta">
                         <span><i class="fa-regular fa-user"></i>지원자 ${applicant.name}</span>
-                        <span><i class="fa-solid fa-phone"></i>연락처 ${applicant.phone}</span>
+                        <span><i class="fa-solid fa-phone"></i>연락처 <c:set var="hp" value="${applicant.phone}" />
+                                ${fn:substring(hp, 0, 3)}-${fn:substring(hp, 3, 7)}-${fn:substring(hp, 7, 11)}</span>
                     </div>
                 </div>
 
@@ -531,7 +545,8 @@
 
                     <div class="info-box">
                         <div class="info-label">연락처</div>
-                        <div class="info-value">${applicant.phone}</div>
+                        <div class="info-value"><c:set var="hp" value="${applicant.phone}" />
+                                ${fn:substring(hp, 0, 3)}-${fn:substring(hp, 3, 7)}-${fn:substring(hp, 7, 11)}</div>
                     </div>
                 </div>
             </div>
@@ -570,17 +585,8 @@
                     경력 사항
                 </div>
                 <div class="full-box">
-                    <div class="full-value">
-                        <c:choose>
-                            <c:when test="${not empty applicant.career_write}">
-                                ${applicant.career_write}
-                            </c:when>
-                            <c:otherwise>
-                                <span class="empty-text">입력된 경력 사항이 없습니다.</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
+    <div class="full-value"><c:choose><c:when test="${not empty applicant.career_write}">${applicant.career_write}</c:when><c:otherwise><span class="empty-text">입력된 경력 사항이 없습니다.</span></c:otherwise></c:choose></div>
+</div>
             </div>
 
             <div class="info-section" style="margin-bottom: 0;">
@@ -588,17 +594,9 @@
                     자기소개
                 </div>
                 <div class="full-box">
-                    <div class="full-value">
-                        <c:choose>
-                            <c:when test="${not empty applicant.introduction}">
-                                ${applicant.introduction}
-                            </c:when>
-                            <c:otherwise>
-                                <span class="empty-text">작성된 자기소개가 없습니다.</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
+    
+                <div class="full-value"><c:choose><c:when test="${not empty applicant.introduction}">${applicant.introduction}</c:when><c:otherwise><span class="empty-text">작성된 자기소개가 없습니다.</span></c:otherwise></c:choose></div>
+</div>
             </div>
 
             <div class="post-footer">           
@@ -614,6 +612,15 @@
         개인정보처리방침 | 이용약관 | 고객센터
     </p>
 </div>
+<script>
+$(document).ready(function() {
+	const loginUser = "${nickName}";
+    if (!loginUser || loginUser === "") {
+        alert("잘못된 접근입니다.");
+        location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+    }
+})
 
+</script>
 </body>
 </html>
