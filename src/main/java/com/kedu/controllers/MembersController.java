@@ -77,8 +77,7 @@ public class MembersController {
 	}
 	
 	@RequestMapping("/signup")
-	public String signup(MembersDTO dto, String rrn_front, String rrn_back, RedirectAttributes rattr) {
-		dto.setRrn(rrn_front + "-" + rrn_back);
+	public String signup(MembersDTO dto, RedirectAttributes rattr) {
 		dto.setPw(eu.getSha512(dto.getPw()));
 		int result = dao.signup(dto);
 		

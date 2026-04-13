@@ -558,23 +558,23 @@ body {
 					style="display: flex; align-items: flex-end; gap: 8px; width: 100%;">
 
 					<div class="rrn-item"
-						style="flex: 2; display: flex; flex-direction: column;">
-						<label for="rrn_front">생년월일</label> <input type="text"
-							id="rrn_front" name="rrn_front" placeholder="6자리 입력"
+						style="flex: 1; display: flex; flex-direction: column;">
+						<label for="rrn">생년월일</label> <input type="text"
+							id="rrn" name="rrn" placeholder="6자리 입력"
 							maxlength="6" required>
 					</div>
 
-					<span class="rrn-item"
-						style="margin-bottom: 12px; font-weight: 800; color: #9ca3af;">-</span>
+<!-- 					<span class="rrn-item" -->
+<!-- 						style="margin-bottom: 12px; font-weight: 800; color: #9ca3af;">-</span> -->
 
-					<div class="rrn-item rrn2"
-						style="flex: 1; display: flex; flex-direction: column;">
-						<input type="text" id="rrn_back" name="rrn_back" placeholder="1"
-							maxlength="1" required style="text-align: center;">
-					</div>
+<!-- 					<div class="rrn-item rrn2" -->
+<!-- 						style="flex: 1; display: flex; flex-direction: column;"> -->
+<!-- 						<input type="text" id="rrn_back" name="rrn_back" placeholder="1" -->
+<!-- 							maxlength="1" required style="text-align: center;"> -->
+<!-- 					</div> -->
 
 					<div
-						style="flex: 3; display: flex; flex-direction: column; margin-left: 5px;">
+						style="flex: 1; display: flex; flex-direction: column; margin-left: 5px;">
 						<label for="email">이메일</label> <input type="text" id="email"
 							name="email" placeholder="이메일 입력" required>
 					</div>
@@ -604,7 +604,7 @@ body {
 
 					// 생년월일 관련 클래스(.rrn-item) 한꺼번에 숨기기
 					$('.rrn-item').hide();
-					$('#rrn_front, #rrn_back').prop('required', false).val("");
+					$('#rrn').prop('required', false).val("");
 				} else {
 					$('#businessNumberGroup').hide();
 					$('#business_number').prop('required', false).val("");
@@ -612,7 +612,7 @@ body {
 					// 생년월일 관련 클래스(.rrn-item) 다시 보이기
 					// ※ .show() 대신 .css('display', 'flex')를 쓰면 레이아웃이 더 잘 유지돼!
 					$('.rrn-item').show();
-					$('#rrn_front, #rrn_back').prop('required', true);
+					$('#rrn').prop('required', true);
 				}
 			});
 
@@ -758,16 +758,16 @@ body {
         }
     } else {
         // 개인일 때만 생년월일 및 성별 체크
-        if (!/^([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/.test($("#rrn_front").val())) {
+        if (!/^([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/.test($("#rrn").val())) {
             alert("생년월일 형식이 올바르지 않습니다. (예: 950101)");
-            $("#rrn_front").focus();
+            $("#rrn").focus();
             return false;
         }
-        if (!/^[1-4]{1}$/.test($("#rrn_back").val())) {
-            alert("성별 코드가 올바르지 않습니다. (1~4 사이의 숫자 1자리)");
-            $("#rrn_back").focus();
-            return false;
-        }
+//         if (!/^[1-4]{1}$/.test($("#rrn_back").val())) {
+//             alert("성별 코드가 올바르지 않습니다. (1~4 사이의 숫자 1자리)");
+//             $("#rrn_back").focus();
+//             return false;
+//         }
     }
 
     // 7. 이메일 체크

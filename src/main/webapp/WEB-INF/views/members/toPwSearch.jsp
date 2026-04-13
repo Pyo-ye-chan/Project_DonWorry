@@ -212,7 +212,7 @@ input:focus {
 <div class="community-container">
     <div class="top-auth">
         <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
+            <a href="/members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
         </span>
@@ -290,34 +290,43 @@ input:focus {
 	<script>
 $(document).ready(function() {
     // 인증요청 버튼 클릭 시
-    $('#sendAuthBtn').click(function() {
-    let id = $('#id').val(); // HTML id 속성에 맞게 수정
-    let email = $('#email').val();
-    
-    if(!id || !email) {
-        alert("아이디와 이메일을 모두 입력해주세요.");
-        return;
-    }
+	$('#sendAuthBtn').click(function() {
+	    let id = $('#id').val();
+	    let email = $('#email').val();
 
-    $.ajax({
-        url: "/members/sendAuthCode", // 컨틀롤러 매핑 주소
-        type: "POST",
-        data: { id: id, email: email },
-        success: function(res) {
-            if(res === "success") {
-                alert("인증번호가 발송되었습니다. 이메일을 확인해주세요!");
-                $('#authCodeGroup').fadeIn();
-                $('#sendAuthBtn').text("재발송");
-            } else if(res === "not_found") {
-                alert("일치하는 회원 정보가 없습니다.");
-            } else {
-                alert("메일 발송 중 오류가 발생했습니다.");
-            }
-        },
-        error: function() {
-            alert("서버 통신 실패!");
-        }
-    	});
+	    if(!id || !email) {
+	        alert("아이디와 이메일을 모두 입력해주세요.");
+	        return;
+	    }
+
+	    // [추가] 버튼 비활성화 및 로딩 표시
+	    const btn = $(this);
+	    btn.prop('disabled', true).text("발송 중...");
+
+	    $.ajax({
+	        url: "/members/sendAuthCode",
+	        type: "POST",
+	        data: { id: id, email: email },
+	        success: function(res) {
+	            if(res === "success") {
+	                alert("인증번호가 발송되었습니다. 이메일을 확인해주세요!");
+	                $('#authCodeGroup').fadeIn();
+	                btn.text("재발송"); // 텍스트 복구
+	            } else {
+	                if(res === "not_found") alert("일치하는 회원 정보가 없습니다.");
+	                else alert("메일 발송 중 오류가 발생했습니다.");
+	                btn.text("인증요청"); // 실패 시 원래대로
+	            }
+	        },
+	        error: function() {
+	            alert("서버 통신 실패!");
+	            btn.text("인증요청");
+	        },
+	        complete: function() {
+	            // [추가] 성공하든 실패하든 응답이 오면 버튼 다시 활성화
+	            btn.prop('disabled', false);
+	        }
+	    });
 	});
 });
 

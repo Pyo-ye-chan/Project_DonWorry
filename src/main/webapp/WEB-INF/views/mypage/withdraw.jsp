@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+    // 브라우저 캐시를 방지하여 '뒤로 가기' 시 서버를 다시 호출하게 함
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -132,7 +138,7 @@ body {
 .now-business, .now-personal, .now-admin {
 	width: 60px;
 	height: 30px;
-	background-color: #4f67e8;
+	background-color: #2563eb;
 	color: white;
 	display: flex;
 	align-items: center;
@@ -329,38 +335,48 @@ body {
 			</a>
 			</span>
 
-			<div class="now-admin">관리자</div>
-			<div class="now-business" style="display: none;">기업</div>
-			<div class="now-personal" style="display: none;">개인</div>
+			<c:if test="${type=='관리자'}">
+            <div class="now-admin">관리자</div>
+		</c:if>
+		<c:if test="${type=='사업자'}">
+            <div class="now-business">사업자</div>
+        </c:if>
+		<c:if test="${type=='개인'}">        
+            <div class="now-personal">개인</div>
+		</c:if>
 		</div>
 
 		<nav class="navbar">
-			<div style="display: flex; align-items: center; gap: 40px;">
-				<a href="/" class="logo">돈워리</a>
-				<div class="nav-menu">
-					<a href="/"> <i class="fa-solid fa-house fa-lg"
-						style="color: rgb(203, 203, 203);"></i> 홈
-					</a> <a href="/salary/calendar"> <i
-						class="fa-regular fa-calendar fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
-					</a> <a href="/jobposts/jobpost"> <i
-						class="fa-solid fa-briefcase fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 구인구직
-					</a> <a href="/boards/mainboard_list?page=1"> <i
-						class="fa-regular fa-message fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
-					</a> <a href="/qna/qna?page=1"> <i
-						class="fa-solid fa-question fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
-					</a>
-				</div>
-			</div>
-
-			<a class="my-page active" href="/mypage/toMypage"> <i
-				class="fa-solid fa-user-gear fa-lg"
-				style="color: rgb(79, 103, 232);"></i> 마이페이지
-			</a>
-		</nav>
+        <div style="display: flex; align-items: center; gap: 40px;">
+            <a href="/" class="logo"> 돈워리</a>
+            <div class="nav-menu">
+                <a href="/"> 
+                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
+                    홈
+                </a>
+                <a href="/salary/calendar">
+                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
+                    급여 캘린더
+                    </a>
+                <a href="/jobposts/jobpost"> 
+                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    구인구직
+                </a>
+                <a href="/boards/mainboard_list"> 
+                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
+                    커뮤니티
+                </a>  
+                <a href="/qna/qna"> 
+                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
+                    고객지원
+                </a>               
+            </div>           
+        </div>   
+        <a class="my-page active" href="/mypage/toMypage"> 
+            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(36, 99, 235);"></i>
+            마이페이지
+        </a>    
+    </nav>
 
 		<div class="page-section">
 			<div class="page-inner">
@@ -470,6 +486,14 @@ $("#withdrawBtn").on("click", function() {
         alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
     });
 });
+
+$(document).ready(function(){
+	const loginUser = "${nickName}";
+    if (!loginUser || loginUser === "") {
+        alert("로그인이 필요한 서비스입니다.");
+        location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+    }
+})
 </script>
 </body>
 </html>

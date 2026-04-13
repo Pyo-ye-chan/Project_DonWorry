@@ -409,7 +409,7 @@ body {
 				<table class="admin-table">
 					<thead>
 						<tr>
-							<th>성별</th>
+<!-- 							<th>성별</th> -->
 							<th>이름</th>
 							<th>닉네임</th>
 							<th>전화번호</th>
@@ -423,7 +423,7 @@ body {
 					<tbody>
 						<c:forEach var="member" items="${membersList}">
 							<tr>
-								<td>${member.gender}</td>
+<%-- 								<td>${member.gender}</td> --%>
 								<td>${member.name}</td>
 								<td>${member.nickname}</td>
 								<td>${member.phone}</td>
