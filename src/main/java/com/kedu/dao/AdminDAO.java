@@ -265,8 +265,10 @@ public class AdminDAO {
 	}
 	
 	//신고된 댓글 가져옴
-	public List<ReplyDTO> admin_report_replyList() {
-		String sql = "SELECT "
+	public List<ReplyDTO> admin_report_replyList(int rStart, int rEnd) {
+		String sql = "SELECT * FROM ( "
+	               + "    SELECT rownum rn, a.* FROM ( "
+	               + "    SELECT "
 	               + "    r.seq, r.parent_seq, m.nickname AS member_id, "
 	               + "    r.content, r.write_date, r.re_reply_seq, r.member_id AS writer, "
 	               + "    COUNT(rp.seq) AS report_count, "
@@ -278,9 +280,21 @@ public class AdminDAO {
 	               + "    r.seq, r.parent_seq, m.nickname, r.content, "
 	               + "    r.write_date, r.re_reply_seq, r.member_id "
 	               + "HAVING COUNT(rp.seq) > 0 "
-	               + "ORDER BY r.seq DESC";
+	               + "ORDER BY r.seq DESC"
+	               + "  ) a "
+	               + ") WHERE rn BETWEEN ? AND ?"; 
 		
-		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class));
+		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class),rStart, rEnd);
 	}
+	
+	public int getReportReplyTotalCount() {
+		String sql = "SELECT COUNT(*) FROM ( "
+	               + "    SELECT r.seq "
+	               + "    FROM reply r "
+	               + "    JOIN report rp ON r.seq = rp.reply_seq "
+	               + "    GROUP BY r.seq )";
+		
+	    return jdbc.queryForObject(sql, Integer.class);
+	} 
 	
 }

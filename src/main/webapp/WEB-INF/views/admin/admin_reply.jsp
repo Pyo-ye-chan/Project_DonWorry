@@ -671,8 +671,8 @@ body {
 	
  
 //====================신고댓글=======================//
-	let rTotalCount = ${rTotalCount}; //신고글 총 개수
-	let rCurrentPage = ${rCurrentPage}; // 신고 현재 페이지
+	let rTotalCount = ${rTotalCount != null ? rTotalCount : 0};
+	let rCurrentPage = ${rCurrentPage != null ? rCurrentPage : 1};
 	let rRecordCountPerPage = 5; // 한 페이지당 5개
 	let rNaviCountPerPage = 10; 
 	let rPageTotalCount = Math.ceil(rTotalCount / rRecordCountPerPage);
@@ -718,6 +718,18 @@ body {
 		let btn = $("<button>").addClass("page-btn").html("&gt;");//구글 라이브러리 > 모양
 		btn.attr("onclick","location.href='"+getReportPageUrl(rEndNavi + 1) + "'");
 		report_navi.append(btn);
+	}
+	
+	// 신고 전용 URL 생성 함수
+	function getReportPageUrl(targetRPage) {
+	    let url = "/admin/admin_reply?page="+currentPage+"&rPage=" + targetRPage;
+	    let cat = category || "all";
+	    url += "&category="+cat;
+    
+	    if (keyword && keyword.trim() !== "") {
+	        url += "&keyword=" + encodeURIComponent(keyword);
+	    }
+	    return url;
 	}
 	
 	//삭제 버튼 클릭
