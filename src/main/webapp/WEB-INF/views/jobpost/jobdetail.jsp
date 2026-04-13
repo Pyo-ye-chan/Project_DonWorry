@@ -430,7 +430,9 @@ img{
 					</div>
 				</div>
 				<div class="header-right">
-					<button class="btn-apply" data-seq="${post.seq }">지원하기</button>
+					<c:if test="${type != '사업자'}">
+							<button class="btn-apply" data-seq="${post.seq }">지원하기</button>
+						</c:if>
 					<button class="btn-list"
 						onclick="location.href='/jobposts/jobpost?page=${page}'">목록으로</button>
 				</div>
@@ -459,7 +461,7 @@ img{
 					<div class="label">
 						<i class="fa-solid fa-location-dot"></i> 근무지
 					</div>
-					<div class="value">${post.sido}${post.gugun} ${post.dong}
+					<div class="value">${post.sido} ${post.gugun} ${post.dong}
 						${post.address_detail}</div>
 				</div>
 				<div class="info-item">
@@ -472,7 +474,7 @@ img{
 					<div class="label">
 						<i class="fa-regular fa-clock"></i> 근무시간
 					</div>
-					<div class="value">${post.work_starttime}~
+					<div class="value">${post.work_starttime} ~
 						${post.work_endtime}</div>
 				</div>
 				<div class="info-item">
