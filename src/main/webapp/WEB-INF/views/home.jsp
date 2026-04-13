@@ -195,18 +195,25 @@
             gap: 20px;
             margin-bottom: 60px;
             padding:0;
+            /* 추가: 자식 요소들이 셀의 높이를 가득 채우도록 설정 */
+    		align-items: stretch;
         }
         .summary-grid a {
-		    display: block;    /* inline을 block으로 변경 (영역 확보의 핵심) */
+		    display: flex;    /* inline을 block으로 변경 (영역 확보의 핵심) */
+		    flex-direction: column;
 		    width: 100%;       /* 부모 너비 꽉 채우기 */
 		    height: 100%;      /* 부모 높이 꽉 채우기 */
 		    text-decoration: none;
+		    /* 추가: 자식인 .card가 부모 높이를 꽉 채우도록 강제 */
+    		align-items: stretch
 		}
         .card {
             border: 1px solid #e5e7eb;
             border-radius: 15px;
             padding: 25px;
             background: #fff;
+            height:100%;
+            box-sizing: border-box; /* 패딩 때문에 높이가 튀는 것 방지 */
         }
         .card-title {
             color: #2563eb;
@@ -231,7 +238,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 160px; /* 카드들의 최소 높이를 명시적으로 지정 */
+            min-height: 200px; /* 카드들의 최소 높이를 명시적으로 지정 */
             height: 100%;
             color: #ccc;
             padding:0;
@@ -625,22 +632,22 @@
    	<div class="summary-grid"> 
    	<c:if test="${placeList[0].name!=null }">
 	   	<c:forEach var="i" items="${placeList}"> 
-	   		<div class="card">     
-            <a href="/salary/calendar" style="text-decoration: none; ">      
-            <div class="card-title">${i.name }</div>
-            <div class="info-item">
-            	<span class="info-label">예상 급여</span><span class="info-val blue">
-            		<fmt:formatNumber value="${i.totalPay}" pattern="#,###" />원
-            	</span>
-            </div>
-            <div class="info-item">
-            	<span class="info-label">근무 일수</span><span class="info-val">${i.workDays}일</span>
-            </div>
-            <div class="info-item">
-            	<span class="info-label">총</span><span class="info-val">${i.totalHours}시간</span>
-            </div>     
-            </a>               	
-        </div>
+	   	<a href="/salary/calendar" style="text-decoration: none; ">
+	   		<div class="card">                    
+	            <div class="card-title">${i.name }</div>
+	            <div class="info-item">
+	            	<span class="info-label">예상 급여</span><span class="info-val blue">
+	            		<fmt:formatNumber value="${i.totalPay}" pattern="#,###" />원
+	            	</span>
+	            </div>
+	            <div class="info-item">
+	            	<span class="info-label">근무 일수</span><span class="info-val">${i.workDays}일</span>
+	            </div>
+	            <div class="info-item">
+	            	<span class="info-label">총</span><span class="info-val">${i.totalHours}시간</span>
+	            </div>                               	
+        	</div>
+        </a>
 	   	</c:forEach>
 	   	 	<a href="/salary/calendar" > 
 		        <div class="card add-card" class="add-card-wrapper">              
@@ -663,7 +670,8 @@
                 <div class="item-loc">${i.sido}/${i.gugun}</div>
                 <div class="item-days">${i.work_days}</div>
                 <div class="job-pay">
-                    <span class="job-pay-label">시급</span>${i.pay}원
+                    <span class="job-pay-label">시급</span>
+                    <fmt:formatNumber value="${i.pay}" pattern="#,###" />원
                 </div>
             </a>
         </div>
