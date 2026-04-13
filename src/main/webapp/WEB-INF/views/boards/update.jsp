@@ -306,13 +306,13 @@
     <c:choose>
 	<c:when test="${nickName==null}">
 	    <div class="top-auth">
-	        <span style="font-size: 13px; color: #666; cursor: pointer;">
+	        <span style="font-size: 13px; color: #666; cursor: pointer; margin-right:10px;">
 	            <a href="/members/toLogin" style="text-decoration: none; color:black">
 	                <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
 	            </a>
 	        </span>
-	        <!-- 일단 관리자 빼고 다 숨겨둠 -->
-	            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>
+	        <!-- 일단 관리자 빼고 다 숨겨둠 
+	            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin" >관리자</div></a>-->
 	    </div>
 	</c:when>
 	<c:otherwise>
@@ -344,11 +344,11 @@
                     <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
                     홈
                 </a>
-                <a href="salary/calendar">
+                <a href="/salary/calendar">
                     <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
                     급여 캘린더
                 </a>
-                <a href="#">
+                <a href="/jobposts/jobpost">
                     <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                     구인구직
                 </a>
@@ -362,7 +362,7 @@
             </div>          
         </div>   
         <c:if test="${nickName==null }">   
-	        <a class="my-page" href="members/toLogin"> 
+	        <a class="my-page" href="/members/toLogin"> 
 	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
 	            마이페이지
 	        </a>  
