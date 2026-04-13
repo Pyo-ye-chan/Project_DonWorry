@@ -134,7 +134,7 @@
 <div class="community-container">
     <div class="top-auth">
         <span style="font-size: 13px; color: #666; cursor: pointer; margin-right:10px;">
-            <a href="#" style="text-decoration: none; color:black">
+            <a href="/members/toLogin" style="text-decoration: none; color:black">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
         </span>
