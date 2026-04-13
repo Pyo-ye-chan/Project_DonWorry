@@ -1,5 +1,6 @@
 package com.kedu.controllers;
 
+import java.util.List;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -66,8 +67,8 @@ public class MembersController {
 	@ResponseBody
 	@RequestMapping("/idSearch")
 	public String idSearch(String name, String email) {
-		String id = dao.idSearch(name,email);
-		return id;
+		List<MembersDTO> list = dao.idSearch(name,email);
+		return g.toJson(list);
 	}
 	
 	@RequestMapping("/toSignUp")
@@ -157,7 +158,7 @@ public class MembersController {
 	        return "fail";
 	    }
 
-	    int result = dao.updatePw(id, pw);
+	    int result = dao.updatePw(id, eu.getSha512(pw));
 	    
 	    if (result > 0) {
 	        session.invalidate(); 

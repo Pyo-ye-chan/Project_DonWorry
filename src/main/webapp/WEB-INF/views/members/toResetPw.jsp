@@ -129,6 +129,13 @@ $(document).ready(function() {
 
     // 변경 버튼 클릭 시
     $('#submitBtn').click(function() {
+    	
+    	 if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{4,16}$/.test($("#newPw").val())) {
+    	        alert("비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩 포함된 4~16자여야 합니다.");
+    	        $("#newPw").focus();
+    	        return false;
+    	    }
+    	
         const newPw = $('#newPw').val();
         
         $.ajax({

@@ -34,12 +34,12 @@ public class MembersDAO {
 		String sql = "select type from members where id = ?";
 		return jdbc.queryForObject(sql,String.class,id);
 	}
-	public String idSearch(String name,String email) {
+	public List<MembersDTO> idSearch(String name,String email) {
 		String test = "select count(*) from members where name = ? and email = ?";
 		int result = jdbc.queryForObject(test,Integer.class,name,email);
 		if(result > 0) {
-			String sql = "select substr(id, 1, length(id) - 4) || '****' from members where name = ? and email =?";
-			return jdbc.queryForObject(sql,String.class,name,email);
+			String sql = "select substr(id, 1, length(id) - 4) || '****' as id from members where name = ? and email =?";
+			return jdbc.query(sql,new BeanPropertyRowMapper<MembersDTO>(MembersDTO.class),name,email);
 		}else {
 			return null;
 		}
