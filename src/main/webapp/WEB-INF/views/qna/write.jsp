@@ -347,7 +347,7 @@
             <a href="/" class="logo"> 돈워리</a>
             <div class="nav-menu">
                 <a href="/" >
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
+                    <i class="fa-solid fa-house fa-lg" style="color:rgb(203, 203, 203);"></i>
                     홈
                 </a>
                 <a href="/salary/calendar">
