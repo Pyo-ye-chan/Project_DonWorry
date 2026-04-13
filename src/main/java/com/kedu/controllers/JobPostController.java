@@ -87,12 +87,16 @@ public class JobPostController {
 
 
 	@RequestMapping("/jobwrite")
-	public String jobwrite(Model model){
+	public String jobwrite(Model model, HttpSession session){
 		List<CateGoryDTO> upperList = catdao.getUpperCategories();
+		String loginId = (String)session.getAttribute("loginId");
 
 		model.addAttribute("upperList", upperList);
 
-		return "jobpost/jobwrite";
+		if(loginId == null) {
+	        return "redirect:/";
+	    }
+	    return "jobpost/jobwrite";
 	}
 
 	@RequestMapping("/insert")
@@ -121,7 +125,7 @@ public class JobPostController {
 //				}
 //				
 //				fdao.upload(new FilesDTO(0,oriName,sysName,nextVal));
-//			}	
+//			}
 //		}
 
 		return "redirect:/jobposts/jobpost";

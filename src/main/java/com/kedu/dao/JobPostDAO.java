@@ -240,6 +240,12 @@ public class JobPostDAO {
     	return jdbc.queryForObject(sql, Integer.class);
     }
     
+    public int recruitingJobCount() {
+    	String sql = "select count(*) from job_post where status = '진행중'";
+    	
+    	return jdbc.queryForObject(sql, Integer.class);
+    }
+    
     public int JobPostUpdate(JobPostDTO dto) {
     	String sql = "update job_post set company_name = ?, phone = ?, sido = ?, gugun =?,"
     			+ "dong = ?, address_detail = ?, count = ?, title = ?, pay = ?,"

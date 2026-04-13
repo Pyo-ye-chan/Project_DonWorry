@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+    // 브라우저 캐시를 방지하여 '뒤로 가기' 시 서버를 다시 호출하게 함
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+%>
 
 <!DOCTYPE html>
 <html>
@@ -317,26 +323,11 @@ textarea {
     gap: 20px;
 }
 
-/* 본문 */
-        .detail-content {
-            margin-top: 30px;
-            font-size: 17px;
-            /* 기존 15 → 크게 */
-            line-height: 1.9;
-            /* 가독성 핵심 */
-            color: #333;
-            min-height: 300px;
-            word-break: break-all;
-        }
-        .detail-content img{
-        max-width: 100%;    /* 부모 너비를 넘지 않음 */
-    height: auto;       /* 비율 유지 */
-    display: block;     /* 하단 여백 제거 */
-    margin: 10px 0;    /* 이미지 위아래 여백 */
-        }
+
 </style>
 </head>
 <body>
+
 	<div class="community-container">
 		<c:choose>
 			<c:when test="${nickName==null}">
@@ -717,7 +708,15 @@ textarea {
                 }
             });
         });
+        
+//         const loginUser = "${nickName}";
+//         if (!loginUser || loginUser === "") {
+//             alert("로그인이 필요한 서비스입니다.");
+//             location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+//         }
     });
+    
+
     
 
 </script>

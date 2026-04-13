@@ -625,7 +625,7 @@ body {
 						</div>
 					</div>
 					<div class="stat-value">${jobPostCount}</div>
-					<%--                 <div class="stat-desc">현재 모집중 ${recruitingJobCount}건</div> --%>
+					<div class="stat-desc">현재 모집중 ${recruitingJobCount}건</div>
 				</div>
 
 				<div class="stat-card">
@@ -841,10 +841,10 @@ body {
 								<th>미처리 신고</th>
 								<td>${reportCount}건</td>
 							</tr>
-							<!--                         <tr> -->
-							<!--                             <th>모집중 공고</th> -->
-							<%--                             <td>${recruitingJobCount}건</td> --%>
-							<!--                         </tr> -->
+							<tr>
+							    <th>모집중 공고</th>
+							    <td>${recruitingJobCount}건</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

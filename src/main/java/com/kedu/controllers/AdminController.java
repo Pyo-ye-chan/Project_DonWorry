@@ -95,6 +95,7 @@ public class AdminController {
 		int personalCount = dao.getpersonalMemberCount();
 
 		int jobCount = jdao.getPostCount();
+		int recruitingJobCount = jdao.recruitingJobCount();
 
 		int reportCount = rrdao.getReportCount();
 
@@ -122,6 +123,7 @@ public class AdminController {
 		model.addAttribute("personalMemberPercent", String.format("%.1f", perPercent));
 
 		model.addAttribute("jobPostCount", jobCount);
+		model.addAttribute("recruitingJobCount", recruitingJobCount);
 
 		model.addAttribute("reportCount", reportCount);
 		model.addAttribute("urgentReportCount", reportStatusCount);

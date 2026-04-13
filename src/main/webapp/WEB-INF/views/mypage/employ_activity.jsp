@@ -724,7 +724,7 @@ body {
 								<div class="job-info">
 									<div class="job-title">${a.title }</div>
 									<div class="job-company">${a.company_name }</div>
-									<div class="job-location">${a.sido }${a.gugun }${a.dong }</div>
+									<div class="job-location">${a.sido } ${a.gugun } ${a.dong }</div>
 									<div class="job-date">
 										등록일
 										<fmt:formatDate value="${a.write_date}" pattern="yyyy-MM-dd" />
