@@ -552,11 +552,11 @@
                         <div class="faq-input-group">
                             <div class="faq-input-item">
                                 <label>질문 제목</label>
-                                <input type="text" name="title" placeholder="예: 비밀번호를 잊어버렸어요.">
+                                <input type="text" name="title" placeholder="예: 비밀번호를 잊어버렸어요." maxlength="100">
                             </div>
                             <div class="faq-input-item">
                                 <label>답변 내용</label>
-                                <textarea name="content" rows="3" placeholder="간결하고 명확하게 답변을 작성해 주세요."></textarea>
+                                <textarea name="content" rows="3" placeholder="간결하고 명확하게 답변을 작성해 주세요." maxlength="2000"></textarea>
                             </div>
                         </div>
                         <div class="faq-form-btns">

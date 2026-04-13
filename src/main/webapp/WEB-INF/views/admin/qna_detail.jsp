@@ -839,7 +839,7 @@ body {
 			<c:if test="${type=='관리자'}">
             <div class="comment-write">
 
-                <textarea placeholder="답변할 내용을 입력하세요" name="content" class="content"></textarea>
+                <textarea placeholder="답변할 내용을 입력하세요" name="content" class="content" maxlength="600"></textarea>
                 <button class="reply-insert-btn">등록</button>
             </div>
 			</c:if>
@@ -969,7 +969,7 @@ $(document).on("click", ".btn-yellow", function() {
 
     // 기존 내용을 textarea와 저장/취소 버튼으로 교체
     let editHtml = '<div class="edit-box">';
-    editHtml += '  <textarea class="form-control edit-content" style="width:100%; height:80px; margin-bottom:10px;">' + content + '</textarea>';
+    editHtml += '  <textarea class="form-control edit-content" style="width:100%; height:80px; margin-bottom:10px;" maxlength="600">' + content + '</textarea>';
     editHtml += '  <div style="text-align:right;">';
     editHtml += '    <button class="btn-blue update-submit-btn" data-seq="' + seq + '" style="height:30px; padding:0 10px; font-size:12px;">저장</button>';
     editHtml += '    <button class="btn-gray update-cancel-btn" style="height:30px; padding:0 10px; font-size:12px; background:#94a3b8; color:white; border:none; border-radius:6px; margin-left:5px;">취소</button>';

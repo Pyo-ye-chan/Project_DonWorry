@@ -390,7 +390,7 @@
 
             <!-- 제목 -->
             <div class="input-group">
-                <input type="text" name="title" placeholder="제목을 입력하세요" id="title">
+                <input type="text" name="title" placeholder="제목을 입력하세요" id="title" maxlength="100">
             </div>
 
             <!-- 작성자 -->

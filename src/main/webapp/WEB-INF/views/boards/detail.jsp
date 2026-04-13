@@ -841,7 +841,7 @@
 
             <div class="comment-write">
 
-                <textarea placeholder="댓글을 입력하세요" name="content" class="content"></textarea>
+                <textarea placeholder="댓글을 입력하세요" name="content" class="content" maxlength="600"></textarea>
                 <button class="reply-insert-btn">등록</button>
             </div>
 
@@ -867,7 +867,7 @@
                         <label><input type="radio" name="reportReason" value="욕설/비하 발언"> 욕설/비하 발언</label><br>
                         <label><input type="radio" name="reportReason" value="etc"> 기타 (직접 입력)</label>
                     </div>
-                    <textarea id="etcReason" placeholder="기타 사유를 입력하세요 (최대 100자)" style="display:none;"></textarea>
+                    <textarea id="etcReason" placeholder="기타 사유를 입력하세요 (최대 100자)" style="display:none;" maxlength="100"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button class="btn-cancel" onclick="closeReportModal()">취소</button>
@@ -964,7 +964,7 @@
                  </div>
                  <div class="comment-content">` + comment.content + `</div>
                  <div class="reply-write" style="display: none;">
-                     <textarea placeholder="답글을 입력하세요"></textarea>
+                     <textarea placeholder="답글을 입력하세요" maxlength="600"></textarea>
                      <button class="reply-btn">등록</button>
                  </div>
                  <div class="reply-list">`;
@@ -1078,7 +1078,7 @@
 
          contentBox.html(`
              <div class="comment-write" style="margin-top:10px; display:flex; gap:10px;">
-                 <textarea class="update-content" style="flex:1; height:80px;">` + originalContent + `</textarea>
+                 <textarea class="update-content" style="flex:1; height:80px;" maxlength="600">` + originalContent + `</textarea>
                  <div class="edit-btn-group" style="display:flex; flex-direction:column; gap:5px;">
                      <button class="update-submit-btn" style="width:80px; height:40px; background-color:#2563eb; color:white; border:none; border-radius:8px; cursor:pointer;">저장</button>
                      <button type="button" onclick="getReplyList()" style="width:80px; height:40px; background-color:#6b7280; color:white; border:none; border-radius:8px; cursor:pointer;">취소</button>
