@@ -197,20 +197,24 @@
         }
 
         /* 아이디 찾기 */
-        .find-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 70vh;
-        }
+        /* [수정] 아이디 찾기 영역 컨테이너 */
+.find-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* [중요] center에서 flex-start로 변경: 위에서부터 배치 */
+    min-height: 60vh;        /* 고정 높이가 아닌 최소 높이로 변경 */
+    padding: 80px 0;         /* 상하 여백을 충분히 주어 헤더/푸터와 격리 */
+}
 
-        .find-box {
-            width: 350px;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
+.find-box {
+    width: 350px;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* 박스가 너무 길어질 경우를 대비해 위치 고정 */
+    margin-top: 0; 
+}
 
         .find-title {
             text-align: center;
@@ -235,14 +239,54 @@
             background-color: #1e4ed8;
         }
 
-        /* 결과 영역 */
-        .find-result {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #333;
-        }
+/* 결과 영역 전체 컨테이너 */
+.find-result {
+    margin-top: 20px;
+    max-height: 300px;    /* 아이디 리스트 최대 높이 제한 */
+    overflow-y: auto;     /* 넘치면 박스 안에서 스크롤 */
+    padding-right: 5px;
+}
 
+/* 개별 아이디 결과 항목 (스크립트에서 추가되는 div) */
+.id-item-display {
+    display: block;               /* 한 줄에 하나씩 점유 */
+    width: 100%;                  /* 부모 너비에 맞춤 */
+    margin-bottom: 8px;           /* 아이디 사이 간격 */
+    padding: 12px 15px;           /* 안쪽 여백 */
+    
+    background-color: #f8fafc;    /* 연한 회색 배경 */
+    border: 1px solid #e2e8f0;    /* 연한 테두리 */
+    border-radius: 8px;           /* 모서리 둥글게 */
+    
+    color: #334155;               /* 기본 글자색 */
+    font-size: 15px !important;    /* 글자 크기 강제 고정 */
+    font-weight: 500;             /* 중간 굵기 */
+    text-align: center;           /* 중앙 정렬 */
+    
+    /* 결과가 나타날 때 부드러운 효과 */
+    animation: slideIn 0.3s ease-out;
+}
+
+/* 강조 텍스트 (아이디 부분만 색상 변경하고 싶을 때) */
+.id-item-display strong {
+    color: #2563eb;               /* 강조 파란색 */
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+/* 결과창 애니메이션 */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 결과가 없을 때 출력되는 메시지 스타일 */
+.no-result-msg {
+    font-size: 14px;
+    color: #ef4444;               /* 빨간색 계열 */
+    padding: 10px 0;
+    text-align: center;
+}
         /* 하단 */
         .find-footer {
             text-align: center;
@@ -256,6 +300,15 @@
             color: #2563eb;
             margin: 0 5px;
         }
+        /* style 태그 안에 추가 */
+.found-id {
+    background: #f1f5f9;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
     </style>
 </head>
 
@@ -263,7 +316,7 @@
    <div class="community-container">
     <div class="top-auth">
         <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
+            <a href="/members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
                 <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
             </a>
         </span>
@@ -320,7 +373,7 @@
 
                 <div class="find-result">
                     <!-- 결과 출력 영역 -->
-                    <span class = "span"></span> 
+                    
                 </div>
 
                 <div class="find-footer">
@@ -339,22 +392,38 @@
 
 </body>
 <script>
-	$(".find-btn").on("click",function(){
-		
-		$.ajax({
-			url : "/members/idSearch",
-			data : {name : $(".name").val(),
-				  email : $(".email").val()}
-		   	  
-		}).done(function(resp){	
-			if(resp){
-				$(".span").html("가입된 아이디 : " + resp);
-			}else{	
-				$(".span").html("가입된 아이디가 없습니다.")
-			}
-			
-		})
-	})
+$(".find-btn").on("click", function() {
+    // 1. 새로운 검색을 위해 기존 결과창을 비웁니다.
+    $(".find-result").empty(); 
+
+    $.ajax({
+        url: "/members/idSearch",
+        data: {
+            name: $(".name").val(),
+            email: $(".email").val()
+        },
+        dataType: "json"
+    }).done(function(resp) {
+        // 1. 기존 결과 영역 완전히 비우기
+        $(".find-result").empty(); 
+
+        if (resp && resp.length > 0) {
+            for (let i = 0; i < resp.length; i++) {
+                // 2. 새로운 div 생성 및 위에서 만든 클래스 부여
+                let idDiv = $("<div>");
+                idDiv.addClass("id-item-display"); 
+                
+                // 3. 텍스트 삽입 
+                idDiv.text("가입된 아이디 : " + resp[i].id);
+                
+                // 4. 결과창에 추가
+                $(".find-result").append(idDiv);
+            }
+        } else {
+            $(".find-result").html("<p style='font-size:14px; color:#666;'>일치하는 정보가 없습니다.</p>");
+        }
+    });
+});
 
 </script>
 </html>

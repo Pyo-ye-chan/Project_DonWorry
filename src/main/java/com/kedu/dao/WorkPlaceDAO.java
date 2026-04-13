@@ -17,7 +17,7 @@ public class WorkPlaceDAO {
 	public JdbcTemplate jdbc;
 	
 	public int countRow(String id) {
-		String sql = "select count(*) from workplace where id = ?";
+		String sql = "select count(*) from (select * from workplace where status = 'Y') where id = ?";
 		return jdbc.queryForObject(sql, int.class, id);
 	}
 	
@@ -54,7 +54,7 @@ public class WorkPlaceDAO {
 	            + "work_start_time, "
 	            + "work_end_time, "
 	            + "workplace_date "
-	            + "from workplace where id = ?";
+	            + "from workplace where status = 'Y' and id = ?";
 
 	    return jdbc.query(sql, new BeanPropertyRowMapper<>(WorkPlaceDTO.class), memberId);
 	}
@@ -76,7 +76,7 @@ public class WorkPlaceDAO {
 	}
 	
 	public int deleteBySeq(int seq) {
-		String sql = "delete from workplace where seq = ?";
+		String sql = "update workplace set status = 'N' where seq = ?";
 		return jdbc.update(sql,seq);
 	}
 	

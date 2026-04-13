@@ -42,7 +42,7 @@ public class HomeController {
 		}
 		if("개인".equals(type)||"사업자".equals(type)){
 			if(id!=null) {
-				List<WorkPlaceListDTO> placeList = wpldao.selectAllByIdCard(id);
+				List<WorkPlaceListDTO> placeList = wpldao.selectAllByIdHome(id);
 			    model.addAttribute("placeList", placeList);	   
 			}		
 		}

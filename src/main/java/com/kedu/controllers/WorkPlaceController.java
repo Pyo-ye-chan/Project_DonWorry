@@ -96,15 +96,9 @@ public class WorkPlaceController {
 	public String deleteDetail(int seq) {
 		int result =  dao.deleteBySeq(seq);
 		
-		if(result > 0) {
-	        return "redirect:/salary/calendar?deleteSuccess=true";
-	    } else {
-	        return "redirect:/salary/calendar?deleteSuccess=false";
+	    return "redirect:/salary/calendar";
 	    }
 	}
-	
-	
-	
-	
 
-}
+
+	

@@ -98,6 +98,10 @@
     .comm-header { text-align: center; margin-bottom: 40px; }
     .comm-header h5 { font-size: 24px; font-weight: 700; color: #333; margin-top: 15px; }
     .comm-header p { color: #666; font-size: 15px; margin-top: 8px; }
+    .zero-header h5, p{
+    	color: #868E96;
+    	
+    }
 
 .resume-btn{
 	 	background-color: #f8fafc;
@@ -275,6 +279,14 @@
 
         <section class="post-list">
             <div style="font-size: 14px; color: #868e96; margin-bottom: 15px; font-weight: 600; padding-left: 5px;">전체 지원 내역 (${selectApplyList.size()})</div>
+            <c:if test="${selectApplyList.size()==0}">
+	            <div class="comm-header zero-header">
+	            <i class="fa-solid fa-exclamation fa-2xl" style="color: rgb(134, 142, 150);"></i>
+	            <h5>지원한 이력이 없습니다.</h5>
+	            <p>이력서를 작성하고 구인 공고에 지원해보세요!</p>
+	        	</div>
+            </c:if>
+            <c:if test="${selectApplyList.size()>0}">
             <c:forEach var="i" items="${selectApplyList}">
             <div class="post-container">
                 <div class="post-card">
@@ -296,6 +308,7 @@
                 </div>
             </div>
             </c:forEach>
+            </c:if>
         </section>
 
         <div class="page-nav">
