@@ -306,9 +306,16 @@ public class AdminController {
 	//댓글리스트
 	@RequestMapping("/admin_reply")
 	public String admin_Reply(//page가 없을 때 자동으로 1
-			@RequestParam(value="page", defaultValue="1")int page,String keyword,String category, Model model) {
+			@RequestParam(value="page", defaultValue="1")int page,Integer rPage, String keyword,String rKeyword, String category, Model model) {
 		int start=page*5-4;
 		int end = page*5;
+		
+		if(rPage==null)	
+			rPage=1;
+		int rStart=rPage*5-4;
+		int rEnd = rPage * 5;
+		//오늘 신규 댓글
+		int todayCount = adao.getTodayReplyCount();
 		//회원 댓글 전체 불러옴
 		List<ReplyDTO> replyList;
 		int recordTotalCount;
@@ -316,7 +323,7 @@ public class AdminController {
 		replyList = adao.searchReplyById(start,end,keyword,category);
 
 		recordTotalCount = adao.getReplyTotalCount(category,keyword);
-		
+		model.addAttribute("todayCount",todayCount);
 		model.addAttribute("currentPage",page);
 		model.addAttribute("recordCountPerPage",5);
 		model.addAttribute("naviCountPerPage",10);
@@ -327,9 +334,14 @@ public class AdminController {
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("category",category);
 		
+		model.addAttribute("rKeyword",rKeyword);
 		//신고댓글만 불러옴
-		List<ReplyDTO> report_replyList = adao.admin_report_replyList();
+		List<ReplyDTO> report_replyList = adao.admin_report_replyList(rStart, rEnd);
+		//신고댓글 카운트
+		int rTotalCount = adao.getReportReplyTotalCount();
 		model.addAttribute("report_replyList", report_replyList);
+		model.addAttribute("rTotalCount",rTotalCount);
+		model.addAttribute("rCurrentPage", rPage);
 		
 		return "admin/admin_reply";
 	}

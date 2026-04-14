@@ -166,6 +166,42 @@ body {
     padding: 22px;
 
 }
+/* ===== Summary Cards ===== */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.summary-card,
+.panel {
+    background: #fff;
+    border: 1px solid #e7eef8;
+    border-radius: 18px;
+    padding: 22px;
+
+}
+
+.summary-label {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.summary-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.summary-sub {
+    margin-top: 6px;
+    font-size: 13px;
+    /* color: #2563eb; */
+    color: #0f172a;
+}
 
 
 /* ===== Panel ===== */
@@ -437,7 +473,13 @@ body {
                 <p>커뮤니티 게시글 조회, 삭제가 가능합니다.</p>
             </div>
         </div>
-
+   		<section class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">전체 댓글</div>
+                <div class="summary-value">${recordTotalCount}</div>
+                <div class="summary-sub">오늘 신규 ${todayCount}건</div>
+            </div>
+        </section>
          <section class="panel">
             <div class="panel-head">
                 <h3>댓글 목록</h3>
@@ -538,6 +580,8 @@ body {
 
                 </tbody>
             </table>
+            <div class="pagination-wrap" id="admin_reply_report_navi">
+            </div>
         </section>
     </main>
 </div>
@@ -669,6 +713,66 @@ body {
 	
  
 //====================신고댓글=======================//
+	let rTotalCount = ${rTotalCount != null ? rTotalCount : 0};
+	let rCurrentPage = ${rCurrentPage != null ? rCurrentPage : 1};
+	let rRecordCountPerPage = 5; // 한 페이지당 5개
+	let rNaviCountPerPage = 10; 
+	let rPageTotalCount = Math.ceil(rTotalCount / rRecordCountPerPage);
+	
+	let rStartNavi = Math.floor((rCurrentPage - 1) / rNaviCountPerPage) * rNaviCountPerPage + 1;
+	let rEndNavi = rStartNavi + rNaviCountPerPage - 1;
+	
+	if (rEndNavi > rPageTotalCount) { 
+		rEndNavi = rPageTotalCount; 
+	}
+	
+	let rNeedPrev = true;
+	let rNeedNext = true;
+	
+	if(rStartNavi == 1){
+		rNeedPrev = false;
+	}
+	if(rEndNavi == rPageTotalCount){
+		rNeedNext = false;
+	}
+	
+	/*게시물 관리 id = admin_board_navi*/
+	let report_navi = $("#admin_reply_report_navi");
+	
+	//이전 버튼 <
+	if(rNeedPrev){	
+		let btn = $("<button>").addClass("page-btn").html("&lt;");
+		btn.attr("onclick","location.href='"+getReportPageUrl(rStartNavi - 1) + "'");
+		report_navi.append(btn);
+	}	
+	// 페이지 번호
+	for (let i = rStartNavi; i <= rEndNavi; i++) {
+	    let btn = $("<button>").addClass("page-btn").html(i);
+	    btn.attr("onclick", "location.href='" + getReportPageUrl(i) + "'");
+	    if (i == rCurrentPage) {
+	        btn.addClass("active");
+	    }
+	    report_navi.append(btn);
+	}
+	
+	//다음 버튼 >
+	if(rNeedNext){		 
+		let btn = $("<button>").addClass("page-btn").html("&gt;");//구글 라이브러리 > 모양
+		btn.attr("onclick","location.href='"+getReportPageUrl(rEndNavi + 1) + "'");
+		report_navi.append(btn);
+	}
+	
+	// 신고 전용 URL 생성 함수
+	function getReportPageUrl(targetRPage) {
+	    let url = "/admin/admin_reply?page="+currentPage+"&rPage=" + targetRPage;
+	    let cat = category || "all";
+	    url += "&category="+cat;
+    
+	    if (keyword && keyword.trim() !== "") {//===는 자료형 까지 비교. 값과 자료형이 모두 다를때를 비교
+	        url += "&keyword=" + encodeURIComponent(keyword);
+	    }
+	    return url;
+	}
 	
 	//삭제 버튼 클릭
 	$(".rp_reply-del-btn").on("click",function(){

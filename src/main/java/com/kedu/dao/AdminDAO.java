@@ -194,7 +194,11 @@ public class AdminDAO {
 		
 		return jdbc.query(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class));		
 	}
-	
+	//오늘 신규 댓글
+	public int getTodayReplyCount() {
+		String sql = "SELECT COUNT(*) FROM reply WHERE write_date >= TRUNC(SYSDATE)";
+		return jdbc.queryForObject(sql, Integer.class);
+	}
 	//닉넴 키워드 검색 결과, 댓글 신고 카운트
 		public int getReplyTotalCount(String category, String keyword) {
 		    // 1. 기본 SQL (관리자 제외)
@@ -265,12 +269,14 @@ public class AdminDAO {
 	}
 	
 	//신고된 댓글 가져옴
-	public List<ReplyDTO> admin_report_replyList() {
-		String sql = "SELECT "
+	public List<ReplyDTO> admin_report_replyList(int rStart, int rEnd) {
+		String sql = "SELECT * FROM ( "
+	               + "    SELECT rownum rn, a.* FROM ( "
+	               + "    SELECT "
 	               + "    r.seq, r.parent_seq, m.nickname AS member_id, "
 	               + "    r.content, r.write_date, r.re_reply_seq, r.member_id AS writer, "
 	               + "    COUNT(rp.seq) AS report_count, "
-	               + "    LISTAGG(rp.reason, ', ') WITHIN GROUP (ORDER BY rp.seq) AS reason " // rp.seq로 정렬하면 날짜 컬럼 없어도 안전합니다.
+	               + "    LISTAGG(rp.reason, ', ') WITHIN GROUP (ORDER BY rp.seq) AS reason " //LISTAGG: 여러 개의 신고 사유를 한 줄로(사유1, 사유2...) 합쳐줍니다.
 	               + "FROM reply r "
 	               + "JOIN members m ON r.member_id = m.id "
 	               + "JOIN report rp ON r.seq = rp.reply_seq "
@@ -278,9 +284,23 @@ public class AdminDAO {
 	               + "    r.seq, r.parent_seq, m.nickname, r.content, "
 	               + "    r.write_date, r.re_reply_seq, r.member_id "
 	               + "HAVING COUNT(rp.seq) > 0 "
-	               + "ORDER BY r.seq DESC";
+	               + "ORDER BY r.seq DESC"
+	               + "  ) a "
+	               + ") WHERE rn BETWEEN ? AND ?"; 
 		
-		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class));
+		return jdbc.query(sql, new BeanPropertyRowMapper<ReplyDTO>(ReplyDTO.class),rStart, rEnd);
 	}
+	//신고된 댓글만
+	public int getReportReplyTotalCount() {
+		String sql = "SELECT COUNT(*) FROM ( "
+	               + "    SELECT r.seq "
+	               + "    FROM reply r "
+	               + "    JOIN report rp ON r.seq = rp.reply_seq "
+	               + "    GROUP BY r.seq )";
+		
+	    return jdbc.queryForObject(sql, Integer.class);
+	}
+	
+	
 	
 }
