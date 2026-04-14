@@ -338,8 +338,8 @@ textarea {
 					</a>
 					</span>
 					<!-- 일단 관리자 빼고 다 숨겨둠 -->
-					<a href="/admin/admin_main" style="text-decoration: none;"><div
-							class="now-admin">관리자</div></a>
+<!-- 					<a href="/admin/admin_main" style="text-decoration: none;"><div -->
+<!-- 							class="now-admin">관리자</div></a> -->
 				</div>
 			</c:when>
 			<c:otherwise>
@@ -373,12 +373,18 @@ textarea {
 					</a> <a href="/salary/calendar"> <i
 						class="fa-regular fa-calendar fa-lg"
 						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
-					</a> <a href="/jobposts/jobpost" class="active"> <i
+					</a> 
+					
+					<a href="/jobposts/jobpost" class="active"> <i
 						class="fa-solid fa-briefcase fa-lg"
 						style="color: rgb(36, 99, 235); margin-right: 5px;"></i> 구인구직
 					</a> <a href="/boards/mainboard_list"> <i
 						class="fa-regular fa-message fa-lg"
 						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
+					</a>
+					<a href="/qna/qna?page=1"> <i
+						class="fa-solid fa-question fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
 					</a>
 				</div>
 			</div>
@@ -439,8 +445,11 @@ textarea {
 
 				<div class="form-input-group"
 					style="display: flex; gap: 10px; margin-top: 15px; margin-bottom: 15px;">
+					<div class="form-label">
+						카테고리<span>*</span>
+					</div>
 					<select id="mainCategory" name="main_category" required
-						style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+						style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-left: 10px">
 						<option value="">대분류 선택</option>
 						<c:forEach var="cat" items="${upperList}">
 							<option value="${cat.cat_id}">${cat.cat_name}</option>
@@ -578,12 +587,15 @@ textarea {
 				</div>
 
 				<button type="submit" class="submit-btn">등 록</button>
+				
 			</form>
+			</div>
 			<div class="container-footer">
 				<p>© 2026 돈워리. All rights reserved.</p>
 				<p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침
 					| 이용약관 | 고객센터</p>
 			</div>
+			
 
 			<script
 				src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

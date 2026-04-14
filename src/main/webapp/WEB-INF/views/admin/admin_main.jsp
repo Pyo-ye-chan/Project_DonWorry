@@ -347,12 +347,14 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	gap: 20px;
 }
 
 .ratio-chart-box {
-	width: 240px;
-	height: 240px;
-	margin: 10px auto 20px;
+	width: 200px;
+	height: 200px;
+	margin: 0 auto;
+	position: relative;
 }
 
 .ratio-legend {
@@ -974,13 +976,16 @@ new Chart(document.getElementById('memberRatioChart'), {
             data: [${personalMemberCount}, ${businessMemberCount}],
             backgroundColor: ['#1677ff', '#93c5fd'],
             borderWidth: 0,
-            hoverOffset: 6
+            hoverOffset: 4
         }]
     },
     options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '68%',
+        layout: {
+            padding: 10 
+        },
+        cutout: '65%',
         plugins: {
             legend: { display: false }
         }

@@ -54,7 +54,7 @@ public class HomeController {
 		List<BoardsDTO> hotList = bdao.mainHotList();
 		model.addAttribute("hotList",hotList);
 		
-		return "home";	
+		return "home";
 	}
 	@RequestMapping("/error")
 	public String error() {

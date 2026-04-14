@@ -85,6 +85,17 @@ public class MembersDAO {
 	    
 	}
 	
+	public int nickNameCheck(String nickname) {
+		String sql = "select count(*) from members where nickname = ?";
+		return jdbc.queryForObject(sql, Integer.class, nickname);
+		
+	}
+	
+	public int checkEmailExists(String email) {
+		String sql = "select count(*) from members where email = ?";
+		return jdbc.queryForObject(sql, Integer.class,email);
+	}
+	
 	public int memberStatus(String id) {
 		String sql = "select count(*) from members where id = ? and state = 'Y'";
 		return jdbc.queryForObject(sql, Integer.class,id);

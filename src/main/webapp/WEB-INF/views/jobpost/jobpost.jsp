@@ -382,12 +382,12 @@ body {
 	font-size: 20px;
 	font-weight: 700;
 	color: #333;
-	display: block;           /* 말줄임표를 위해 필요 */
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
+	display: block; /* 말줄임표를 위해 필요 */
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
 }
 
 .job-badge {
@@ -400,7 +400,7 @@ body {
 	width: fit-content;
 }
 
-.weekdays{
+.weekdays {
 	background: #fdf2f8;
 	color: #db2777;
 	padding: 2px 8px;
@@ -410,7 +410,7 @@ body {
 	width: fit-content;
 }
 
-.weekend{
+.weekend {
 	background: #f0fdf4;
 	color: #16a34a;
 	padding: 2px 8px;
@@ -606,88 +606,88 @@ body {
 	font-weight: 700;
 }
 
-img{
-        max-width: 100%;    /* 부모 너비를 넘지 않음 */
-    height: auto;       /* 비율 유지 */
-    display: block;     /* 하단 여백 제거 */
-    margin: 10px 0;    /* 이미지 위아래 여백 */
-        }
+img {
+	max-width: 100%; /* 부모 너비를 넘지 않음 */
+	height: auto; /* 비율 유지 */
+	display: block; /* 하단 여백 제거 */
+	margin: 10px 0; /* 이미지 위아래 여백 */
+}
 </style>
 </head>
 <body>
 	<div class="community-container">
 		<c:choose>
-<c:when test="${nickName==null}">
-    <div class="top-auth">
-        <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="/members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
-                <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
-            </a>
-        </span>
-    </div>
-</c:when>
-<c:otherwise>
-    <div class="top-auth">  
-        <span style="font-size: 13px; color: #666; cursor: pointer;">
-        	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-            	${nickName}님 환영합니다.
-            <a href="/members/logout" style="text-decoration: none; color:black">
-            <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
-            </a>
-        </span>
-		<c:if test="${type=='관리자'}">
-            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin">관리자</div></a>
-		</c:if>
-		<c:if test="${type=='사업자'}">
-            <div class="now-business">사업자</div>
-        </c:if>
-		<c:if test="${type=='개인'}">        
-            <div class="now-personal">개인</div>
-		</c:if>
-    </div>
-</c:otherwise>
-</c:choose>
+			<c:when test="${nickName==null}">
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
+						<a href="/members/toLogin"
+						style="text-decoration: none; color: black; margin-right: 10px;">
+							<i class="fa-regular fa-user fa-lg"
+							style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
+					</a>
+					</span>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
+						<i class="fa-regular fa-user fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
+						${nickName}님 환영합니다. <a href="/members/logout"
+						style="text-decoration: none; color: black">
+							<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
+					</a>
+					</span>
+					<c:if test="${type=='관리자'}">
+						<a href="/admin/admin_main" style="text-decoration: none;"><div
+								class="now-admin">관리자</div></a>
+					</c:if>
+					<c:if test="${type=='사업자'}">
+						<div class="now-business">사업자</div>
+					</c:if>
+					<c:if test="${type=='개인'}">
+						<div class="now-personal">개인</div>
+					</c:if>
+				</div>
+			</c:otherwise>
+		</c:choose>
 
 		<nav class="navbar">
-        <div style="display: flex; align-items: center; gap: 40px;">
-            <a href="/" class="logo"> 돈워리</a>
-            <div class="nav-menu">
-                <a href="/"> 
-                    <i class="fa-solid fa-house fa-lg" style="color: rgb(203, 203, 203);"></i>
-                    홈
-                </a>
-                <a href="/salary/calendar">
-                    <i class="fa-regular fa-calendar fa-lg" style="color:rgb(203, 203, 203); margin-right:5px;"></i>
-                    급여 캘린더
-                    </a>
-                <a href="/jobposts/jobpost"  class="active"> 
-                    <i class="fa-solid fa-briefcase fa-lg" style="color: rgb(36, 99, 235); margin-right:5px;"></i>
-                    구인구직
-                </a>
-                <a href="/boards/mainboard_list?page=1"> 
-                    <i class="fa-regular fa-message fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i> 
-                    커뮤니티
-                </a> 
-                <a href="/qna/qna?page=1"> 
-                    <i class="fa-solid fa-question fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-                    고객지원
-                </a>              
-            </div>           
-        </div>
-        <c:if test="${nickName==null }">   
-	        <a class="my-page" href="/members/toLogin"> 
-	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-	            마이페이지
-	        </a>  
-        </c:if> 
-        <c:if test="${nickName!=null }">   
-	        <a class="my-page" href="/mypage/toMypage"> 
-	            <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
-	            마이페이지
-	        </a>  
-        </c:if>   
-    </nav>
-		
+			<div style="display: flex; align-items: center; gap: 40px;">
+				<a href="/" class="logo"> 돈워리</a>
+				<div class="nav-menu">
+					<a href="/"> <i class="fa-solid fa-house fa-lg"
+						style="color: rgb(203, 203, 203);"></i> 홈
+					</a> <a href="/salary/calendar"> <i
+						class="fa-regular fa-calendar fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
+					</a> 
+					<a href="/jobposts/jobpost" class="active"> <i
+						class="fa-solid fa-briefcase fa-lg"
+						style="color: rgb(36, 99, 235); margin-right: 5px;"></i> 구인구직
+					</a> <a href="/boards/mainboard_list?page=1"> <i
+						class="fa-regular fa-message fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
+					</a> <a href="/qna/qna?page=1"> <i
+						class="fa-solid fa-question fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
+					</a>
+				</div>
+			</div>
+			<c:if test="${nickName==null }">
+				<a class="my-page" href="/members/toLogin"> <i
+					class="fa-solid fa-user-gear fa-lg"
+					style="color: rgb(197, 197, 197);"></i> 마이페이지
+				</a>
+			</c:if>
+			<c:if test="${nickName!=null }">
+				<a class="my-page" href="/mypage/toMypage"> <i
+					class="fa-solid fa-user-gear fa-lg"
+					style="color: rgb(197, 197, 197);"></i> 마이페이지
+				</a>
+			</c:if>
+		</nav>
+
 	</div>
 
 	<div class="job-section">
@@ -740,7 +740,7 @@ img{
 				</div>
 				<div
 					style="display: flex; justify-content: center; gap: 10px; padding: 15px; background: #fcfcfc; border-top: 1px solid #eee;">
-					<button class="filter-btn" style="padding: 8px 25px;">초기화</button>
+					<!-- 					<button class="filter-btn" style="padding: 8px 25px;">초기화</button> -->
 					<button id="btnLayerSearch" class="filter-btn"
 						style="padding: 8px 25px; background-color: #2563eb; color: white;">검색</button>
 				</div>
@@ -812,7 +812,7 @@ img{
 								<c:if test="${displayHour == 0}">
 									<c:set var="displayHour" value="12" />
 								</c:if>
-								<option value="${h * 60}">${ampm} ${displayHour}:00</option>
+								<option value="${h * 60}">${ampm}${displayHour}:00</option>
 								<option value="${h * 60 + 30}">${ampm}
 									${displayHour}:30</option>
 							</c:forEach>
@@ -834,7 +834,7 @@ img{
 								<c:if test="${displayHour == 0}">
 									<c:set var="displayHour" value="12" />
 								</c:if>
-								<option value="${h * 60}">${ampm} ${displayHour}:00</option>
+								<option value="${h * 60}">${ampm}${displayHour}:00</option>
 								<option value="${h * 60 + 30}">${ampm}
 									${displayHour}:30</option>
 							</c:forEach>
@@ -853,8 +853,22 @@ img{
 				</div>
 			</div>
 		</div>
-
 	</div>
+
+	<div id="selectedFilterWrap"
+		style="display: none; width: 100%; max-width: 1040px; margin: 0 auto 20px;">
+		<div
+			style="display: flex; align-items: center; justify-content: flex-start; gap: 12px; flex-wrap: wrap; padding-left: 10px;">
+			<span
+				style="font-size: 14px; color: #666; font-weight: 600; white-space: nowrap;">적용된
+				필터:</span>
+			<div id="filterTagArea" style="display: flex; gap: 8px;"></div>
+			<button type="button" onclick="location.href='/jobposts/jobpost'"
+				style="border: none; background: none; color: #999; font-size: 13px; cursor: pointer; text-decoration: underline; margin-left: 5px;">
+				필터 초기화</button>
+		</div>
+	</div>
+
 	<div class="job-list">
 		<c:forEach var="post" items="${jobList}">
 			<div class="job-card">
@@ -864,7 +878,7 @@ img{
 				<div class="job-info">
 					<div class="job-title-row">
 						<h3>${post.title}</h3>
-						
+
 						<c:choose>
 							<c:when test="${post.work_days =='주말'}">
 								<span class="job-badge weekend">${post.work_days}</span>
@@ -872,11 +886,13 @@ img{
 							<c:when test="${post.work_days =='평일'}">
 								<span class="job-badge weekdays">${post.work_days}</span>
 							</c:when>
-							<c:otherwise><span class="job-badge">${post.work_days}</span></c:otherwise>
+							<c:otherwise>
+								<span class="job-badge">${post.work_days}</span>
+							</c:otherwise>
 						</c:choose>
 					</div>
 					<div class="company-name">${post.company_name}</div>
-<%-- 					<div class="job-desc">${post.content}</div> --%>
+					<%-- 					<div class="job-desc">${post.content}</div> --%>
 
 					<div class="job-meta-row">
 						<div class="meta-item">
@@ -905,7 +921,7 @@ img{
 							onclick="location.href='/jobposts/jobdetail?seq=${post.seq}&page=${currentPage }'">자세히
 							보기</button>
 					</div>
-						<!-- 이력서 모달창 -->
+					<!-- 이력서 모달창 -->
 					<div id="resumeModal"
 						style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000;">
 						<div
@@ -933,35 +949,41 @@ img{
 	</div>
 
 	<div class="pagination">
-    <c:if test="${recordTotalCount > 0}">
-        <fmt:parseNumber var="pageCount" value="${(recordTotalCount - 1) / recordCountPerPage + 1}" integerOnly="true" />
-        <fmt:parseNumber var="tempStart" value="${(currentPage - 1) / naviCountPerPage}" integerOnly="true" />
-        <c:set var="startNavi" value="${tempStart * naviCountPerPage + 1}" />
-        <c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
-        <c:if test="${endNavi > pageCount}">
-            <c:set var="endNavi" value="${pageCount}" />
-        </c:if>
+		<c:if test="${recordTotalCount > 0}">
+			<fmt:parseNumber var="pageCount"
+				value="${(recordTotalCount - 1) / recordCountPerPage + 1}"
+				integerOnly="true" />
+			<fmt:parseNumber var="tempStart"
+				value="${(currentPage - 1) / naviCountPerPage}" integerOnly="true" />
+			<c:set var="startNavi" value="${tempStart * naviCountPerPage + 1}" />
+			<c:set var="endNavi" value="${startNavi + naviCountPerPage - 1}" />
+			<c:if test="${endNavi > pageCount}">
+				<c:set var="endNavi" value="${pageCount}" />
+			</c:if>
 
-        <%-- 공통 파라미터 문자열 생성 --%>
-        <c:set var="query" value="&searchKeyword=${searchKeyword}&workDay=${param.workDay}&startTime=${param.startTime}&endTime=${param.endTime}" />
+			<%-- 공통 파라미터 문자열 생성 --%>
+			<c:set var="query"
+				value="&searchKeyword=${searchKeyword}&workDay=${param.workDay}&startTime=${param.startTime}&endTime=${param.endTime}" />
 
-        <%-- [이전 묶음] 버튼 --%>
-        <c:if test="${startNavi > 1}">
-            <a href="/jobposts/jobpost?page=${startNavi - 1}${query}" class="page-link">&lt;</a>
-        </c:if>
+			<%-- [이전 묶음] 버튼 --%>
+			<c:if test="${startNavi > 1}">
+				<a href="/jobposts/jobpost?page=${startNavi - 1}${query}"
+					class="page-link">&lt;</a>
+			</c:if>
 
-        <%-- [번호] 버튼 --%>
-        <c:forEach var="i" begin="${startNavi}" end="${endNavi}">
-            <a href="/jobposts/jobpost?page=${i}${query}"
-                class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
-        </c:forEach>
+			<%-- [번호] 버튼 --%>
+			<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+				<a href="/jobposts/jobpost?page=${i}${query}"
+					class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
+			</c:forEach>
 
-        <%-- [다음 묶음] 버튼 --%>
-        <c:if test="${endNavi < pageCount}">
-            <a href="/jobposts/jobpost?page=${endNavi + 1}${query}" class="page-link">&gt;</a>
-        </c:if>
-    </c:if>
-</div>
+			<%-- [다음 묶음] 버튼 --%>
+			<c:if test="${endNavi < pageCount}">
+				<a href="/jobposts/jobpost?page=${endNavi + 1}${query}"
+					class="page-link">&gt;</a>
+			</c:if>
+		</c:if>
+	</div>
 
 	</div>
 	</div>
@@ -981,6 +1003,35 @@ img{
 
 	<script>
 	$(function() {
+		const urlParams = new URLSearchParams(window.location.search);
+	    const locFilter = urlParams.get('selectByLocation');
+	    const keyFilter = urlParams.get('searchKeyword');
+
+	    if (locFilter || keyFilter) {
+	        $('#selectedFilterWrap').show(); // 필터 영역 보이기
+	        
+	        let tagHtml = "";
+	        
+	        // 지역 필터 태그 생성
+	        if (locFilter) {
+	            tagHtml += `
+	                <span class="job-badge" style="padding: 5px 12px; font-size: 13px; display: flex; align-items: center; gap: 5px;">
+	                    <i class="fa-solid fa-location-dot" style="font-size: 11px;"></i> \${locFilter}
+	                </span>`;
+	        }
+	        
+	        // 직종(키워드) 필터 태그 생성
+	        if (keyFilter) {
+	            tagHtml += `
+	                <span class="job-badge weekdays" style="padding: 5px 12px; font-size: 13px; display: flex; align-items: center; gap: 5px;">
+	                    <i class="fa-solid fa-briefcase" style="font-size: 11px;"></i> \${keyFilter}
+	                </span>`;
+	        }
+	        
+	        $('#filterTagArea').html(tagHtml);
+	    }
+		
+		
 	    /* [1] 위치(지역) 선택 관련 로직 */
 	    loadSido();
 
@@ -988,6 +1039,7 @@ img{
 	    $('#btnLocation').on('click', function(e) {
 	        e.stopPropagation();
 	        $('#categoryLayer').hide(); // 직종 레이어는 닫기
+	        $('#timeLayer').hide(); // 직종 레이어는 닫기
 	        $(this).toggleClass('active');
 	        $('#locationLayer').stop().slideToggle(200);
 	    });
@@ -1055,7 +1107,7 @@ img{
 	        let dong = $('#dongList li.active').text().trim();
 	        if (!sido) { alert("지역을 선택해주세요."); return; }
 	        let selectByLocation = sido + (gugun ? " " + gugun : "") + (dong ? " " + dong : "");
-	        location.href = "/jobposts/selectByLocation?selectByLocation=" + encodeURIComponent(selectByLocation);
+	        location.href = "/jobposts/jobpost?selectByLocation=" + encodeURIComponent(selectByLocation);
 	    });
 
 
@@ -1065,6 +1117,7 @@ img{
 	    $('#btnCategory').on('click', function(e) {
 	        e.stopPropagation();
 	        $('#locationLayer').hide(); // 지역 레이어는 닫기
+	        $('#timeLayer').hide();
 	        $('#categoryLayer').stop().slideToggle(200);
 	        loadMainCategory(); // 열 때마다 새로고침
 	    });
@@ -1131,15 +1184,15 @@ img{
 
 	    // 레이어 외부 클릭 시 닫기
 	    $(document).on('click', function(e) {
-	        if (!$(e.target).closest('.search-filter-wrap').length) {
-	            $('#locationLayer, #categoryLayer').slideUp(200);
-	            $('#btnLocation').removeClass('active');
-	        }
-	    });
+    if (!$(e.target).closest('.search-filter-wrap').length) {
+        $('#locationLayer, #categoryLayer, #timeLayer').slideUp(200);
+        $('.filter-btn').removeClass('active');
+    }
+});
 	    
 	    $('#btnCondition').on('click', function(e) {
 	        e.stopPropagation();
-	        $('#locationLayer, #categoryLayer').hide(); 
+	        $('#locationLayer, #categoryLayer, #timeLayer').hide(); 
 	        $('#timeLayer').stop().slideToggle(200);
 	    });
 	    
@@ -1228,12 +1281,13 @@ img{
 	            location.href = `/jobapplys/insert?jobPostNum=\${selectedJobSeq}&resumeNum=\${resumeNum}`;
 	        });
 
-	        // [4] 모달 외부나 취소 버튼 클릭 시 닫기 기능 (추가 권장)
+	        // [4] 모달 외부나 취소 버튼 클릭 시 닫기 기능
 	        $(document).on("click", function(e) {
 	            if ($(e.target).is("#resumeModal")) {
 	                $("#resumeModal").fadeOut(200);
 	            }
 	        });
+	        
 	});
 	</script>
 </body>

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -77,6 +78,13 @@ public class MembersController {
 		return g.toJson(list);
 	}
 	
+	@ResponseBody
+	@RequestMapping("/nickNameCheck")
+	public String nickNameCheck(String nickname, Model model) {
+		String nickName = g.toJson(dao.nickNameCheck(nickname));
+		return nickName;
+	}
+	
 	@RequestMapping("/toSignUp")
 	public String toSignUp() {
 		return "/members/joinform";
@@ -91,7 +99,7 @@ public class MembersController {
 			rattr.addFlashAttribute("joinSuccess", "회원가입이 완료되었습니다. 로그인창으로 이동합니다.");
 			return "redirect:/";
 		}else {
-			return "나중에 에러 JSP 넣기";
+			return "redirect:error";
 		}
 		
 		
@@ -104,32 +112,61 @@ public class MembersController {
 	
 	@RequestMapping(value = "/sendAuthCode", method = RequestMethod.POST)
 	@ResponseBody
-	public String sendAuthCode(String id, String email, HttpSession session) {
-
-	    int result = dao.checkMemberForPw(id, email); 
-
-	    if (result == 0) {
-	        return "not_found"; 
+	public String sendAuthCode(@RequestParam(value="id", required=false) String id, String email, HttpSession session) {
+	    
+	    // [1] 비밀번호 찾기 모드 (ID가 넘어왔을 때)
+	    if (id != null && !id.trim().isEmpty()) {
+	        int result = dao.checkMemberForPw(id, email); 
+	        if (result == 0) {
+	            return "not_found"; // 일치하는 정보 없음
+	        }
+	        session.setAttribute("targetId", id);
+	    } 
+	    // [2] 회원가입 모드 (ID가 없을 때)
+	    else {
+	        // DB에서 이메일 중복 여부를 체크하는 메서드를 호출 (예: checkEmailExists)
+	        int emailCount = dao.checkEmailExists(email); 
+	        if (emailCount > 0) {
+	            return "already_exists"; // 이미 가입된 이메일
+	        }
 	    }
 
+	    // [3] 인증번호 생성 및 메일 발송 (이후 로직은 동일)
 	    int checkNum = new Random().nextInt(888888) + 111111;
 	    String authCode = String.valueOf(checkNum);
 	    
 	    try {
 	        MimeMessage message = mailSender.createMimeMessage();
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-
 	        helper.setFrom("dlawndud6544@gmail.com");
 	        helper.setTo(email);
-	        helper.setSubject("[돈워리] 비밀번호 찾기 인증번호입니다.");
-	        helper.setText("안녕하세요. 돈워리입니다.<br>인증번호는 <b>" + authCode + "</b> 입니다.", true);
+	        
+	        String content = 
+	        	    "<div style='max-width: 500px; margin: 40px auto; padding: 40px; border: 1px solid #eef2ff; border-radius: 24px; font-family: sans-serif; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center;'>" +
+	        	    "  <h1 style='color: #2563eb; font-size: 28px; font-weight: 800; margin-bottom: 24px;'>돈워리</h1>" +
+	        	    "  <div style='margin-bottom: 30px;'>" +
+	        	    "    <p style='font-size: 18px; font-weight: 700; color: #333; margin-bottom: 8px;'>회원가입 인증번호 안내</p>" +
+	        	    "    <p style='font-size: 14px; color: #666;'>안녕하세요. 돈워리를 방문해주셔서 감사합니다.<br>아래의 인증번호를 입력하여 가입을 완료해주세요.</p>" +
+	        	    "  </div>" +
+	        	    "  <div style='background-color: #f8faff; border-radius: 16px; padding: 30px; margin-bottom: 30px;'>" +
+	        	    "    <span style='display: block; font-size: 12px; color: #2563eb; font-weight: 700; margin-bottom: 10px; letter-spacing: 1px;'>VERIFICATION CODE</span>" +
+	        	    "    <span style='font-size: 36px; font-weight: 800; color: #2563eb; letter-spacing: 8px;'>" + authCode + "</span>" +
+	        	    "  </div>" +
+	        	    "  <p style='font-size: 12px; color: #999; line-height: 1.6;'>" +
+	        	    "    본 인증번호는 발송 후 3분 동안 유효합니다.<br>" +
+	        	    "    만약 요청한 적이 없다면 이 메일을 무시해주세요." +
+	        	    "  </p>" +
+	        	    "  <hr style='border: none; border-top: 1px solid #eee; margin: 30px 0;'>" +
+	        	    "  <p style='font-size: 11px; color: #bbb;'>© 2026 돈워리. All rights reserved.</p>" +
+	        	    "</div>";
+	        
+	        String title = (id != null) ? "[돈워리] 비밀번호 찾기 인증번호" : "[돈워리] 회원가입 인증번호";
+	        helper.setSubject(title);
+	        helper.setText(content, true);
 
 	        mailSender.send(message);
-
 	        session.setAttribute("authCode", authCode); 
-	        session.setAttribute("targetId", id);       
 	        return "success";
-
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return "error";

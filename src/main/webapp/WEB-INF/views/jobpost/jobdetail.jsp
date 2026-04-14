@@ -194,11 +194,11 @@ body {
 /* [2] 상단 헤더 섹션 */
 .detail-header {
 	display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* flex-end에서 변경: 제목이 길어지면 위쪽 기준 정렬이 예쁨 */
-    padding-bottom: 30px;
-    border-bottom: 2px solid #333;
-    gap: 30px; /* 제목과 버튼 사이 최소 간격 확보 */
+	justify-content: space-between;
+	align-items: flex-start; /* flex-end에서 변경: 제목이 길어지면 위쪽 기준 정렬이 예쁨 */
+	padding-bottom: 30px;
+	border-bottom: 2px solid #333;
+	gap: 30px; /* 제목과 버튼 사이 최소 간격 확보 */
 }
 
 .header-left .company-name {
@@ -209,24 +209,24 @@ body {
 }
 
 .header-left {
-    flex: 1; /* 남는 공간을 다 차지하되 버튼 영역은 침범 안 함 */
-    min-width: 0; /* 중요: 내부 텍스트가 길 때 flex 박스가 터지는 걸 방지 */
+	flex: 1; /* 남는 공간을 다 차지하되 버튼 영역은 침범 안 함 */
+	min-width: 0; /* 중요: 내부 텍스트가 길 때 flex 박스가 터지는 걸 방지 */
 }
 
 .header-right {
-    flex-shrink: 0; /* 중요: 버튼 영역이 좁아지지 않도록 고정 */
-    display: flex;
-    flex-direction: column; /* 버튼들을 세로로 배치 (이미지처럼) */
-    gap: 10px;
+	flex-shrink: 0; /* 중요: 버튼 영역이 좁아지지 않도록 고정 */
+	display: flex;
+	flex-direction: column; /* 버튼들을 세로로 배치 (이미지처럼) */
+	gap: 10px;
 }
 
 .header-left h1 {
-    font-size: 32px;
-    font-weight: 800;
-    color: #111;
-    margin-bottom: 15px;
-    word-break: break-all; /* 영문/숫자도 박스 끝에서 줄바꿈 */
-    overflow-wrap: break-word; /* 단어 단위 줄바꿈 시도 */
+	font-size: 32px;
+	font-weight: 800;
+	color: #111;
+	margin-bottom: 15px;
+	word-break: break-all; /* 영문/숫자도 박스 끝에서 줄바꿈 */
+	overflow-wrap: break-word; /* 단어 단위 줄바꿈 시도 */
 }
 
 .pay-info {
@@ -333,18 +333,35 @@ body {
 	border-color: #999;
 }
 
-img{
-    max-width: 100%;    /* 부모 너비를 넘지 않음 */
-    max-height: 100%;
-    height: auto;       /* 비율 유지 */
-    display: block;     /* 하단 여백 제거 */
-    margin: 10px 0;    /* 이미지 위아래 여백 */
-        }
-        
+img {
+	max-width: 100%; /* 부모 너비를 넘지 않음 */
+	max-height: 100%; height : auto; /* 비율 유지 */
+	display: block; /* 하단 여백 제거 */
+	margin: 10px 0;
+	height: auto; /* 이미지 위아래 여백 */
+}
+
 #btnDeletePost:hover {
-    background-color: #fef2f2;
-    border-color: #ef4444;
-    color: #b91c1c;
+	background-color: #fef2f2;
+	border-color: #ef4444;
+	color: #b91c1c;
+}
+
+/* --- 버튼 중앙 정렬을 위한 추가 CSS --- */
+.header-right {
+    display: flex !important;      /* 가로 정렬 강제 */
+    flex-direction: row !important; /* 세로가 아닌 가로로 나열 */
+    justify-content: center;       /* 가로 중앙 정렬 */
+    align-items: center;           /* 세로 중앙 정렬 */
+    gap: 15px;                     /* 버튼 사이 간격 */
+    margin: 50px 0;                /* 위아래 여백 넉넉히 */
+    width: 100%;                   /* 전체 너비 확보 */
+}
+
+/* 기존 버튼의 margin-left가 정렬을 방해할 수 있어서 초기화 */
+.header-right .btn-apply, 
+.header-right .btn-list {
+    margin-left: 0 !important;
 }
 </style>
 </head>
@@ -352,36 +369,40 @@ img{
 
 	<div class="community-container">
 		<c:choose>
-<c:when test="${nickName==null}">
-    <div class="top-auth">
-        <span style="font-size: 13px; color: #666; cursor: pointer;">
-            <a href="/members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
-                <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
-            </a>
-        </span>
-    </div>
-</c:when>
-<c:otherwise>
-    <div class="top-auth">  
-        <span style="font-size: 13px; color: #666; cursor: pointer;">
-        	<i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
-            	${nickName}님 환영합니다.
-            <a href="/members/logout" style="text-decoration: none; color:black">
-            <button class="logout-btn" style="margin-left:10px;">로그아웃</button>              
-            </a>
-        </span>
-		<c:if test="${type=='관리자'}">
-            <a href="/admin/admin_main" style="text-decoration:none;"><div class="now-admin">관리자</div></a>
-		</c:if>
-		<c:if test="${type=='사업자'}">
-            <div class="now-business">사업자</div>
-        </c:if>
-		<c:if test="${type=='개인'}">        
-            <div class="now-personal">개인</div>
-		</c:if>
-    </div>
-</c:otherwise>
-</c:choose>
+			<c:when test="${nickName==null}">
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
+						<a href="/members/toLogin"
+						style="text-decoration: none; color: black; margin-right: 10px;">
+							<i class="fa-regular fa-user fa-lg"
+							style="color: rgb(203, 203, 203); margin-right: 5px;"></i>로그인
+					</a>
+					</span>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="top-auth">
+					<span style="font-size: 13px; color: #666; cursor: pointer;">
+						<i class="fa-regular fa-user fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i>
+						${nickName}님 환영합니다. <a href="/members/logout"
+						style="text-decoration: none; color: black">
+							<button class="logout-btn" style="margin-left: 10px;">로그아웃</button>
+					</a>
+					</span>
+					<c:if test="${type=='관리자'}">
+						<a href="/admin/admin_main" style="text-decoration: none;"><div
+								class="now-admin">관리자</div></a>
+					</c:if>
+					<c:if test="${type=='사업자'}">
+						<div class="now-business">사업자</div>
+					</c:if>
+					<c:if test="${type=='개인'}">
+						<div class="now-personal">개인</div>
+					</c:if>
+				</div>
+			</c:otherwise>
+		</c:choose>
 
 		<nav class="navbar">
 			<div style="display: flex; align-items: center; gap: 40px;">
@@ -391,13 +412,13 @@ img{
 						style="color: rgb(203, 203, 203);"></i> 홈
 					</a> <a href="/salary/calendar"> <i
 						class="fa-regular fa-calendar fa-lg"
-						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더
-					</a> <a href="/jobposts/jobpost"  class="active"> <i class="fa-solid fa-briefcase fa-lg"
+						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 급여 캘린더</a><a href="/jobposts/jobpost"  class="active"> <i class="fa-solid fa-briefcase fa-lg"
 						style="color: rgb(36, 99, 235); margin-right: 5px;"></i> 구인구직
 					</a> <a href="/boards/mainboard_list?page=1"> <i
 						class="fa-regular fa-message fa-lg"
 						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 커뮤니티
-					</a> <a href="/qna/qna?page=1"> <i class="fa-solid fa-question fa-lg"
+					</a> <a href="/qna/qna?page=1"> <i
+						class="fa-solid fa-question fa-lg"
 						style="color: rgb(203, 203, 203); margin-right: 5px;"></i> 고객지원
 					</a>
 				</div>
@@ -429,13 +450,7 @@ img{
 						원
 					</div>
 				</div>
-				<div class="header-right">
-					<c:if test="${type != '사업자'}">
-							<button class="btn-apply" data-seq="${post.seq }">지원하기</button>
-						</c:if>
-					<button class="btn-list"
-						onclick="location.href='/jobposts/jobpost?page=${page}'">목록으로</button>
-				</div>
+
 			</div>
 
 			<div id="resumeModal"
@@ -461,7 +476,7 @@ img{
 					<div class="label">
 						<i class="fa-solid fa-location-dot"></i> 근무지
 					</div>
-					<div class="value">${post.sido} ${post.gugun} ${post.dong}
+					<div class="value">${post.sido}${post.gugun} ${post.dong}
 						${post.address_detail}</div>
 				</div>
 				<div class="info-item">
@@ -474,7 +489,7 @@ img{
 					<div class="label">
 						<i class="fa-regular fa-clock"></i> 근무시간
 					</div>
-					<div class="value">${post.work_starttime} ~
+					<div class="value">${post.work_starttime}~
 						${post.work_endtime}</div>
 				</div>
 				<div class="info-item">
@@ -496,18 +511,23 @@ img{
 					${post.benefit}</div>
 			</div>
 		</div>
-		
-<%-- 		<c:if test="${loginId == post.member_id}"> --%>
-<!--     <div style="text-align: right; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee;"> -->
-<!--         <button type="button" id="btnDeletePost" class="btn-list" style="color: #ef4444; border-color: #fca5a5;"> -->
-<!--             <i class="fa-regular fa-trash-can"></i> 공고 삭제 -->
-<!--         </button> -->
-<!--         </div> -->
-<%-- </c:if> --%>
-		
-		
-	</div>
 
+		<%-- 		<c:if test="${loginId == post.member_id}"> --%>
+		<!--     <div style="text-align: right; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #eee;"> -->
+		<!--         <button type="button" id="btnDeletePost" class="btn-list" style="color: #ef4444; border-color: #fca5a5;"> -->
+		<!--             <i class="fa-regular fa-trash-can"></i> 공고 삭제 -->
+		<!--         </button> -->
+		<!--         </div> -->
+		<%-- </c:if> --%>
+
+		<div class="header-right" id="bottom-btn-group">
+			<c:if test="${type != '사업자'}">
+				<button class="btn-apply" data-seq="${post.seq}">지원하기</button>
+			</c:if>
+			<button class="btn-list"
+				onclick="location.href='/jobposts/jobpost?page=${page}'">목록으로</button>
+		</div>
+	</div>
 
 
 	<div class="container-footer">
