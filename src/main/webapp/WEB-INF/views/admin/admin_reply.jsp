@@ -270,7 +270,7 @@ body {
     font-weight: 700;
 }
 
-.reply-del-btn{
+.reply-del-btn, .rp_reply-del-btn{
     height: 34px;
     border: none;
     border-radius: 8px;
@@ -572,7 +572,7 @@ body {
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
                         </td>
                         <td>
-                            <button class="reply-del-btn rp_reply-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
+                            <button class="rp_reply-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
                         </td>
                         
                     </tr>
@@ -705,7 +705,12 @@ body {
 	});
 	
  	//삭제 버튼 클릭
-	$(".reply-del-btn").on("click",function(){
+	$(".reply-del-btn").on("click",function(e){
+		e.preventDefault();
+		//취소 누를 경우
+		if(!confirm("해당 댓글을 삭제하시겠습니까?")) {
+	        return; //종료시킴
+	    }
 		let seq = $(this).data("seq");
 		let page = "${currentPage}";
 		location.href='/admin/admin_reply_delete?seq='+seq+'&page='+page;
@@ -775,7 +780,12 @@ body {
 	}
 	
 	//삭제 버튼 클릭
-	$(".rp_reply-del-btn").on("click",function(){
+	$(".rp_reply-del-btn").on("click",function(e){
+		e.preventDefault();
+		//취소 누를 경우
+		if(!confirm("해당 신고댓글을 삭제하시겠습니까?")) {
+	        return; //종료시킴
+	    }
 		let seq = $(this).data("seq");
 		location.href='/admin/admin_reply_delete?seq='+seq+'&page=1';
 	});

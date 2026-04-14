@@ -272,6 +272,26 @@ body {
     font-size: 13px;
     font-weight: 700;
 }
+.board-rp-del-btn {
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    padding: 0 12px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+.notice-del-btn {
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    padding: 0 12px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
 
 /* ===== Table ===== */
 .admin-table {
@@ -600,7 +620,7 @@ body {
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
                         </td>
                         <td>
-                            <button class="board-del-btn" type="button" data-seq="${i.seq}">삭제</button>
+                            <button class="board-rp-del-btn" type="button" data-seq="${i.seq}">삭제</button>
                         </td>
                     </tr>
                     </c:if>
@@ -641,7 +661,7 @@ body {
                         <td><span class="state-pill state-show">게시중</span></td>
                         <td>
                             <button class="board-detail-btn notice-detail-btn" type="button"  data-seq="${i.seq}">보기</button>
-                            <button class="board-del-btn notice-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
+                            <button class="notice-del-btn" type="button"  data-seq="${i.seq}">삭제</button>
                         </td>
                     </tr>
                 </c:if>
@@ -657,6 +677,8 @@ body {
      <p style="margin-top:10px; font-size:11px;">개인정보처리방침 | 이용약관 | 고객센터</p>
   </div>
 <script>
+//삭제시
+
 //일반 게시글
 	let keyword = "${keyword}";
 	let category = "${category}";
@@ -764,10 +786,19 @@ body {
 	});
 	
 	//삭제 버튼 클릭
-	$(".board-del-btn").on("click",function(){
+	$(".board-del-btn").on("click",function(e){
+		e.preventDefault();
+		// 이벤트 전파 방지 (일반 게시글 삭제 로직이 중복 실행되는 것 방지)
+	    e.stopImmediatePropagation();
+		//취소 누를 경우
+		if(!confirm("해당 게시글을 삭제하시겠습니까?")) {
+	        return; //종료시킴
+	    }
+		//확인 누를 경우
 		let seq = $(this).data("seq");
 		let page = "${currentPage}";
 		location.href='/admin/admin_board_delete?seq='+seq+'&page='+page;
+		
 	});
 	
 //====================신고게시글=======================//
@@ -847,6 +878,24 @@ body {
 	    location.href = "/admin/admin_boards?page=1&rPage=1&keyword=";
 	});
 	
+	//신고 게시글 삭제
+	$(".board-rp-del-btn").on("click", function(e) {
+	    e.preventDefault();
+	    // 이벤트 전파 방지 (일반 게시글 삭제 로직이 중복 실행되는 것 방지)
+	    e.stopImmediatePropagation();
+
+	    if(!confirm("해당 신고 게시글을 삭제하시겠습니까?")) {
+	        return;
+	    }
+
+	    let seq = $(this).data("seq");
+	    let page = "${currentPage}";  // 상단 목록 유지용
+	    let rPage = "${rCurrentPage}"; // 신고 목록 유지용
+	    
+	    // 삭제 후 원래 보던 신고 페이지로 돌아오기 위해 rPage도 함께 전달
+	    location.href = '/admin/admin_board_delete?seq=' + seq + '&page=' + page + '&rPage=' + rPage;
+	});
+	
 	// 신고 전용 URL 생성 함수
 	function getReportPageUrl(targetRPage) {
 	    // 일반 게시글의 현재 페이지(${currentPage})를 같이 보내야 상단 목록이 유지됨
@@ -870,7 +919,12 @@ body {
 	});
 	
 	//삭제 버튼 클릭
-	$(".notice-del-btn").on("click",function(){
+	$(".notice-del-btn").on("click",function(e){
+		e.preventDefault();
+		//취소 누를 경우
+		if(!confirm("해당 공지글을 삭제하시겠습니까?")) {
+	        return; //종료시킴
+	    }
 		let seq = $(this).data("seq");
 		location.href='/admin/admin_board_delete?seq='+seq+'&page=1';
 	});
