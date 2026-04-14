@@ -311,6 +311,30 @@
         color: #333;
         /* transition: all 0.3s; */
     }
+    .id-check-group {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.id-check-group input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+    .id-check-btn, .email-check-btn, .check-btn {
+		padding: 0 20px;
+		background-color: #E6EEFF; /* 메인 파란색의 아주 연한 버전 */
+		color: #0055FF; /* 글자는 진한 파란색 */
+		border: 1px solid #0055FF;
+		border-radius: 8px; /* 입력창이랑 똑같은 곡률 */
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		white-space: nowrap; /* 글자 줄바꿈 방지 */
+}
 
     .update-input:focus {
         outline: none;
@@ -512,9 +536,23 @@
 
         <div class="form-group">
             <label class="form-label">이메일 주소</label>
-            <input type="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
-			name="email" data-value="${list[0].email}" value="${list[0].email}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+            <div class="id-check-group">
+            <input type="email"  id="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
+			name="email" data-value="${list[0].email}" value="${list[0].email}" 
+			style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+        	<button type="button" id="sendAuthBtn" class="email-check-btn" style="display: none; width: 100px;">인증요청</button>
+        	</div>
         </div>
+        
+       	<div class="form-group" id="authCodeGroup" style="display: none;">
+			<label for="authCode">인증번호</label>
+			<div class="id-check-group">
+				<input type="text" id="authCode" placeholder="인증번호 6자리 입력"
+					maxlength="6">
+				<button type="button" id="verifyBtn" class="check-btn">확인</button>
+			</div>
+			<div id="authCheck-box" style="margin-top: 5px; font-size: 14px;"></div>
+		</div>
     </c:if>	
     
     <c:if test="${type=='사업자'}"> 
@@ -546,10 +584,22 @@
 
         <div class="form-group">
             <label class="form-label">이메일 주소</label>
-            <input type="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
+            <input type="email" id="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
 			name="email" value="${list[0].email}" data-value="${list[0].email}"
 			style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+			<button type="button" id="sendAuthBtn" class="email-check-btn" style="display: none; width: 100px;">인증요청</button>
         </div>
+        
+     		<div class="form-group" id="authCodeGroup" style="display: none;">
+				<label for="authCode">인증번호</label>
+				<div class="id-check-group">
+					<input type="text" id="authCode" placeholder="인증번호 6자리 입력"
+						maxlength="6">
+					<button type="button" id="verifyBtn" class="check-btn">확인</button>
+				</div>
+				<div id="authCheck-box" style="margin-top: 5px; font-size: 14px;"></div>
+			</div>
+		
     	<div class="form-group">
             <label class="form-label">사업자 번호</label>
             <input type="email" class="form-input" readonly 
@@ -576,12 +626,19 @@
 	$(function(){//html 로드가 끝난 후 실행
 		//수정완료 취소 버튼 안보임
 		$(".cancel-btn,.save-btn").css("display","none");
-
+		let isEmailAuth = true; // 프로필 수정이므로 기본값은 true
 		//수정 버튼 누르면
 		$(".update-btn").on("click",function(){
 			$(".cancel-btn").css("display","inline");
 			$(".save-btn").css("display","inline");
 			$(".update-btn,.back-btn").css("display","none");
+			$("#email").prop("readonly",false).css({
+				"background-color":"#fff",
+				"color":"#000",
+				"cursor":"text"
+			});
+			$("#sendAuthBtn").fadeIn();
+			isEmailAuth = false;//수정 시작하면 인증을 다시 받아야함
 			
 			//수정 가능한것들 활성화
 			$(".update-input").each(function(){
@@ -600,7 +657,96 @@
 		         }
 			});
 
-		});		//					"background-color":"#f9fafb",
+		});
+		//이메일 인증
+		$('#sendAuthBtn').click(function() {
+			let email = $('#email').val();
+
+			// 이메일 유효성 체크 (기존 정규식 활용)
+			if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+					.test(email)) {
+				alert("올바른 이메일 형식을 입력해주세요.");
+				return;
+			}
+
+			const btn = $(this);
+
+			// [중요] 재발송 연타 방지: 버튼 비활성화
+			btn.prop('disabled', true).text("발송 중...");
+
+			$.ajax({
+				url : "/members/sendAuthCode",
+				type : "POST",
+				data : {
+					email : email
+				},
+				success : function(res) {
+					if (res === "success") {
+						alert("인증번호가 발송되었습니다. (재발송 포함)");
+						$('#authCodeGroup').fadeIn();
+						btn.text("재발송"); // 버튼 텍스트를 재발송으로 변경
+					} else if (res === "already_exists") {
+						alert("이미 가입된 이메일입니다.");
+						btn.text("인증요청");
+					} else {
+						alert("메일 발송 실패!");
+						btn.text("재발송");
+					}
+				},
+				error : function() {
+					alert("서버 오류 발생");
+					btn.text("재발송");
+				},
+				complete : function() {
+					// 발송이 끝나면 다시 버튼 활성화 (3~5초 정도 딜레이를 주면 더 좋아)
+					setTimeout(function() {
+						btn.prop('disabled', false);
+					}, 3000);
+				}
+			});
+		});
+
+		// [인증번호 확인 버튼 클릭 이벤트]
+		$("#verifyBtn").on("click",function() {
+			const inputCode = $("#authCode").val(); // 사용자가 입력한 번호
+			const authBox = $("#authCheck-box"); // 결과를 보여줄 영역 (아래 HTML 참고)
+
+			if (inputCode === "") {
+				alert("인증번호를 입력해주세요.");
+				$("#authCode").focus();
+				return;
+			}
+
+			$.ajax({
+				url : "/members/verifyAuthCode",
+				type : "POST",
+				data : {
+					inputCode : inputCode
+				}, // 컨트롤러의 파라미터명과 맞춰야 함
+				success : function(res) {
+					if (res === "success") {
+						alert("인증에 성공했습니다!");
+						// 성공 시 처리
+						$("#authCode").prop("readonly", true); // 입력창 잠그기
+						$("#verifyBtn").prop("disabled", true)
+								.text("인증완료");
+						$("#email").prop("readonly", true); // 이메일 수정 방지
+						$("#sendAuthBtn").prop("disabled", true);
+
+						// 가입하기 버튼 활성화용 플래그 (선택사항)
+						isEmailAuth = true;
+					} else {
+						alert("인증번호가 일치하지 않습니다. 다시 확인해주세요.");
+						$("#authCode").val("").focus();
+					}
+				},
+				error : function() {
+					alert("서버 통신 실패!");
+				}
+			});
+		});
+		
+
 
 		//취소 버튼 누르면
 		$(".cancel-btn").on("click",function(){
@@ -659,9 +805,7 @@
 	            return false;
 	        }
 	        
-	        if(!confirm("정말로 수정하시겠습니까?")) {
-	            e.preventDefault();
-	        }
+
 	    });
 	});
 
