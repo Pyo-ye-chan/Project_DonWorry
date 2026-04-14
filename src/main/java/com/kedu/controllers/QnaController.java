@@ -105,6 +105,8 @@ public class QnaController {
 		model.addAttribute("dto",dto);
 		List<Qna_replyDTO> list = qdao.list(seq);
 		model.addAttribute("list",list);
+		List<FilesDTO> filesList = fdao.selectByParent_seq(seq);
+		model.addAttribute("filesList",filesList);
 		return "/qna/detail";
 	}
 	@RequestMapping("/toUpdate")
