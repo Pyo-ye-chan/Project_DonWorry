@@ -91,7 +91,7 @@ public class MembersController {
 			rattr.addFlashAttribute("joinSuccess", "회원가입이 완료되었습니다. 로그인창으로 이동합니다.");
 			return "redirect:/";
 		}else {
-			return "나중에 에러 JSP 넣기";
+			return "redirect:error";
 		}
 		
 		
