@@ -352,7 +352,7 @@
                 <div class="form-group">
                     <label class="form-label">경력 사항</label>
                     <input type="text" name="career_write" class="form-input count-input" id="career_input" disabled 
-                    placeholder="예: 스타벅스 강남점 6개월 근무 (경력이 없다면 '신입' 기재)" maxlength="100">
+                    placeholder="예: 스타벅스 강남점 6개월 근무" maxlength="100">
                     <div class="char_count" style="font-size: 12px; color: #999; text-align: right;">
                      	0 / 100
                      </div>

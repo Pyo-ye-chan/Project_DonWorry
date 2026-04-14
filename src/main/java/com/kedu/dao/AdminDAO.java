@@ -110,7 +110,7 @@ public class AdminDAO {
 	            + "    LEFT JOIN members m ON b.member_id = m.id "
 	            + "    LEFT JOIN reply r ON b.seq = r.parent_seq "
 	            + "    LEFT JOIN report rp ON b.seq = rp.boards_seq "
-	            + "    WHERE b.member_id != 'admin' "
+	            + "    WHERE TRIM(b.member_id) NOT IN ('admin') "
 	            + "    GROUP BY b.seq, m.nickname, b.category, b.title, b.content, b.view_count, b.write_date ";
 
 	    // 만약 category 조건이 들어오면 HAVING 절을 추가

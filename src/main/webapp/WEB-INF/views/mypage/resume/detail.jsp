@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>돈워리- 구직 활동 관리</title>
+    <title>돈워리 - 이력서 상세보기 </title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -327,7 +327,7 @@
             <c:when test="${nickName==null}">
                 <div class="top-auth">
                     <span style="font-size: 13px; color: #666; cursor: pointer;">
-                        <a href="members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
+                        <a href="/members/toLogin" style="text-decoration: none; color:black; margin-right:10px;">
                             <i class="fa-regular fa-user fa-lg"
                                 style="color: rgb(203, 203, 203); margin-right:5px;"></i>로그인
                         </a>
@@ -339,7 +339,7 @@
                     <span style="font-size: 13px; color: #666; cursor: pointer;">
                         <i class="fa-regular fa-user fa-lg" style="color: rgb(203, 203, 203); margin-right:5px;"></i>
                         ${nickName}님 환영합니다.
-                        <a href="members/logout" style="text-decoration: none; color:black">
+                        <a href="/members/logout" style="text-decoration: none; color:black">
                             <button class="logout-btn" style="margin-left:10px;">로그아웃</button>
                         </a>
                     </span>
@@ -361,7 +361,7 @@
             <div style="display: flex; align-items: center; gap: 40px;">
                 <a href="/" class="logo"> 돈워리</a>
                 <div class="nav-menu">
-                    <a href="/" class="active">
+                    <a href="/" >
                         <i class="fa-solid fa-house fa-lg" style="color: rgb(36, 99, 235);"></i>
                         홈
                     </a>
@@ -383,7 +383,7 @@
                 </div>
             </div>
             <c:if test="${nickName==null }">
-                <a class="my-page" href="members/toLogin">
+                <a class="my-page active" href="/members/toLogin">
                     <i class="fa-solid fa-user-gear fa-lg" style="color: rgb(197, 197, 197);"></i>
                     마이페이지
                 </a>

@@ -528,7 +528,8 @@
         <div class="form-group">
             <label class="form-label">닉네임</label>
             <input type="text" class="form-input update-input" placeholder="닉네임을 입력하세요" readonly 
-            name="nickname" value="${list[0].nickname}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+            name="nickname" value="${list[0].nickname}" data-value="${list[0].nickname}"
+            style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
         </div>
 
 		<div class="form-group">
@@ -540,13 +541,15 @@
 		<div class="form-group">
             <label class="form-label">전화번호</label>
             <input type="text" class="form-input update-input" placeholder="전화번호를 입력하세요" readonly 
-            name="phone" value="${list[0].phone}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+            name="phone" value="${list[0].phone}" data-value="${list[0].phone}"
+             style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
         </div>
 
         <div class="form-group">
             <label class="form-label">이메일 주소</label>
             <input type="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
-			name="email" value="${list[0].email}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+			name="email" value="${list[0].email}" data-value="${list[0].email}"
+			style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
         </div>
     	<div class="form-group">
             <label class="form-label">사업자 번호</label>
@@ -591,23 +594,41 @@
             "border-color":"#2563eb",
             "cursor":"allowed"
         });
+        
+      // 전화번호의 경우 수정 편의를 위해 하이픈 제거 (정규식 일치시키기 위함)
+         if($(this).attr("name") === "phone") {
+             let cleanPhone = $(this).val().replace(/-/g, "");
+             $(this).val(cleanPhone);
+         }
 
 	})
 
 	//취소 버튼 누르면
 	$(".cancel-btn").on("click",function(){
+		if(!confirm("수정을 취소하시겠습니까? 변경된 내용은 저장되지 않습니다.")) {
+            return false;
+        }
         //수정과 뒤로가기 나타냄
 		$(".update-btn,.back-btn").css("display","inline");
 		$(".cancel-btn,.save-btn").css("display","none");
+		// 취소 시 실행되는 코드
+		$(".update-input").each(function() {
+		    // 세이브 파일(data-origin)에서 값을 꺼내서 현재 값(value)에 넣음
+		    let savedValue = $(this).attr("data-value"); 
+		    $(this).val(savedValue); 
+		           //취소 시 스타일 수정
+	        $(".update-input").prop("readonly",true);
+	        
+	        $(".update-input").css({
+	            "background-color":"#f9fafb",
+	            "box-shadow":"none",
+	            "border-color":"#ddd",
+	            "cursor":"not-allowed"
+	        }); 
+		});
 
-        //취소 시 스타일 수정
-        $(".update-input").prop("readonly",true);
-        $(".update-input").css({
-            "background-color":"#f9fafb",
-            "box-shadow":"none",
-            "border-color":"#ddd",
-            "cursor":"not-allowed"
-        });
+        
+        
 	})
 	
 	$(".update-form").on("submit", function(e) {

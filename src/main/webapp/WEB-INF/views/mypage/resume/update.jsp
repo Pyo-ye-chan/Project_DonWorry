@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>돈워리- 구직 활동 관리</title>
+<title>돈워리 - 이력서 수정 </title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
@@ -485,6 +485,9 @@
     /*글자 수 제한*/
     function updateCount(input){
     	const maxLength = input.getAttribute('maxlength');//max값 가자ㅕ옴
+    	 if (input.value.length > maxLength) {
+             input.value = input.value.substring(0, maxLength);
+         }
        	const currentLength = input.value.length;
        	//현재 입력창과 가까운 c- 찾음
        	const display = input.parentElement.querySelector('.char_count');
