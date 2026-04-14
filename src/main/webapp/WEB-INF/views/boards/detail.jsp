@@ -458,6 +458,8 @@
             font-size: 14px;
             color: #333;
             line-height: 1.6;
+            white-space: pre-wrap; /* 줄바꿈 문자(\n)를 유지하고 영역을 벗어나면 자동 줄바꿈 함 */
+    word-break: break-all; /* 긴 단어도 영역에 맞춰 줄바꿈 */
         }
 
         /* 수정/삭제 */
@@ -791,7 +793,9 @@
                 </div>
                 <div class="info-right">
                     👁 ${dto.view_count }
+                    <c:if test="${dto.category != 'notice' }">
                     <span class="report-btn">신고</span>
+                    </c:if>
                 </div>
             </div>
 

@@ -481,6 +481,10 @@
     /*글자 수 제한*/
     function updateCount(input){
     	const maxLength = input.getAttribute('maxlength');//max값 가자ㅕ옴
+    	// [핵심 고칠 부분] 입력된 값이 maxLength를 넘으면 강제로 잘라버립니다.
+        if (input.value.length > maxLength) {
+            input.value = input.value.substring(0, maxLength);
+        }
        	const currentLength = input.value.length;
        	//현재 입력창과 가까운 c- 찾음
        	const display = input.parentElement.querySelector('.char_count');

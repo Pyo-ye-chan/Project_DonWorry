@@ -705,10 +705,13 @@ function loadAdminFaqList(page) {
                 res.list.forEach(item => {
                 	// 상태값에 따른 클래스 미리 계산
                     var statusClass = (item.is_show === 'Y') ? 'status-done' : 'status-wait';
+                    const maxOrder = res.totalCount;
                     
                     html += '<tr>';
                     // 1. 순서 수정 (입력창으로 변경)
-                    html += '    <td><input type="number" class="sort-input" min="1" value="' + item.sort_order + '" onchange="updateSort(' + item.seq + ', this.value)"></td>';
+                    html += '    <td><input type="number" class="sort-input" min="1" max="' + maxOrder + '" value="' + (item.sort_order+1)  + '" onchange="updateSort(' + item.seq + ', this.value)"></td>';
+    
+                    //html += '    <td><input type="number" class="sort-input" min="1" value="' + item.sort_order + '" onchange="updateSort(' + item.seq + ', this.value)"></td>';
                     html += '    <td style="text-align:left; padding-left:20px;">' + item.title + '</td>';
                     // 2. 노출 여부 수정 (배지 클릭 시 토글)
                     html += '    <td><span class="status-badge ' + statusClass + '" style="cursor:pointer" onclick="toggleShow(' + item.seq + ', \'' + item.is_show + '\')">' + item.is_show + '</span></td>';
@@ -780,6 +783,8 @@ function toggleShow(seq, currentStatus) {
 // 순서 변경 (숫자 입력 시 즉시 반영)
 function updateSort(seq, newOrder) {
 	
+	const dbOrder = parseInt(newOrder) - 1;
+	
 	if (newOrder < 1) {
         alert("순서는 1 이상의 숫자여야 합니다.");
         loadAdminFaqList(1); // 원상복구를 위해 목록 새로고침
@@ -789,7 +794,7 @@ function updateSort(seq, newOrder) {
     $.ajax({
         url: "/admin/api/faq_update_sort",
         type: "POST",
-        data: { seq: seq, sort_order: newOrder },
+        data: { seq: seq, sort_order: dbOrder },
         success: function() {
             loadAdminFaqList(1); // 순서 변경 후 재정렬을 위해 갱신
         },

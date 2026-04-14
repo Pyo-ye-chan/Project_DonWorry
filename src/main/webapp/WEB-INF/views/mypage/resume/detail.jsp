@@ -15,74 +15,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
       /* 기본 초기화 및 폰트 설정 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Pretendard', sans-serif;
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+        font-family: 'Pretendard', sans-serif;
         background-color: #ffffff;
         line-height: 1.6;
-        min-height: 105vh;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
-        }
-
-        /* 레이아웃 컨테이너 */
-        .container {
-            max-width: 1100px;
+    }
+    
+    /* [2] 상단바 포함 컨테이너 (사용자 원본 1100px 완벽 유지) */
+    .community-container {
+        max-width: 1100px;
         width: 100%; 
         margin: 0 auto;
         padding: 0 20px;
         flex: 1; /* 컨텐츠가 적을 때 푸터를 아래로 밀어주는 최소한의 장치 */
-        }
-        /* 로그인 및 관리자 */
-        .top-auth {
-            display: flex;
-            justify-content: flex-end; /* 오른쪽 정렬 핵심 */
-            align-items: center;
-            gap: 15px;                 /* 요소 간 간격 */
-            padding: 8px 0;           /* 위아래 여백 */
-        }
-        .logout-btn { 
-         	width:60px;
-            height:30px;
-		    background-color: #ffffff; 
-		    color: #868e96;
-		    border: 1px solid #dee2e6; 
-		    border-radius: 6px; 
-		    font-size: 13px;
-		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-		}
-		.logout-btn:hover { 
-         	width:60px;
-            height:30px;
-		   	background-color: #f8f9fa;
-		    color: #495057;
-		    border-color: #ced4da;
-		    border: 1px solid #dee2e6; 
-		    border-radius: 6px; 
-		    font-size: 13px;
-		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
-		}
-		
-        /*관리자 버튼*/
-        .now-admin {
-            width:60px;
-            height:30px;
-            background-color: #2563eb;
-            color: white;
-            display: flex;
-            align-items: center; /*세로 중앙 정렬*/
-            justify-content: center; /* 가로 중앙 정렬 */
-            border-radius: 6px;
-            border: none;           
-            font-size: 13px;
-            cursor: pointer;
-        }
-        /*기업 버튼*/
+    }
+    
+    /* [3] 상단바 스타일 (보내주신 원본과 100% 일치) */
+    .top-auth { display: flex; justify-content: flex-end; align-items: center; gap: 15px; padding: 8px 0; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #f0f0f0; }
+    .logo { color: #2563eb; font-weight: 800; font-size: 20px; text-decoration: none; }
+    .nav-menu { display: flex; gap: 40px; }
+    .nav-menu a { text-decoration: none; color: #666; font-size: 14px; font-weight: 500; }
+    .my-page { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #666; font-size: 14px; font-weight: 500; padding: 5px 10px; cursor: pointer; }
+    .nav-menu a.active { color: #2563eb; }
+         /*기업 버튼*/
         .now-business {
             width:60px;
             height:30px;
@@ -110,63 +72,27 @@
             font-size: 13px;
             cursor: pointer;
         }
-		
-        /* [3] 네비게이션바 */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .logo {
-            color: #2563eb;
-            font-weight: 800;
-            font-size: 20px;
-            text-decoration: none;
-        }
-        .nav-menu {
-            display: flex;
-            gap: 40px;
-        }
-        .nav-menu a {
-            text-decoration: none;
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .my-page{
-            display: flex;
-            align-items: center;
-            gap: 8px; /* 아이콘과 글자 사이 간격 */
-            text-decoration: none;
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-            /* 중요: 클릭 영역을 확실히 확보 */
-            padding: 5px 10px; 
-            cursor: pointer;
-
-        }
-        .my-page.active { color: #2563eb; }
-
-        .nav-menu a.active {
-            color: #2563eb;
-        }
-
-        .now-admin {
-            width: 60px;
-            height: 30px;
-            background-color: #2563eb;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
+	 .logout-btn { 
+         	width:60px;
+            height:30px;
+		    background-color: #ffffff; 
+		    color: #868e96;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
+		.logout-btn:hover { 
+         	width:60px;
+            height:30px;
+		   	background-color: #f8f9fa;
+		    color: #495057;
+		    border-color: #ced4da;
+		    border: 1px solid #dee2e6; 
+		    border-radius: 6px; 
+		    font-size: 13px;
+		    transition: all 0.2s ease; /* 부드러운 변화를 위해 추가 */
+		}
         /* [5] 푸터 (상단바와 무관하게 하단 고정 설정) */
         .container-footer {
             border-top: 1px solid #e5e7eb;
