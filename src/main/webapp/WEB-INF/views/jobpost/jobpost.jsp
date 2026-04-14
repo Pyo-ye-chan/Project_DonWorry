@@ -784,7 +784,7 @@ img{
 				</div>
 
 				<div class="layer-content"
-					style="display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 25px 20px !important; gap: 10px !important;">
+					style="display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 25px 20px !important; gap: 10px !important; minheight: 25px;">
 
 					<div class="select-box-wrap"
 						style="flex: 1.2; display: flex; flex-direction: column; gap: 8px;">

@@ -25,7 +25,7 @@
 				<div class="form-grid two-col">
 					<div class="form-row">
 						<label for="detail_workplace_pay_per_hour">급여 금액</label> <input
-							type="number" id="detail_workplace_pay_per_hour"
+							type="text" id="detail_workplace_pay_per_hour" 
 							name="pay_per_hour" min="0">
 					</div>
 
@@ -89,7 +89,7 @@
 				</div>
 
 				<div class="form-row full-width" style="margin-top: 5px;">
-					<label>4대보험 적용 여부</label>
+					<label>4대보험(고용보험 포함)</label>
 					<div class="tax-option-group">
 						<label class="tax-option-item"><input type="radio"
 							name="detail_workplace_insurance_radio" value="N"> 미적용</label> <label
@@ -101,7 +101,7 @@
 				</div>
 
 				<div class="form-row full-width" style="margin-top: 5px;">
-					<label>고용보험 적용 여부</label>
+					<label>고용보험(4대보험을 선택하면 자동으로 적용됩니다)</label>
 					<div class="tax-option-group">
 						<label class="tax-option-item"><input type="radio"
 							name="detail_workplace_employment_radio" value="N"> 미적용</label> <label

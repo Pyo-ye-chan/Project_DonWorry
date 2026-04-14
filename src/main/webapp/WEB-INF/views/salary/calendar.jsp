@@ -248,7 +248,7 @@ body {
 
 .fc .fc-button {
 	background: #fff !important;
-	border: 1px solid #dbe3ec !important;
+	border: 1px solid #b8c2cf !important;
 	color: #374151 !important;
 	border-radius: 10px !important;
 	box-shadow: none !important;
@@ -294,7 +294,7 @@ body {
 }
 
 .fc .fc-day-today {
-	background: #fbfdff !important;
+	background: #f1f7ff !important;
 }
 
 .fc-daygrid-event {
@@ -960,12 +960,22 @@ body {
 	    }
 
 	    function calculateInsurance(amount, insuranceApplied, employmentInsurance) {
+	        // 4대보험 적용
 	        if (insuranceApplied === "Y") {
-	            return Math.floor(amount * 0.09);
+	            const 국민연금 = amount * 0.0475;
+	            const 건강보험 = amount * 0.03595;
+	            const 장기요양 = 건강보험 * 0.1314;
+	            const 고용보험 = amount * 0.009;
+
+	            total = 국민연금 + 건강보험 + 장기요양 + 고용보험;
+	            return Math.floor(total);
 	        }
+
+	        // 고용보험만 적용
 	        if (employmentInsurance === "Y") {
 	            return Math.floor(amount * 0.009);
 	        }
+
 	        return 0;
 	    }
 
@@ -1639,7 +1649,7 @@ body {
 	    function fillWorkplaceDetailForm(dto) {
 	        detailWorkplaceSeqEl.value = dto.seq || 0;
 	        detailWorkplaceNameEl.value = dto.name || "";
-	        detailWorkplacePayPerHourEl.value = dto.pay_per_hour || dto.payPerHour || 0;
+// 	        detailWorkplacePayPerHourEl.value = dto.pay_per_hour || dto.payPerHour || 0;
 	        detailWorkplacePayTypeEl.value = dto.pay_type || dto.payType || "시급";
 	        detailWorkplacePayCycleEl.value = dto.pay_cycle || dto.payCycle || "월급";
 	        detailWorkplacePaydayEl.value = dto.payday || "";
@@ -1650,7 +1660,15 @@ body {
 	        const taxValue = normalizeTaxValue(dto.tax_applied ?? dto.taxApplied);
 	        const insuranceValue = normalizeYn(dto.insurance_applied ?? dto.insuranceApplied);
 	        const employmentValue = normalizeYn(dto.employment_insurance ?? dto.employmentInsurance);
+	        
+	        let value = dto.pay_per_hour || dto.payPerHour || 0;
+	        
+	    	value = String(value).replace(/,/g, ""); // 콤마 찍어서 다시 넣기	 
+	    	 
+	        detailWorkplacePayPerHourEl.value =
+	            value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+	    	
 	        document.querySelectorAll('input[name="detail_workplace_tax_radio"]').forEach(function (radio) {
 	            radio.checked = false;
 	        });
@@ -1820,7 +1838,7 @@ body {
 
 	    workplaceForm.addEventListener("submit", function (e) {
 	        const selectedTaxRadio = document.querySelector('input[name="tax_radio"]:checked');
-
+			
 	        if (!selectedTaxRadio) {
 	            alert("세금 적용 여부를 선택해주세요.");
 	            e.preventDefault();
@@ -1836,7 +1854,9 @@ body {
 	                return;
 	            }
 	        }
-
+			
+	        input.value = input.value.replace(/,/g, "");
+	        
 	        syncWorkplaceTaxValue();
 	        syncInsuranceValues();
 	    });
@@ -1938,6 +1958,7 @@ body {
 	        workplaceDetailCancelEditBtn.addEventListener("click", function () {
 	            if (originalWorkplaceData) fillWorkplaceDetailForm(originalWorkplaceData);
 	            setDetailWorkplaceReadonlyMode(true);
+	            detail_workplace_nameCount.style.display = "none";
 	        });
 	    }
 
@@ -1981,7 +2002,8 @@ body {
 	    if (workplaceDetailSaveBtn) {
 	        workplaceDetailSaveBtn.addEventListener("click", function () {
 	            syncDetailWorkplaceHiddenValues();
-
+	            detailinput.value = detailinput.value.replace(/,/g, "");
+	            
 	            const selectedTaxRadio = document.querySelector('input[name="detail_workplace_tax_radio"]:checked');
 	            if (!selectedTaxRadio) {
 	                alert("세금 적용 여부를 선택해주세요.");
@@ -2088,6 +2110,7 @@ body {
 	        normalizeNumberInput(detailOvertimePayEl);
 	        normalizeNumberInput(detailHolidayPayEl);
 	        normalizeNumberInput(detailTotalPayEl);
+	        normalizeNumberInput(detailWorkplacePayPerHourEl); // 추가
 
 	        const workStart = toMinutes(detailStartTimeEl.value);
 	        const workEnd = toMinutes(detailEndTimeEl.value);
@@ -2130,16 +2153,42 @@ body {
 	        }
 
 	        calculateDetailTimes();
-	    });
-	});
+		    });
+		});
 	
-    $(document).ready(function() {   // 로그아웃 이후
-    	const loginUser = "${nickName}";
-        if (!loginUser || loginUser === "") {
-            alert("잘못된 접근입니다.");
-            location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
-        }
-    })
+	    $(document).ready(function() {   // 로그아웃 이후
+	    	const loginUser = "${nickName}";
+	        if (!loginUser || loginUser === "") {
+	            alert("잘못된 접근입니다.");
+	            location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
+	        }
+	    })
+    
+	    // =====================================================
+	    // ===== 근무지 등록 급여금액 포맷 =====
+	    // =====================================================
+	    	    	
+	    const input = document.getElementById("pay_per_hour"); // 최초 등록
+	
+		input.addEventListener("input", function () {
+		    let value = this.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
+		    this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 콤마 찍기
+		});
+		
+		document.getElementById("workplaceForm").addEventListener("submit", function () {
+		    input.value = input.value.replace(/,/g, "");
+		});
+		
+	    const detailinput = document.getElementById("detail_workplace_pay_per_hour");
+		
+		detailinput.addEventListener("input", function () {
+		    let value = this.value.replace(/[^0-9]/g, "");// 숫자만 남기기
+		    this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");// 콤마 찍기
+		});
+		
+
+		
+		
 	</script>
 
 
