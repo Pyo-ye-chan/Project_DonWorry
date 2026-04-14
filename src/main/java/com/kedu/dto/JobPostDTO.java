@@ -83,6 +83,7 @@ public class JobPostDTO {
         this.content = content;
         this.benefit = benefit;
         this.write_date = write_date;
+        this.status = status;
     }
 
     // [추가] Getter / Setter for Names

@@ -557,38 +557,47 @@ body {
 
 			<div class="bottom-action-row">
 			    <div class="bottom-left-btns">
-			        <button type="button" class="line-btn" onclick="location.href='/mypage/employ_activity?page=1'">
-			            목록
-			        </button>
-			        <button type="button" class="blue-btn" onclick="location.href='/mypage/myjobpost_update?seq='+${post.seq}">
+					<c:if test="${post.status eq '진행중'}">
+				    <button type="button" class="red-btn deadBtn" id="deadBtn">
+				        공고 마감
+				    </button>
+				    </c:if>			    	   
+			        <c:if test="${post.status eq '진행중'}">
+			        <button type="button" id="updateBtn" class="blue-btn">
 			            수정하기
 			        </button>
+			        </c:if>
 			    </div>
-			
-			    <button type="button" class="red-btn deadBtn" id="deadBtn">
-			        공고 마감
-			    </button>
+				 <button type="button" class="line-btn" onclick="location.href='/mypage/employ_activity?page=1'">
+			            목록
+			     </button>
 			</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="container-footer">
+	
 		<p>© 2026 돈워리. All rights reserved.</p>
 		<p style="margin-top: 10px; font-size: 11px; letter-spacing: 0.5px;">개인정보처리방침
 			| 이용약관 | 고객센터</p>
 	</div>
 
 <script>
-$(".deadBtn").on("click", function() {
+$("#updateBtn").on("click", function() {
     let applicantSize = ${dto.size()};
 
     if(applicantSize > 0){
-        alert("삭제할 수 없는 공고입니다.");
+        alert("수정할 수 없는 공고입니다.");
     }else{
-        location.href = "/mypage/jobpost_close?seq=${post.seq}";
+        location.href = "/mypage/myjobpost_update?seq=${post.seq}";
     }
 });
+
+$("#deadBtn").on("click", function() {
+    location.href = "/mypage/jobpost_close?seq=${post.seq}"; 
+});
+
 $(document).ready(function() {
 	const loginUser = "${nickName}";
     if (!loginUser || loginUser === "") {

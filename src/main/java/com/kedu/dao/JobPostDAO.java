@@ -49,6 +49,7 @@ public class JobPostDAO {
         try { dto.setMain_category_name(rs.getString("main_category_name")); } catch (Exception e) {}
         try { dto.setSub_category_name(rs.getString("sub_category_name")); } catch (Exception e) {}
         
+        dto.setStatus(rs.getString("status")); // 마감 공고
         return dto;
     };
 
