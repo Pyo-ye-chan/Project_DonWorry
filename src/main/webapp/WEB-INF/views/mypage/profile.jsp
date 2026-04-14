@@ -486,7 +486,7 @@
         <div class="form-group">
             <label class="form-label">닉네임</label>
             <input type="text" class="form-input update-input" placeholder="닉네임을 입력하세요" readonly 
-            name="nickname" value="${list[0].nickname}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+            name="nickname" data-value="${list[0].nickname}" value="${list[0].nickname}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
         </div>
 
 		<div class="form-group">
@@ -506,15 +506,14 @@
             <c:set var="hp" value="${list[0].phone}" />
             <input type="text" class="form-input update-input" placeholder="전화번호를 입력하세요" readonly 
             name="phone" value="${fn:substring(hp, 0, 3)}-${fn:substring(hp, 3, 7)}-${fn:substring(hp, 7, 11)}"
-            style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
-            
-                                
+            style="background-color: #f9fafb; color: #999; cursor: not-allowed;" 
+            data-value="${list[0].phone}" >                                       
         </div>
 
         <div class="form-group">
             <label class="form-label">이메일 주소</label>
             <input type="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
-			name="email" value="${list[0].email}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+			name="email" data-value="${list[0].email}" value="${list[0].email}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
         </div>
     </c:if>	
     
@@ -574,97 +573,97 @@
     </div>
 <script>
 
-	//수정완료 취소 버튼 안보임
-	$(".cancel-btn,.save-btn").css("display","none");
-
-	//수정 버튼 누르면
-	$(".update-btn").on("click",function(){
-		$(".cancel-btn").css("display","inline");
-		$(".save-btn").css("display","inline");
-
-		$(".update-btn,.back-btn").css("display","none");
-		//수정 가능한것들 활성화
-		$(".update-input").prop("readonly",false);
-		$(".update-input").css("background-color","#ffffff").css("cursor", "default");
-
-        //취소 후 다시 수정 누를때 스타일
-         $(".update-input").css({
-            "background-color":"#f9fafb",
-            "box-shadow":" 0 0 0 3px rgba(37, 99, 235, 0.1)",
-            "border-color":"#2563eb",
-            "cursor":"allowed"
-        });
-        
-      // 전화번호의 경우 수정 편의를 위해 하이픈 제거 (정규식 일치시키기 위함)
-         if($(this).attr("name") === "phone") {
-             let cleanPhone = $(this).val().replace(/-/g, "");
-             $(this).val(cleanPhone);
-         }
-
-	})
-
-	//취소 버튼 누르면
-	$(".cancel-btn").on("click",function(){
-		if(!confirm("수정을 취소하시겠습니까? 변경된 내용은 저장되지 않습니다.")) {
-            return false;
-        }
-        //수정과 뒤로가기 나타냄
-		$(".update-btn,.back-btn").css("display","inline");
+	$(function(){//html 로드가 끝난 후 실행
+		//수정완료 취소 버튼 안보임
 		$(".cancel-btn,.save-btn").css("display","none");
-		// 취소 시 실행되는 코드
-		$(".update-input").each(function() {
-		    // 세이브 파일(data-origin)에서 값을 꺼내서 현재 값(value)에 넣음
-		    let savedValue = $(this).attr("data-value"); 
-		    $(this).val(savedValue); 
-		           //취소 시 스타일 수정
-	        $(".update-input").prop("readonly",true);
+
+		//수정 버튼 누르면
+		$(".update-btn").on("click",function(){
+			$(".cancel-btn").css("display","inline");
+			$(".save-btn").css("display","inline");
+			$(".update-btn,.back-btn").css("display","none");
+			
+			//수정 가능한것들 활성화
+			$(".update-input").each(function(){
+				$(this).prop("readonly",false);
+				$(this).css({
+					"background-color":"#ffffff",
+					"color":"#000000",
+			        "box-shadow":" 0 0 0 3px rgba(37, 99, 235, 0.1)",
+			        "border-color":"#2563eb",
+			        "cursor":"text"
+				});
+				// 전화번호의 경우 수정 편의를 위해 하이픈 제거 (정규식 일치시키기 위함)
+		         if($(this).attr("name") === "phone") {
+		             let cleanPhone = $(this).val().replace(/-/g, "");
+		             $(this).val(cleanPhone);
+		         }
+			});
+
+		});		//					"background-color":"#f9fafb",
+
+		//취소 버튼 누르면
+		$(".cancel-btn").on("click",function(){
+			if(!confirm("수정을 취소하시겠습니까? 변경된 내용은 저장되지 않습니다.")) {
+	            return false;
+	        }
+	        //수정과 뒤로가기 나타냄
+			$(".update-btn,.back-btn").css("display","inline");
+			$(".cancel-btn,.save-btn").css("display","none");
+			// 취소 시 실행되는 코드
+			$(".update-input").each(function() {
+			    // 세이브 파일(data-origin)에서 값을 꺼내서 현재 값(value)에 넣음
+			    let savedValue = $(this).attr("data-value"); 
+
+			    $(this).val(savedValue); 
+			           //취소 시 스타일 수정
+		        $(this).prop("readonly",true).css({
+		            "background-color":"#f9fafb",
+		            "box-shadow":"none",
+		            "border-color":"#ddd",
+		            "color":"#999",
+		            "cursor":"not-allowed"
+		        }); 
+			           
+			});    
 	        
-	        $(".update-input").css({
-	            "background-color":"#f9fafb",
-	            "box-shadow":"none",
-	            "border-color":"#ddd",
-	            "cursor":"not-allowed"
-	        }); 
 		});
+		
+		$(".update-form").on("submit", function(e) {
+			let nicknameInput = $("input[name='nickname']");
+		    let phoneInput = $("input[name='phone']");
+		    let emailInput = $("input[name='email']");
 
-        
-        
-	})
-	
-	$(".update-form").on("submit", function(e) {
-		let nicknameInput = $("input[name='nickname']");
-	    let phoneInput = $("input[name='phone']");
-	    let emailInput = $("input[name='email']");
-
-        let nickname = nicknameInput.val();
-        let phone = phoneInput.val();
-        let email = emailInput.val();
-        
-        if(nickname == "" || phone == "" || email == "") {
-            alert("빈칸을 모두 입력해주세요.");
-            e.preventDefault(); // 전송 중단
-            return false;
-        }//닉네임
-    	if (!/^[a-zA-Z가-힣0-9]{2,10}$/.test(nickname)) {
-    	    alert("닉네임은 한글, 영문, 숫자 포함 2~10글자 이내로 작성 가능합니다.");
-    	    nicknameInput.focus();
-    	    return false;
-    	}//전화번호
-        if (!/^010[0-9]{4}\d{4}$/.test(phone)) {
-            alert("전화번호 형식이 올바르지 않습니다. (예: 01012345678)");
-            phoneInput.focus();
-            return false;
-        } //이메일
-        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-            alert("올바른 이메일 주소 형식이 아닙니다.");
-            emailInput.focus();
-            return false;
-        }
-        
-        if(!confirm("정말로 수정하시겠습니까?")) {
-            e.preventDefault();
-        }
-    });
+	        let nickname = nicknameInput.val();
+	        let phone = phoneInput.val();
+	        let email = emailInput.val();
+	        
+	        if(nickname == "" || phone == "" || email == "") {
+	            alert("빈칸을 모두 입력해주세요.");
+	            e.preventDefault(); // 전송 중단
+	            return false;
+	        }//닉네임
+	    	if (!/^[a-zA-Z가-힣0-9]{2,10}$/.test(nickname)) {
+	    	    alert("닉네임은 한글, 영문, 숫자 포함 2~10글자 이내로 작성 가능합니다.");
+	    	    nicknameInput.focus();
+	    	    return false;
+	    	}//전화번호
+	        if (!/^010[0-9]{4}\d{4}$/.test(phone)) {
+	            alert("전화번호 형식이 올바르지 않습니다. (예: 01012345678)");
+	            phoneInput.focus();
+	            return false;
+	        } //이메일
+	        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+	            alert("올바른 이메일 주소 형식이 아닙니다.");
+	            emailInput.focus();
+	            return false;
+	        }
+	        
+	        if(!confirm("정말로 수정하시겠습니까?")) {
+	            e.preventDefault();
+	        }
+	    });
+	});
 
 </script>
 </body>
