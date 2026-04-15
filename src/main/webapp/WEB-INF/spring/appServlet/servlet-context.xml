@@ -32,6 +32,6 @@
 
 </beans:bean>
 	
-	
+	<resources mapping="/resources/**" location="/resources/" />
 	
 </beans:beans>
