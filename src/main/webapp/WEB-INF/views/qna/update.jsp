@@ -19,6 +19,8 @@
 <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
+<link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
+<link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
 <style>
     /* [1] 원본 초기화 및 레이아웃 유지 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
