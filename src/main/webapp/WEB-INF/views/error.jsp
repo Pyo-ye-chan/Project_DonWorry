@@ -10,7 +10,9 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
-    <link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
+<link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
+<link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
+<link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
 <style>
     /* ... (메인 페이지의 CSS 전체 복사) ... */
     

@@ -10,6 +10,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
+<link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
 <style>
 /* 기본 초기화 및 폰트 설정 */
 * {

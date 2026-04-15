@@ -14,6 +14,8 @@
 <meta charset="UTF-8">
 <title>비밀번호 재설정 - 돈워리</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="shortcut icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
+<link rel="icon" href="<c:url value='/resources/images/favicon.ico'/>" type="image/x-icon">
 <style>
     .reset-container {
         max-width: 450px;
