@@ -238,6 +238,7 @@ body {
 .status-stop {
 	background: #ffe9e9;
 	color: #dc2626;
+	
 }
 
 .pagination-wrap {
@@ -300,6 +301,7 @@ body {
 	border-radius: 8px;
 	font-size: 13px;
 	font-weight: 700;
+	border: 1px solid #ffa8a8; /* 분홍~빨강 사이의 테두리 */
 }
 
 .btn-light-blue:hover {
