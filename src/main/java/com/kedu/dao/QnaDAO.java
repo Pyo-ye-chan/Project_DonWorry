@@ -16,9 +16,14 @@ public class QnaDAO {
 	@Autowired
 	private JdbcTemplate jdbc;
 	
-	public void insert(QnaDTO dto) {
-		String sql = "insert into qna values(qna_seq.nextval,?,?,?,'status-waiting',sysdate)";
-		jdbc.update(sql,dto.getMember_id(),dto.getTitle(),dto.getContent());
+	public int seqNextval() {
+		String sql = "select qna_seq.nextval from dual";
+		return jdbc.queryForObject(sql,Integer.class);
+	}
+	
+	public void insert(QnaDTO dto,int next) {
+		String sql = "insert into qna values(?,?,?,?,'status-waiting',sysdate)";
+		jdbc.update(sql,next,dto.getMember_id(),dto.getTitle(),dto.getContent());
 	}
 	public List<QnaDTO> list(String member_id,int start,int end){
 		String sql = "SELECT * FROM ("

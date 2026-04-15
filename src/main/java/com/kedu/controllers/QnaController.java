@@ -95,8 +95,30 @@ public class QnaController {
 		return "/qna/write";
 	}
 	@RequestMapping("/write")
-	public String write(QnaDTO dto) {
-		dao.insert(dto);
+	public String write(QnaDTO dto,MultipartFile[] files) {
+		int nextVal = dao.seqNextval();
+		dao.insert(dto,nextVal);
+		String savePath = "c:/files";
+		File savePathFile = new File(savePath);
+
+		if(!savePathFile.exists()) {
+			savePathFile.mkdir();
+		}
+		for(MultipartFile file : files) {
+			if(!file.isEmpty()) { // 비어있는 더미 파일 객체라면 무시
+				String oriName = file.getOriginalFilename(); // 파일 원본 이름
+				String sysName = UUID.randomUUID() + "_" + oriName; // 중복되지 않게 가공된 파일 이름
+				try {
+					file.transferTo(new File(savePath+"/"+sysName));
+				}catch(Exception e) {
+					e.printStackTrace();
+					return "error";
+				}
+				
+				fdao.upload(new FilesDTO(0,oriName,sysName,nextVal));
+			}	
+		}
+		
 		return "redirect:/qna/qna";
 	}
 	@RequestMapping("/detail")

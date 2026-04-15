@@ -727,7 +727,7 @@
 <div id="image-modal" class="modal">
     <div class="modal-content">
         
-           <a href="/qna/qna#faq-18"> <img src="/upload/popup-banner.jpg" alt="이벤트 배너" class="popup-img"></a>
+           <a href="/qna/qna#faq-19"> <img src="/upload/popup-banner.jpg" alt="이벤트 배너" class="popup-img"></a>
         
 
 <script>

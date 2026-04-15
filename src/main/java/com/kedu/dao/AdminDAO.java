@@ -61,7 +61,7 @@ public class AdminDAO {
 	            + "        m.nickname AS member_id, "
 	            + "        b.category, "
 	            + "        b.title, "
-	            + "        b.content, "
+	            + "        TO_CHAR(b.content) AS content, "
 	            + "        b.view_count, "
 	            + "        b.write_date, "
 	            + "        COUNT(DISTINCT r.seq) AS reply_count, "
@@ -76,7 +76,7 @@ public class AdminDAO {
 	            + "    LEFT JOIN reply r ON b.seq = r.parent_seq "
 	            + "    LEFT JOIN report rp ON b.seq = rp.boards_seq "
 	            + "    WHERE m.nickname LIKE '%' || ? || '%' AND b.member_id != 'admin' "
-	            + "    GROUP BY b.seq, m.nickname, b.category, b.title, b.content, b.view_count, b.write_date ";
+	            + "    GROUP BY b.seq, m.nickname, b.category, b.title, TO_CHAR(b.content), b.view_count, b.write_date ";
 
 		//신고 일반 카테고리 조건 추가
 				if("report".equals(category)) {
@@ -96,7 +96,7 @@ public class AdminDAO {
 	            + "        m.nickname AS member_id, "
 	            + "        b.category, "
 	            + "        b.title, "
-	            + "        b.content, "
+	            + "        TO_CHAR(b.content) AS content, "
 	            + "        b.view_count, "
 	            + "        b.write_date, "
 	            + "        COUNT(DISTINCT r.seq) AS reply_count, "
@@ -111,7 +111,7 @@ public class AdminDAO {
 	            + "    LEFT JOIN reply r ON b.seq = r.parent_seq "
 	            + "    LEFT JOIN report rp ON b.seq = rp.boards_seq "
 	            + "    WHERE TRIM(b.member_id) NOT IN ('admin') "
-	            + "    GROUP BY b.seq, m.nickname, b.category, b.title, b.content, b.view_count, b.write_date ";
+	            + "    GROUP BY b.seq, m.nickname, b.category, b.title, TO_CHAR(b.content), b.view_count, b.write_date ";
 
 	    // 만약 category 조건이 들어오면 HAVING 절을 추가
 	    if ("report".equals(category)) {

@@ -337,6 +337,17 @@
 		transition: all 0.2s;
 		white-space: nowrap; /* 글자 줄바꿈 방지 */
 }
+    .nickname-check-btn {
+		padding: 0 20px;
+		background-color: #E6EEFF; /* 메인 파란색의 아주 연한 버전 */
+		color: #0055FF; /* 글자는 진한 파란색 */
+		border: 1px solid #0055FF;
+		border-radius: 8px; /* 입력창이랑 똑같은 곡률 */
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		white-space: nowrap; /* 글자 줄바꿈 방지 */
+}
 
     .update-input:focus {
         outline: none;
@@ -511,9 +522,13 @@
 
         <div class="form-group">
             <label class="form-label">닉네임</label>
-            <input type="text" class="form-input update-input" placeholder="닉네임을 입력하세요" readonly 
-            name="nickname" data-value="${list[0].nickname}" value="${list[0].nickname}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+		    <div class="id-check-group"> <input type="text" class="form-input update-input" id="nickname" name="nickname" 
+		         placeholder="닉네임을 입력하세요" readonly data-value="${list[0].nickname}" value="${list[0].nickname}" 
+		         style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
+		        <button type="button" class="nickname-check-btn" style="display: none; width: 100px;">중복확인</button>
+		    </div>
         </div>
+        <div id="nickNameCheck-box"></div>
 
 		<div class="form-group">
             <label class="form-label">이름</label>
@@ -564,12 +579,15 @@
               value="${list[0].id.trim()}" style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
         </div>
 
-        <div class="form-group">
+         <div class="form-group">
             <label class="form-label">닉네임</label>
-            <input type="text" class="form-input update-input" placeholder="닉네임을 입력하세요" readonly 
-            name="nickname" value="${list[0].nickname}" data-value="${list[0].nickname}"
-            style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
+		    <div class="id-check-group"> <input type="text" class="form-input update-input" id="nickname" name="nickname" 
+		         placeholder="닉네임을 입력하세요" readonly data-value="${list[0].nickname}" value="${list[0].nickname}" 
+		         style="background-color: #f9fafb; color: #999; cursor: not-allowed;">
+		        <button type="button" class="nickname-check-btn" style="display: none; width: 100px;">중복확인</button>
+		    </div>
         </div>
+        <div id="nickNameCheck-box"></div>
 
 		<div class="form-group">
             <label class="form-label">이름</label>
@@ -586,10 +604,12 @@
 
         <div class="form-group">
             <label class="form-label">이메일 주소</label>
-            <input type="email" id="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
-			name="email" value="${list[0].email}" data-value="${list[0].email}"
+            <div class="id-check-group">
+            <input type="email"  id="email" class="form-input update-input" placeholder="이메일을 입력하세요" readonly 
+			name="email" data-value="${list[0].email}" value="${list[0].email}" 
 			style="background-color: #f9fafb; color: #999; cursor: not-allowed;" >
-			<button type="button" id="sendAuthBtn" class="email-check-btn" style="display: none; width: 100px;">인증요청</button>
+        	<button type="button" id="sendAuthBtn" class="email-check-btn" style="display: none; width: 100px;">인증요청</button>
+        	</div>
         </div>
         
      		<div class="form-group" id="authCodeGroup" style="display: none;">
@@ -628,6 +648,10 @@
 	$(function(){//html 로드가 끝난 후 실행
 		//수정완료 취소 버튼 안보임
 		$(".cancel-btn,.save-btn").css("display","none");
+		//닉넴 중복 안내 박스 안보임
+		$("#nickNameCheck-box").hide();
+		//닉넴 중복쳌 버튼 보임
+		$(".nickname-check-btn").hide();		
 		let isEmailAuth = true; // 프로필 수정이므로 기본값은 true
 		//수정 버튼 누르면
 		$(".update-btn").on("click",function(){
@@ -640,7 +664,10 @@
 				"cursor":"text"
 			});
 			$("#sendAuthBtn").fadeIn();
+			$(".nickname-check-btn").fadeIn();
 			isEmailAuth = false;//수정 시작하면 인증을 다시 받아야함
+			
+			
 			
 			//수정 가능한것들 활성화
 			$(".update-input").each(function(){
@@ -660,6 +687,40 @@
 			});
 
 		});
+		
+		//닉넴 중복
+		$(".nickname-check-btn").on("click", function() {
+				const userNickName = $("#nickname").val();
+				$("#nickNameCheck-box").fadeIn();
+				// 1. 빈값 체크
+				if (userNickName === "") {
+					alert("닉네임을 입력하세요");
+					$("#nickname").focus();
+					return;
+				}
+				$.ajax({
+					url : "/members/nickNameCheck?nickname=" + userNickName,
+					dataType : "json"
+				}).done(function(nicknamecheck) {
+					if (nicknamecheck == 0) {
+						$("#nickNameCheck-box").html("사용 가능한 닉네임 입니다.").css({
+							"color" : "#2563eb",
+							"display" : "block",
+							"margin-top" : "5px",
+							"font-size" : "14px"
+						});
+					} else {
+						$("#nickNameCheck-box").html("중복된 닉네임 입니다.").css({
+							"color" : "#ff0000",
+							"display" : "block",
+							"margin-top" : "5px",
+							"font-size" : "14px"
+						});
+					}
+				}).fail(function() {
+					alert("서버 통신에 실패했습니다.");
+				});
+			});
 		//이메일 인증
 		$('#sendAuthBtn').click(function() {
 			let email = $('#email').val();
@@ -755,6 +816,9 @@
 			if(!confirm("수정을 취소하시겠습니까? 변경된 내용은 저장되지 않습니다.")) {
 	            return false;
 	        }
+			$("#nickNameCheck-box").hide();
+			$(".nickname-check-btn").hide();
+			$("#sendAuthBtn").hide();
 	        //수정과 뒤로가기 나타냄
 			$(".update-btn,.back-btn").css("display","inline");
 			$(".cancel-btn,.save-btn").css("display","none");
