@@ -217,7 +217,6 @@ public class BoardsDAO {
 				+ "        m.nickname AS member_id, \r\n"
 				+ "        b.category, \r\n"
 				+ "        b.title, \r\n"
-				+ "        b.content, \r\n"
 				+ "        b.view_count, \r\n"
 				+ "        b.write_date,\r\n"
 				+ "        COUNT(r.seq) AS reply_count, \r\n"
@@ -228,7 +227,7 @@ public class BoardsDAO {
 				+ "	   where b.member_id = ?"
 				+ "    GROUP BY \r\n"
 				+ "        b.seq, m.nickname, b.category, b.title, \r\n"
-				+ "        b.content, b.view_count, b.write_date \r\n"
+				+ "        b.view_count, b.write_date \r\n"
 				+ ") WHERE rn BETWEEN ? AND ?";
 		return jdbc.query(sql,new BeanPropertyRowMapper<BoardsDTO>(BoardsDTO.class), memberId, start, end);
 		
