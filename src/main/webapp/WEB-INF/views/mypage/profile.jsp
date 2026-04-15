@@ -650,6 +650,8 @@
 		$(".cancel-btn,.save-btn").css("display","none");
 		//닉넴 중복 안내 박스 안보임
 		$("#nickNameCheck-box").hide();
+		//닉넴 중복쳌 버튼 보임
+		$(".nickname-check-btn").hide();		
 		let isEmailAuth = true; // 프로필 수정이므로 기본값은 true
 		//수정 버튼 누르면
 		$(".update-btn").on("click",function(){
@@ -662,9 +664,10 @@
 				"cursor":"text"
 			});
 			$("#sendAuthBtn").fadeIn();
+			$(".nickname-check-btn").fadeIn();
 			isEmailAuth = false;//수정 시작하면 인증을 다시 받아야함
 			
-			$(".nickname-check-btn").fadeIn();
+			
 			
 			//수정 가능한것들 활성화
 			$(".update-input").each(function(){
@@ -814,6 +817,8 @@
 	            return false;
 	        }
 			$("#nickNameCheck-box").hide();
+			$(".nickname-check-btn").hide();
+			$("#sendAuthBtn").hide();
 	        //수정과 뒤로가기 나타냄
 			$(".update-btn,.back-btn").css("display","inline");
 			$(".cancel-btn,.save-btn").css("display","none");
