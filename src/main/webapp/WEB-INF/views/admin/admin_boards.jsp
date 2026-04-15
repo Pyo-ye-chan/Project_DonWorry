@@ -514,7 +514,7 @@ body {
 
          <section class="panel">
             <div class="panel-head">
-                <h3>게시글 목록</h3>
+                <h3>전체 게시글 목록</h3>
             </div>
 		<form action="/admin/admin_boards" method="get" id="board-searchForm">
             <div class="filter-row">
@@ -620,6 +620,7 @@ body {
                         	<fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd"/>
                         </td>
                         <td>
+                         	<button class="board-detail-btn" type="button" data-seq="${i.seq}">보기</button>
                             <button class="board-rp-del-btn" type="button" data-seq="${i.seq}">삭제</button>
                         </td>
                     </tr>
