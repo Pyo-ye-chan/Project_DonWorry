@@ -963,7 +963,7 @@ img {
 
 			<%-- 공통 파라미터 문자열 생성 --%>
 			<c:set var="query"
-				value="&searchKeyword=${searchKeyword}&workDay=${param.workDay}&startTime=${param.startTime}&endTime=${param.endTime}" />
+				value="&searchKeyword=${searchKeyword}&selectByLocation=${selectByLocation}&workDay=${param.workDay}&startTime=${param.startTime}&endTime=${param.endTime}" />
 
 			<%-- [이전 묶음] 버튼 --%>
 			<c:if test="${startNavi > 1}">
@@ -983,9 +983,6 @@ img {
 					class="page-link">&gt;</a>
 			</c:if>
 		</c:if>
-	</div>
-
-	</div>
 	</div>
 
 	<c:if test="${type=='사업자'}">
@@ -1038,8 +1035,8 @@ img {
 	    // 위치별 버튼 클릭 시 레이어 토글
 	    $('#btnLocation').on('click', function(e) {
 	        e.stopPropagation();
-	        $('#categoryLayer').hide(); // 직종 레이어는 닫기
-	        $('#timeLayer').hide(); // 직종 레이어는 닫기
+	        $('#categoryLayer').hide();
+	        $('#timeLayer').hide();
 	        $(this).toggleClass('active');
 	        $('#locationLayer').stop().slideToggle(200);
 	    });
@@ -1049,7 +1046,8 @@ img {
 	        $('#btnLocation').removeClass('active');
 	        $('#locationLayer').slideUp(200);
 	    });
-
+	
+	    // 지역 디비 불러오기 ajax
 	    function loadSido() {
 	        $.ajax({
 	            url: "/location/getSido",
@@ -1116,7 +1114,7 @@ img {
 	    // 직종별 버튼 클릭 시 레이어 토글
 	    $('#btnCategory').on('click', function(e) {
 	        e.stopPropagation();
-	        $('#locationLayer').hide(); // 지역 레이어는 닫기
+	        $('#locationLayer').hide();
 	        $('#timeLayer').hide();
 	        $('#categoryLayer').stop().slideToggle(200);
 	        loadMainCategory(); // 열 때마다 새로고침
@@ -1133,7 +1131,7 @@ img {
 	            success: function(data) {
 	                let html = '<li class="list-header">대분류</li>';
 	                data.forEach(cat => {
-	                    // \${ } 형태로 수정!
+	                    
 	                    html += `<li data-id="\${cat.cat_id}">\${cat.cat_name}</li>`;
 	                });
 	                $('#mainCatList').html(html);
@@ -1152,7 +1150,7 @@ img {
         success: function(data) {
             let html = '<li class="list-header">소분류</li>';
             data.forEach(cat => {
-                // 여기도 \${ } 형태로 수정!
+                
                 html += `<li data-id="\${cat.cat_id}">\${cat.cat_name}</li>`;
             });
             $('#subCatList').html(html);
@@ -1218,8 +1216,7 @@ img {
 	        location.href = url;
 	});
 	    
-	        // [1] 페이지 로드 시 서버로부터 온 알림 메시지 처리 (1회성)
-	        // 컨트롤러에서 RedirectAttributes로 보낸 메시지는 여기서 딱 한 번만 띄운다.
+	        // [1] 페이지 로드 시 서버로부터 온 알림 메시지 처리
 	        const successMsg = "${message}";
 	        const resumeMsg = "${resume}";
 	        
@@ -1246,7 +1243,7 @@ img {
 	                    if (!resumes || resumes.length === 0) {
 	                        alert("등록된 이력서가 없습니다. 이력서를 먼저 작성해주세요!");
 	                        location.href = "/mypage/resume";
-	                        return; // 로직 중단
+	                        return;
 	                    }
 
 	                    let html = "";

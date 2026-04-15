@@ -155,6 +155,28 @@ public class JobPostDAO {
         return jdbc.queryForObject(sql.toString(), Integer.class, params.toArray());
     }
     
+    public int getSearchTotalCountByLocation(String keyword, String workDay, Integer startT, Integer endT) {
+        StringBuilder sql = new StringBuilder();
+        String cleanKeyword = (keyword == null) ? "" : keyword.replaceAll("\\s", "");
+        
+        sql.append("SELECT COUNT(*) FROM job_post p WHERE p.status = '진행중' ");
+        sql.append("AND REPLACE(NVL(p.sido, '') || NVL(p.gugun, '') || NVL(p.dong, ''), ' ', '') LIKE ? ");
+        
+        List<Object> params = new ArrayList<>();
+        params.add("%" + cleanKeyword + "%");
+
+        if (workDay != null && !workDay.isEmpty()) {
+            sql.append(" AND p.work_days = ? ");
+            params.add(workDay);
+        }
+        if (startT != null && endT != null) {
+            sql.append(" AND p.work_starttime >= ? AND p.work_endtime <= ? ");
+            params.add(startT); params.add(endT);
+        }
+
+        return jdbc.queryForObject(sql.toString(), Integer.class, params.toArray());
+    }
+    
     public int seqNextval() {
 		String sql = "select job_post_seq.nextval from dual";
 		return jdbc.queryForObject(sql,Integer.class);
@@ -194,20 +216,23 @@ public class JobPostDAO {
         );
     }
     
-    public List<JobPostDTO> selectByLocation(String keyword) {
+    public List<JobPostDTO> selectByLocationPaged(String keyword, int start, int end, String workDay, Integer starttime, Integer endtime) {
         String cleanKeyword = (keyword == null) ? "" : keyword.replaceAll("\\s", "");
         if (cleanKeyword.isEmpty()) return new ArrayList<>();
 
-        String sql = "SELECT p.*, c1.cat_name AS main_category_name, c2.cat_name AS sub_category_name "
-                   + "FROM job_post p "
-                   + "LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id "
-                   + "LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id "
-                   + "WHERE p.status = '진행중' " // 마감 제외
-                   + "AND REPLACE(NVL(p.sido, '') || NVL(p.gugun, '') || NVL(p.dong, ''), ' ', '') LIKE ? "
-                   + "ORDER BY p.write_date DESC";
+        String sql = "SELECT * FROM ( "
+                   + "    SELECT p.*, c1.cat_name AS main_category_name, c2.cat_name AS sub_category_name, "
+                   + "    ROW_NUMBER() OVER(ORDER BY p.write_date DESC) as rn "
+                   + "    FROM job_post p "
+                   + "    LEFT JOIN job_categories c1 ON p.main_category = c1.cat_id "
+                   + "    LEFT JOIN job_categories c2 ON p.sub_category = c2.cat_id "
+                   + "    WHERE p.status = '진행중' "
+                   + "    AND REPLACE(NVL(p.sido, '') || NVL(p.gugun, '') || NVL(p.dong, ''), ' ', '') LIKE ? "
+                   + ") WHERE rn BETWEEN ? AND ?";
 
         String searchTag = "%" + cleanKeyword + "%";
-        return jdbc.query(sql, jobPostMapper, searchTag);
+        
+        return jdbc.query(sql, jobPostMapper, searchTag, start, end);
     }
 
     public JobPostDTO getPostDetail(int seq) {

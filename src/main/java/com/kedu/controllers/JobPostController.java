@@ -60,10 +60,10 @@ public class JobPostController {
 			jobList = dao.searchKeywordPaged(searchKeyword, start, end, workDay, starttime, endtime);
 			recordTotalCount = dao.getSearchTotalCount(searchKeyword, workDay, starttime, endtime);
 			model.addAttribute("searchKeyword", searchKeyword);
-		} else if(selectByLocation != null) {
-			jobList = dao.selectByLocation(selectByLocation);
-			recordTotalCount = dao.getSearchTotalCount(selectByLocation, workDay, starttime, endtime);
-			model.addAttribute("selectByLocation", selectByLocation);
+		} else if(selectByLocation != null && !selectByLocation.isEmpty()) {
+		    jobList = dao.selectByLocationPaged(selectByLocation, start, end, workDay, starttime, endtime);
+		    recordTotalCount = dao.getSearchTotalCount(selectByLocation, workDay, starttime, endtime);
+		    model.addAttribute("selectByLocation", selectByLocation);
 		}
 		
 		else {
@@ -71,8 +71,8 @@ public class JobPostController {
 			recordTotalCount = dao.jobRecordTotalCount(workDay, starttime, endtime);
 		}
 
-		// [여기가 핵심!] JSP의 페이징 계산식에서 사용할 변수들을 꼭 보내줘야 함
-		model.addAttribute("recordCountPerPage", recordCountPerPage); // 이게 없어서 Infinity 뜬 거야!
+		// JSP의 페이징 계산식에서 사용할 변수들을 꼭 보내줘야 함
+		model.addAttribute("recordCountPerPage", recordCountPerPage);
 		model.addAttribute("naviCountPerPage", naviCountPerPage);
 
 		model.addAttribute("workDay", workDay);
