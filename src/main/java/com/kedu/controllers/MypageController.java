@@ -166,7 +166,7 @@ public class MypageController {
 		String id = (String)session.getAttribute("loginId");
 		dto.setId(id);
 		int resume = rdao.insert_resume(dto);
-		return "redirect:/mypage/job_activity";
+		return "redirect:/mypage/myresume";
 	}
 	
 	//대분류 선택 시 소분류 목록을 가져오는 AJAX API
