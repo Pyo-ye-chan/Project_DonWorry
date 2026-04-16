@@ -8,6 +8,7 @@
 %>	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>     
 
 <!DOCTYPE html>
 <html>
@@ -502,8 +503,7 @@ body {
 							<div class="info-label">
 								<i class="fa-solid fa-location-dot"></i> 근무지
 							</div>
-							<div class="info-value">${post.sido} ${post.gugun}
-								${post.dong} ${post.address_detail}</div>
+							<div class="info-value">${post.address}</div>
 						</div>
 
 						<div class="info-card">
@@ -540,7 +540,8 @@ body {
 							<div class="info-label">
 								<i class="fa-solid fa-phone"></i> 연락처
 							</div>
-							<div class="info-value" id="phone">${post.phone}</div>
+							<div class="info-value"><c:set var="hp" value="${post.phone}" />
+                                ${fn:substring(hp, 0, 3)}-${fn:substring(hp, 3, 7)}-${fn:substring(hp, 7, 11)}</div>
 						</div>
 					</div>
 				</div>

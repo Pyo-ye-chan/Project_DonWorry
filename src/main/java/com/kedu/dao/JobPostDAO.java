@@ -27,6 +27,7 @@ public class JobPostDAO {
         dto.setGugun(rs.getString("gugun"));
         dto.setDong(rs.getString("dong"));
         dto.setAddress_detail(rs.getString("address_detail"));
+        dto.setAddress(rs.getString("address"));
         dto.setCount(rs.getInt("count"));
         dto.setTitle(rs.getString("title"));
         dto.setPay(rs.getString("pay"));
@@ -184,8 +185,8 @@ public class JobPostDAO {
 
     // [5] 공고 등록 (0을 1440으로 변환하는 로직)
     public int insert(JobPostDTO dto) {
-        String sql = "INSERT INTO job_post (seq, member_id, company_name, phone, sido, gugun, dong, address_detail, count, title, pay, work_days, work_starttime, work_endtime, main_category, sub_category, content, benefit, write_date) "
-                   + "VALUES (job_post_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
+        String sql = "INSERT INTO job_post (seq, member_id, company_name, phone, sido, gugun, dong, address_detail, address, count, title, pay, work_days, work_starttime, work_endtime, main_category, sub_category, content, benefit, write_date) "
+                   + "VALUES (job_post_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
         
 
 //        String으로 넘어온다면 Integer로 파싱해서 체크 (DTO 필드 타입에 따라 맞춰주세요)
@@ -205,10 +206,16 @@ public class JobPostDAO {
         if(endTime == 0) {
             endTime = 1440;
         }
+        System.out.println(dto.getMember_id() + dto.getCompany_name() + dto.getPhone() +
+            dto.getSido() + dto.getGugun() + dto.getDong() + dto.getAddress_detail() + dto.getAddress() +
+            dto.getCount() +  dto.getTitle() + dto.getPay() + dto.getWork_days() + 
+            startTime + endTime + 
+            dto.getMain_category() + dto.getSub_category() +
+            dto.getContent() + dto.getBenefit());
 
         return jdbc.update(sql,
             dto.getMember_id(), dto.getCompany_name(), dto.getPhone(), 
-            dto.getSido(), dto.getGugun(), dto.getDong(), dto.getAddress_detail(), 
+            dto.getSido(), dto.getGugun(), dto.getDong(), dto.getAddress_detail(), dto.getAddress(),
             dto.getCount(), dto.getTitle(), dto.getPay(), dto.getWork_days(), 
             startTime, endTime, 
             dto.getMain_category(), dto.getSub_category(), 

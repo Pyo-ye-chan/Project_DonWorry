@@ -8,6 +8,7 @@
 %>	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>     
 <!DOCTYPE html>
 <html>
 <head>
@@ -771,7 +772,8 @@ body {
 											<div class="applicant-left">
 												<div>
 													<div class="applicant-name">${e.name}</div>
-													<div class="applicant-phone">${e.phone}</div>
+													<div class="applicant-phone"><c:set var="hp" value="${e.phone}" />
+                                ${fn:substring(hp, 0, 3)}-${fn:substring(hp, 3, 7)}-${fn:substring(hp, 7, 11)}</div>
 												</div>
 											</div>
 											<div class="applicant-right">

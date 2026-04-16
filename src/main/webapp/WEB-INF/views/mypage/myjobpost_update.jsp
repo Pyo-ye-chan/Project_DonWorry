@@ -533,7 +533,7 @@ textarea {
 							</div>
 							<div class="form-input-group">
 								<input type="text" id="address" name="address"
-									value="${post.sido} ${post.gugun} ${post.dong}" readonly
+									value="${post.address}" readonly
 									style="flex: 3; background-color: #f8fafc; cursor: default;">
 								<button type="button" class="address-btn"
 									onclick="execDaumPostcode()">주소 찾기</button>

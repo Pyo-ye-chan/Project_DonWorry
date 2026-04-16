@@ -466,8 +466,7 @@ img{
 					<div class="label">
 						<i class="fa-solid fa-location-dot"></i> 근무지
 					</div>
-					<div class="value">${post.sido}${post.gugun} ${post.dong}
-						${post.address_detail}</div>
+					<div class="value">${post.address}</div>
 				</div>
 				<div class="info-item">
 					<div class="label">
@@ -479,7 +478,7 @@ img{
 					<div class="label">
 						<i class="fa-regular fa-clock"></i> 근무시간
 					</div>
-					<div class="value">${post.work_starttime}~
+					<div class="value">${post.work_starttime} ~
 						${post.work_endtime}</div>
 				</div>
 				<div class="info-item">

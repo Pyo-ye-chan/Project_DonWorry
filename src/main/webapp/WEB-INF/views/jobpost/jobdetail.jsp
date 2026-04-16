@@ -478,8 +478,7 @@ img {
 					<div class="label">
 						<i class="fa-solid fa-location-dot"></i> 근무지
 					</div>
-					<div class="value">${post.sido}${post.gugun} ${post.dong}
-						${post.address_detail}</div>
+					<div class="value">${post.address }</div>
 				</div>
 				<div class="info-item">
 					<div class="label">
@@ -542,13 +541,12 @@ img {
 	
 	$("#btnDeletePost").on("click", function() {
         if (confirm("정말로 이 공고를 삭제하시겠습니까?\n삭제 후에는 복구가 불가능합니다.")) {
-            // 삭제를 처리할 컨트롤러 주소로 이동 (공고 번호 전달)
             location.href = `/jobposts/delete?seq=${post.seq}`;
         }
     });
 	
 $(function() {
-    // [1] 페이지 로드 시 서버로부터 온 알림 메시지 처리 (1회성)
+    // [1] 페이지 로드 시 서버로부터 온 알림 메시지 처리
     // 컨트롤러에서 RedirectAttributes로 보낸 메시지는 여기서 딱 한 번만 띄운다.
     const errorMsg = "${error}";
     const successMsg = "${message}";
@@ -578,7 +576,7 @@ $(function() {
                 if (!resumes || resumes.length === 0) {
                     alert("등록된 이력서가 없습니다. 이력서를 먼저 작성해주세요!");
                     location.href = "/mypage/resume";
-                    return; // 로직 중단
+                    return;
                 }
 
                 let html = "";
@@ -592,7 +590,7 @@ $(function() {
                 });
                 
                 $("#modalResumeList").html(html);
-                $("#resumeModal").fadeIn(200); // 부드럽게 나타나기
+                $("#resumeModal").fadeIn(200);
             },
             error: function() {
                 alert("이력서 목록을 가져오는 데 실패했습니다.");

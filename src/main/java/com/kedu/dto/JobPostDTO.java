@@ -20,6 +20,7 @@ public class JobPostDTO {
     private String gugun;
     private String dong;
     private String address_detail;
+    private String address;
     private int count;         
     private String title;
     private String pay;        
@@ -56,11 +57,19 @@ public class JobPostDTO {
         super();
     }
 
-    // 전체 필드 생성자 (새로 추가된 name 필드 포함)
+    public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	// 전체 필드 생성자 (새로 추가된 name 필드 포함)
     public JobPostDTO(int seq, String member_id, String company_name, String phone, String main_category,
             String sub_category, String main_category_name, String sub_category_name, String sido, String gugun, 
             String dong, String address_detail, int count, String title, String pay, String work_days, 
-            String work_starttime, String work_endtime, String content, String benefit, Timestamp write_date, String status) {
+            String work_starttime, String work_endtime, String content, String benefit, Timestamp write_date, String status, String address) {
         super();
         this.seq = seq;
         this.member_id = member_id;
@@ -84,6 +93,7 @@ public class JobPostDTO {
         this.benefit = benefit;
         this.write_date = write_date;
         this.status = status;
+        this.address = address;
     }
 
     // [추가] Getter / Setter for Names

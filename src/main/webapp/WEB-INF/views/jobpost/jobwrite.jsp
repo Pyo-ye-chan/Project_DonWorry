@@ -459,12 +459,14 @@ textarea {
 					</select> <select id="subCategory" name="sub_category" required
 						style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
 						<option value="">소분류 선택</option>
+						
 					</select>
 				</div>
 
 				<div class="form-row">
 					<div class="form-label">
 						위치<span>*</span>
+						
 					</div>
 					<div class="form-input-group">
 						<input type="text" id="address" name="address"
@@ -488,6 +490,7 @@ textarea {
 				<input type="hidden" id="sido" name="sido"> <input
 					type="hidden" id="gugun" name="gugun"> <input type="hidden"
 					id="dong" name="dong">
+<!-- 					<input type="hidden" id="input-hidden" name="address"> -->
 
 				<div class="form-row">
 					<div class="form-label">
@@ -624,6 +627,7 @@ textarea {
                 // [참고] 나중에 시/도, 구/군별로 검색 기능을 만들고 싶다면 아래 값들을 활용해!
                 document.getElementById("sido").value = data.sido;   // 예: 경기도
                 document.getElementById("gugun").value = data.sigungu; // 예: 부천시 소사구
+//                 $("#input-hidden").val(addr);
                 let dongName = data.bname; 
 
              // 만약 '동' 뒤에 '가'가 붙는 경우 (예: 을지로1가)
@@ -678,6 +682,7 @@ textarea {
             }
             
             $('#content').val(contentHtml);
+            
             return true; 
         });
     	
