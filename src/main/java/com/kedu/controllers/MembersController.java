@@ -44,7 +44,7 @@ public class MembersController {
 	public String login(String id, String pw,HttpSession session,RedirectAttributes rttr, Model model) {
 		int memberStatus = dao.memberStatus(id);
 		if(memberStatus > 0) {
-			rttr.addFlashAttribute("msg", "정지 상태인 계정 입니다.");
+			rttr.addFlashAttribute("msg", "정지 상태인 계정입니다.");
 			return "redirect:/members/toLogin";
 		}
 		boolean result = dao.login(id,eu.getSha512(pw));

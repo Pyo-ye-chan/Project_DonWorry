@@ -972,7 +972,7 @@ body {
 	            const 장기요양 = 건강보험 * 0.1314;
 	            const 고용보험 = amount * 0.009;
 
-	            total = 국민연금 + 건강보험 + 장기요양 + 고용보험;
+	            let total = 국민연금 + 건강보험 + 장기요양 + 고용보험;
 	            return Math.floor(total);
 	        }
 
@@ -1040,7 +1040,7 @@ body {
 	        const tax = calculateTax(grossPay, taxRate);
 	        const insurance = calculateInsurance(grossPay, insuranceApplied, employmentInsurance);
 
-	        const finalPay = grossPay - tax - insurance;
+	        const finalPay = grossPay
 	        totalEl.value = finalPay > 0 ? finalPay : 0;
 	    }
 
@@ -1562,7 +1562,7 @@ body {
 	            card += '<div class="card" data-seq="' + i.seq + '">';
 	            card += '    <div class="card-title">' + (i.name || "") + '</div>';
 	            card += '    <div class="info-item">';
-	            card += '        <span class="info-label">예상 급여</span>';
+	            card += '        <span class="info-label">예상 급여(세전)</span>';
 	            card += '        <span class="info-val blue">' + totalPay + '</span>';
 	            card += '    </div>';
 	            card += '    <div class="info-item">';
@@ -1860,7 +1860,9 @@ body {
 	            }
 	        }
 			
-	        input.value = input.value.replace(/,/g, "");
+	        if (payInput) {
+	            payInput.value = payInput.value.replace(/,/g, "");
+	        }
 	        
 	        syncWorkplaceTaxValue();
 	        syncInsuranceValues();
@@ -2007,7 +2009,11 @@ body {
 	    if (workplaceDetailSaveBtn) {
 	        workplaceDetailSaveBtn.addEventListener("click", function () {
 	            syncDetailWorkplaceHiddenValues();
-	            detailinput.value = detailinput.value.replace(/,/g, "");
+
+	            if (detailWorkplacePayPerHourEl) {
+	                detailWorkplacePayPerHourEl.value =
+	                    detailWorkplacePayPerHourEl.value.replace(/,/g, "");
+	            }
 	            
 	            const selectedTaxRadio = document.querySelector('input[name="detail_workplace_tax_radio"]:checked');
 	            if (!selectedTaxRadio) {

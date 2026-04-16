@@ -483,9 +483,7 @@ body {
 							<div class="detail-company">${post.company_name}</div>
 							<div class="detail-title">${post.title}</div>
 							<div class="detail-pay">
-
-								시급
-								<fmt:formatNumber value="${post.pay}" pattern="#,###" />
+								시급 <fmt:formatNumber value="${post.pay + 0}" pattern="#,###" />
 								원
 							</div>
 						</div>
@@ -542,7 +540,7 @@ body {
 							<div class="info-label">
 								<i class="fa-solid fa-phone"></i> 연락처
 							</div>
-							<div class="info-value">${post.phone}</div>
+							<div class="info-value" id="phone">${post.phone}</div>
 						</div>
 					</div>
 				</div>
@@ -607,6 +605,18 @@ $(document).ready(function() {
         location.replace("/members/toLogin"); // 기록을 남기지 않고 이동
     }
 })
+
+const phoneEl = document.getElementById("phone");
+
+if (phoneEl) {
+    let num = phoneEl.innerText.replace(/[^0-9]/g, "");
+
+    if (num.length === 11) {
+        phoneEl.innerText = num.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    } else if (num.length === 10) {
+        phoneEl.innerText = num.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+    }
+}
 </script>	
 
 </body>

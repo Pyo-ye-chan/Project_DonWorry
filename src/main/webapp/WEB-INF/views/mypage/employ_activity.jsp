@@ -742,7 +742,10 @@ body {
 
 							<div class="job-right">
 								<div class="job-meta">
-									<div>시급 ${a.pay }</div>
+									<div>시급 
+									<fmt:formatNumber value="${a.pay + 0}" pattern="#,###" />
+									</div>
+									
 									<div>시간 ${a.work_starttime } - ${a.work_endtime }</div>
 									<div>근무요일 ${a.work_days }</div>
 								</div>
