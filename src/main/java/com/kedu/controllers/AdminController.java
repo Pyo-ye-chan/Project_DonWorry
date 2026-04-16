@@ -254,6 +254,8 @@ public class AdminController {
 		BoardsDTO dto = bdao.detail(seq);
 		model.addAttribute("dto",dto);
 		model.addAttribute("currentPage",page);
+		List<FilesDTO> filesList = fdao.selectByParent_seq(seq);
+		model.addAttribute("filesList",filesList);
 		return "admin/admin_board_detail";
 	}
 	//게시물 삭제
@@ -351,6 +353,8 @@ public class AdminController {
 		public String admin_reply_detail(int seq, int page,Integer reply_seq, Model model){
 			BoardsDTO dto = bdao.detail(seq);
 			model.addAttribute("dto",dto);
+			List<FilesDTO> filesList = fdao.selectByParent_seq(seq);
+			model.addAttribute("filesList",filesList);
 			//댓글 가져옴
 			List<ReplyDTO> admin_replyList = rdao.selectByParent_seq(seq);
 			int totalCount = admin_replyList.size();
@@ -444,6 +448,9 @@ public class AdminController {
 	@RequestMapping("/qnaDetail")
 	public String qnaDetail(int seq,Model model) {
 		model.addAttribute("dto",qdao.detail(seq));
+		
+		List<FilesDTO> filesList = fdao.selectByParent_seq(seq);
+		model.addAttribute("filesList",filesList);
 
 		return "/admin/qna_detail";
 	}
