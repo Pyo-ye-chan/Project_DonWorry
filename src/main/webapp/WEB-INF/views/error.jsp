@@ -282,7 +282,7 @@
             <div class="now-personal">개인</div>
 		</c:if>
     </div>
-
+	<c:if test="${type!='관리자' }">
     <nav class="navbar">
         <div style="display: flex; align-items: center; gap: 40px;">
             <a href="/" class="logo"> 돈워리</a>
@@ -322,7 +322,33 @@
 	        </a>  
         </c:if>   
     </nav>
+	</c:if>
+	<c:if test="${type=='관리자' }">
+	<nav class="navbar">
+        <div style="display: flex; align-items: center; gap: 40px;">
+            <a href="/" class="logo">돈워리</a>
 
+            <div class="nav-menu">
+                <a href="/admin/admin_main"  class="active">
+                   <i class="fa-solid fa-wrench fa-lg" style="color:  rgb(36, 99, 235); margin-right:6px;"></i>
+                    관리자 대시보드
+                </a> 
+                <a href="/admin/admin_boards">
+                   <i class="fa-solid fa-file-pen fa-lg" style="color: rgb(197, 197, 197); margin-right:6px;"></i>
+                    게시물 관리
+                </a>  
+                <a href="/admin/admin_members">
+                   <i class="fa-solid fa-user-shield fa-lg" style="color: rgb(197, 197, 197);  margin-right:6px;"></i>
+                    회원 관리
+                </a> 
+                <a href="/admin/admin_inquiry"  >
+                   <i class="fa-regular fa-circle-question fa-lg" style="color: rgb(197, 197, 197); margin-right:6px;"></i>
+                    Q&A 관리
+                </a>               
+            </div>
+        </div>
+    </nav>
+	</c:if>
     <section class="error-section">
         <div class="error-icon">
             <i class="fa-solid fa-circle-exclamation"></i>
