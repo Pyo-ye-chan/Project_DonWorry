@@ -721,10 +721,7 @@ body {
 				});
 			});
 
-			$("#memberPw, #memberRePw")
-					.on(
-							"keyup",
-							function() {
+			$("#memberPw, #memberRePw").on("keyup",function() {
 								let pw = $("#memberPw").val();
 								let rePw = $("#memberRePw").val();
 
@@ -856,11 +853,11 @@ body {
         type : "POST",
         data : { email : email },
         success : function(res) {
-            if (res === "SUCCESS") {
+            if (res === "success") {
                 alert("인증번호가 발송되었습니다.");
                 $('#authCodeGroup').fadeIn();
                 btn.text("재발송");
-            } else if (res === "ALREADY_EXISTS") {
+            } else if (res === "already_exists") {
                 alert("이미 가입된 이메일입니다.");
                 btn.text("인증요청");
             }
@@ -883,7 +880,7 @@ $("#verifyBtn").on("click", function() {
         type : "POST",
         data : { inputCode : inputCode },
         success : function(res) {
-            if (res === "SUCCESS") {
+            if (res === "success") {
                 alert("인증에 성공했습니다!");
                 $("#authCode").prop("readonly", true);
                 $("#verifyBtn").prop("disabled", true).text("인증완료");
