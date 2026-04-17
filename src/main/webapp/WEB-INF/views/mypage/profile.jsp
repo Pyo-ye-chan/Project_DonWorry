@@ -688,6 +688,11 @@
 
 		});
 		
+		$("#nickname").on("input", function() {
+		    isNickNameChecked = false;
+		    $("#nickNameCheck-box").html("닉네임 중복 확인을 해주세요.").css("color", "#ff0000");
+		});
+		
 		//닉넴 중복
 		$(".nickname-check-btn").on("click", function() {
 				const userNickName = $("#nickname").val();
@@ -709,6 +714,7 @@
 							"margin-top" : "5px",
 							"font-size" : "14px"
 						});
+						 isNickNameChecked = true;
 					} else {
 						$("#nickNameCheck-box").html("중복된 닉네임 입니다.").css({
 							"color" : "#ff0000",
@@ -716,6 +722,7 @@
 							"margin-top" : "5px",
 							"font-size" : "14px"
 						});
+						 isNickNameChecked = false;
 					}
 				}).fail(function() {
 					alert("서버 통신에 실패했습니다.");
@@ -768,6 +775,7 @@
 				}
 			});
 		});
+		
 
 		// [인증번호 확인 버튼 클릭 이벤트]
 		$("#verifyBtn").on("click",function() {
@@ -849,6 +857,18 @@
 	        let nickname = nicknameInput.val();
 	        let phone = phoneInput.val();
 	        let email = emailInput.val();
+	        
+	        if(!isNickNameChecked){
+	        	alert("닉네임 중복 확인을 진행해 주세요.");
+	            $("#nickname").focus();
+	            return false;
+	        }
+	        
+	        if (email !== emailInput.attr("data-value") && !isEmailAuth) {
+	            alert("변경된 이메일에 대한 인증을 완료해 주세요.");
+	            $("#email").focus();
+	            return false;
+	        }
 	        
 	        if(nickname == "" || phone == "" || email == "") {
 	            alert("빈칸을 모두 입력해주세요.");

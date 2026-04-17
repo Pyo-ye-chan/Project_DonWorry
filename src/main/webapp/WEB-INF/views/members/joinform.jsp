@@ -636,151 +636,176 @@ body {
 		</div>
 
 		<script>
-			$(document).ready(function() {
-				$('input[name="type"]').change(function() {
-					if ($(this).val() === '사업자') {
-						$('#businessNumberGroup').show();
-						$('#business_number').prop('required', true);
+		let isId = 0;
+	    let isNickname = 0;
+	    let isEmail = 0;
+		$(document).ready(function() {
+			
+            $('input[name="type"]').change(function() {
+               if ($(this).val() === '사업자') {
+                  $('#businessNumberGroup').show();
+                  $('#business_number').prop('required', true);
 
-						$('.rrn-item').hide();
-						$('#rrn').prop('required', false).val("");
-					} else {
-						$('#businessNumberGroup').hide();
-						$('#business_number').prop('required', false).val("");
+                  $('.rrn-item').hide();
+                  $('#rrn').prop('required', false).val("");
+               } else {
+                  $('#businessNumberGroup').hide();
+                  $('#business_number').prop('required', false).val("");
 
-						$('.rrn-item').show();
-						$('#rrn').prop('required', true);
-					}
-				});
+                  $('.rrn-item').show();
+                  $('#rrn').prop('required', true);
+               }
+            });
 
-			});
+         });
+		
+		// 아이디 입력 시 중복확인 초기화 (아이디 수정하면 다시 체크해야 함)
+	    $("#input-id").on("input", function() {
+	        isId = 0;
+	        $("#idCheck-box").html("").hide();
+	    });
 
-			$(".id-check-btn").on("click", function() {
-				const userId = $("#input-id").val();
+	    // 닉네임 입력 시 중복확인 초기화
+	    $("#nickname").on("input", function() {
+	        isNickname = 0;
+	        $("#nickNameCheck-box").html("").hide();
+	    });
 
-				// 1. 빈값 체크
-				if (userId === "") {
-					alert("아이디를 입력하세요");
-					$("#input-id").focus();
-					return;
-				}
-				$.ajax({
-					url : "/members/idCheck?id=" + userId,
-					dataType : "json"
-				}).done(function(idcheck) {
-					if (idcheck == 0) {
-						$("#idCheck-box").html("중복되지 않은 아이디 입니다.").css({
-							"color" : "#2563eb",
-							"display" : "block",
-							"margin-top" : "10px",
-							"font-size" : "14px"
-						});
-					} else {
-						$("#idCheck-box").html("중복된 아이디 입니다.").css({
-							"color" : "#ff0000",
-							"display" : "block",
-							"margin-top" : "10px",
-							"font-size" : "14px"
-						});
-					}
-				}).fail(function() {
-					alert("서버 통신에 실패했습니다.");
-				});
-			});
+         $(".id-check-btn").on("click", function() {
+            const userId = $("#input-id").val();
 
-			$(".nickname-check-btn").on("click", function() {
-				const userNickName = $("#nickname").val();
+            // 1. 빈값 체크
+            if (userId === "") {
+               alert("아이디를 입력하세요");
+               $("#input-id").focus();
+               return;
+            }
+            $.ajax({
+               url : "/members/idCheck?id=" + userId,
+               dataType : "json"
+            }).done(function(idcheck) {
+               if (idcheck == 0) {
+                  $("#idCheck-box").html("중복되지 않은 아이디 입니다.").css({
+                     "color" : "#2563eb",
+                     "display" : "block",
+                     "margin-top" : "10px",
+                     "font-size" : "14px"
+                  });
+                  isId = 1;
+               } else {
+                  $("#idCheck-box").html("중복된 아이디 입니다.").css({
+                     "color" : "#ff0000",
+                     "display" : "block",
+                     "margin-top" : "10px",
+                     "font-size" : "14px"
+                  });
+                  isId = 0;
+               }
+            }).fail(function() {
+               alert("서버 통신에 실패했습니다.");
+            });
+         });
 
-				// 1. 빈값 체크
-				if (userNickName === "") {
-					alert("닉네임을 입력하세요");
-					$("#nickname").focus();
-					return;
-				}
-				$.ajax({
-					url : "/members/nickNameCheck?nickname=" + userNickName,
-					dataType : "json"
-				}).done(function(nicknamecheck) {
-					if (nicknamecheck == 0) {
-						$("#nickNameCheck-box").html("사용 가능한 닉네임 입니다.").css({
-							"color" : "#2563eb",
-							"display" : "block",
-							"margin-top" : "10px",
-							"font-size" : "14px"
-						});
-					} else {
-						$("#nickNameCheck-box").html("중복된 닉네임 입니다.").css({
-							"color" : "#ff0000",
-							"display" : "block",
-							"margin-top" : "10px",
-							"font-size" : "14px"
-						});
-					}
-				}).fail(function() {
-					alert("서버 통신에 실패했습니다.");
-				});
-			});
+         $(".nickname-check-btn").on("click", function() {
+            const userNickName = $("#nickname").val();
 
-			$("#memberPw, #memberRePw").on("keyup",function() {
-								let pw = $("#memberPw").val();
-								let rePw = $("#memberRePw").val();
+            // 1. 빈값 체크
+            if (userNickName === "") {
+               alert("닉네임을 입력하세요");
+               $("#nickname").focus();
+               return;
+            }
+            $.ajax({
+               url : "/members/nickNameCheck?nickname=" + userNickName,
+               dataType : "json"
+            }).done(function(nicknamecheck) {
+               if (nicknamecheck == 0) {
+                  $("#nickNameCheck-box").html("사용 가능한 닉네임 입니다.").css({
+                     "color" : "#2563eb",
+                     "display" : "block",
+                     "margin-top" : "10px",
+                     "font-size" : "14px"
+                  });
+                  isNickname = 1;
+               } else {
+                  $("#nickNameCheck-box").html("중복된 닉네임 입니다.").css({
+                     "color" : "#ff0000",
+                     "display" : "block",
+                     "margin-top" : "10px",
+                     "font-size" : "14px"
+                  });
+                  isNickname = 0;
+               }
+            }).fail(function() {
+               alert("서버 통신에 실패했습니다.");
+            });
+         });
 
-								if (pw == "" && rePw == "") {
-									$("#pwCheck-box")
-											.html(
-													"비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야 합니다.");
-								} else if (pw == rePw) {
-									$("#pwCheck-box").html("비밀번호 일치").css({
-										"color" : "#2563eb",
-										"display" : "block",
-										"margin-top" : "10px",
-										"font-size" : "14px"
-									});
-								} else {
-									$("#pwCheck-box").html("비밀번호 불일치").css({
-										"color" : "#ff0000",
-										"display" : "block",
-										"margin-top" : "10px",
-										"font-size" : "14px"
-									});
-								}
-							});
+         $("#memberPw, #memberRePw").on("keyup",function() {
+                        let pw = $("#memberPw").val();
+                        let rePw = $("#memberRePw").val();
 
-			// 아이디 키업 정규식
-			$("#input-id")
-					.on(
-							"keyup",
-							function() {
-								if (!/^[a-z][a-z0-9]{3,13}$/
-										.test($("#input-id").val())) {
-									$("#idCheck-box")
-											.html(
-													"ID는 영문 소문자, 숫자 포함 6~16자리 이내로 생성 가능합니다.")
-											.css({
-												"color" : "#ff0000",
-												"display" : "block",
-												"margin-top" : "10px",
-												"font-size" : "14px"
-											});
-								} else {
-									$("#idCheck-box").html("ID 조건이 충족되었습니다.")
-											.css({
-												"color" : "#2563eb",
-												"display" : "block",
-												"margin-top" : "10px",
-												"font-size" : "14px"
-											});
-								}
-							});
+                        if (pw == "" && rePw == "") {
+                           $("#pwCheck-box")
+                                 .html(
+                                       "비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩은 포함되어야 합니다.");
+                        } else if (pw == rePw) {
+                           $("#pwCheck-box").html("비밀번호 일치").css({
+                              "color" : "#2563eb",
+                              "display" : "block",
+                              "margin-top" : "10px",
+                              "font-size" : "14px"
+                           });
+                        } else {
+                           $("#pwCheck-box").html("비밀번호 불일치").css({
+                              "color" : "#ff0000",
+                              "display" : "block",
+                              "margin-top" : "10px",
+                              "font-size" : "14px"
+                           });
+                        }
+                     });
 
-			// 서브밋 정규식
-			$("#form").on("submit", function() {
+         // 아이디 키업 정규식
+         $("#input-id")
+               .on(
+                     "keyup",
+                     function() {
+                        if (!/^[a-z][a-z0-9]{3,13}$/
+                              .test($("#input-id").val())) {
+                           $("#idCheck-box")
+                                 .html(
+                                       "ID는 영문 소문자, 숫자 포함 6~16자리 이내로 생성 가능합니다.")
+                                 .css({
+                                    "color" : "#ff0000",
+                                    "display" : "block",
+                                    "margin-top" : "10px",
+                                    "font-size" : "14px"
+                                 });
+                        } else {
+                           $("#idCheck-box").html("ID 조건이 충족되었습니다.")
+                                 .css({
+                                    "color" : "#2563eb",
+                                    "display" : "block",
+                                    "margin-top" : "10px",
+                                    "font-size" : "14px"
+                                 });
+                        }
+                     });
+
+         // 서브밋 정규식
+         $("#form").on("submit", function() {
     // 0. 현재 선택된 가입 유형 가져오기
     let type = $('input[name="type"]:checked').val();
 
     // 1. 아이디 체크 (정규식 패턴 대문자 소문자 확인 필요)
     if (!/^[a-z][a-z0-9]{5,15}$/.test($("#input-id").val())) {
         alert("아이디는 영소문자로 시작하며 숫자 포함 6~16글자여야 합니다.");
+        $("#input-id").focus();
+        return false;
+    }
+    if (isId === 0) {
+        alert("아이디 중복확인을 완료해주세요.");
         $("#input-id").focus();
         return false;
     }
@@ -819,6 +844,16 @@ body {
         $("#nickname").focus();
         return false;
     }
+    if (isNickname === 0) {
+        alert("닉네임 중복확인을 완료해주세요.");
+        $("#nickname").focus();
+        return false;
+    }
+    if (isEmail === 0) {
+        alert("이메일 인증을 진행해주세요.");
+        $('#email').focus();
+        return false;
+    }
 
     // 7. 유형별 체크
     if (type === "사업자") {
@@ -834,12 +869,13 @@ body {
             return false;
         }
     }
+    
 
     return true;
 });
 
-			//이메일 인증
-			$('#sendAuthBtn').click(function() {
+         //이메일 인증
+         $('#sendAuthBtn').click(function() {
     let email = $('#email').val();
     if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
         alert("올바른 이메일 형식을 입력해주세요.");
@@ -886,8 +922,10 @@ $("#verifyBtn").on("click", function() {
                 $("#verifyBtn").prop("disabled", true).text("인증완료");
                 $("#email").prop("readonly", true);
                 $("#sendAuthBtn").prop("disabled", true);
+                isEmail = 1;
             } else {
                 alert("인증번호가 일치하지 않습니다.");
+                isEmail = 0;
             }
         }
     });
