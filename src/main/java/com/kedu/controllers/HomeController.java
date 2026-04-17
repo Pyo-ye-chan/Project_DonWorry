@@ -1,5 +1,6 @@
 package com.kedu.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -40,9 +41,14 @@ public class HomeController {
 		if("관리자".equals(type)) {
 			return "redirect:/admin/admin_main";
 		}
+		
+	    LocalDate now = LocalDate.now();
+	    int year = now.getYear();
+	    int month = now.getMonthValue();
+
 		if("개인".equals(type)||"사업자".equals(type)){
 			if(id!=null) {
-				List<WorkPlaceListDTO> placeList = wpldao.selectAllByIdHome(id);
+				List<WorkPlaceListDTO> placeList = wpldao.selectAllByIdCard(id, year, month);
 			    model.addAttribute("placeList", placeList);	   
 			}		
 		}

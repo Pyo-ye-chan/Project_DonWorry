@@ -1557,6 +1557,15 @@ body {
 	            const totalPay = formatWon(i.totalPay);
 	            const workDays = Number(i.workDays || 0);
 	            const totalHours = Number(i.totalHours || 0);
+	            const hours = Math.floor(totalHours / 60);
+	            const minutes = totalHours % 60;
+	            
+	            let timeText = "";
+	            if (minutes === 0) {
+	                timeText = hours + "시간";
+	            } else {
+	                timeText = hours + "시간 " + minutes + "분";
+	            }
 
 	            let card = "";
 	            card += '<div class="card" data-seq="' + i.seq + '">';
@@ -1571,7 +1580,7 @@ body {
 	            card += '    </div>';
 	            card += '    <div class="info-item">';
 	            card += '        <span class="info-label">근무 시간</span>';
-	            card += '        <span class="info-val">' + totalHours + '시간</span>';
+	            card += '        <span class="info-val">' + timeText + '</span>';
 	            card += '    </div>';
 	            card += '</div>';
 
