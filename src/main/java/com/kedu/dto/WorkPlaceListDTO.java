@@ -13,7 +13,7 @@ public class WorkPlaceListDTO {
     
     private int totalPay;
     private int workDays;
-    private int totalHours;
+    private Integer totalHours;
     
     private int payPerHour;
     private String payType;
@@ -24,7 +24,7 @@ public class WorkPlaceListDTO {
     public WorkPlaceListDTO() {}
 
 	public WorkPlaceListDTO(int seq, String name, LocalDate workDate, Integer logSeq, int totalPay, int workDays,
-			int totalHours, int payPerHour, String payType, double taxApplied, String insuranceApplied,
+			Integer totalHours, int payPerHour, String payType, double taxApplied, String insuranceApplied,
 			String employmentInsurance) {
 		super();
 		this.seq = seq;
@@ -89,11 +89,11 @@ public class WorkPlaceListDTO {
 		this.workDays = workDays;
 	}
 
-	public int getTotalHours() {
+	public Integer getTotalHours() {
 		return totalHours;
 	}
 
-	public void setTotalHours(int totalHours) {
+	public void setTotalHours(Integer totalHours) {
 		this.totalHours = totalHours;
 	}
 

@@ -638,6 +638,9 @@
    	<c:if test="${placeList[0].name!=null }">
 	   	<c:forEach var="i" items="${placeList}"> 
 	   	<a href="/salary/calendar" style="text-decoration: none; ">
+		<c:set var="rawHours" value="${i.totalHours / 60}" />
+		<fmt:parseNumber value="${rawHours}" integerOnly="true" var="hours" />
+		<c:set var="minutesInt" value="${i.totalHours mod 60}" />
 	   		<div class="card">                    
 	            <div class="card-title">${i.name }</div>
 	            <div class="info-item">
@@ -649,7 +652,17 @@
 	            	<span class="info-label">근무 일수</span><span class="info-val">${i.workDays}일</span>
 	            </div>
 	            <div class="info-item">
-	            	<span class="info-label">총 시간</span><span class="info-val">${i.totalHours}시간</span>
+	            	<span class="info-label">총 시간</span>
+	            	<span class="info-val">
+		            	<c:choose>
+						    <c:when test="${minutesInt == 0}">
+						        ${hours}시간
+						    </c:when>
+						    <c:otherwise>
+						        ${hours}시간 ${minutesInt}분
+						    </c:otherwise>
+						</c:choose>
+					</span>
 	            </div>                               	
         	</div>
         </a>

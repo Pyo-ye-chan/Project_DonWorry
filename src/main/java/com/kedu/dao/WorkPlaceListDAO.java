@@ -18,7 +18,7 @@ public class WorkPlaceListDAO {
 	public List<WorkPlaceListDTO> selectAllByIdCard(String memberId, int year, int month){
 		  String sql =  "select w.seq, w.name, nvl(sum(l.total_pay), 0) as total_pay, "
 		          + "count(l.seq) as work_days, "
-		          + "nvl(sum((l.end_time - l.start_time) * 24), 0) as total_hours "
+		          + "nvl(sum(((l.end_time - l.start_time) * 24 * 60) - nvl(l.breaktime, 0)), 0) as total_hours "
 		          + "from workplace w "
 		          + "left join worklog l "
 		          + "on w.seq = l.parent_seq "
