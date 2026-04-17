@@ -669,7 +669,7 @@ body {
 					dataType : "json"
 				}).done(function(idcheck) {
 					if (idcheck == 0) {
-						$("#idCheck-box").html("사용 가능한 아이디입니다.").css({
+						$("#idCheck-box").html("중복되지 않은 아이디 입니다.").css({
 							"color" : "#2563eb",
 							"display" : "block",
 							"margin-top" : "10px",
@@ -777,184 +777,124 @@ body {
 							});
 
 			// 서브밋 정규식
-			$("#FORM")
-					.ON(
-							"SUBMIT",
-							FUNCTION() {
-								// 0. 현재 선택된 가입 유형 가져오기
-								LET TYPE = $('INPUT[NAME="TYPE"]:CHECKED')
-										.VAL();
+			$("#form").on("submit", function() {
+    // 0. 현재 선택된 가입 유형 가져오기
+    let type = $('input[name="type"]:checked').val();
 
-								// 1. 아이디 체크
-								IF (!/^[A-Z][A-Z0-9]{5,15}$/
-										.TEST($("#INPUT-ID").VAL())) {
-									ALERT("아이디는 영소문자로 시작하며 숫자 포함 6~16글자여야 합니다.");
-									$("#INPUT-ID").FOCUS();
-									RETURN FALSE;
-								}
+    // 1. 아이디 체크 (정규식 패턴 대문자 소문자 확인 필요)
+    if (!/^[a-z][a-z0-9]{5,15}$/.test($("#input-id").val())) {
+        alert("아이디는 영소문자로 시작하며 숫자 포함 6~16글자여야 합니다.");
+        $("#input-id").focus();
+        return false;
+    }
 
-								// 2. 비밀번호 체크
-								IF (!/^(?=.*[A-ZA-Z])(?=.*\D)(?=.*[!@#$%^&*])[A-ZA-Z\D!@#$%^&*]{4,16}$/
-										.TEST($("#MEMBERPW").VAL())) {
-									ALERT("비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩 포함된 4~16자여야 합니다.");
-									$("#MEMBERPW").FOCUS();
-									RETURN FALSE;
-								}
+    // 2. 비밀번호 체크
+    if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{4,16}$/.test($("#memberPw").val())) {
+        alert("비밀번호는 특수문자, 숫자, 대소문자가 최소 한글자씩 포함된 4~16자여야 합니다.");
+        $("#memberPw").focus();
+        return false;
+    }
 
-								// 3. 비밀번호 확인
-								IF ($("#MEMBERPW").VAL() !== $("#MEMBERREPW")
-										.VAL()) {
-									ALERT("비밀번호가 일치하지 않습니다.");
-									$("#MEMBERREPW").FOCUS();
-									RETURN FALSE;
-								}
+    // 3. 비밀번호 확인
+    if ($("#memberPw").val() !== $("#memberRePw").val()) {
+        alert("비밀번호가 일치하지 않습니다.");
+        $("#memberRePw").focus();
+        return false;
+    }
 
-								// 4. 전화번호 체크
-								IF (!/^010[0-9]{4}\D{4}$/.TEST($("#PHONE")
-										.VAL())) {
-									ALERT("전화번호 형식이 올바르지 않습니다. (예: 01012345678)");
-									$("#PHONE").FOCUS();
-									RETURN FALSE;
-								}
+    // 4. 전화번호 체크
+    if (!/^010[0-9]{8}$/.test($("#phone").val())) {
+        alert("전화번호 형식이 올바르지 않습니다. (예: 01012345678)");
+        $("#phone").focus();
+        return false;
+    }
 
-								// 5. 이름 체크
-								IF (!/^[가-힣A-ZA-Z]{2,6}$/
-										.TEST($("#NAME").VAL())) {
-									ALERT("이름은 2~6자의 한글 또는 영문만 입력 가능합니다.");
-									$("#NAME").FOCUS();
-									RETURN FALSE;
-								}
+    // 5. 이름 체크
+    if (!/^[가-힣a-zA-Z]{2,6}$/.test($("#name").val())) {
+        alert("이름은 2~6자의 한글 또는 영문만 입력 가능합니다.");
+        $("#name").focus();
+        return false;
+    }
 
-								// 6. 닉네임 체크
-								IF (!/^[A-ZA-Z가-힣0-9]{2,10}$/.TEST($(
-										"#NICKNAME").VAL())) {
-									ALERT("닉네임은 한글, 영문, 숫자 포함 2~10글자 이내로 작성 가능합니다.");
-									$("#NICKNAME").FOCUS();
-									RETURN FALSE;
-								}
+    // 6. 닉네임 체크
+    if (!/^[a-zA-Z가-힣0-9]{2,10}$/.test($("#nickname").val())) {
+        alert("닉네임은 한글, 영문, 숫자 포함 2~10글자 이내로 작성 가능합니다.");
+        $("#nickname").focus();
+        return false;
+    }
 
-								// --- 유형별 선택적 체크 ---
-								IF (TYPE === "사업자") {
-									// 사업자일 때만 사업자 번호 체크
-									IF (!/^[0-9]{10}$/.TEST($(
-											"#BUSINESS_NUMBER").VAL())) {
-										ALERT("사업자번호 10자리를 숫자만 입력해주세요.");
-										$("#BUSINESS_NUMBER").FOCUS();
-										RETURN FALSE;
-									}
-								} ELSE {
-									// 개인일 때만 생년월일 및 성별 체크
-									IF (!/^([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/
-											.TEST($("#RRN").VAL())) {
-										ALERT("생년월일 형식이 올바르지 않습니다. (예: 950101)");
-										$("#RRN").FOCUS();
-										RETURN FALSE;
-									}
-									//         IF (!/^[1-4]{1}$/.TEST($("#RRN_BACK").VAL())) {
-									//             ALERT("성별 코드가 올바르지 않습니다. (1~4 사이의 숫자 1자리)");
-									//             $("#RRN_BACK").FOCUS();
-									//             RETURN FALSE;
-									//         }
-								}
+    // 7. 유형별 체크
+    if (type === "사업자") {
+        if (!/^[0-9]{10}$/.test($("#business_number").val())) {
+            alert("사업자번호 10자리를 숫자만 입력해주세요.");
+            $("#business_number").focus();
+            return false;
+        }
+    } else {
+        if (!/^([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/.test($("#rrn").val())) {
+            alert("생년월일 형식이 올바르지 않습니다. (예: 950101)");
+            $("#rrn").focus();
+            return false;
+        }
+    }
 
-								// 7. 이메일 체크
-								// 								IF (!/^[A-ZA-Z0-9._%+-]+@[A-ZA-Z0-9.-]+\.[A-ZA-Z]{2,}$/
-								// 										.TEST($("#EMAIL").VAL())) {
-								// 									ALERT("올바른 이메일 주소 형식이 아닙니다.");
-								// 									$("#EMAIL").FOCUS();
-								// 									RETURN FALSE;
-								// 								}
-
-								RETURN TRUE;
-							});
+    return true;
+});
 
 			//이메일 인증
-			$('#SENDAUTHBTN').CLICK(
-					FUNCTION() {
-						LET EMAIL = $('#EMAIL').VAL();
+			$('#sendAuthBtn').click(function() {
+    let email = $('#email').val();
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        alert("올바른 이메일 형식을 입력해주세요.");
+        return;
+    }
+    const btn = $(this);
+    btn.prop('disabled', true).text("발송 중...");
 
-						IF (!/^[A-ZA-Z0-9._%+-]+@[A-ZA-Z0-9.-]+\.[A-ZA-Z]{2,}$/
-								.TEST(EMAIL)) {
-							ALERT("올바른 이메일 형식을 입력해주세요.");
-							RETURN;
-						}
+    $.ajax({
+        url : "/members/sendAuthCode",
+        type : "POST",
+        data : { email : email },
+        success : function(res) {
+            if (res === "SUCCESS") {
+                alert("인증번호가 발송되었습니다.");
+                $('#authCodeGroup').fadeIn();
+                btn.text("재발송");
+            } else if (res === "ALREADY_EXISTS") {
+                alert("이미 가입된 이메일입니다.");
+                btn.text("인증요청");
+            }
+        },
+        complete : function() {
+            setTimeout(function() { btn.prop('disabled', false); }, 3000);
+        }
+    });
+});
 
-						CONST BTN = $(THIS);
-
-						//버튼 비활성화
-						BTN.PROP('DISABLED', TRUE).TEXT("발송 중...");
-
-						$.AJAX({
-							URL : "/MEMBERS/SENDAUTHCODE",
-							TYPE : "POST",
-							DATA : {
-								EMAIL : EMAIL
-							},
-							SUCCESS : FUNCTION(RES) {
-								IF (RES === "SUCCESS") {
-									ALERT("인증번호가 발송되었습니다. (재발송 포함)");
-									$('#AUTHCODEGROUP').FADEIN();
-									BTN.TEXT("재발송"); // 버튼 텍스트를 재발송으로 변경
-								} ELSE IF (RES === "ALREADY_EXISTS") {
-									ALERT("이미 가입된 이메일입니다.");
-									BTN.TEXT("인증요청");
-								} ELSE {
-									ALERT("메일 발송 실패!");
-									BTN.TEXT("재발송");
-								}
-							},
-							ERROR : FUNCTION() {
-								ALERT("서버 오류 발생");
-								BTN.TEXT("재발송");
-							},
-							COMPLETE : FUNCTION() {
-								SETTIMEOUT(FUNCTION() {
-									BTN.PROP('DISABLED', FALSE);
-								}, 3000);
-							}
-						});
-					});
-
-			// [인증번호 확인 버튼 클릭 이벤트]
-			$("#VERIFYBTN").ON(
-					"CLICK",
-					FUNCTION() {
-						CONST INPUTCODE = $("#AUTHCODE").VAL(); // 사용자가 입력한 번호
-						CONST AUTHBOX = $("#AUTHCHECK-BOX"); // 결과를 보여줄 영역 
-
-						IF (INPUTCODE === "") {
-							ALERT("인증번호를 입력해주세요.");
-							$("#AUTHCODE").FOCUS();
-							RETURN;
-						}
-
-						$.AJAX({
-							URL : "/MEMBERS/VERIFYAUTHCODE",
-							TYPE : "POST",
-							DATA : {
-								INPUTCODE : INPUTCODE
-							},
-							SUCCESS : FUNCTION(RES) {
-								IF (RES === "SUCCESS") {
-									ALERT("인증에 성공했습니다!");
-									
-									$("#AUTHCODE").PROP("READONLY", TRUE);
-									$("#VERIFYBTN").PROP("DISABLED", TRUE)
-											.TEXT("인증완료");
-									$("#EMAIL").PROP("READONLY", TRUE);
-									$("#SENDAUTHBTN").PROP("DISABLED", TRUE);
-
-									ISEMAILAUTH = TRUE;
-								} ELSE {
-									ALERT("인증번호가 일치하지 않습니다. 다시 확인해주세요.");
-									$("#AUTHCODE").VAL("").FOCUS();
-								}
-							},
-							ERROR : FUNCTION() {
-								ALERT("서버 통신 실패!");
-							}
-						});
-					});
+// 인증번호 확인 (역시 소문자로 수정)
+$("#verifyBtn").on("click", function() {
+    const inputCode = $("#authCode").val();
+    if (inputCode === "") {
+        alert("인증번호를 입력해주세요.");
+        return;
+    }
+    $.ajax({
+        url : "/members/verifyAuthCode",
+        type : "POST",
+        data : { inputCode : inputCode },
+        success : function(res) {
+            if (res === "SUCCESS") {
+                alert("인증에 성공했습니다!");
+                $("#authCode").prop("readonly", true);
+                $("#verifyBtn").prop("disabled", true).text("인증완료");
+                $("#email").prop("readonly", true);
+                $("#sendAuthBtn").prop("disabled", true);
+            } else {
+                alert("인증번호가 일치하지 않습니다.");
+            }
+        }
+    });
+});
 		</script>
 </body>
 </html>
