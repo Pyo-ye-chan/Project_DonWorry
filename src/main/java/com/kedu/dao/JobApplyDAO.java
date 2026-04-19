@@ -47,7 +47,10 @@ public class JobApplyDAO {
 	}
 	
 	public int countApplyById(String id) {
-	    String sql = "SELECT COUNT(*) FROM job_apply WHERE member_id = ?";
+		String sql = "SELECT COUNT(*) FROM job_apply a " +
+                "JOIN job_post p ON a.job_post_num = p.seq " +
+                "WHERE a.member_id = ?";
+		
 	    return jdbc.queryForObject(sql, Integer.class, id);
 	}
 }

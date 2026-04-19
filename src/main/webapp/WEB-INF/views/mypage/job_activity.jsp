@@ -167,7 +167,15 @@
         width: 100%;
     }
 
-    .nickname { font-weight: 800; font-size: 18px; color: #222; }
+    .nickname { 
+    	font-weight: 800; font-size: 18px; color: #222; 
+    	display: inline-block;    /* span은 원래 inline이라 width가 안 먹히므로 변경 */
+    max-width: 300px;         /* 적절한 최대 너비를 설정 (예: 300px) */
+    white-space: nowrap;      /* 줄바꿈 방지 */
+    overflow: hidden;         /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis;  /* 넘치는 부분은 ... 표시 */
+    vertical-align: bottom;   /* 옆의 태그들과 높이 맞춤 */
+    }
     .time { font-size: 13px; color: #adb5bd; margin-top: 4px; }
     .post-content { font-size: 16px; margin: 25px 0; color: #495057; }
 
