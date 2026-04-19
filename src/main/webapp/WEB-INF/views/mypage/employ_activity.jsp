@@ -357,6 +357,9 @@ body {
 	font-weight: 800;
 	color: #1e293b;
 	margin-bottom: 6px;
+	white-space: nowrap;      /* 줄바꿈 방지 */
+    overflow: hidden;         /* 넘치는 부분 숨김 */
+    text-overflow: ellipsis;  /* 넘치는 부분은 ... 표시 */
 }
 
 .job-company {

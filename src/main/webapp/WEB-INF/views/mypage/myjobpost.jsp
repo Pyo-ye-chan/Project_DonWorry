@@ -211,6 +211,7 @@ body {
 	margin-bottom: 14px;
 	word-break: keep-all;
 	padding-left: 10px;
+	word-break: break-all;
 }
 
 .detail-pay {
